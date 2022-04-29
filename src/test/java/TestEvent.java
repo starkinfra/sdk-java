@@ -1,9 +1,125 @@
-import com.starkinfra.*;
 import com.starkinfra.error.InvalidSignatureError;
+import org.junit.AssumptionViolatedException;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.*;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.List;
 
 
 public class TestEvent {
+
+    private void assertFalseForInconclusive(boolean condition) {
+        if(!condition)
+            throw new AssumptionViolatedException("Inconclusive");
+    }
+
+    @Test
+    public void testEventQuery() throws Exception{
+        Settings.user = utils.User.defaultProject();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 5);
+        params.put("after", "2019-04-01");
+        params.put("before", "2030-04-30");
+        Generator<Event> events = Event.query(params);
+
+        int i = 0;
+        for (Event event : events) {
+            i += 1;
+            Assert.assertNotNull(event.id);
+            Assert.assertNotNull(event.workspaceId);
+            System.out.println(event);
+
+            HashMap<String, Object> attemptParams = new HashMap<>();
+            attemptParams.put("limit", 1);
+            attemptParams.put("eventIds", event.id);
+            Generator<Event.Attempt> attempts = Event.Attempt.query(attemptParams);
+            for (Event.Attempt attempt : attempts) {
+                Event.Attempt a = Event.Attempt.get(attempt.id);
+                Assert.assertNotNull(a);
+                System.out.println(a);
+            }
+        }
+        assertFalseForInconclusive(i > 0);
+    }
+
+    @Test
+    public void testEventQueryGetAndUpdate() throws Exception{
+        Settings.user = utils.User.defaultProject();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 100);
+        params.put("isDelivered", false);
+        Generator<Event> events = Event.query(params);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("isDelivered", true);
+
+        int index = new Random().nextInt(100);
+        int i = 0;
+        for (Event event : events) {
+            i ++;
+            if (i != index) {
+                continue;
+            }
+            System.out.println(event);
+            Assert.assertFalse(event.isDelivered);
+            event = Event.get(event.id);
+            event = Event.update(event.id, data);
+            Assert.assertTrue(event.isDelivered);
+        }
+        assertFalseForInconclusive(i > 0);
+    }
+
+    @Test
+    public void testEventQueryAndDelete() throws Exception{
+        Settings.user = utils.User.defaultProject();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 100);
+        int i = 0;
+        int index = new Random().nextInt(100);
+        for (Event event : Event.query(params)) {
+            i ++;
+            if (i != index) {
+                continue;
+            }
+            event = Event.delete(event.id);
+            System.out.println(event);
+        }
+    }
+
+    @Test
+    public void testPage() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 2);
+        params.put("after", "2019-04-01");
+        params.put("before", "2030-04-30");
+        params.put("cursor", null);
+
+        List<String> ids = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            Event.Page page = Event.page(params);
+            for (Event event: page.events) {
+                System.out.println(event);
+                if (ids.contains(event.id)) {
+                    throw new Exception("repeated id");
+                }
+                ids.add(event.id);
+            }
+            if (page.cursor == null) {
+                break;
+            }
+            params.put("cursor", page.cursor);
+        }
+
+        if (ids.size() != 4) {
+            throw new Exception("ids.size() != 4");
+        }
+    }
 
     @Test
     public void testEventParse() throws Exception{

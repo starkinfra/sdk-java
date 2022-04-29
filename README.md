@@ -21,11 +21,18 @@ This SDK version is compatible with the Stark Infra API v2.
 - [Resource listing and manual pagination](#resource-listing-and-manual-pagination)
 - [Testing in Sandbox](#testing-in-sandbox)
 - [Usage](#usage)
-  - [PixRequests](#create-pix-requests): PIX receivables
-  - [PixReversals](#create-pix-reversals): Reverse PIX transactions
-  - [PixBalance](#get-pix-balance): Account balance
-  - [PixStatement](#create-pix-statement): Account statement entry
-  - [WebhookEvents](#process-webhook-events): Manage webhook events
+  - [Pix](#pix)
+    - [PixRequests](#create-pix-requests): Create Pix transactions
+    - [PixReversals](#create-pix-reversals): Reverse Pix transactions
+    - [PixBalance](#get-pix-balance): View your account balance
+    - [PixStatement](#create-a-pix-statement): Request your account statement
+    - [PixKey](#create-a-pix-key): Create a Pix Key
+    - [PixClaim](#create-a-pix-claim): Claim a Pix Key
+    - [InfractionReport](#create-an-infraction-report): Create a Pix Key
+    - [ReversalRequest](#create-a-reversal-request): Claim a Pix Key
+  - [Webhook Events](#webhook-events):
+    - [WebhookEvents](#process-webhook-events): Manage Webhook events
+    - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
 - [Handling errors](#handling-errors)
 - [Help and Feedback](#help-and-feedback)
 
@@ -287,7 +294,7 @@ for (PixRequest request : requests){
 
 - The `page` function gives you full control over the API pagination. With each function call, you receive up to
   100 results and the cursor to retrieve the next batch of elements. This allows you to stop your queries and
-  pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `None`.
+  pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `null`.
 
 ```java
 import com.starkinfra.*;
@@ -298,9 +305,9 @@ params.put("limit", 50);
 params.put("cursor", null);
 
 while (true) {
-    Transaction.Page page = Transaction.page(params);
-    for (Transaction transaction: page.transactions) {
-        System.out.println(transaction);
+    PixRequest.Page page = PixRequest.page(params);
+    for (PixRequest request: page.request) {
+        System.out.println(request);
     }
     if (page.cursor == null) {
         break;
@@ -330,11 +337,14 @@ Here are a few examples on how to use the SDK. If you have any doubts, use the b
 `help()` function to get more info on the desired functionality
 (for example: `help(starkinfra.boleto.create)`)
 
-## Create pix requests
+## Pix
+
+### Create pix requests
 You can create a Pix request to charge a user:
 
 ```java
 import com.starkinfra.*;
+import com.starkinfra.utils.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -348,7 +358,7 @@ data.put("senderBranchCode", "2201");
 data.put("senderAccountType", "checking");
 data.put("senderName", "checking");
 data.put("senderTaxId", "594.739.480-42");
-data.put("receiverBankCode", "341");
+data.put("receiverBankCode", "20018183");
 data.put("receiverAccountNumber", "00000-0");
 data.put("receiverBranchCode", "0001");
 data.put("receiverAccountType", "checking");
@@ -366,7 +376,7 @@ for (PixRequest request : requests){
 
 **Note**: Instead of using Pix Request objects, you can also pass each transaction element in dictionary format
 
-## Query pix requests
+### Query pix requests
 
 You can query multiple pix requests according to filters.
 
@@ -376,13 +386,12 @@ import com.starkinfra.utils.Generator;
 import java.util.HashMap;
 
 HashMap<String, Object> params = new HashMap<>();
-params.put("fields", new String[] {"amount", "senderName"});
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
-params.put("status", "success");
-params.put("fields", new String[] {"iron", "suit"});
-params.put("endToEndId", "E79457883202101262140HHX553UPqeq");
+params.put("status", new String[] {"success", "failed"});
+params.put("tags", new String[] {"iron", "suit"});
+params.put("endToEndIds", new String[] {"E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX55ghz77r"});
 Generator<PixRequest> requests = PixRequest.query(params);
 
 for (PixRequest request : requests){
@@ -390,7 +399,7 @@ for (PixRequest request : requests){
 }
 ```
 
-## Get a pix request
+### Get a pix request
 
 After its creation, information on a pix request may be retrieved by its id. Its status indicates whether it has been paid.
 
@@ -402,7 +411,7 @@ PixRequest request = PixRequest.get("5155966664310784");
 System.out.println(request);
 ```
 
-## Process pix request authorization requests
+### Process pix request authorization requests
 
 It's easy to process authorization requests that arrived in your handler. Remember to pass the
 signature header so the SDK can make sure it's StarkInfra that sent you
@@ -411,7 +420,7 @@ the event.
 ```java
 import com.starkinfra.*;
 
-Request request = Listener.listen(); // this is the method you made to get the events posted to your webhook
+Request request = Listener.listen(); // this is your handler to listen for authorization requests
 
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
@@ -421,7 +430,7 @@ PixRequest request = PixRequest.parse(content, signature);
 System.out.println(request);
 ```
 
-## Query pix request logs
+### Query pix request logs
 
 You can query pix request logs to better understand pix request life cycles.
 
@@ -441,7 +450,7 @@ for (PixRequest.Log log : logs){
 }
 ```
 
-## Get a pix request log
+### Get a pix request log
 
 You can also get a specific log by its id.
 
@@ -453,7 +462,7 @@ PixRequest.Log log = PixRequest.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-## Create pix reversals
+### Create pix reversals
 
 You can reverse a pix request by whole or by a fraction of its amount using a pix reversal.
 
@@ -478,7 +487,7 @@ for (PixReversal reversal : reversals){
 }
 ```
 
-## Query pix reversals
+### Query pix reversals
 
 You can query multiple pix reversals according to filters.
 
@@ -488,13 +497,12 @@ import com.starkinfra.utils.Generator;
 import java.util.HashMap;
 
 HashMap<String, Object> params = new HashMap<>();
-params.put("fields", new String[] {"amount", "senderName"});
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
-params.put("status", "success");
-params.put("fields", new String[] {"iron", "suit"});
-params.put("returnId", "D20018183202202030109X3OoBHG74wo");
+params.put("status", new String[] {"success", "failed"});
+params.put("tags", new String[] {"iron", "suit"});
+params.put("returnIds", new String[] {"D20018183202202030109X3OoBHG74wo", "D20018183202202030109X3OoBHGxc22"});
 Generator<PixReversal> reversals = PixReversal.query(params);
 
 for (PixReversal reversal : reversals){
@@ -502,7 +510,7 @@ for (PixReversal reversal : reversals){
 }
 ```
 
-## Get a pix reversal
+### Get a pix reversal
 
 After its creation, information on a pix reversal may be retrieved by its id. Its status indicates whether it has been paid.
 
@@ -514,26 +522,26 @@ PixReversal reversal = PixReversal.get("5155966664310784");
 System.out.println(reversal);
 ```
 
-## Process pix reversal authorization reversals
+### Process pix reversal authorization requests
 
-It's easy to process authorization reversals that arrived in your handler. Remember to pass the
+It's easy to process authorization requests that arrived in your handler. Remember to pass the
 signature header so the SDK can make sure it's StarkInfra that sent you
 the event.
 
 ```java
 import com.starkinfra.*;
 
-Reversal reversal = Listener.listen(); // this is the method you made to get the events posted to your webhook
+Request request = Listener.listen(); // this is your handler to listen for authorization requests
 
-String content = reversal.content.toString();
-String signature = reversal.headers.get("Digital-Signature");
+String content = request.content.toString();
+String signature = request.headers.get("Digital-Signature");
 
-PixReversal reversal = PixReversal.parse(content, signature);
+PixReversal request = PixReversal.parse(content, signature);
 
-System.out.println(reversal);
+System.out.println(request);
 ```
 
-## Query pix reversal logs
+### Query pix reversal logs
 
 You can query pix reversal logs to better understand pix reversal life cycles.
 
@@ -553,7 +561,7 @@ for (PixReversal.Log log : logs){
 }
 ```
 
-## Get a pix reversal log
+### Get a pix reversal log
 
 You can also get a specific log by its id.
 
@@ -565,7 +573,7 @@ PixReversal.Log log = PixReversal.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-## Get pix balance
+### Get pix balance
 
 To know how much money you have in your workspace, run:
 
@@ -577,7 +585,7 @@ PixBalance balance = PixBalance.Log.get("6532638269505536");
 System.out.println(balance);
 ```
 
-## Create pix statement
+### Create a pix statement
 
 Statements are only available for direct participants. To create a statement of all the transactions that happened on your workspace during a specific day, run:
 
@@ -592,13 +600,13 @@ HashMap<String, Object> data = new HashMap<>();
 data.put("after", "2022-01-01");
 data.put("before", "2022-01-01");
 data.put("type", "transaction");
-statement.add(new PixStatement(data));
+PixStatement statemenet = new PixStatement(data);
 
 statement = PixStatement.create(statement);
 
 System.out.println(statement);
 ```
-## Query pix statements
+### Query pix statements
 
 You can query multiple pix statements according to filters.
 
@@ -609,7 +617,7 @@ import java.util.HashMap;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
-params.put("ids", "2020-04-01");
+params.put("ids", new String[] {"5155966664310784", "4225966664310755"});
 Generator<PixStatement> statements = PixStatement.query(params);
 
 for (PixStatement statement : statements){
@@ -617,7 +625,7 @@ for (PixStatement statement : statements){
 }
 ```
 
-## Get a pix statement
+### Get a pix statement
 
 Statements are only available for direct participants. To get a pix statement by its id:
 
@@ -629,7 +637,7 @@ PixStatement statement = PixStatement.get("5155966664310784");
 System.out.println(statement);
 ```
 
-## Get a pix statement .csv file
+### Get a pix statement .csv file
 
 To get a .csv file of a pix statement using its id, run:
 
@@ -648,7 +656,469 @@ java.nio.file.Files.copy(
 );
 ```
 
-## Process webhook events
+### Create a pix key
+
+You can create a Pix Key to link bank account information to a key id:
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("accountCreated", "2022-01-01");
+data.put("accountNumber", "000000");
+data.put("accountType", "savings");
+data.put("branchCode", "000");
+data.put("name", "Arya Stark");
+data.put("taxId", "012.345.678-90");
+data.put("id", "+5541998989898");
+PixKey key = new PixKey(data);
+
+key = PixKey.create(key);
+
+System.out.println(key);
+```
+
+### Query pix keys
+
+You can query multiple Pix keys according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2022-01-20");
+params.put("before", "2022-01-24");
+params.put("status", "registered");
+params.put("ids", new String[] {"+5541998989898", "+5541999999999"});
+Generator<PixKey> keys = PixKey.query(params);
+
+for (PixKey key : keys){
+    System.out.println(key);
+}
+```
+
+### Get a pix key
+
+After its creation, information on a Pix key may be retrieved by its id and the tax id of the consulting agent.
+
+```java
+import com.starkinfra.*;
+
+PixKey key = PixKey.get("+5541998989898");
+
+System.out.println(key);
+```
+
+### Cancel a Pix key
+
+To cancel a Pix key, run:
+
+```java
+import com.starkinfra.*;
+
+PixKey key = PixKey.delete("+5541998989898");
+
+System.out.println(key);
+```
+
+### Update a pix key
+
+Update the account information or the holder's name linked to a Pix key.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("reason", "branchTransfer");
+patchData.put("name", "Jamie Lannister");
+PixKey key = PixKey.update("+5541998989898", patchData);
+
+System.out.println(key);
+```
+
+### Query pix key logs
+
+You can query Pix key logs to better understand Pix key life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+Generator<PixKey.Log> logs = PixKey.Log.query(params);
+
+for (PixKey.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a pix key log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixKey.Log log = PixKey.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+### Create a pix claim
+
+You can create a Pix claim to request the transfer of a Pix key to another account:
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("accountCreated", "2022-01-01");
+data.put("accountNumber", "000000");
+data.put("accountType", "savings");
+data.put("branchCode", "000");
+data.put("name", "Arya Stark");
+data.put("taxId", "012.345.678-90");
+data.put("keyId", "+5511989898989");
+PixClaim claim = new PixClaim(data);
+
+PixClaim claim = PixClaim.create(claim);
+
+System.out.println(claim);
+```
+
+### Query pix claims
+
+You can query multiple Pix claims according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2022-01-20");
+params.put("before", "2022-01-24");
+params.put("status", "registered");
+params.put("keyId", "+5541998989898");
+Generator<PixClaim> claims = PixClaim.query(params);
+
+for (PixClaim claim : claims){
+    System.out.println(claim);
+}
+```
+
+### Get a pix claim
+
+After its creation, information on a Pix claim may be retrieved by its id:
+
+```java
+import com.starkinfra.*;
+
+PixClaim claim = PixClaim.get("5155165527080960");
+
+System.out.println(claim);
+```
+
+### Update a pix claim
+
+A Pix Claim can be patched for two distinct reasons. A received Pix Claim can be confirmed or canceled by patching
+its status. A received Pix Claim must be confirmed by the donor to be completed. Ownership Pix Claims can only be
+canceled by the donor if the reason is fraud. A sent Pix Claim can also be canceled by patching its status.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("status", "confirmed");
+PixClaim claim = PixClaim.update("5155165527080960", patchData);
+
+System.out.println(claim);
+```
+
+### Query pix claim logs
+
+You can query Pix claim logs to better understand Pix claim life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+Generator<PixClaim.Log> logs = PixClaim.Log.query(params);
+
+for (PixClaim.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a pix claim log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixClaim.Log log = PixClaim.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+### Create an infraction report
+
+Infraction reports are used to report transactions that are suspected of fraud, to request a refund or to
+reverse a refund. Infraction reports can be created by either participant of a transaction.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("referenceId", "E20018183202201201450u34sDGd19lz");
+data.put("type", "fraud");
+InfractionReport report = new InfractionReport(data);
+
+report = InfractionReport.create(report);
+
+System.out.println(report);
+```
+
+### Query infraction reports
+
+You can query multiple infraction reports according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2022-01-20");
+params.put("before", "2022-01-24");
+params.put("status", "delivered");
+params.put("ids", new String[] {"5155165527080960", "4023146587080960"});
+Generator<InfractionReport> reports = InfractionReport.query(params);
+
+for (InfractionReport report : reports){
+    System.out.println(report);
+}
+```
+
+### Get an infraction report
+
+After its creation, information on an infraction report may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+InfractionReport report = InfractionReport.get("5155165527080960");
+
+System.out.println(report);
+```
+
+### Cancel an infraction report
+
+To cancel an infraction report, run:
+
+```java
+import com.starkinfra.*;
+
+InfractionReport report = InfractionReport.delete("5155165527080960");
+
+System.out.println(report);
+```
+
+### Update an infraction report
+
+A received Infraction Report can be confirmed or declined by patching its status. After an Infraction Report
+is Patched, its status changes to closed.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("result", "agreed");
+InfractionReport report = InfractionReport.update("5155165527080960", patchData);
+
+System.out.println(report);
+```
+
+### Query infraction report logs
+
+You can query infraction report logs to better understand infraction report's life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+Generator<InfractionReport.Log> logs = InfractionReport.Log.query(params);
+
+for (InfractionReport.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get an infraction report log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+InfractionReport.Log log = InfractionReport.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+### Create a reversal request
+
+A reversal request can be created when fraud is detected on a transaction or a system malfunction
+results in an erroneous transaction.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 1000);
+data.put("referenceId", "E20018183202201201450u34sDGd19lz");
+data.put("reason", "fraud");
+ReversalRequest request = new ReversalRequest(data);
+
+request = ReversalRequest.create(request);
+
+System.out.println(request);
+```
+
+### Query reversal requests
+
+You can query multiple reversal requests according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2022-01-20");
+params.put("before", "2022-01-24");
+params.put("status", "delivered");
+params.put("ids", new String[] {"5155165527080960", "4023146587080960"});
+Generator<ReversalRequest> requests = ReversalRequest.query(params);
+
+for (ReversalRequest request : requests){
+    System.out.println(request);
+}
+```
+
+### Get a reversal request
+
+After its creation, information on a reversal request may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+ReversalRequest request = ReversalRequest.get("5155165527080960");
+
+System.out.println(request);
+```
+
+### Cancel a reversal request
+
+To cancel a reversal request, run:
+
+```java
+import com.starkinfra.*;
+
+ReversalRequest request = ReversalRequest.delete("5155165527080960");
+
+System.out.println(request);
+```
+
+### Update a reversal request
+
+A received Reversal Request can be confirmed or declined by patching its status. After a Reversal Request
+is Patched, its status changes to closed.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("result", "accepted");
+patchData.put("reversalReferenceId", ReturnId.create("20018183"));
+ReversalRequest request = ReversalRequest.update("5155165527080960", patchData);
+
+System.out.println(request);
+```
+
+### Query reversal request logs
+
+You can query reversal request logs to better understand reversal request life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+Generator<ReversalRequest.Log> logs = ReversalRequest.Log.query(params);
+
+for (ReversalRequest.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a reversal request log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+ReversalRequest.Log log = ReversalRequest.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+## Webhook events
+
+### Process webhook events
 
 It's easy to process events delivered to your Webhook endpoint. Remember to pass the
 signature header so the SDK can make sure it was really StarkInfra that sent you
@@ -671,6 +1141,112 @@ else if (event.subscription.contains("pix-reversal")) {
     PixReversal.Log log = ((Event.PixReversalEvent) event).log;
     System.out.println(log.reversal);
 }
+else if (event.subscription.contains("pix-key")) {
+    PixKey.Log log = ((Event.PixKeyEvent) event).log;
+    System.out.println(log.key);
+}
+else if (event.subscription.contains("pix-claim")) {
+    PixClaim.Log log = ((Event.PixClaimEvent) event).log;
+    System.out.println(log.claim);
+}
+else if (event.subscription.contains("infraction-report")) {
+    InfractionReport.Log log = ((Event.InfractionReportEvent) event).log;
+    System.out.println(log.report);
+}
+else if (event.subscription.contains("reversal-request")) {
+    ReversalRequest.Log log = ((Event.ReversalRequestEvent) event).log;
+    System.out.println(log.request);
+}
+```
+
+### Query webhook events
+
+To search for webhooks events, run:
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("isDelivered", false);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+Generator<Event> events = Event.query(params);
+
+for (Event event : events){
+    System.out.println(event);
+}
+```
+
+### Get a webhook event
+
+You can get a specific webhook event by its id.
+
+```java
+import com.starkinfra.*;
+
+Event event = Event.get("5730174175805440");
+
+System.out.println(event);
+```
+
+### Delete a webhook event
+
+You can also delete a specific webhook event by its id.
+
+```java
+import com.starkinfra.*;
+
+Event event = Event.delete("6312789471657984");
+
+System.out.println(event);
+```
+
+### Set webhook events as delivered
+
+This can be used in case you've lost events.
+With this function, you can manually set events retrieved from the API as
+"delivered" to help future event queries with `isDelivered=false`.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("isDelivered", true);
+Event event = Event.update("5824181711142912", params);
+
+System.out.println(event);
+```
+
+### Query failed webhook event delivery attempts information
+
+You can also get information on failed webhook event delivery attempts.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("after", "2020-03-20");
+Generator<Event.Attempt> attempts = Event.Attempt.query(params);
+
+for (Event.Attempt attempt: attempts) {
+    System.out.println(attempt);
+}
+```
+
+### Get a failed webhook event delivery attempt information
+
+To retrieve information on a single attempt, use the following function:
+
+```java
+import com.starkinfra.*;
+
+Event.Attempt attempt = Event.Attempt.get("1616161616161616");
+
+System.out.println(attempt);
 ```
 
 # Handling errors

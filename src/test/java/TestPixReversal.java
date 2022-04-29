@@ -1,7 +1,7 @@
-import com.starkinfra.Settings;
-import com.starkinfra.PixReversal;
-import com.starkinfra.utils.Generator;
 import com.starkinfra.error.InvalidSignatureError;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.PixReversal;
+import com.starkinfra.Settings;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class TestPixReversal {
     }
 
     @Test
-    public void testQueryGetAndPdf() throws Exception {
+    public void testQueryGet() throws Exception {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> params = new HashMap<>();
@@ -198,7 +198,6 @@ public class TestPixReversal {
         data.put("externalId", "java-" + UUID.randomUUID().toString());
         data.put("reason", "fraud");
         data.put("endToEndId",utils.EndToEndId.get());
-
         return new PixReversal(data);
     }
 }

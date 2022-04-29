@@ -26,7 +26,7 @@ public final class PixRequest extends Resource {
      * senderAccountType     [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
      * receiverName          [string]: receiver's full name. ex: "Anthony Edward Stark"
      * receiverTaxId         [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-     * receiverBankCode      [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"
+     * receiverBankCode      [string]: receiver's bank institution code in Brazil. ex: "20018183"
      * receiverAccountNumber [string]: receiver's bank account number. Use '-' before the verifier digit. ex: "876543-2"
      * receiverBranchCode    [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
      * receiverAccountType   [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
@@ -44,9 +44,9 @@ public final class PixRequest extends Resource {
      * fee                   [integer, default 0: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * status                [string, default null]: current PixRequest status. ex: "registered" or "paid"
      * flow                  [string, default null]: direction of money flow. ex: "in" or "out"
-     * senderBankCode        [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"
-     * created               [datetime.datetime, default null]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-     * updated               [datetime.datetime, default null]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+     * senderBankCode        [string, default null]: sender's bank institution code in Brazil. ex: "20018183"
+     * created               [string, default null]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated               [string, default null]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixRequest.class, "PixRequest");
@@ -98,7 +98,7 @@ public final class PixRequest extends Resource {
      * @param senderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
      * @param receiverName [string]: receiver's full name. ex: "Anthony Edward Stark"
      * @param receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-     * @param receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"
+     * @param receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183"
      * @param receiverAccountNumber [string]: receiver's bank account number. Use '-' before the verifier digit. ex: "876543-2"
      * @param receiverBranchCode [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
      * @param receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
@@ -116,9 +116,9 @@ public final class PixRequest extends Resource {
      * @param fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * @param status [string, default null]: current PixRequest status. ex: "registered" or "paid"
      * @param flow [string, default null]: direction of money flow. ex: "in" or "out"
-     * @param senderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"
-     * @param created [datetime.datetime, default null]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-     * @param updated [datetime.datetime, default null]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+     * @param senderBankCode [string, default null]: sender's bank institution code in Brazil. ex: "20018183"
+     * @param created [string, default null]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string, default null]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public PixRequest(long amount, String externalId, String senderName, String senderTaxId, String senderBranchCode,
                       String senderAccountNumber, String senderAccountType, String receiverName, String receiverTaxId,
@@ -177,7 +177,7 @@ public final class PixRequest extends Resource {
      * senderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
      * receiverName [string]: receiver's full name. ex: "Anthony Edward Stark"
      * receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-     * receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"
+     * receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183"
      * receiverAccountNumber [string]: receiver's bank account number. Use '-' before the verifier digit. ex: "876543-2"
      * receiverBranchCode [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
      * receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
@@ -199,9 +199,9 @@ public final class PixRequest extends Resource {
      * fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * status [string, default null]: current PixRequest status. ex: "registered" or "paid"
      * flow [string, default null]: direction of money flow. ex: "in" or "out"
-     * senderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"
-     * created [datetime.datetime, default null]: creation datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-     * updated [datetime.datetime, default null]: latest update datetime for the PixRequest. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+     * senderBankCode [string, default null]: sender's bank institution code in Brazil. ex: "20018183"
+     * created [string, default null]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string, default null]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public PixRequest(Map<String, Object> data) throws Exception {
@@ -284,11 +284,10 @@ public final class PixRequest extends Resource {
      * <p>
      * Parameters:
      * @param params parameters for the query
-     * fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -341,11 +340,10 @@ public final class PixRequest extends Resource {
      * <p>
      * Parameters:
      * @param params map of properties for the creation of the PixRequest
-     * fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -379,11 +377,10 @@ public final class PixRequest extends Resource {
      * Parameters:
      * @param params parameters of the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -443,11 +440,10 @@ public final class PixRequest extends Resource {
      * Parameters:
      * @param params parameters of the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -609,7 +605,7 @@ public final class PixRequest extends Resource {
             this.errors = errors;
             this.request = request;
         }
-        
+
         /**
          * Retrieve a specific PixRequest Log
          * <p>
@@ -652,10 +648,11 @@ public final class PixRequest extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
          * <p>
          * Return:
          * @return list of PixRequest Log objects with updated attributes
@@ -705,10 +702,11 @@ public final class PixRequest extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
@@ -739,10 +737,11 @@ public final class PixRequest extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
          * <p>
          * Return:
          * @return PixRequest.Log.Page object:
@@ -799,10 +798,11 @@ public final class PixRequest extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:

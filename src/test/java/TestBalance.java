@@ -1,7 +1,7 @@
 import com.starkinfra.PixBalance;
 import com.starkinfra.Settings;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 
 public class TestBalance {
