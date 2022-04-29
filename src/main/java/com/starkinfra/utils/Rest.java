@@ -8,9 +8,12 @@ import java.util.*;
 
 
 public final class Rest {
-
     public static <T extends Resource> T getId(Resource.ClassData resource, String id, User user) throws Exception {
-        String content = Response.fetch(Api.endpoint(resource, id), "GET", null, null, user).content();
+        return getId(resource, id, null, user);
+    }
+
+    public static <T extends Resource> T getId(Resource.ClassData resource, String id, Map<String, Object> data, User user) throws Exception {
+        String content = Response.fetch(Api.endpoint(resource, id), "GET", null, data, user).content();
         Gson gson = GsonEvent.getInstance();
         JsonObject contentJson = gson.fromJson(content, JsonObject.class);
         JsonObject jsonObject = contentJson.get(Api.getLastName(resource)).getAsJsonObject();

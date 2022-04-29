@@ -24,12 +24,12 @@ public final class PixReversal extends Resource {
      * tags       [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
      * id         [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * returnId   [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * bank_code  [string, default null]: code of the bank institution in Brazil. ex: "20018183" or "341"
+     * bank_code  [string, default null]: code of the bank institution in Brazil. ex: "20018183"
      * fee        [integer, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
      * status     [string, default null]: current PixReversal status. ex: "registered" or "paid"
-     * created    [string, default null]: direction of money flow. ex: "in" or "out"
-     * flow       [string, default null]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-     * updated    [string, default null]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+     * flow       [string, default null]: direction of money flow. ex: "in" or "out"
+     * created    [string, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated    [string, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixReversal.class, "PixReversal");
@@ -43,8 +43,8 @@ public final class PixReversal extends Resource {
     public String bankCode;
     public Number fee;
     public String status;
-    public String created;
     public String flow;
+    public String created;
     public String updated;
 
     /**
@@ -62,16 +62,16 @@ public final class PixReversal extends Resource {
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
      * @param id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * @param returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * @param bankCode [string, default null]: code of the bank institution in Brazil. ex: "20018183" or "341"
+     * @param bankCode [string, default null]: code of the bank institution in Brazil. ex: "20018183"
      * @param fee [integer, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
      * @param status [string, default null]: current PixReversal status. ex: "registered" or "paid"
-     * @param created [string, default null]: direction of money flow. ex: "in" or "out"
-     * @param flow [string, default null]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-     * @param updated [string, default null]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+     * @param flow [string, default null]: direction of money flow. ex: "in" or "out"
+     * @param created [string, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixReversal(long amount, String externalId, String endToEndId, String reason, String[] tags, String id,
-                       String returnId, String bankCode, Number fee, String status, String created, String flow,
+                       String returnId, String bankCode, Number fee, String status, String flow, String created,
                        String updated) {
         super(id);
         this.amount = amount;
@@ -83,8 +83,8 @@ public final class PixReversal extends Resource {
         this.bankCode = bankCode;
         this.fee = fee;
         this.status = status;
-        this.created = created;
         this.flow = flow;
+        this.created = created;
         this.updated = updated;
     }
 
@@ -108,12 +108,12 @@ public final class PixReversal extends Resource {
      * Attributes (return-only):
      * id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * bank_code [string, default null]: code of the bank institution in Brazil. ex: "20018183" or "341"
+     * bank_code [string, default null]: code of the bank institution in Brazil. ex: "20018183"
      * fee [integer, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
      * status [string, default null]: current PixReversal status. ex: "registered" or "paid"
-     * created [string, default null]: direction of money flow. ex: "in" or "out"
-     * flow [string, default null]: creation datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
-     * updated [string, default null]: latest update datetime for the PixReversal. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+     * flow [string, default null]: direction of money flow. ex: "in" or "out"
+     * created [string, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the reversal
      */
     public PixReversal(Map<String, Object> data) throws Exception {
@@ -177,11 +177,10 @@ public final class PixReversal extends Resource {
      * <p>
      * Parameters:
      * @param params parameters for the query
-     * fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -234,11 +233,10 @@ public final class PixReversal extends Resource {
      * <p>
      * Parameters:
      * @param params map of properties for the creation of the PixReversal
-     * fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -272,11 +270,10 @@ public final class PixReversal extends Resource {
      * Parameters:
      * @param params parameters of the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -336,11 +333,10 @@ public final class PixReversal extends Resource {
      * Parameters:
      * @param params parameters of the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [datetime.date or string, default null]: date filter for objects created or updated only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [datetime.date or string, default null]: date filter for objects created or updated only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default null]: filter for status of retrieved objects. ex: "success" or "failed"
+     * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
+     * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
+     * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
@@ -441,7 +437,7 @@ public final class PixReversal extends Resource {
      * <p>
      * Return:
      * @return Parsed PixReversal object
-     * @throws Exception error in the request
+     * @throws Exception error in the PixReversal
      */
     public static Event parse(String content, String signature, User user) throws Exception {
         return Parse.parseAndVerify(data ,content, signature, user);
@@ -450,7 +446,7 @@ public final class PixReversal extends Resource {
     /**
      * PixReversal.Error object
      * <p>
-     * Used to define an error in the pixReversal
+     * Used to define an error in the PixReversal
      * <p>
      * Parameters:
      * key      [string]: key describing a part of the pixReversal value. ex: "Taxes"
@@ -462,7 +458,7 @@ public final class PixReversal extends Resource {
 
         /**
          * PixReversal.Error object
-         * Used to define an error in the pixReversal
+         * Used to define an error in the PixReversal
          * Parameters:
          * @param key   [string]: text indicating an item to be described. ex: "Taxes"
          * @param value [string]: text describing the specified item. ex: "Bad"
@@ -545,7 +541,7 @@ public final class PixReversal extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -598,7 +594,7 @@ public final class PixReversal extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -632,7 +628,7 @@ public final class PixReversal extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -692,7 +688,7 @@ public final class PixReversal extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]

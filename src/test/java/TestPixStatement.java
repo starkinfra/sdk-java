@@ -1,13 +1,13 @@
+import com.starkinfra.utils.Generator;
 import com.starkinfra.PixStatement;
 import com.starkinfra.Settings;
-import com.starkinfra.utils.Generator;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
-import java.io.File;
-import java.io.InputStream;
 import java.nio.file.StandardCopyOption;
+import java.io.InputStream;
+import java.io.File;
+import java.util.*;
 
 
 public class TestPixStatement {

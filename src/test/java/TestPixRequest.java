@@ -1,13 +1,13 @@
-import com.starkinfra.PixRequest;
-import com.starkinfra.Settings;
 import com.starkinfra.error.InvalidSignatureError;
 import com.starkinfra.utils.EndToEndId;
 import com.starkinfra.utils.Generator;
-import org.junit.Test;
+import com.starkinfra.PixRequest;
+import com.starkinfra.Settings;
 import org.junit.Assert;
+import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class TestPixRequest {
     }
 
     @Test
-    public void testQueryGetAndPdf() throws Exception {
+    public void testQueryGet() throws Exception {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> params = new HashMap<>();
@@ -212,7 +212,7 @@ public class TestPixRequest {
         data.put("receiverAccountType", "checking");
         data.put("receiverName", "Daenerys Targaryen Stormborn");
         data.put("receiverTaxId", "012.345.678-90");
-        data.put("endToEndId", EndToEndId.create(System.getenv("SANDBOX_ISPB")));
+        data.put("endToEndId", EndToEndId.create(System.getenv("SANDBOX_BANK_CODE")));
 
         return new PixRequest(data);
     }

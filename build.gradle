@@ -1,5 +1,7 @@
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
 group 'com.starkinfra'
@@ -11,94 +13,95 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
-    compile('com.starkbank.ellipticcurve:starkbank-ecdsa:1.0.2')
+    implementation('com.starkbank.ellipticcurve:starkbank-ecdsa:1.0.2')
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 archivesBaseName = "sdk"
 
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
+test {
+    useJUnitPlatform()
 }
 
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-artifacts {
-    archives javadocJar, sourcesJar
-}
+publishing {
+    publications{
 
-signing {
-    sign configurations.archives
-}
+        mavenJava(MavenPublication){
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            groupId = 'com.starkinfra'
+            artifactId = 'sdk'
+            version = '0.0.1'
+            from components.java
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(
-                    userName: project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : 'username',
-                    password: project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : 'password'
-                )
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(
-                    userName: project.hasProperty('ossrhUsername') ? project.property('ossrhUsername') : 'username',
-                    password: project.hasProperty('ossrhPassword') ? project.property('ossrhPassword') : 'password'
-                )
-            }
-
-            pom.project {
-                name 'StarkInfra SDK Java'
-                packaging 'jar'
-                // optionally artifactId can be defined here
-                description 'SDK to facilitate Java integrations with the Stark Infra API'
-                url 'https://github.com/starkinfra/sdk-java'
-
-                scm {
-                    connection 'scm:git:git://github.com/starkinfra/sdk-java.git'
-                    developerConnection 'scm:git:ssh://github.com/starkinfra/sdk-java.git'
-                    url 'https://github.com/starkinfra/sdk-java/'
-                }
+            pom {
+                name = 'starkinfra'
+                description = 'Welcome to the Stark Infra Java SDK! This tool is made for Java developers who want to easily integrate with our API. This SDK version is compatible with the Stark Infra API v2.'
+                url = 'https://github.com/starkinfra/sdk-java'
+                inceptionYear = '2022'
 
                 licenses {
                     license {
-                        name 'MIT License'
-                        url 'https://github.com/starkinfra/sdk-java/blob/master/LICENSE'
+                        name = 'MIT License'
+                        url = 'https://github.com/starkinfra/sdk-java/blob/master/LICENSE'
                     }
                 }
-
                 developers {
                     developer {
-                        id 'cdottori-stark'
-                        name 'Caio Dottori'
-                        email 'caio.dottori@starkbank.com'
+                        id = 'cdottori-stark'
+                        name = 'Caio Dottori'
+                        email = 'caio.dottori@starkbank.com'
                     }
                     developer {
-                        id 'joaogpw-stark'
-                        name 'Joao Wiederkehr'
-                        email 'joao.wiederkehr@starkbank.com'
+                        id = 'joaogpw-stark'
+                        name = 'Joao Wiederkehr'
+                        email = 'joao.wiederkehr@starkbank.com'
                     }
                     developer {
-                        id 'massaru-stark'
-                        name 'Felipe Sueto'
-                        email 'felipe.sueto@starkbank.com'
+                        id = 'massaru-stark'
+                        name = 'Felipe Sueto'
+                        email = 'felipe.sueto@starkbank.com'
                     }
+                }
+                scm {
+                    connection = 'scm:git:git:github.com/starkinfra/sdk-java.git'
+                    developerConnection = 'scm:git:ssh://github.com/starkinfra/sdk-java.git'
+                    url = 'https://github.com/starkinfra/sdk-java'
                 }
             }
         }
+    }
+
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.properties["ossrhUsername"]
+                password = project.properties["ossrhPassword"]
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }

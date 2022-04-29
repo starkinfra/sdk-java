@@ -8,7 +8,6 @@ public class EndToEndId {
     public static String get() throws Exception{
         String cursor = null;
         String endToEndId = null;
-
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 5);
         params.put("status", "success");
