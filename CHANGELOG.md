@@ -20,6 +20,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - ReversalRequest resource for Indirect and Direct Participants
 - get(), query(), page(), delete() and update() functions to Event resource.
 - Event.Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
+- CreditNote resource for money lending with Stark's Infra endorsement.
 
 ## [0.0.1] - 2022-03-16
 ### Added

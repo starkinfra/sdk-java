@@ -21,6 +21,8 @@ This SDK version is compatible with the Stark Infra API v2.
 - [Resource listing and manual pagination](#resource-listing-and-manual-pagination)
 - [Testing in Sandbox](#testing-in-sandbox)
 - [Usage](#usage)
+  - [Credit Note](#credit-note)
+    - [CreditNote](#create-creditnotes): Create credit notes
   - [Pix](#pix)
     - [PixRequests](#create-pix-requests): Create Pix transactions
     - [PixReversals](#create-pix-reversals): Reverse Pix transactions
@@ -1112,6 +1114,149 @@ You can also get a specific log by its id.
 import com.starkinfra.*;
 
 ReversalRequest.Log log = ReversalRequest.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+## Credit Note
+
+### Create CreditNotes
+You can create a Credit Note to generate a CCB contract:
+
+```java
+import com.starkinfra.CreditNote;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<CreditNote> creditNotes = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("templateId", "01234567890");
+data.put("name", "Jamie Lannister");
+data.put("taxId", "20.018.183/0001-80");
+data.put("nominalAmount", 9000);
+data.put("scheduled", "2022-4-29");
+
+data.put("invoices", Collections.singletonList(
+    new HashMap<String, Object>() {{
+        put("amount", 5500);
+        put("name", "Jamie Lannister");
+        put("taxId", "20.018.183/0001-80");
+        put("fine", 2.0);
+        put("interest", 1.0);
+
+    new HashMap<String, Object>() {{
+        put("amount", 4399);
+        put("name", "Jamie Lannister");
+        put("taxId", "20.018.183/0001-80");
+        put("fine", 2.0);
+        put("interest", 1.0);
+    }};
+    }}
+));
+
+data.put("transfer", new HashMap<String, Object>(){{
+    put("amount", 8831);
+    put("bankCode", "00000000");
+    put("branchCode", "1234");
+    put("accountNumber", "129340-1");
+    put("taxId", "012.345.678-90");
+    put("name", "Jamie Lannister");
+}});
+
+data.put("signers", Collections.singletonList(
+    new HashMap<String, Object>() {{
+        put("name", "Jamie Lannister");
+        put("contact", "joe.limals.14@gmail.com");
+        put("method","link");
+        }}
+    ));
+
+data.put("externalId", "my-internal-id-8435356");
+data.put("tags", new String[]{"War supply", "Invoice #1234"});
+data.put("rebateAmount", 0);
+
+creditNotes.add(new CreditNote(data));
+creditNote = CreditNote.create(creditNotes);
+ 
+for(CreditNote creditNote : creditNotes) {
+    System.out.println(creditNote);
+}
+```
+
+**Note**: Instead of using CreditNote objects, you can also pass each element in dictionary format
+
+### Query CreditNotes
+
+You can query multiple credit notes according to filters.
+
+```java
+import com.starkinfra.CreditNote;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "success");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+Generator<CreditNote> creditNotes = CreditNote.query(params);
+
+for (CreditNote creditNote : creditNotes) {
+    System.out.println(creditNote);
+}
+```
+
+### Get a CreditNote
+
+After its creation, information on a credit note may be retrieved by its id.
+
+```java
+import com.starkinfra.CreditNote;
+
+CreditNote creditNote = CreditNote.get("5155165527080960");
+
+System.out.println(creditNote);
+```
+
+## Cancel a CreditNote
+
+You can cancel a credit note if it has not been signed yet.
+
+```java
+import com.starkinfra.CreditNote;
+
+CreditNote creditNote = CreditNote.delete("5155165527080960");
+
+System.out.println(creditNote);
+```
+
+### Query CreditNote logs
+
+You can query credit note logs to better understand credit note life cycles.
+
+```java
+import com.starkinfra.CreditNote;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+Generator<CreditNote.Log> logs = CreditNote.Log.query(params);
+
+for (CreditNote.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a CreditNote log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.CreditNote;
+
+CreditNote.Log log = CreditNote.Log.get("5155165527080960");
 
 System.out.println(log);
 ```
