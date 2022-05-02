@@ -48,13 +48,6 @@ public class TestIssuingWithdrawal {
     }
 
     @Test
-    public void testGet() throws Exception {
-        Settings.user = utils.User.defaultProject();
-        IssuingWithdrawal invoices = IssuingWithdrawal.get("5646309415452672");
-        System.out.println(invoices);
-    }
-
-    @Test
     public void testQueryGet() throws Exception {
         Settings.user = utils.User.defaultProject();
 

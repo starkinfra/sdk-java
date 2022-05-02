@@ -40,13 +40,6 @@ public class TestIssuingTransaction {
     }
 
     @Test
-    public void testGet() throws Exception {
-        Settings.user = utils.User.defaultProject();
-        IssuingTransaction invoices = IssuingTransaction.get("5396424728510464");
-        System.out.println(invoices);
-    }
-
-    @Test
     public void testQueryGet() throws Exception {
         Settings.user = utils.User.defaultProject();
 

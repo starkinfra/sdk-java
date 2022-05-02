@@ -1815,22 +1815,6 @@ else if (event.subscription.contains("pix-reversal")) {
     PixReversal.Log log = ((Event.PixReversalEvent) event).log;
     System.out.println(log.reversal);
 }
-else if (event.subscription.contains("pix-key")) {
-    PixKey.Log log = ((Event.PixKeyEvent) event).log;
-    System.out.println(log.key);
-}
-else if (event.subscription.contains("pix-claim")) {
-    PixClaim.Log log = ((Event.PixClaimEvent) event).log;
-    System.out.println(log.claim);
-}
-else if (event.subscription.contains("infraction-report")) {
-    InfractionReport.Log log = ((Event.InfractionReportEvent) event).log;
-    System.out.println(log.report);
-}
-else if (event.subscription.contains("reversal-request")) {
-    ReversalRequest.Log log = ((Event.ReversalRequestEvent) event).log;
-    System.out.println(log.request);
-}
 ```
 
 ### Query webhook events

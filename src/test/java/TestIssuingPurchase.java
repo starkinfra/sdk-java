@@ -41,13 +41,6 @@ public class TestIssuingPurchase {
     }
 
     @Test
-    public void testGet() throws Exception {
-        Settings.user = utils.User.defaultProject();
-        IssuingPurchase invoices = IssuingPurchase.get("5302186862968832");
-        System.out.println(invoices);
-    }
-
-    @Test
     public void testQueryGet() throws Exception {
         Settings.user = utils.User.defaultProject();
 
@@ -75,13 +68,6 @@ public class TestIssuingPurchase {
         }
     }
 
-    @Test
-    public void testLogGet() throws Exception{
-        Settings.user = utils.User.defaultProject();
-        IssuingPurchase.Log log = IssuingPurchase.Log.get("6428086769811456");
-        System.out.println(log);
-
-    }
 
     static IssuingPurchase example() throws Exception{
         HashMap<String, Object> data = new HashMap<>();
