@@ -172,7 +172,7 @@ public class TestCreditNote {
         data.put("signers", Collections.singletonList(
                 new HashMap<String, Object>() {{
                     put("name", "Jamie Lannister");
-                    put("contact", "joe.limals.14@gmail.com");
+                    put("contact", "teste11@gmail.com");
                     put("method", "link");
                 }}
         ));

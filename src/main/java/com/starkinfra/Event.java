@@ -57,7 +57,18 @@ public class Event extends Resource {
             if (stringType.contains("pix-reversal")) {
                 return context.deserialize(jsonObject, PixReversalEvent.class);
             }
-
+            if (stringType.contains("issuing-card")) {
+                return context.deserialize(jsonObject, IssuingCardEvent.class);
+            }
+            if (stringType.contains("issuing-invoice")) {
+                return context.deserialize(jsonObject, IssuingInvoiceEvent.class);
+            }
+            if (stringType.contains("issuing-purchase")) {
+                return context.deserialize(jsonObject, IssuingPurchaseEvent.class);
+            }
+            if (stringType.contains("credit-note")) {
+                return context.deserialize(jsonObject, CreditNoteEvent.class);
+            }
             return context.deserialize(jsonObject, UnknownEvent.class);
         }
     }
@@ -75,6 +86,42 @@ public class Event extends Resource {
         public PixReversal.Log log;
 
         public PixReversalEvent(PixReversal.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class IssuingCardEvent extends Event {
+        public IssuingCard.Log log;
+
+        public IssuingCardEvent(IssuingCard.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class IssuingInvoiceEvent extends Event {
+        public IssuingInvoice.Log log;
+
+        public IssuingInvoiceEvent(IssuingInvoice.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class IssuingPurchaseEvent extends Event {
+        public IssuingPurchase.Log log;
+
+        public IssuingPurchaseEvent(IssuingPurchase.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class CreditNoteEvent extends Event {
+        public CreditNote.Log log;
+
+        public CreditNoteEvent(CreditNote.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
             super(created, isDelivered, subscription, id, workspaceId);
             this.log = log;
         }
