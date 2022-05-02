@@ -21,6 +21,14 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - get(), query(), page(), delete() and update() functions to Event resource.
 - Event.Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
 - CreditNote resource for money lending with Stark's Infra endorsement.
+- IssuingAuthorization resource for Sub Issuers
+- IssuingBalance resource for Sub Issuers
+- IssuingBin resource for Sub Issuers
+- IssuingCard resource for Sub Issuers
+- IssuingHolder resource for Sub Issuers
+- IssuingInvoice resource for Sub Issuers
+- IssuingPurchase resource for Sub Issuers
+- IssuingTransaction resource for Sub Issuers
 
 ## [0.0.1] - 2022-03-16
 ### Added

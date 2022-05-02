@@ -1,5 +1,6 @@
 package com.starkinfra;
 
+import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.*;
 
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ public final class PixRequest extends Resource {
     /**
      * PixRequest object
      * <p>
+     * PixRequests are used to receive or send instant payments to accounts
+     * hosted in any Pix participant.
      * When you initialize a PixRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -84,6 +87,8 @@ public final class PixRequest extends Resource {
     /**
      * PixRequest object
      * <p>
+     * PixRequests are used to receive or send instant payments to accounts
+     * hosted in any Pix participant.
      * When you initialize a PixRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -162,6 +167,8 @@ public final class PixRequest extends Resource {
     /**
      * PixRequest object
      * <p>
+     * PixRequests are used to receive or send instant payments to accounts
+     * hosted in any Pix participant.
      * When you initialize a PixRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -550,38 +557,12 @@ public final class PixRequest extends Resource {
         return Parse.parseAndVerify(data ,content, signature, user);
     }
 
-    /**
-     * PixRequest.Error object
-     * <p>
-     * Used to define an error in the pixRequest
-     * <p>
-     * Parameters:
-     * key      [string]: key describing a part of the pixRequest value. ex: "Taxes"
-     * value    [string]: value to which the key refers to. ex: "120"
-     */
-    public final static class Error extends SubResource {
-        public String key;
-        public String value;
-
-        /**
-         * PixRequest.Error object
-         * Used to define an error in the pixRequest
-         * Parameters:
-         * @param key   [string]: text indicating an item to be described. ex: "Taxes"
-         * @param value [string]: text describing the specified item. ex: "Bad"
-         */
-        public Error(String key, String value){
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public final static class Log extends Resource {
         static ClassData data = new ClassData(Log.class, "PixRequestLog");
 
         public String created;
         public String type;
-        public List<PixRequest.Error> errors;
+        public List<ErrorElement> errors;
         public PixRequest request;
 
         /**
@@ -598,7 +579,7 @@ public final class PixRequest extends Resource {
          * @param type [string]: type of the PixRequest event which triggered the log creation. ex: "processing" or "success"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Log(String created, String type, List<PixRequest.Error> errors, PixRequest request, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, PixRequest request, String id) {
             super(id);
             this.created = created;
             this.type = type;
@@ -655,7 +636,7 @@ public final class PixRequest extends Resource {
          * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
          * <p>
          * Return:
-         * @return list of PixRequest Log objects with updated attributes
+         * @return generator of PixRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
@@ -672,7 +653,7 @@ public final class PixRequest extends Resource {
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
-         * @return list of PixRequest Log objects with updated attributes
+         * @return generator of PixRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
@@ -686,7 +667,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Return:
-         * @return list of PixRequest Log objects with updated attributes
+         * @return generator of PixRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
@@ -710,7 +691,7 @@ public final class PixRequest extends Resource {
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
-         * @return list of PixRequest Log objects with updated attributes
+         * @return generator of PixRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {

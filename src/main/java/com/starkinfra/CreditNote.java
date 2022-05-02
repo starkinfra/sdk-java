@@ -7,10 +7,12 @@ import com.starkinfra.utils.SubResource;
 
 import java.util.*;
 
+
 public final class CreditNote extends Resource {
     /**
      * CreditNote object
      * <p>
+     * CreditNotes are used to generate CCB contracts between you and your customers.
      * When you initialize a CreditNote, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -54,6 +56,7 @@ public final class CreditNote extends Resource {
 
     /**
      * CreditNote object
+     * CreditNotes are used to generate CCB contracts between you and your customers.
      * When you initialize a CreditNote, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -102,6 +105,7 @@ public final class CreditNote extends Resource {
     /**
      * CreditNote object
      * <p>
+     * CreditNotes are used to generate CCB contracts between you and your customers.
      * When you initialize a CreditNote, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -127,7 +131,7 @@ public final class CreditNote extends Resource {
      * created          [string, default null]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
      * updated          [string, default null]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
      */
-
+    @SuppressWarnings("unchecked")
     public CreditNote(Map<String, Object> data) throws Exception {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
@@ -165,6 +169,7 @@ public final class CreditNote extends Resource {
      * @return list of CreditNote objects with updated attributes
      * @throws Exception error in the request
      */
+    @SuppressWarnings("unchecked")
     public static List<CreditNote> create(List<?> creditNotes, User user) throws Exception {
         List<CreditNote> creditNoteList = new ArrayList<>();
         for (Object creditNote : creditNotes){
@@ -517,7 +522,7 @@ public final class CreditNote extends Resource {
          * creditNoteIds [list of strings, default null]: list of CreditNote ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of CreditNote Log objects with updated attributes
+         * @return generator of CreditNote Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
@@ -534,7 +539,7 @@ public final class CreditNote extends Resource {
          * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
          * <p>
          * Return:
-         * @return list of CreditNote Log objects with updated attributes
+         * @return generator of CreditNote Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
@@ -548,7 +553,7 @@ public final class CreditNote extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Return:
-         * @return list of CreditNote Log objects with updated attributes
+         * @return generator of CreditNote Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
@@ -571,7 +576,7 @@ public final class CreditNote extends Resource {
          * @param user  [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
          * <p>
          * Return:
-         * @return list of CreditNote Log objects with updated attributes
+         * @return generator of CreditNote Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {

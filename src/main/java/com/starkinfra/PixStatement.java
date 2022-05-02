@@ -16,9 +16,10 @@ public final class PixStatement extends Resource {
     /**
      * PixStatement object
      * <p>
-     * The PixStatement object stores information about all the transactions that happened on
-     * a specific day at the workspace. It must be created by the user before it can be
-     * accessed by the user. This feature is only available for direct participants.
+     * The PixStatement object stores information about all the transactions that
+     * happened on a specific day at your settlment account according to the Central Bank.
+     * It must be created by the user before it can be accessed.
+     * This feature is only available for direct participants.
      * <p>
      * Parameters:
      * after             [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)
@@ -44,9 +45,10 @@ public final class PixStatement extends Resource {
     /**
      * PixStatement object
      * <p>
-     * The PixStatement object stores information about all the transactions that happened on
-     * a specific day at the workspace. It must be created by the user before it can be
-     * accessed by the user. This feature is only available for direct participants.
+     * The PixStatement object stores information about all the transactions that
+     * happened on a specific day at your settlment account according to the Central Bank.
+     * It must be created by the user before it can be accessed.
+     * This feature is only available for direct participants.
      * <p>
      * Parameters:
      * @param after [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)
@@ -74,9 +76,10 @@ public final class PixStatement extends Resource {
     /**
      * PixStatement object
      * <p>
-     * The PixStatement object stores information about all the transactions that happened on
-     * a specific day at the workspace. It must be created by the user before it can be
-     * accessed by the user. This feature is only available for direct participants.
+     * The PixStatement object stores information about all the transactions that
+     * happened on a specific day at your settlment account according to the Central Bank.
+     * It must be created by the user before it can be accessed.
+     * This feature is only available for direct participants.
      * <p>
      * Parameters:
      * after             [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)
@@ -368,31 +371,5 @@ public final class PixStatement extends Resource {
      */
     public static InputStream csv(String id, User user) throws Exception {
         return Rest.getContent(data, id, "csv", user, new HashMap<>());
-    }
-
-    /**
-     * PixStatement.Error object
-     * <p>
-     * Used to define an error in the PixStatement
-     * <p>
-     * Parameters:
-     * key      [string]: key describing a part of the pixStatement value. ex: "Taxes"
-     * value    [string]: value to which the key refers to. ex: "120"
-     */
-    public final static class Error extends SubResource {
-        public String key;
-        public String value;
-
-        /**
-         * PixStatement.Error object
-         * Used to define an error in the PixStatement
-         * Parameters:
-         * @param key   [string]: text indicating an item to be described. ex: "Taxes"
-         * @param value [string]: text describing the specified item. ex: "Bad"
-         */
-        public Error(String key, String value){
-            this.key = key;
-            this.value = value;
-        }
     }
 }

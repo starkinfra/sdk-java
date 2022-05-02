@@ -21,17 +21,26 @@ This SDK version is compatible with the Stark Infra API v2.
 - [Resource listing and manual pagination](#resource-listing-and-manual-pagination)
 - [Testing in Sandbox](#testing-in-sandbox)
 - [Usage](#usage)
+  - [Issuing](#issuing)
+    - [BINs](#query-issuingbins): View available sub-issuer BINs (a.k.a. card number ranges)
+    - [Holders](#create-issuingholders): Manage card holders
+    - [Cards](#create-issuingcards): Create virtual and/or physical cards
+    - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
+    - [Invoices](#create-issuinginvoices): Add money to your issuing balance
+    - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
+    - [Balance](#get-your-issuingbalance): View your issuing balance
+    - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
+  - [Pix](#pix)
+    - [PixRequests](#create-pixrequests): Create Pix transactions
+    - [PixReversals](#create-pixreversals): Reverse Pix transactions
+    - [PixBalance](#get-your-pixbalance): View your account balance
+    - [PixStatement](#create-a-pixstatement): Request your account statement
+    - [PixKey](#create-a-pixkey): Create a Pix Key
+    - [PixClaim](#create-a-pixclaim): Claim a Pix Key
+    - [InfractionReport](#create-an-infractionreport): Create a Pix Key
+    - [ReversalRequest](#create-a-reversalrequest): Claim a Pix Key
   - [Credit Note](#credit-note)
     - [CreditNote](#create-creditnotes): Create credit notes
-  - [Pix](#pix)
-    - [PixRequests](#create-pix-requests): Create Pix transactions
-    - [PixReversals](#create-pix-reversals): Reverse Pix transactions
-    - [PixBalance](#get-pix-balance): View your account balance
-    - [PixStatement](#create-a-pix-statement): Request your account statement
-    - [PixKey](#create-a-pix-key): Create a Pix Key
-    - [PixClaim](#create-a-pix-claim): Claim a Pix Key
-    - [InfractionReport](#create-an-infraction-report): Create a Pix Key
-    - [ReversalRequest](#create-a-reversal-request): Claim a Pix Key
   - [Webhook Events](#webhook-events):
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
@@ -339,10 +348,529 @@ Here are a few examples on how to use the SDK. If you have any doubts, use the b
 `help()` function to get more info on the desired functionality
 (for example: `help(starkinfra.boleto.create)`)
 
+## Issuing
+
+### Query IssuingBins
+
+To take a look at the sub-issuer BINs available to you, just run the following:
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+Generator<IssuingBin> bins = IssuingBin.query();
+
+for (IssuingBin bin : bins) {
+    System.out.println(bin);
+}
+```
+
+This will tell which card products and card number prefixes you have at your disposal.
+
+### Create IssuingHolders
+
+You can create card holders to which your cards will be bound.
+They support spending rules that will apply to all underlying cards.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<IssuingHolder> holders = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("name", "Iron Bank S.A.");
+data.put("externalId", "1325");
+data.put("taxId", "012.345.678-90");
+data.put("tags", new String[]{"lannister", "debts"});
+
+HashMap<String, Object> rule = new HashMap<>();
+rule.put("name", "General USD");
+rule.put("interval", "day");
+rule.put("amount", 100000);
+rule.put("currencyCode", "USD");
+data.put("rules", new IssuingRule[]{new IssuingRule(rule)});
+
+holders.add(new IssuingHolder(data));
+
+holders = IssuingHolder.create(holders);
+
+for (IssuingHolder holder : holders) {
+        System.out.println(holder);
+}
+```
+
+### Query IssuingHolders
+
+You can query multiple holders according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+Generator<IssuingHolder> holders = IssuingHolder.query();
+
+for (IssuingHolder holder : holders) {
+    System.out.println(holder);
+}
+```
+
+### Delete an IssuingHolder
+
+To cancel a single Issuing Holder by its id, run:
+
+```java
+import com.starkinfra.*;
+
+IssuingHolder holder = IssuingHolder.delete("6668150653321216");
+
+System.out.println(holder);
+```
+
+### Get an IssuingHolder
+
+To get a single Issuing Holder by its id, run:
+
+```java
+import com.starkinfra.*;
+
+IssuingHolder holder = IssuingHolder.get("6668150653321216");
+
+System.out.println(holder);
+```
+
+### Query IssuingHolder logs
+
+You can query holder logs to better understand their life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingHolder.Log> logs = IssuingHolder.Log.query(params);
+
+for (IssuingHolder.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IssuingHolder log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+        
+IssuingHolder.Log log = IssuingHolder.Log.get("6381355445256192");
+
+System.out.println(log);
+```
+
+### Create IssuingCards
+
+You can issue cards with specific spending rules.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<IssuingCard> cards = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("holderName", "Developers");
+data.put("holderTaxId", "012.345.678-90");
+data.put("holderExternalId", "12345");
+
+HashMap<String, Object> rule = new HashMap<>();
+rule.put("name", "general");
+rule.put("interval", "week");
+rule.put("amount", 50000);
+rule.put("currencyCode", "USD");
+data.put("rules", new IssuingRule[]{new IssuingRule(rule)});
+
+cards.add(new IssuingHolder(data));
+
+cards = IssuingCard.create(cards);
+
+for (IssuingCard card : cards){
+    System.out.println(card);
+}
+```
+
+### Query IssuingCards
+
+You can get a list of created cards given some filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingCard> cards = IssuingCard.query(params);
+
+for (IssuingCard card : cards) {
+    System.out.println(card);
+}
+```
+
+### Get an IssuingCard
+
+After its creation, information on a card may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingCard card = IssuingCard.get("5186529903247360");
+
+System.out.println(card);
+```
+
+### Update an IssuingCard
+
+You can update a specific card by its id.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+Map<String, Object> patchData = new HashMap<>();;
+patchData.put("status", "blocked");
+
+IssuingCard card = IssuingCard.update("5760854205136896", patchData);
+
+System.out.println(card);
+```
+
+### Delete an IssuingCard
+
+You can also cancel a card by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingCard card = IssuingCard.delete("5760854205136896");
+
+System.out.println(card);
+```
+
+### Query IssuingCard logs
+
+Logs are pretty important to understand the life cycle of a card.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingCard.Log> logs = IssuingCard.Log.query(params);
+
+for (IssuingCard.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IssuingCard log
+
+You can get a single log by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingCard.Log log = IssuingCard.Log.get("5642114708799488");
+
+System.out.println(log);
+```
+
+### Process Purchase authorizations
+
+It's easy to process Authorizations delivered to your endpoint.
+If you do not approve or decline the authorization within 2 seconds, the authorization will be denied.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is the method you made to get the events posted to your webhook
+
+String content = request.content.toString();
+String signature = request.headers.get("Digital-Signature");
+
+IssuingAuthorization event = IssuingAuthorization.parse(content, valid_signature);
+
+sendResponse(  // you should also implement this method
+    IssuingAuthorization.response(  // this optional method just helps you build the response JSON
+        "accepted",
+        authorization.amount,
+        new String[]{"my-purchase-id/123"}
+    );
+);
+
+// or 
+
+sendResponse(
+    IssuingAuthorization.response(
+        "denied",
+        "other",
+        new String[]{"other-id/456"}
+    );
+);
+```
+
+### Query IssuingPurchases
+
+You can get a list of created purchases given some filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingPurchase> purchases = IssuingPurchase.query(params);
+
+for (IssuingPurchase purchase : purchases) {
+    System.out.println(purchase);
+}
+```
+
+### Get an IssuingPurchase
+
+After its creation, information on a purchase may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingPurchase purchase = IssuingPurchase.get("5302186862968832");
+
+System.out.println(purchase);
+```
+
+### Query IssuingPurchase logs
+
+Logs are pretty important to understand the life cycle of a purchase.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingPurchase.Log> logs = IssuingPurchase.Log.query(params);
+
+for (IssuingPurchase.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IssuingPurchase log
+
+You can get a single log by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingPurchase.Log log = IssuingPurchase.Log.get("5642114708799488");
+
+System.out.println(log);
+```
+
+### Create IssuingInvoices
+
+You can create Pix invoices to transfer money from accounts you have in any bank to your Issuing balance,
+allowing you to run your issuing operation.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 1000);
+IssuingInvoice invoice = new IssuingInvoice(data);
+
+invoice = IssuingInvoice.create(invoice);
+
+System.out.println(invoice);
+```
+
+**Note**: Instead of using IssuingInvoice objects, you can also pass each element in dictionary format
+
+### Get an IssuingInvoice
+
+After its creation, information on an invoice may be retrieved by its id.
+Its status indicates whether it's been paid.
+
+```java
+import com.starkinfra.*;
+
+IssuingInvoice invoice = IssuingInvoice.get("5396424728510464");
+
+System.out.println(invoice);
+```
+
+### Query IssuingInvoices
+
+You can get a list of created invoices given some filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingInvoice> invoices = IssuingInvoice.query(params);
+
+for (IssuingInvoice invoice : invoices) {
+    System.out.println(invoice);
+}
+```
+
+### Query IssuingInvoice logs
+
+Logs are pretty important to understand the life cycle of an invoice.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingHolder.Log> logs = IssuingHolder.Log.query(params);
+
+for (IssuingHolder.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Create IssuingWithdrawals
+
+You can create withdrawals to send cash back from your Issuing balance to your Banking balance
+by using the Withdrawal resource.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 1000);
+data.put("externalId", "1234");
+data.put("description", "Sending back");
+IssuingWithdrawal withdrawal = new IssuingWithdrawal(data);
+
+withdrawal = IssuingWithdrawal.create(withdrawal);
+
+System.out.println(withdrawal);
+```
+
+**Note**: Instead of using IssuingWithdrawal objects, you can also pass each element in dictionary format
+
+### Get an IssuingWithdrawal
+
+After its creation, information on a withdrawal may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingWithdrawal withdrawal = IssuingWithdrawal.get("5646309415452672");
+
+System.out.println(withdrawal);
+```
+
+### Query IssuingWithdrawals
+
+You can get a list of created invoices given some filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingWithdrawal> withdrawals = IssuingWithdrawal.query(params);
+
+for (IssuingWithdrawal withdrawal : withdrawals){
+    System.out.println(withdrawal);
+}
+```
+
+### Get your IssuingBalance
+
+To know how much money you have available to run authorizations, run:
+
+```java
+import com.starkinfra.*;
+
+IssuingBalance balance = IssuingBalance.get();
+
+System.out.println(balance);
+```
+
+### Query IssuingTransactions
+
+To understand your balance changes (issuing statement), you can query
+transactions. Note that our system creates transactions for you when
+you make purchases, withdrawals, receive issuing invoice payments, for example.
+
+```java
+import com.starkinfra.utils.Generator;
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2020-01-01");
+params.put("before", "2020-03-01")
+Generator<IssuingWithdrawal> transactions = IssuingWithdrawal.query(params);
+
+for (IssuingWithdrawal transaction : transactions) {
+    System.out.println(transaction);
+}
+```
+
+### Get an IssuingTransaction
+
+You can get a specific transaction by its id:
+
+```java
+import com.starkbank.*;
+
+IssuingTransaction transaction = IssuingTransaction.get("5396424728510464");
+
+System.out.println(transaction);
+```
+
 ## Pix
 
-### Create pix requests
-You can create a Pix request to charge a user:
+### Create PixRequests
+
+You can create a Pix request to transfer money from one of your users to anyone else:
 
 ```java
 import com.starkinfra.*;
@@ -376,11 +904,11 @@ for (PixRequest request : requests){
 }
 ```
 
-**Note**: Instead of using Pix Request objects, you can also pass each transaction element in dictionary format
+**Note**: Instead of using PixRequest objects, you can also pass each element in dictionary format
 
-### Query pix requests
+### Query PixRequests
 
-You can query multiple pix requests according to filters.
+You can query multiple Pix requests according to filters.
 
 ```java
 import com.starkinfra.*;
@@ -401,7 +929,7 @@ for (PixRequest request : requests){
 }
 ```
 
-### Get a pix request
+### Get a PixRequest
 
 After its creation, information on a pix request may be retrieved by its id. Its status indicates whether it has been paid.
 
@@ -413,11 +941,11 @@ PixRequest request = PixRequest.get("5155966664310784");
 System.out.println(request);
 ```
 
-### Process pix request authorization requests
+### Process inbound PixRequest authorizations
 
-It's easy to process authorization requests that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
+It's easy to process authorization requests that arrived at your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 1 second, the authorization will be denied.
 
 ```java
 import com.starkinfra.*;
@@ -432,7 +960,7 @@ PixRequest request = PixRequest.parse(content, signature);
 System.out.println(request);
 ```
 
-### Query pix request logs
+### Query PixRequest logs
 
 You can query pix request logs to better understand pix request life cycles.
 
@@ -452,7 +980,7 @@ for (PixRequest.Log log : logs){
 }
 ```
 
-### Get a pix request log
+### Get a PixRequest log
 
 You can also get a specific log by its id.
 
@@ -464,7 +992,7 @@ PixRequest.Log log = PixRequest.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-### Create pix reversals
+### Create PixReversals
 
 You can reverse a pix request by whole or by a fraction of its amount using a pix reversal.
 
@@ -489,7 +1017,7 @@ for (PixReversal reversal : reversals){
 }
 ```
 
-### Query pix reversals
+### Query PixReversals
 
 You can query multiple pix reversals according to filters.
 
@@ -512,7 +1040,7 @@ for (PixReversal reversal : reversals){
 }
 ```
 
-### Get a pix reversal
+### Get a PixReversal
 
 After its creation, information on a pix reversal may be retrieved by its id. Its status indicates whether it has been paid.
 
@@ -524,11 +1052,11 @@ PixReversal reversal = PixReversal.get("5155966664310784");
 System.out.println(reversal);
 ```
 
-### Process pix reversal authorization requests
+### Process inbound PixReversal authorizations
 
-It's easy to process authorization requests that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
+It's easy to process authorization requests that arrived at your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 1 second, the authorization will be denied.
 
 ```java
 import com.starkinfra.*;
@@ -543,7 +1071,7 @@ PixReversal request = PixReversal.parse(content, signature);
 System.out.println(request);
 ```
 
-### Query pix reversal logs
+### Query PixReversal logs
 
 You can query pix reversal logs to better understand pix reversal life cycles.
 
@@ -563,7 +1091,7 @@ for (PixReversal.Log log : logs){
 }
 ```
 
-### Get a pix reversal log
+### Get a PixReversal log
 
 You can also get a specific log by its id.
 
@@ -575,7 +1103,7 @@ PixReversal.Log log = PixReversal.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-### Get pix balance
+### Get your PixBalance
 
 To know how much money you have in your workspace, run:
 
@@ -587,7 +1115,7 @@ PixBalance balance = PixBalance.Log.get("6532638269505536");
 System.out.println(balance);
 ```
 
-### Create a pix statement
+### Create a PixStatement
 
 Statements are only available for direct participants. To create a statement of all the transactions that happened on your workspace during a specific day, run:
 
@@ -597,18 +1125,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-PixStatement statement;
 HashMap<String, Object> data = new HashMap<>();
 data.put("after", "2022-01-01");
 data.put("before", "2022-01-01");
 data.put("type", "transaction");
-PixStatement statemenet = new PixStatement(data);
+
+PixStatement statement = new PixStatement(data);
 
 statement = PixStatement.create(statement);
 
 System.out.println(statement);
 ```
-### Query pix statements
+### Query PixStatements
 
 You can query multiple pix statements according to filters.
 
@@ -627,7 +1155,7 @@ for (PixStatement statement : statements){
 }
 ```
 
-### Get a pix statement
+### Get a PixStatement
 
 Statements are only available for direct participants. To get a pix statement by its id:
 
@@ -639,7 +1167,7 @@ PixStatement statement = PixStatement.get("5155966664310784");
 System.out.println(statement);
 ```
 
-### Get a pix statement .csv file
+### Get a PixStatement .csv file
 
 To get a .csv file of a pix statement using its id, run:
 
@@ -658,7 +1186,7 @@ java.nio.file.Files.copy(
 );
 ```
 
-### Create a pix key
+### Create a PixKey
 
 You can create a Pix Key to link bank account information to a key id:
 
@@ -683,7 +1211,7 @@ key = PixKey.create(key);
 System.out.println(key);
 ```
 
-### Query pix keys
+### Query PixKeys
 
 You can query multiple Pix keys according to filters.
 
@@ -705,7 +1233,7 @@ for (PixKey key : keys){
 }
 ```
 
-### Get a pix key
+### Get a PixKey
 
 After its creation, information on a Pix key may be retrieved by its id and the tax id of the consulting agent.
 
@@ -717,7 +1245,7 @@ PixKey key = PixKey.get("+5541998989898");
 System.out.println(key);
 ```
 
-### Cancel a Pix key
+### Cancel a PixKey
 
 To cancel a Pix key, run:
 
@@ -729,7 +1257,7 @@ PixKey key = PixKey.delete("+5541998989898");
 System.out.println(key);
 ```
 
-### Update a pix key
+### Update a PixKey
 
 Update the account information or the holder's name linked to a Pix key.
 
@@ -745,7 +1273,7 @@ PixKey key = PixKey.update("+5541998989898", patchData);
 System.out.println(key);
 ```
 
-### Query pix key logs
+### Query PixKey logs
 
 You can query Pix key logs to better understand Pix key life cycles.
 
@@ -765,7 +1293,7 @@ for (PixKey.Log log : logs){
 }
 ```
 
-### Get a pix key log
+### Get a PixKey log
 
 You can also get a specific log by its id.
 
@@ -777,7 +1305,7 @@ PixKey.Log log = PixKey.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-### Create a pix claim
+### Create a PixClaim
 
 You can create a Pix claim to request the transfer of a Pix key to another account:
 
@@ -802,7 +1330,7 @@ PixClaim claim = PixClaim.create(claim);
 System.out.println(claim);
 ```
 
-### Query pix claims
+### Query PixClaims
 
 You can query multiple Pix claims according to filters.
 
@@ -824,7 +1352,7 @@ for (PixClaim claim : claims){
 }
 ```
 
-### Get a pix claim
+### Get a PixClaim
 
 After its creation, information on a Pix claim may be retrieved by its id:
 
@@ -836,7 +1364,7 @@ PixClaim claim = PixClaim.get("5155165527080960");
 System.out.println(claim);
 ```
 
-### Update a pix claim
+### Update a PixClaim
 
 A Pix Claim can be patched for two distinct reasons. A received Pix Claim can be confirmed or canceled by patching
 its status. A received Pix Claim must be confirmed by the donor to be completed. Ownership Pix Claims can only be
@@ -853,7 +1381,7 @@ PixClaim claim = PixClaim.update("5155165527080960", patchData);
 System.out.println(claim);
 ```
 
-### Query pix claim logs
+### Query PixClaim logs
 
 You can query Pix claim logs to better understand Pix claim life cycles.
 
@@ -873,7 +1401,7 @@ for (PixClaim.Log log : logs){
 }
 ```
 
-### Get a pix claim log
+### Get a PixClaim log
 
 You can also get a specific log by its id.
 
@@ -885,7 +1413,7 @@ PixClaim.Log log = PixClaim.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-### Create an infraction report
+### Create an InfractionReport
 
 Infraction reports are used to report transactions that are suspected of fraud, to request a refund or to
 reverse a refund. Infraction reports can be created by either participant of a transaction.
@@ -906,7 +1434,7 @@ report = InfractionReport.create(report);
 System.out.println(report);
 ```
 
-### Query infraction reports
+### Query InfractionReports
 
 You can query multiple infraction reports according to filters.
 
@@ -928,7 +1456,7 @@ for (InfractionReport report : reports){
 }
 ```
 
-### Get an infraction report
+### Get an InfractionReport
 
 After its creation, information on an infraction report may be retrieved by its id.
 
@@ -940,7 +1468,7 @@ InfractionReport report = InfractionReport.get("5155165527080960");
 System.out.println(report);
 ```
 
-### Cancel an infraction report
+### Cancel an InfractionReport
 
 To cancel an infraction report, run:
 
@@ -952,7 +1480,7 @@ InfractionReport report = InfractionReport.delete("5155165527080960");
 System.out.println(report);
 ```
 
-### Update an infraction report
+### Update an InfractionReport
 
 A received Infraction Report can be confirmed or declined by patching its status. After an Infraction Report
 is Patched, its status changes to closed.
@@ -968,7 +1496,7 @@ InfractionReport report = InfractionReport.update("5155165527080960", patchData)
 System.out.println(report);
 ```
 
-### Query infraction report logs
+### Query InfractionReport logs
 
 You can query infraction report logs to better understand infraction report's life cycles.
 
@@ -988,7 +1516,7 @@ for (InfractionReport.Log log : logs){
 }
 ```
 
-### Get an infraction report log
+### Get an InfractionReport log
 
 You can also get a specific log by its id.
 
@@ -1000,7 +1528,7 @@ InfractionReport.Log log = InfractionReport.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-### Create a reversal request
+### Create a ReversalRequest
 
 A reversal request can be created when fraud is detected on a transaction or a system malfunction
 results in an erroneous transaction.
@@ -1022,7 +1550,7 @@ request = ReversalRequest.create(request);
 System.out.println(request);
 ```
 
-### Query reversal requests
+### Query ReversalRequests
 
 You can query multiple reversal requests according to filters.
 
@@ -1044,7 +1572,7 @@ for (ReversalRequest request : requests){
 }
 ```
 
-### Get a reversal request
+### Get a ReversalRequest
 
 After its creation, information on a reversal request may be retrieved by its id.
 
@@ -1056,7 +1584,7 @@ ReversalRequest request = ReversalRequest.get("5155165527080960");
 System.out.println(request);
 ```
 
-### Cancel a reversal request
+### Cancel a ReversalRequest
 
 To cancel a reversal request, run:
 
@@ -1068,7 +1596,7 @@ ReversalRequest request = ReversalRequest.delete("5155165527080960");
 System.out.println(request);
 ```
 
-### Update a reversal request
+### Update a ReversalRequest
 
 A received Reversal Request can be confirmed or declined by patching its status. After a Reversal Request
 is Patched, its status changes to closed.
@@ -1086,7 +1614,7 @@ ReversalRequest request = ReversalRequest.update("5155165527080960", patchData);
 System.out.println(request);
 ```
 
-### Query reversal request logs
+### Query ReversalRequest logs
 
 You can query reversal request logs to better understand reversal request life cycles.
 
@@ -1106,7 +1634,7 @@ for (ReversalRequest.Log log : logs){
 }
 ```
 
-### Get a reversal request log
+### Get a ReversalRequest log
 
 You can also get a specific log by its id.
 
@@ -1121,6 +1649,7 @@ System.out.println(log);
 ## Credit Note
 
 ### Create CreditNotes
+
 You can create a Credit Note to generate a CCB contract:
 
 ```java
@@ -1218,7 +1747,7 @@ CreditNote creditNote = CreditNote.get("5155165527080960");
 System.out.println(creditNote);
 ```
 
-## Cancel a CreditNote
+### Cancel a CreditNote
 
 You can cancel a credit note if it has not been signed yet.
 
@@ -1446,4 +1975,4 @@ If you have any questions about our SDK, just send us an email.
 We will respond you quickly, pinky promise. We are here to help you integrate with us ASAP.
 We also love feedback, so don't be shy about sharing your thoughts with us.
 
-Email: developers@starkbank.com
+Email: help@starkbank.com

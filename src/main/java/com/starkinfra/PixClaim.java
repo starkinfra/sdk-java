@@ -1,5 +1,6 @@
 package com.starkinfra;
 
+import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.SubResource;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.Resource;
@@ -15,8 +16,7 @@ public final class PixClaim extends Resource {
     /**
      * PixClaim object
      * <p>
-     * PixClaims link bank account information to claim ids. claim ids are a convenient
-     * way to search and pass bank account information.
+     * PixClaims intend to transfer a PixKey from one account to another.
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
@@ -61,6 +61,7 @@ public final class PixClaim extends Resource {
     /**
      * PixClaim object
      * <p>
+     * PixClaims intend to transfer a PixKey from one account to another.
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -108,6 +109,7 @@ public final class PixClaim extends Resource {
     /**
      * PixClaim object
      * <p>
+     * PixClaims intend to transfer a PixKey from one account to another.
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -457,38 +459,12 @@ public final class PixClaim extends Resource {
         return Rest.patch(data, id, patchData, user);
     }
 
-    /**
-     * PixClaim.Error object
-     * <p>
-     * Used to define an error in the pixClaim
-     * <p>
-     * Parameters:
-     * key      [string]: claim describing a part of the pixClaim value. ex: "Taxes"
-     * value    [string]: value to which the key refers to. ex: "120"
-     */
-    public final static class Error extends SubResource {
-        public String key;
-        public String value;
-
-        /**
-         * PixClaim.Error object
-         * Used to define an error in the pixClaim
-         * Parameters:
-         * @param key   [string]: text indicating an item to be described. ex: "Taxes"
-         * @param value [string]: text describing the specified item. ex: "Bad"
-         */
-        public Error(String key, String value){
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public final static class Log extends Resource {
         static ClassData data = new ClassData(Log.class, "PixClaimLog");
 
         public String created;
         public String type;
-        public List<PixClaim.Error> errors;
+        public List<ErrorElement> errors;
         public String agent;
         public String reason;
         public PixClaim claim;
@@ -509,7 +485,7 @@ public final class PixClaim extends Resource {
          * @param reason [string]: reason for the modification in the PixClaim. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".
          * @param claim [PixClaim]: PixClaim entity to which the log refers to.
          */
-        public Log(String created, String type, List<PixClaim.Error> errors, String agent, String reason, PixClaim claim, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, String agent, String reason, PixClaim claim, String id) {
             super(id);
             this.created = created;
             this.type = type;
@@ -568,7 +544,7 @@ public final class PixClaim extends Resource {
          * claimIds [list of strings, default null]: list of PixClaim IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of PixClaim Log objects with updated attributes
+         * @return generator of PixClaim Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
@@ -585,7 +561,7 @@ public final class PixClaim extends Resource {
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
-         * @return list of PixClaim Log objects with updated attributes
+         * @return generator of PixClaim Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
@@ -599,7 +575,7 @@ public final class PixClaim extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Return:
-         * @return list of PixClaim Log objects with updated attributes
+         * @return generator of PixClaim Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
@@ -622,7 +598,7 @@ public final class PixClaim extends Resource {
          * claimIds [list of strings, default null]: list of PixClaim IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of PixClaim Log objects with updated attributes
+         * @return generator of PixClaim Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {

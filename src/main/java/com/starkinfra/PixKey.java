@@ -1,5 +1,6 @@
 package com.starkinfra;
 
+import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.*;
 
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ public final class PixKey extends Resource {
     /**
      * PixKey object
      * <p>
-     * PixKeys link bank account information to key ids. key ids are a convenient
-     * way to search and pass bank account information.
+     * PixKeys link bank account information to key ids.
+     * Key ids are a convenient way to search and pass bank account information.
      * When you initialize a PixKey, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
@@ -56,6 +57,8 @@ public final class PixKey extends Resource {
     /**
      * PixKey object
      * <p>
+     * PixKeys link bank account information to key ids.
+     * Key ids are a convenient way to search and pass bank account information.
      * When you initialize a PixKey, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -101,6 +104,8 @@ public final class PixKey extends Resource {
     /**
      * PixKey object
      * <p>
+     * PixKeys link bank account information to key ids.
+     * Key ids are a convenient way to search and pass bank account information.
      * When you initialize a PixKey, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -484,38 +489,12 @@ public final class PixKey extends Resource {
         return Rest.patch(data, id, patchData, user);
     }
 
-    /**
-     * PixKey.Error object
-     * <p>
-     * Used to define an error in the pixKey
-     * <p>
-     * Parameters:
-     * key      [string]: key describing a part of the pixKey value. ex: "Taxes"
-     * value    [string]: value to which the key refers to. ex: "120"
-     */
-    public final static class Error extends SubResource {
-        public String key;
-        public String value;
-
-        /**
-         * PixKey.Error object
-         * Used to define an error in the pixKey
-         * Parameters:
-         * @param key   [string]: text indicating an item to be described. ex: "Taxes"
-         * @param value [string]: text describing the specified item. ex: "Bad"
-         */
-        public Error(String key, String value){
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public final static class Log extends Resource {
         static ClassData data = new ClassData(Log.class, "PixKeyLog");
 
         public String created;
         public String type;
-        public List<PixKey.Error> errors;
+        public List<ErrorElement> errors;
         public PixKey key;
 
         /**
@@ -532,7 +511,7 @@ public final class PixKey extends Resource {
          * @param type [string]: type of the PixKey event which triggered the log creation. ex: "processing" or "success"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10"
          */
-        public Log(String created, String type, List<PixKey.Error> errors, PixKey key, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, PixKey key, String id) {
             super(id);
             this.created = created;
             this.type = type;
@@ -589,7 +568,7 @@ public final class PixKey extends Resource {
          * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of PixKey Log objects with updated attributes
+         * @return generator of PixKey Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
@@ -606,7 +585,7 @@ public final class PixKey extends Resource {
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
-         * @return list of PixKey Log objects with updated attributes
+         * @return generator of PixKey Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
@@ -620,7 +599,7 @@ public final class PixKey extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Return:
-         * @return list of PixKey Log objects with updated attributes
+         * @return generator of PixKey Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
@@ -643,7 +622,7 @@ public final class PixKey extends Resource {
          * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of PixKey Log objects with updated attributes
+         * @return generator of PixKey Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {
