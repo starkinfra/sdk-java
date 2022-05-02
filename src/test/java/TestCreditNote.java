@@ -21,16 +21,6 @@ public class TestCreditNote {
     }
 
     @Test
-    public void testGet() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
-        CreditNote creditNote = CreditNote.get("5130851633332224");
-        Assert.assertNotNull(creditNote.id);
-
-        System.out.println(creditNote);
-    }
-
-    @Test
     public void testQuery() throws Exception {
         Settings.user = utils.User.defaultProject();
 
@@ -149,11 +139,11 @@ public class TestCreditNote {
     static List<CreditNote> exampleCCB() throws Exception {
         List<CreditNote> creditNotes = new ArrayList<>();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("templateId", "01234567890");
+        data.put("templateId", "5707012469948416");
         data.put("name", "Jamie Lannister");
         data.put("taxId", "20.018.183/0001-80");
         data.put("nominalAmount", 9000);
-        data.put("scheduled", "2022-4-29");
+        data.put("scheduled", "2022-5-29");
         data.put("invoices", Collections.singletonList(
                 new HashMap<String, Object>() {{
                     put("amount", 5500);

@@ -26,10 +26,6 @@ final class HttpClient {
                 if(sandboxInstance == null)
                     sandboxInstance = makeInstance("https://sandbox.api.starkinfra.com/");
                 return sandboxInstance;
-            case "development":
-                if(developmentInstance == null)
-                    developmentInstance = makeInstance("https://development.api.starkinfra.com/");
-                return developmentInstance;
             default:
                 throw new Exception("Unexpected environment: " + user.environment);
         }

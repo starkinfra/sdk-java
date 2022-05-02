@@ -57,18 +57,6 @@ public class Event extends Resource {
             if (stringType.contains("pix-reversal")) {
                 return context.deserialize(jsonObject, PixReversalEvent.class);
             }
-            if (stringType.contains("pix-key")) {
-                return context.deserialize(jsonObject, PixKeyEvent.class);
-            }
-            if (stringType.contains("pix-claim")) {
-                return context.deserialize(jsonObject, PixClaimEvent.class);
-            }
-            if (stringType.contains("infraction-report")) {
-                return context.deserialize(jsonObject, InfractionReportEvent.class);
-            }
-            if (stringType.contains("reversal-request")) {
-                return context.deserialize(jsonObject, ReversalRequestEvent.class);
-            }
 
             return context.deserialize(jsonObject, UnknownEvent.class);
         }
@@ -87,42 +75,6 @@ public class Event extends Resource {
         public PixReversal.Log log;
 
         public PixReversalEvent(PixReversal.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
-            super(created, isDelivered, subscription, id, workspaceId);
-            this.log = log;
-        }
-    }
-
-    public final static class PixKeyEvent extends Event {
-        public PixKey.Log log;
-
-        public PixKeyEvent(PixKey.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
-            super(created, isDelivered, subscription, id, workspaceId);
-            this.log = log;
-        }
-    }
-
-    public final static class PixClaimEvent extends Event {
-        public PixClaim.Log log;
-
-        public PixClaimEvent(PixClaim.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
-            super(created, isDelivered, subscription, id, workspaceId);
-            this.log = log;
-        }
-    }
-
-    public final static class InfractionReportEvent extends Event {
-        public InfractionReport.Log log;
-
-        public InfractionReportEvent(InfractionReport.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
-            super(created, isDelivered, subscription, id, workspaceId);
-            this.log = log;
-        }
-    }
-
-    public final static class ReversalRequestEvent extends Event {
-        public ReversalRequest.Log log;
-
-        public ReversalRequestEvent(ReversalRequest.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
             super(created, isDelivered, subscription, id, workspaceId);
             this.log = log;
         }
