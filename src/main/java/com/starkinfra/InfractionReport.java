@@ -1,5 +1,6 @@
 package com.starkinfra;
 
+import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.SubResource;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.Resource;
@@ -22,7 +23,7 @@ public final class InfractionReport extends Resource {
      * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: referenceId= "E20018183202201201450u34sDGd19lz"
+     * referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * type              [string]: type of infraction report. Options: "fraud", "reversal", "reversalChargeback"
      * description       [string, Default null]: description for any details that can help with the infraction investigation.
      * creditedBankCode  [string, Default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
@@ -62,7 +63,7 @@ public final class InfractionReport extends Resource {
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * @param referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: referenceId= "E20018183202201201450u34sDGd19lz"
+     * @param referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * @param type              [string]: type of infraction report. Options: "fraud", "reversal", "reversalChargeback"
      * @param description       [string, Default null]: description for any details that can help with the infraction investigation.
      * @param creditedBankCode  [string, Default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
@@ -105,7 +106,7 @@ public final class InfractionReport extends Resource {
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: referenceId= "E20018183202201201450u34sDGd19lz"
+     * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * type [string]: type of infraction report. Options: "fraud", "reversal", "reversalChargeback"
      * <p>
      * Parameters (optional):
@@ -467,40 +468,13 @@ public final class InfractionReport extends Resource {
         return Rest.patch(data, id, patchData, user);
     }
 
-    /**
-     * InfractionReport.Error object
-     * <p>
-     * Used to define an error in the Infraction Report
-     * <p>
-     * Parameters:
-     * key      [string]: report describing a part of the Infraction Report value. ex: "Taxes"
-     * value    [string]: value to which the key refers to. ex: "120"
-     */
-    public final static class Error extends SubResource {
-        public String key;
-        public String value;
-
-        /**
-         * InfractionReport.Error object
-         * Used to define an error in the Infraction Report
-         * Parameters:
-         * @param key   [string]: text indicating an item to be described. ex: "Taxes"
-         * @param value [string]: text describing the specified item. ex: "Bad"
-         */
-        public Error(String key, String value){
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public final static class Log extends Resource {
         static ClassData data = new ClassData(Log.class, "InfractionReportLog");
 
         public String created;
         public String type;
-        public List<InfractionReport.Error> errors;
+        public List<ErrorElement> errors;
         public String agent;
-        public String reason;
         public InfractionReport report;
 
         /**
@@ -517,7 +491,7 @@ public final class InfractionReport extends Resource {
          * @param errors [list of strings]: list of errors linked to this InfractionReport event
          * @param report [InfractionReport]: InfractionReport entity to which the log refers to.
          */
-        public Log(String created, String type, List<InfractionReport.Error> errors, InfractionReport report, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, InfractionReport report, String id) {
             super(id);
             this.created = created;
             this.type = type;
@@ -574,7 +548,7 @@ public final class InfractionReport extends Resource {
          * reportIds [string, default null]: list of InfractionReport IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of InfractionReport Log objects with updated attributes
+         * @return generator of InfractionReport Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
@@ -591,7 +565,7 @@ public final class InfractionReport extends Resource {
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
-         * @return list of InfractionReport Log objects with updated attributes
+         * @return generator of InfractionReport Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
@@ -605,7 +579,7 @@ public final class InfractionReport extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Return:
-         * @return list of InfractionReport Log objects with updated attributes
+         * @return generator of InfractionReport Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
@@ -628,7 +602,7 @@ public final class InfractionReport extends Resource {
          * reportIds [string, default null]: list of InfractionReport IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of InfractionReport Log objects with updated attributes
+         * @return generator of InfractionReport Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {

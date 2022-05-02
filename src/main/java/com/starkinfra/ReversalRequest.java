@@ -1,5 +1,6 @@
 package com.starkinfra;
 
+import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.SubResource;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.Resource;
@@ -17,6 +18,7 @@ public final class ReversalRequest extends Resource {
      * <p>
      * A reversal request can be created when fraud is detected on a transaction or a system malfunction
      * results in an erroneous transaction.
+     * It notifies another participant of your request to reverse the payment they have received.
      * When you initialize a ReversalRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
@@ -59,6 +61,9 @@ public final class ReversalRequest extends Resource {
     /**
      * ReversalRequest object
      * <p>
+     * A reversal request can be created when fraud is detected on a transaction or a system malfunction
+     * results in an erroneous transaction.
+     * It notifies another participant of your request to reverse the payment they have received.
      * When you initialize a ReversalRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -105,6 +110,9 @@ public final class ReversalRequest extends Resource {
     /**
      * ReversalRequest object
      * <p>
+     * A reversal request can be created when fraud is detected on a transaction or a system malfunction
+     * results in an erroneous transaction.
+     * It notifies another participant of your request to reverse the payment they have received.
      * When you initialize a ReversalRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -474,38 +482,12 @@ public final class ReversalRequest extends Resource {
         return Rest.patch(data, id, patchData, user);
     }
 
-    /**
-     * ReversalRequest.Error object
-     * <p>
-     * Used to define an error in the Reversal Request
-     * <p>
-     * Parameters:
-     * key      [string]: request describing a part of the Reversal Request value. ex: "Taxes"
-     * value    [string]: value to which the key refers to. ex: "120"
-     */
-    public final static class Error extends SubResource {
-        public String key;
-        public String value;
-
-        /**
-         * ReversalRequest.Error object
-         * Used to define an error in the Reversal Request
-         * Parameters:
-         * @param key   [string]: text indicating an item to be described. ex: "Taxes"
-         * @param value [string]: text describing the specified item. ex: "Bad"
-         */
-        public Error(String key, String value){
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public final static class Log extends Resource {
         static ClassData data = new ClassData(Log.class, "ReversalRequestLog");
 
         public String created;
         public String type;
-        public List<ReversalRequest.Error> errors;
+        public List<ErrorElement> errors;
         public String agent;
         public String reason;
         public ReversalRequest request;
@@ -524,7 +506,7 @@ public final class ReversalRequest extends Resource {
          * @param errors [list of strings]: list of errors linked to this ReversalRequest event
          * @param request [ReversalRequest]: ReversalRequest entity to which the log refers to.
          */
-        public Log(String created, String type, List<ReversalRequest.Error> errors, ReversalRequest request, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, ReversalRequest request, String id) {
             super(id);
             this.created = created;
             this.type = type;
@@ -581,7 +563,7 @@ public final class ReversalRequest extends Resource {
          * requestIds [string, default null]: list of ReversalRequest IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of ReversalRequest Log objects with updated attributes
+         * @return generator of ReversalRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
@@ -598,7 +580,7 @@ public final class ReversalRequest extends Resource {
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
-         * @return list of ReversalRequest Log objects with updated attributes
+         * @return generator of ReversalRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
@@ -612,7 +594,7 @@ public final class ReversalRequest extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Return:
-         * @return list of ReversalRequest Log objects with updated attributes
+         * @return generator of ReversalRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
@@ -635,7 +617,7 @@ public final class ReversalRequest extends Resource {
          * requestIds [string, default null]: list of ReversalRequest IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
-         * @return list of ReversalRequest Log objects with updated attributes
+         * @return generator of ReversalRequest Log objects with updated attributes
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {

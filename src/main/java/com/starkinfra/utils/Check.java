@@ -22,7 +22,7 @@ public final class Check {
     }
 
     public static String environment(String environment) throws Exception {
-        String[] validEnvironments = {"sandbox", "production"};
+        String[] validEnvironments = {"sandbox", "production", "development"};
         if (Arrays.asList(validEnvironments).contains(environment)){
             return environment;
         }

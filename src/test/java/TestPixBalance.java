@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class TestBalance {
+public class TestPixBalance {
 
     @Test
     public void testGet() throws Exception {

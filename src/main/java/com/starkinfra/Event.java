@@ -476,7 +476,7 @@ public class Event extends Resource {
          * @param message [string]: delivery error full description. ex: "HTTP POST request returned status 404"
          * @param eventId [string]: ID of the Event whose delivery failed. ex: "4848484848484848"
          * @param webhookId [string]: ID of the Webhook that triggered this event. ex: "5656565656565656"
-         * @param created [string]: datetime representing the moment when the attempt was made. ex: datetime.datetime(2020, 3, 10, 10, 30, 0, 0)
+         * @param created [string]: datetime representing the moment when the attempt was made. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         public Attempt(String id, String code, String message, String eventId, String webhookId, String created) {
             super(id);
