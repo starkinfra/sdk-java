@@ -1696,7 +1696,7 @@ data.put("transfer", new HashMap<String, Object>(){{
 data.put("signers", Collections.singletonList(
     new HashMap<String, Object>() {{
         put("name", "Jamie Lannister");
-        put("contact", "joe.limals.14@gmail.com");
+        put("contact", "teste11@gmail.com");
         put("method","link");
         }}
     ));
@@ -1814,6 +1814,22 @@ if (event.subscription.contains("pix-request")) {
 else if (event.subscription.contains("pix-reversal")) {
     PixReversal.Log log = ((Event.PixReversalEvent) event).log;
     System.out.println(log.reversal);
+}
+else if (event.subscription.contains("issuing-card")) {
+    IssuingCard.Log log = ((Event.IssuingCardEvent) event).log;
+    System.out.println(log.card);
+}
+else if (event.subscription.contains("issuing-invoice")) {
+    IssuingInvoice.Log log = ((Event.IssuingInvoiceEvent) event).log;
+    System.out.println(log.invoice);
+}
+else if (event.subscription.contains("issuing-purchase")) {
+    IssuingPurchase.Log log = ((Event.IssuingPurchaseEvent) event).log;
+    System.out.println(log.purchase);
+}
+else if (event.subscription.contains("credit-note")) {
+    CreditNote.Log log = ((Event.CreditNoteEvent) event).log;
+    System.out.println(log.note);
 }
 ```
 
