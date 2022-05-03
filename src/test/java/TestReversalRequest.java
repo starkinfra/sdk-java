@@ -11,7 +11,7 @@ import java.util.*;
 public class TestReversalRequest {
 
     @Test
-    public void testCreateAndDelete() throws Exception {
+    public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
         System.out.println(example());
         ReversalRequest request = ReversalRequest.create(example());
@@ -22,11 +22,11 @@ public class TestReversalRequest {
     public void testDelete() throws Exception {
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
-        params.put("limit", 3);
+        params.put("limit", 1);
         params.put("status", "delivered");
         Generator<ReversalRequest> requests = ReversalRequest.query(params);
         for (ReversalRequest request : requests) {
-            System.out.println(request);
+            System.out.println(request.id);
             request = ReversalRequest.delete(request.id);
             Assert.assertEquals(request.status, "canceled");
             System.out.println(request);
@@ -180,10 +180,12 @@ public class TestReversalRequest {
     @Test
     public void testUpdate() throws Exception {
         Settings.user = utils.User.defaultProject();
+        String bankCode = utils.User.bankCode();
+
         String requestId = getRequestIdToPatch();
         HashMap<String, Object> patchData = new HashMap<>();
         patchData.put("result", "accepted");
-        patchData.put("reversalReferenceId", ReturnId.create(System.getenv("SANDBOX_BANK_CODE")));
+        patchData.put("reversalReferenceId", ReturnId.create(bankCode));
         if (!(requestId == null)) {
             ReversalRequest updatedReversalRequest = ReversalRequest.update(requestId, patchData);
             Assert.assertNotNull(updatedReversalRequest.id);
@@ -196,6 +198,7 @@ public class TestReversalRequest {
     }
 
     public String getRequestIdToPatch() throws Exception {
+        String bankCode = utils.User.bankCode();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 1);
         params.put("cursor", null);
@@ -204,7 +207,7 @@ public class TestReversalRequest {
         while (requestId == null) {
             ReversalRequest.Page page = ReversalRequest.page(params);
             for (ReversalRequest request: page.requests) {
-                if (!request.senderBankCode.equals("34052649")){
+                if (!request.senderBankCode.equals(bankCode)){
                     requestId = request.id;
                     break;
                 }
@@ -236,6 +239,5 @@ public class TestReversalRequest {
             endToEndIds.add(request.endToEndId);
         }
         return endToEndIds.get(random.nextInt(10));
-
     }
 }

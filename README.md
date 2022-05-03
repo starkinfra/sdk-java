@@ -37,6 +37,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixStatement](#create-a-pixstatement): Request your account statement
     - [PixKey](#create-a-pixkey): Create a Pix Key
     - [PixClaim](#create-a-pixclaim): Claim a Pix Key
+    - [PixDirector](#create-a-pixdirector): Create a Pix Director
     - [InfractionReport](#create-an-infractionreport): Create a Pix Key
     - [ReversalRequest](#create-a-reversalrequest): Claim a Pix Key
   - [Credit Note](#credit-note)
@@ -757,9 +758,9 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
-Generator<IssuingHolder.Log> logs = IssuingHolder.Log.query(params);
+Generator<IssuingInvoice.Log> logs = Issuinginvoice.Log.query(params);
 
-for (IssuingHolder.Log log : logs) {
+for (Issuinginvoice.Log log : logs) {
     System.out.println(log);
 }
 ```
@@ -1110,7 +1111,7 @@ To know how much money you have in your workspace, run:
 ```java
 import com.starkinfra.*;
 
-PixBalance balance = PixBalance.Log.get("6532638269505536");
+PixBalance balance = PixBalance.get();
 
 System.out.println(balance);
 ```
@@ -1413,6 +1414,31 @@ PixClaim.Log log = PixClaim.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
+## Create a PixDirector
+
+To register the Pix director contact information at the Central Bank, run the following:
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("name", "Edward Stark");
+data.put("taxId", "012.345.678-90");
+data.put("phone", "+55-11999999999");
+data.put("email", "ned.stark@company.com");
+data.put("password", "12345678");
+data.put("teamEmail", "pix.team@company.com");
+data.put("teamPhones", new String[] {"+55-11997979797", "+55-11996969696"});
+PixDirector director = new PixDirector(data);
+
+PixDirector director = PixDirector.create(director);
+
+System.out.println(director);
+```
+
 ### Create an InfractionReport
 
 Infraction reports are used to report transactions that are suspected of fraud, to request a refund or to
@@ -1658,49 +1684,51 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-List<CreditNote> creditNotes = new ArrayList<>();
-HashMap<String, Object> data = new HashMap<>();
-data.put("templateId", "01234567890");
-data.put("name", "Jamie Lannister");
-data.put("taxId", "20.018.183/0001-80");
-data.put("nominalAmount", 9000);
-data.put("scheduled", "2022-4-29");
+List<HashMap<String, Object>> invoices = new ArrayList<>();
+HashMap<String, Object> invoice = new HashMap<String, Object>() {{
+    put("amount", 50000);
+    put("fine", 10);
+    put("interest", 2);
+    put("due", "2022-07-05");
+    put("taxId", "20.018.183/0001-80");
+}};
+invoices.add(invoice);
 
-data.put("invoices", Collections.singletonList(
-    new HashMap<String, Object>() {{
-        put("amount", 5500);
-        put("name", "Jamie Lannister");
-        put("taxId", "20.018.183/0001-80");
-        put("fine", 2.0);
-        put("interest", 1.0);
+invoice = new HashMap<String, Object>() {{
+    put("amount", 51000);
+    put("fine", 10);
+    put("interest", 2);
+    put("due", "2022-08-05");
+    put("taxId", "20.018.183/0001-80");
+}};
+invoices.add(invoice);
 
-    new HashMap<String, Object>() {{
-        put("amount", 4399);
-        put("name", "Jamie Lannister");
-        put("taxId", "20.018.183/0001-80");
-        put("fine", 2.0);
-        put("interest", 1.0);
-    }};
-    }}
-));
-
-data.put("transfer", new HashMap<String, Object>(){{
-    put("amount", 8831);
+HashMap<String, Object> transfer = new HashMap<String, Object>(){{
     put("bankCode", "00000000");
     put("branchCode", "1234");
     put("accountNumber", "129340-1");
     put("taxId", "012.345.678-90");
     put("name", "Jamie Lannister");
-}});
+}}
 
-data.put("signers", Collections.singletonList(
-    new HashMap<String, Object>() {{
-        put("name", "Jamie Lannister");
-        put("contact", "teste11@gmail.com");
-        put("method","link");
-        }}
-    ));
+List<HashMap<String, Object>> signers = new ArrayList<>();
+HashMap<String, Object> signer = new HashMap<String, Object>() {{
+    put("name", "Jamie Lannister");
+    put("contact", "teste11@gmail.com");
+    put("method","link");
+}};
+signers.add(signer);
 
+List<CreditNote> creditNotes = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("templateId", "5707012469948416");
+data.put("name", "Jamie Lannister");
+data.put("taxId", "20.018.183/0001-80");
+data.put("nominalAmount", 100000);
+data.put("scheduled", "2022-05-05");
+data.put("invoices", invoices );
+data.put("transfer", transfer );
+data.put("signers", signers );
 data.put("externalId", "my-internal-id-8435356");
 data.put("tags", new String[]{"War supply", "Invoice #1234"});
 data.put("rebateAmount", 0);

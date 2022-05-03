@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 final class HttpClient {
     private static ClientService productionInstance;
     private static ClientService sandboxInstance;
-    private static ClientService developmentInstance;
     private static final String version = "v2/";
 
     private HttpClient() {}

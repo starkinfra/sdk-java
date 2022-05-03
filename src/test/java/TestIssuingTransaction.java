@@ -1,12 +1,13 @@
 import com.starkinfra.IssuingTransaction;
-import com.starkinfra.Settings;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.Settings;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class TestIssuingTransaction {
 
@@ -21,12 +22,12 @@ public class TestIssuingTransaction {
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             IssuingTransaction.Page page = IssuingTransaction.page(params);
-            for (IssuingTransaction request: page.issuingTransactions) {
-                System.out.println(request);
-                if (ids.contains(request.id)) {
+            for (IssuingTransaction transaction: page.issuingTransactions) {
+                System.out.println(transaction);
+                if (ids.contains(transaction.id)) {
                     throw new Exception("repeated id");
                 }
-                ids.add(request.id);
+                ids.add(transaction.id);
             }
             if (page.cursor == null) {
                 break;
@@ -45,14 +46,14 @@ public class TestIssuingTransaction {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        Generator<IssuingTransaction> statements = IssuingTransaction.query(params);
+        Generator<IssuingTransaction> transactions = IssuingTransaction.query(params);
 
         int i = 0;
-        for (IssuingTransaction statement : statements) {
+        for (IssuingTransaction transaction : transactions) {
             i += 1;
-            IssuingTransaction statementExpected = IssuingTransaction.get(statement.id);
-            Assert.assertNotNull(statement.id, statementExpected.id);
-            System.out.println(statement);
+            IssuingTransaction transactionExpected = IssuingTransaction.get(transaction.id);
+            Assert.assertNotNull(transaction.id, transactionExpected.id);
+            System.out.println(transaction);
         }
         System.out.println(i);
     }

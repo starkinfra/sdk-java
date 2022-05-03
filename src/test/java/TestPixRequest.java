@@ -198,6 +198,7 @@ public class TestPixRequest {
     }
 
     static PixRequest example() throws Exception{
+        String bankCode = utils.User.bankCode();
         HashMap<String, Object> data = new HashMap<>();
         data.put("amount", 1000);
         data.put("externalId", "java-" + UUID.randomUUID().toString());
@@ -212,8 +213,7 @@ public class TestPixRequest {
         data.put("receiverAccountType", "checking");
         data.put("receiverName", "Daenerys Targaryen Stormborn");
         data.put("receiverTaxId", "012.345.678-90");
-        data.put("endToEndId", EndToEndId.create(System.getenv("SANDBOX_BANK_CODE")));
-
+        data.put("endToEndId", EndToEndId.create(bankCode));
         return new PixRequest(data);
     }
 }

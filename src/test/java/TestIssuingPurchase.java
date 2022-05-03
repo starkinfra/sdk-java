@@ -1,5 +1,4 @@
 import com.starkinfra.IssuingPurchase;
-import com.starkinfra.IssuingPurchase;
 import com.starkinfra.Settings;
 import com.starkinfra.utils.Generator;
 import org.junit.Assert;
@@ -8,6 +7,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class TestIssuingPurchase {
 
@@ -22,12 +22,12 @@ public class TestIssuingPurchase {
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             IssuingPurchase.Page page = IssuingPurchase.page(params);
-            for (IssuingPurchase request: page.issuingPurchases) {
-                System.out.println(request);
-                if (ids.contains(request.id)) {
+            for (IssuingPurchase purchase: page.issuingPurchases) {
+                System.out.println(purchase);
+                if (ids.contains(purchase.id)) {
                     throw new Exception("repeated id");
                 }
-                ids.add(request.id);
+                ids.add(purchase.id);
             }
             if (page.cursor == null) {
                 break;
@@ -46,12 +46,12 @@ public class TestIssuingPurchase {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        Generator<IssuingPurchase> statements = IssuingPurchase.query(params);
+        Generator<IssuingPurchase> purchases = IssuingPurchase.query(params);
 
-        for (IssuingPurchase statement : statements) {
-            IssuingPurchase statementExpected = IssuingPurchase.get(statement.id);
-            Assert.assertNotNull(statement.id, statementExpected.id);
-            System.out.println(statement);
+        for (IssuingPurchase purchase : purchases) {
+            IssuingPurchase purchaseExpected = IssuingPurchase.get(purchase.id);
+            Assert.assertNotNull(purchase.id, purchaseExpected.id);
+            System.out.println(purchase);
         }
     }
 

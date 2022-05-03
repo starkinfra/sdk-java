@@ -1,9 +1,10 @@
-import com.starkinfra.*;
-import com.starkinfra.IssuingBin;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.IssuingBin;
+import com.starkinfra.*;
 import org.junit.Test;
 
 import java.util.HashMap;
+
 
 public class TestIssuingBin {
     @Test
@@ -16,8 +17,8 @@ public class TestIssuingBin {
 
         for (int i = 0; i < 2; i++) {
             IssuingBin.Page page = IssuingBin.page(params);
-            for (IssuingBin request: page.issuingBins) {
-                System.out.println(request);
+            for (IssuingBin bin: page.issuingBins) {
+                System.out.println(bin);
             }
             if (page.cursor == null) {
                 break;
@@ -32,10 +33,10 @@ public class TestIssuingBin {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 10);
-        Generator<IssuingBin> requests = IssuingBin.query(params);
+        Generator<IssuingBin> bins = IssuingBin.query(params);
 
-        for (IssuingBin request : requests) {
-            System.out.println(request);
+        for (IssuingBin bin : bins) {
+            System.out.println(bin);
         }
 
     }

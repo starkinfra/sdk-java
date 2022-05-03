@@ -15,6 +15,7 @@ public class TestInfractionReport {
         Settings.user = utils.User.defaultProject();
         InfractionReport report = InfractionReport.create(example());
         Assert.assertNotNull(report.id);
+        System.out.println(report);
     }
 
     @Test
@@ -214,8 +215,9 @@ public class TestInfractionReport {
     }
 
     static InfractionReport example() throws Exception{
+        String bankCode = utils.User.bankCode();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("referenceId", EndToEndId.create(System.getenv("SANDBOX_BANK_CODE")));
+        data.put("referenceId", EndToEndId.create(bankCode));
         data.put("type","fraud");
         return new InfractionReport(data);
     }

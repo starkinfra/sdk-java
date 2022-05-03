@@ -1,6 +1,6 @@
-import com.starkinfra.*;
-import com.starkinfra.IssuingCard;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.IssuingCard;
+import com.starkinfra.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,17 +9,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class TestIssuingCard {
 
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
-        List<IssuingCard> requests = new ArrayList<>();
-        requests.add(example(false));
-        requests.add(example(true));
-        requests = IssuingCard.create(requests);
-
-        System.out.println(requests);
+        List<IssuingCard> cards = new ArrayList<>();
+        cards.add(example(false));
+        cards.add(example(true));
+        cards = IssuingCard.create(cards);
+        System.out.println(cards);
     }
 
     @Test
@@ -33,12 +33,12 @@ public class TestIssuingCard {
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             IssuingCard.Page page = IssuingCard.page(params);
-            for (IssuingCard request: page.cards) {
-                System.out.println(request);
-                if (ids.contains(request.id)) {
+            for (IssuingCard card: page.cards) {
+                System.out.println(card);
+                if (ids.contains(card.id)) {
                     throw new Exception("repeated id");
                 }
-                ids.add(request.id);
+                ids.add(card.id);
             }
             if (page.cursor == null) {
                 break;
@@ -57,41 +57,44 @@ public class TestIssuingCard {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        Generator<IssuingCard> statements = IssuingCard.query(params);
+        Generator<IssuingCard> cards = IssuingCard.query(params);
 
-        for (IssuingCard statement : statements) {
-            IssuingCard statementExpected = IssuingCard.get(statement.id);
-            Assert.assertNotNull(statement.id, statementExpected.id);
-            System.out.println(statement);
+        for (IssuingCard card : cards) {
+            IssuingCard cardExpected = IssuingCard.get(card.id);
+            Assert.assertNotNull(card.id, cardExpected.id);
+            System.out.println(card);
         }
-    }
-
-    @Test
-    public void testGet() throws Exception {
-        Settings.user = utils.User.defaultProject();
-        IssuingCard cards = IssuingCard.get("5186529903247360");
-        System.out.println(cards);
     }
 
     @Test
     public void testUpdateStatus() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         Map<String, Object> patchData = new HashMap<>();;
         patchData.put("status", "blocked");
 
-        IssuingCard updatedIssuingCard = IssuingCard.update("5760854205136896", patchData);
-
-        System.out.println(updatedIssuingCard);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 3);
+        params.put("status", "active");
+        Generator<IssuingCard> cards = IssuingCard.query(params);
+        for (IssuingCard card : cards) {
+            IssuingCard updatedIssuingCard = IssuingCard.update(card.id, patchData);
+            Assert.assertEquals("blocked", updatedIssuingCard.status);
+        }
     }
 
     @Test
     public void testDelete() throws Exception {
         Settings.user = utils.User.defaultProject();
-        IssuingCard deletedIssuingCard = IssuingCard.delete("5760854205136896");
-
-        Assert.assertEquals("canceled", deletedIssuingCard.status);
-
-        System.out.println(deletedIssuingCard);
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 2);
+        params.put("status", "active");
+        Generator<IssuingCard> cards = IssuingCard.query(params);
+        for (IssuingCard card : cards) {
+            IssuingCard deletedIssuingCard = IssuingCard.delete(card.id);
+            Assert.assertEquals("canceled", deletedIssuingCard.status);
+            System.out.println(deletedIssuingCard);
+        }
     }
 
     @Test
@@ -136,31 +139,25 @@ public class TestIssuingCard {
         }
     }
 
-    @Test
-    public void testLogGet() throws Exception{
-        Settings.user = utils.User.defaultProject();
-
-        IssuingCard.Log log = IssuingCard.Log.get("5642114708799488");
-        System.out.println(log);
-    }
-
     static IssuingCard example(Boolean useRules) throws Exception{
         HashMap<String, Object> data = new HashMap<>();
-        data.put("holderExternalId", "1234");
+        data.put("holderExternalId", "123456");
         data.put("holderName", "Developers");
         data.put("holderTaxId", "012.345.678-90");
         if (useRules){
-            data.put("rules", new IssuingRule[]{ruleExample()});
+            data.put("rules", ruleExample());
         }
         return new IssuingCard(data);
     }
 
-    private static IssuingRule ruleExample() throws Exception {
+    private static List<IssuingRule> ruleExample() throws Exception {
+        List<IssuingRule> rules = new ArrayList<>();
         HashMap<String, Object> data = new HashMap<>();
         data.put("name", "test");
         data.put("amount", 10000);
         data.put("interval", "day");
         data.put("currencyCode", "BRL");
-        return new IssuingRule(data);
+        rules.add(new IssuingRule(data));
+        return rules;
     }
 }
