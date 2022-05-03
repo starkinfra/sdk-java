@@ -419,7 +419,7 @@ public final class ReversalRequest extends Resource {
      * @throws Exception error in the request
      */
     public static ReversalRequest delete(String id) throws Exception {
-        return ReversalRequest.delete(id, null);
+        return ReversalRequest.delete( id, null);
     }
 
     /**

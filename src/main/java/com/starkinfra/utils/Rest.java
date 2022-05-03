@@ -20,7 +20,7 @@ public final class Rest {
         return gson.fromJson(jsonObject, (Type) resource.cls);
     }
 
-    public static <T extends Resource> List<T> post(Resource.ClassData resource, List<T> entities, User user) throws Exception {
+    public static <T extends SubResource> List<T> post(SubResource.ClassData resource, List<T> entities, User user) throws Exception {
         JsonObject payload = new JsonObject();
         payload.add(Api.getLastNamePlural(resource), new Gson().toJsonTree(entities).getAsJsonArray());
         String content = Response.fetch(Api.endpoint(resource), "POST", payload, null, user).content();
@@ -147,7 +147,7 @@ public final class Rest {
         return gson.fromJson(jsonObject, (Type) resource.cls);
     }
 
-    public static <T extends Resource> T postSingle(Resource.ClassData resource, Resource entity, User user) throws Exception {
+    public static <T extends SubResource> T postSingle(SubResource.ClassData resource, SubResource entity, User user) throws Exception {
         JsonObject payload = (JsonObject) new Gson().toJsonTree((entity));
         String content = Response.fetch(Api.endpoint(resource), "POST", payload, null, user).content();
         Gson gson = GsonEvent.getInstance();

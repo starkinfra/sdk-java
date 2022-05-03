@@ -1,13 +1,13 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.SubResource;
 import com.starkinfra.utils.Rest;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
-public final class PixDirector extends Resource {
+public final class PixDirector extends SubResource {
     /**
      * PixDirector object
      * <p>
@@ -36,7 +36,6 @@ public final class PixDirector extends Resource {
     public String password;
     public String teamEmail;
     public String[] teamPhones;
-    public String id;
     public String status;
 
     /**
@@ -60,7 +59,6 @@ public final class PixDirector extends Resource {
      */
     public PixDirector(String name, String taxId, String phone, String email, String password, String teamEmail,
                        String[] teamPhones, String id, String status) {
-        super(id);
         this.name = name;
         this.taxId = taxId;
         this.phone = phone;
@@ -68,7 +66,6 @@ public final class PixDirector extends Resource {
         this.password = password;
         this.teamEmail = teamEmail;
         this.teamPhones = teamPhones;
-        this.id = id;
         this.status = status;
     }
 
@@ -96,7 +93,6 @@ public final class PixDirector extends Resource {
      * @throws Exception error in the request
      */
     public PixDirector(Map<String, Object> data) throws Exception {
-        super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
         this.name = (String) dataCopy.remove("name");

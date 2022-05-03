@@ -1,6 +1,6 @@
+import com.starkinfra.utils.Generator;
 import com.starkinfra.IssuingInvoice;
 import com.starkinfra.Settings;
-import com.starkinfra.utils.Generator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,9 +14,9 @@ public class TestIssuingInvoice {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
-        IssuingInvoice statement = IssuingInvoice.create(example());
-        System.out.println(statement);
-        Assert.assertNotNull(statement.id);
+        IssuingInvoice invoice = IssuingInvoice.create(example());
+        System.out.println(invoice);
+        Assert.assertNotNull(invoice.id);
     }
 
     @Test
@@ -30,12 +30,12 @@ public class TestIssuingInvoice {
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             IssuingInvoice.Page page = IssuingInvoice.page(params);
-            for (IssuingInvoice request: page.invoices) {
-                System.out.println(request);
-                if (ids.contains(request.id)) {
+            for (IssuingInvoice invoice: page.invoices) {
+                System.out.println(invoice);
+                if (ids.contains(invoice.id)) {
                     throw new Exception("repeated id");
                 }
-                ids.add(request.id);
+                ids.add(invoice.id);
             }
             if (page.cursor == null) {
                 break;
@@ -54,12 +54,12 @@ public class TestIssuingInvoice {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        Generator<IssuingInvoice> statements = IssuingInvoice.query(params);
+        Generator<IssuingInvoice> invoices = IssuingInvoice.query(params);
 
-        for (IssuingInvoice statement : statements) {
-            IssuingInvoice statementExpected = IssuingInvoice.get(statement.id);
-            Assert.assertNotNull(statement.id, statementExpected.id);
-            System.out.println(statement);
+        for (IssuingInvoice invoice : invoices) {
+            IssuingInvoice invoiceExpected = IssuingInvoice.get(invoice.id);
+            Assert.assertNotNull(invoice.id, invoiceExpected.id);
+            System.out.println(invoice);
         }
     }
 
@@ -82,5 +82,4 @@ public class TestIssuingInvoice {
 
         return new IssuingInvoice(data);
     }
-
 }

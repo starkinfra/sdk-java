@@ -2,9 +2,9 @@
 After you ticket has been approved, perform the following steps to deploy to Maven.
 
 
-## Register gpg keys:
+## Register gpg keys
 
-### Install gpg:
+### Install gpg :
 https://gnupg.org/download/
 
 ### Generate gpg keys:
@@ -24,19 +24,27 @@ gpg --keyserver hkp://keyserver.ubuntu.com --send-keys YOUR-KEY-ID
 ```
 
 
-## Create a gradle.properties file:
+## Create a gradle.properties file
 
 Add the following to the gradle.properties
 ```sh
+// GPG key information
 signing.keyId=YOUR-KEY-ID
 signing.password=YOUR-GPG-PASSWORD
 signing.secretKeyRingFile=${HOME}/.gnupg/secring.gpg
 
+// Sonatype key information
 ossrhUsername=YOUR-OSSRH-USERNAME
 ossrhPassword=YOUR-OSSRH-PASSWORD
 ```
 
-## Publish to gradle:
+
+## Deploy and release
+
+### Publish to gradle:
 ```sh
 gradle publish
 ```
+
+### Login to Nexus Repository Manager and release:
+https://s01.oss.sonatype.org/#stagingRepositories

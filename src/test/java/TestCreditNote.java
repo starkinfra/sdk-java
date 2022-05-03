@@ -1,6 +1,6 @@
+import com.starkinfra.utils.Generator;
 import com.starkinfra.CreditNote;
 import com.starkinfra.Settings;
-import com.starkinfra.utils.Generator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,6 +14,7 @@ public class TestCreditNote {
         Settings.user = utils.User.defaultProject();
 
         List<CreditNote> creditNotes = CreditNote.create(exampleCCB());
+        System.out.println(creditNotes);
         for (CreditNote creditNote : creditNotes) {
             Assert.assertNotNull(creditNote.id);
             System.out.println(creditNote);
@@ -26,7 +27,6 @@ public class TestCreditNote {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        params.put("status", "success");
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
         Generator<CreditNote> creditNotes = CreditNote.query(params);
@@ -48,8 +48,6 @@ public class TestCreditNote {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
-        params.put("after", "2019-04-01");
-        params.put("before", "2030-04-30");
         params.put("cursor", null);
 
         List<String> ids = new ArrayList<>();
@@ -96,10 +94,11 @@ public class TestCreditNote {
 
         int i = 0;
         for (CreditNote.Log log : logs) {
+            System.out.println(log);
             i += 1;
             log = CreditNote.Log.get(log.id);
             Assert.assertNotNull(log.id);
-            Assert.assertNotNull(log.creditNote.id);
+            Assert.assertNotNull(log.note.id);
             System.out.println(log);
         }
         Assert.assertTrue(i > 0);
@@ -137,47 +136,53 @@ public class TestCreditNote {
     }
 
     static List<CreditNote> exampleCCB() throws Exception {
-        List<CreditNote> creditNotes = new ArrayList<>();
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("templateId", "5707012469948416");
-        data.put("name", "Jamie Lannister");
-        data.put("taxId", "20.018.183/0001-80");
-        data.put("nominalAmount", 9000);
-        data.put("scheduled", "2022-5-29");
-        data.put("invoices", Collections.singletonList(
-                new HashMap<String, Object>() {{
-                    put("amount", 5500);
-                    put("name", "Jamie Lannister");
-                    put("taxId", "20.018.183/0001-80");
-                    put("fine", 2.0);
-                    put("interest", 1.0);
-                    new HashMap<String, Object>() {{
-                        put("amount", 4399);
-                        put("name", "Jamie Lannister");
-                        put("taxId", "20.018.183/0001-80");
-                        put("fine", 2.0);
-                        put("interest", 1.0);
-                    }};
-                }}
-        ));
-        data.put("transfer", new HashMap<String, Object>() {{
-            put("amount", 8831);
+
+        List<HashMap<String, Object>> invoices = new ArrayList<>();
+        HashMap<String, Object> invoice = new HashMap<String, Object>() {{
+            put("amount", 50000);
+            put("fine", 10);
+            put("interest", 2);
+            put("due", "2022-07-05");
+            put("taxId", "20.018.183/0001-80");
+        }};
+        invoices.add(invoice);
+
+        invoice = new HashMap<String, Object>() {{
+            put("amount", 51000);
+            put("fine", 10);
+            put("interest", 2);
+            put("due", "2022-08-05");
+            put("taxId", "20.018.183/0001-80");
+        }};
+        invoices.add(invoice);
+
+        HashMap<String, Object> transfer = new HashMap<String, Object>(){{
             put("bankCode", "00000000");
             put("branchCode", "1234");
             put("accountNumber", "129340-1");
             put("taxId", "012.345.678-90");
             put("name", "Jamie Lannister");
-        }});
+        }};
 
-        data.put("signers", Collections.singletonList(
-                new HashMap<String, Object>() {{
-                    put("name", "Jamie Lannister");
-                    put("contact", "teste11@gmail.com");
-                    put("method", "link");
-                }}
-        ));
+        List<HashMap<String, Object>> signers = new ArrayList<>();
+        HashMap<String, Object> signer = new HashMap<String, Object>() {{
+            put("name", "Jamie Lannister");
+            put("contact", "teste11@gmail.com");
+            put("method","link");
+        }};
+        signers.add(signer);
 
-        data.put("externalId", "my-internal-id-8435356");
+        List<CreditNote> creditNotes = new ArrayList<>();
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("templateId", "5707012469948416");
+        data.put("name", "Jamie Lannister");
+        data.put("taxId", "20.018.183/0001-80");
+        data.put("nominalAmount", 100000);
+        data.put("scheduled", "2022-05-05");
+        data.put("invoices", invoices);
+        data.put("transfer", transfer );
+        data.put("signers", signers );
+        data.put("externalId", UUID.randomUUID().toString());
         data.put("tags", new String[]{"War supply", "Invoice #1234"});
         data.put("rebateAmount", 0);
 

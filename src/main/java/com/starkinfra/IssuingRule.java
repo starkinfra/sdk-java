@@ -21,7 +21,7 @@ public final class IssuingRule extends Resource {
      * categories     [list of strings, default []]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
      * countries      [list of strings, default []]: countries accepted by the rule. ex: ["BRA", "USA"]
      * methods        [list of strings, default []]: card purchase methods accepted by the rule. ex: ["contactless", "manual"]
-     * counterAmount  [integer]: current rule spent amount. ex: 1000
+     * counterAmount  [number]: current rule spent amount. ex: 1000
      * currencySymbol [string]: currency symbol. ex: "R$"
      * currencyName   [string]: currency name. ex: "Brazilian Real"
      * id             [string]: unique id returned when the rule is created. ex: "5656565656565656"
@@ -35,7 +35,7 @@ public final class IssuingRule extends Resource {
     public String[] categories;
     public String[] countries;
     public String[] methods;
-    public long counterAmount;
+    public Number counterAmount;
     public String currencySymbol;
     public String currencyName;
 
@@ -52,12 +52,12 @@ public final class IssuingRule extends Resource {
      * @param categories [list of strings, default []]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
      * @param countries [list of strings, default []]: countries accepted by the rule. ex: ["BRA", "USA"]
      * @param methods [list of strings, default []]: card purchase methods accepted by the rule. ex: ["contactless", "manual"]
-     * @param counterAmount [integer]: current rule spent amount. ex: 1000
+     * @param counterAmount [number]: current rule spent amount. ex: 1000
      * @param currencySymbol [string]: currency symbol. ex: "R$"
      * @param currencyName [string]: currency name. ex: "Brazilian Real"
      * @param id [string]: unique id returned when the rule is created. ex: "5656565656565656"
      */
-    public IssuingRule(String id, String name, long amount, String interval, String currencyCode, String[] categories, String[] countries, String[] methods, long counterAmount, String currencySymbol, String currencyName){
+    public IssuingRule(String id, String name, long amount, String interval, String currencyCode, String[] categories, String[] countries, String[] methods, Number counterAmount, String currencySymbol, String currencyName){
         super(id);
         this.name = name;
         this.amount = amount;
@@ -91,7 +91,7 @@ public final class IssuingRule extends Resource {
      * methods      [list of strings, default []]: card purchase methods accepted by the rule. ex: ["contactless", "manual"]
      * <p>
      * Attributes (expanded return-only):
-     * counterAmount  [integer]: current rule spent amount. ex: 1000
+     * counterAmount  [number]: current rule spent amount. ex: 1000
      * currencySymbol [string]: currency symbol. ex: "R$"
      * currencyName   [string]: currency name. ex: "Brazilian Real"
      * <p>
@@ -111,9 +111,9 @@ public final class IssuingRule extends Resource {
         this.categories = (String[]) dataCopy.remove("categories");
         this.countries = (String[]) dataCopy.remove("countries");
         this.methods = (String[]) dataCopy.remove("methods");
-        this.counterAmount = ((Number) dataCopy.remove("counterAmount")).longValue();
-        this.currencySymbol = (String) dataCopy.remove("currencySymbol");
-        this.currencyName = (String) dataCopy.remove("currencyName");
+        this.counterAmount = null;
+        this.currencySymbol = null;
+        this.currencyName = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
