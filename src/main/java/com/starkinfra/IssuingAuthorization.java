@@ -88,7 +88,7 @@ public final class IssuingAuthorization extends Resource {
      * @param merchantFee [integer]: merchant fee charged. ex: 200 (= R$ 2.00)
      * @param walletId [string]: virtual wallet ID. ex: "googlePay"
      * @param methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * @param score [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
+     * @param score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * @param isPartialAllowed [bool]: true if the the merchant allows partial purchases. ex: False
      * @param purpose [string]: purchase purpose. ex: "purchase"
      * @param cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
@@ -149,7 +149,7 @@ public final class IssuingAuthorization extends Resource {
      * merchantFee [integer]: merchant fee charged. ex: 200 (= R$ 2.00)
      * walletId [string]: virtual wallet ID. ex: "googlePay"
      * methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * score [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
+     * score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * isPartialAllowed [bool]: true if the the merchant allows partial purchases. ex: False
      * purpose [string]: purchase purpose. ex: "purchase"
      * cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]

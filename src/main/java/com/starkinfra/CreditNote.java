@@ -27,10 +27,10 @@ public final class CreditNote extends Resource {
      * invoices         [list of maps]: list of invoices to be created and sent to the credit receiver. ex: invoices=[{"amount":"120000", "name":"Jamie Lannister", "taxId":"20.018.183/0001-80"}]
      * transfer         [map]: Transfer object to be created and sent to the credit receiver. ex: transfer={"amount":"", "bankCode":"", "branchCode":"", "accounNumber":"","taxId":"","name":""}
      * signers          [list of maps]: name and e-mail of signers that sign the contract. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
+     * externalId       [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
      * Parameters (optional):
      * rebateAmount     [number, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
      * tags             [list of strings, default null]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-     * externalId       [string, default null]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
      * Attributes (return-only):
      * id               [string, default null]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * interest         [number, default null]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
@@ -48,9 +48,9 @@ public final class CreditNote extends Resource {
     public HashMap<String,Object> transfer;
     public List<HashMap<String,Object>> invoices;
     public List<HashMap<String,String>> signers;
+    public String externalId;
     public Number rebateAmount;
     public String[] tags;
-    public String externalId;
     public Number interest;
     public String created;
     public String updated;
@@ -73,9 +73,9 @@ public final class CreditNote extends Resource {
      * @param invoices         [list of maps]: list of invoices to be created and sent to the credit receiver. ex: invoices=[{"amount":120000, "name":"Jamie Lannister", "taxId":"20.018.183/0001-80"}]
      * @param transfer         [map]: Transfer object to be created and sent to the credit receiver. ex: transfer={"amount":10000, "bankCode":"00000000", "branchCode":"1234", "accountNumber":"129340-1", "taxId":"012.345.678-90", "name":"Jamie Lannister"}
      * @param signers          [list of maps]: name and e-mail of signers that sign the contract. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
+     * @param externalId       [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
      * @param rebateAmount     [number, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
      * @param tags             [list of strings, default null]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-     * @param externalId       [string, default null]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
      * @param id               [string, default null]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * @param interest         [number, default null]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
      * @param created          [string, default null]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
@@ -83,7 +83,7 @@ public final class CreditNote extends Resource {
      */
 
     public CreditNote(String templateId, String name, String taxId, Number nominalAmount, String scheduled, HashMap<String,Object> transfer,
-                      List<HashMap<String,Object>> invoices, List<HashMap<String,String>> signers, Number rebateAmount, String[] tags, String externalId,
+                      List<HashMap<String,Object>> invoices, List<HashMap<String,String>> signers, String externalId, Number rebateAmount, String[] tags,
                       String id, Number interest, String created, String updated
     ){
         super(id);
@@ -95,9 +95,9 @@ public final class CreditNote extends Resource {
         this.transfer = transfer;
         this.invoices = invoices;
         this.signers = signers;
+        this.externalId = externalId;
         this.rebateAmount = rebateAmount;
         this.tags = tags;
-        this.externalId = externalId;
         this.interest = interest;
         this.created = created;
         this.updated = updated;
@@ -122,10 +122,10 @@ public final class CreditNote extends Resource {
      * invoices         [list of maps]: list of invoices to be created and sent to the credit receiver. ex: invoices=[{"amount": 120000, "name":"Jamie Lannister", "taxId":"20.018.183/0001-80"}]
      * transfer         [map]: Transfer object to be created and sent to the credit receiver. ex: transfer={"amount": 10000, "bankCode":"00000000", "branchCode":"1234", "accountNumber": "129340-1", "taxId": "012.345.678-90", "name": "Jamie Lannister"}
      * signers          [list of maps]: name and e-mail of signers that sign the contract. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
+     * externalId       [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
      * Parameters (optional):
      * rebateAmount     [number, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
      * tags             [list of strings, default null]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-     * externalId       [string, default null]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
      * Attributes (return-only):
      * id               [string, default null]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * interest         [number, default null]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
@@ -145,9 +145,9 @@ public final class CreditNote extends Resource {
         this.invoices = (List<HashMap<String,Object>>) dataCopy.remove("invoices");
         this.transfer = (HashMap<String,Object>) dataCopy.remove("transfer");
         this.signers = (List<HashMap<String,String>>) dataCopy.remove("signers");
+        this.externalId = (String) dataCopy.remove("externalId");
         this.rebateAmount = (Number) dataCopy.remove("rebateAmount");
         this.tags = (String[]) dataCopy.remove("tags");
-        this.externalId = (String) dataCopy.remove("externalId");
         this.interest = null;
         this.created = null;
         this.updated = null;
@@ -293,7 +293,7 @@ public final class CreditNote extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user    [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
+     * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of CreditNote objects with updated attributes

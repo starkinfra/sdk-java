@@ -79,7 +79,7 @@ public final class Rest {
                     Gson gson = GsonEvent.getInstance();
                     JsonObject contentJson = gson.fromJson(content, JsonObject.class);
                     JsonElement cursorJson = contentJson.get("cursor");
-                    cursor = cursorJson.isJsonNull() ? "" : cursorJson.getAsString();
+                    cursor = cursorJson != null ? (cursorJson.isJsonNull() ? "" : cursorJson.getAsString()) : null;
                     JsonArray jsonArray = contentJson.get(Api.getLastNamePlural(resource)).getAsJsonArray();
                     for (JsonElement resourceElement : jsonArray) {
                         JsonObject jsonObject = resourceElement.getAsJsonObject();
@@ -88,7 +88,7 @@ public final class Rest {
                             break;
                         this.yield(element);
                     }
-                } while (!cursor.isEmpty() && (limit == null || limit > 0));
+                } while (cursor != null && !cursor.isEmpty() && (limit == null || limit > 0));
             }
         };
     }

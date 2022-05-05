@@ -1,9 +1,9 @@
 package com.starkinfra;
 
+import com.starkinfra.utils.SubResource;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.SubResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +99,7 @@ public final class IssuingBin extends Resource {
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return generator of Invoice objects with updated attributes
+     * @return generator of IssuingBin objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingBin> query(Map<String, Object> params, User user) throws Exception{
@@ -116,7 +116,7 @@ public final class IssuingBin extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * <p>
      * Return:
-     * @return generator of Invoice objects with updated attributes
+     * @return generator of IssuingBin objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingBin> query(Map<String, Object> params) throws Exception{
@@ -132,7 +132,7 @@ public final class IssuingBin extends Resource {
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return generator of Invoice objects with updated attributes
+     * @return generator of IssuingBin objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingBin> query(User user) throws Exception{
@@ -146,7 +146,7 @@ public final class IssuingBin extends Resource {
      * Receive a generator of IssuingBin objects previously registered in the Stark Bank API
      * <p>
      * Return:
-     * @return generator of Invoice objects with updated attributes
+     * @return generator of IssuingBin objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingBin> query() throws Exception{
@@ -175,9 +175,9 @@ public final class IssuingBin extends Resource {
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return Invoice.Page object:
-     * Invoice.Page.invoices: list of Invoice objects with updated attributes
-     * Invoice.Page.cursor: cursor to retrieve the next page of Invoice objects
+     * @return IssuingBin.Page object:
+     * IssuingBin.Page.bins: list of IssuingBin objects with updated attributes
+     * IssuingBin.Page.cursor: cursor to IssuingBin the next page of IssuingBin objects
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params, User user) throws Exception {
@@ -200,9 +200,9 @@ public final class IssuingBin extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * <p>
      * Return:
-     * @return Invoice.Page object:
-     * Invoice.Page.invoices: list of Invoice objects with updated attributes
-     * Invoice.Page.cursor: cursor to retrieve the next page of Invoice objects
+     * @return IssuingBin.Page object:
+     * IssuingBin.Page.bins: list of IssuingBin objects with updated attributes
+     * IssuingBin.Page.cursor: cursor to IssuingBin the next page of IssuingBin objects
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params) throws Exception {
@@ -218,9 +218,9 @@ public final class IssuingBin extends Resource {
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return Invoice.Page object:
-     * Invoice.Page.invoices: list of Invoice objects with updated attributes
-     * Invoice.Page.cursor: cursor to retrieve the next page of Invoice objects
+     * @return IssuingBin.Page object:
+     * IssuingBin.Page.bins: list of IssuingBin objects with updated attributes
+     * IssuingBin.Page.cursor: cursor to IssuingBin the next page of IssuingBin objects
      * @throws Exception error in the request
      */
     public static Page page(User user) throws Exception {
@@ -233,9 +233,9 @@ public final class IssuingBin extends Resource {
      * Receive a list of up to 100 IssuingBin objects previously registered in the Stark Bank API and the cursor to the next page.
      * <p>
      * Return:
-     * @return Invoice.Page object:
-     * Invoice.Page.invoices: list of Invoice objects with updated attributes
-     * Invoice.Page.cursor: cursor to retrieve the next page of Invoice objects
+     * @return IssuingBin.Page object:
+     * IssuingBin.Page.bins: list of IssuingBin objects with updated attributes
+     * IssuingBin.Page.cursor: cursor to IssuingBin the next page of IssuingBin objects
      * @throws Exception error in the request
      */
     public static Page page() throws Exception {

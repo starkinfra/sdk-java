@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+- PixDirector resource for Direct Participants
+- BrcodeCertificate resource for Indirect and Direct Participants
 
 ## [0.0.2] - 2022-05-02
 ### Added

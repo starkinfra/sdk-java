@@ -273,11 +273,11 @@ public final class IssuingCard extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
      * types [list of strings, default null]: card type. ex: ["virtual"]
      * holderIds [list of strings]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -299,11 +299,11 @@ public final class IssuingCard extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
      * types [list of strings, default null]: card type. ex: ["virtual"]
      * holderIds [list of strings]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -365,12 +365,21 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param params map of parameters
      * cursor [string, default ""]: cursor returned on the previous page function call
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
+     * types [list of strings, default null]: card type. ex: ["virtual"]
+     * holderIds [list of strings]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * expand [list of strings, default []]: fields to expand information. ex: ["rules", "securityCode", "number", "expiration"]
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return  list of IssuingCard objects with updated attributes
-     *          cursor to retrieve the next page of IssuingCard objects
+     * @return IssuingCard.Page object:
+     * IssuingCard.Page.cards: list of IssuingCard objects with updated attributes
+     * IssuingCard.Page.cursor: cursor to retrieve the next page of IssuingCard objects
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params, User user) throws Exception {
@@ -390,11 +399,20 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param params map of parameters
      * cursor [string, default ""]: cursor returned on the previous page function call
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
+     * types [list of strings, default null]: card type. ex: ["virtual"]
+     * holderIds [list of strings]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * expand [list of strings, default []]: fields to expand information. ex: ["rules", "securityCode", "number", "expiration"]
      * <p>
      * Return:
-     * @return  list of IssuingCard objects with updated attributes
-     *          cursor to retrieve the next page of IssuingCard objects
+     * @return IssuingCard.Page object:
+     * IssuingCard.Page.cards: list of IssuingCard objects with updated attributes
+     * IssuingCard.Page.cursor: cursor to retrieve the next page of IssuingCard objects
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params) throws Exception {
@@ -404,15 +422,70 @@ public final class IssuingCard extends Resource {
     /**
      * Retrieve paged IssuingCards
      * <p>
+     * Receive a list of up to 100 IssuingCard objects previously registered in the Stark Bank API and the cursor to the next page.* <p>
+     * Parameters:
+     * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return IssuingCard.Page object:
+     * IssuingCard.Page.cards: list of IssuingCard objects with updated attributes
+     * IssuingCard.Page.cursor: cursor to retrieve the next page of IssuingCard objects
+     * @throws Exception error in the request
+     */
+    public static Page page(User user) throws Exception {
+        return page(new HashMap<>(), user);
+    }
+
+    /**
+     * Retrieve paged IssuingCards
+     * <p>
      * Receive a list of up to 100 IssuingCard objects previously registered in the Stark Bank API and the cursor to the next page.
      * <p>
      * Return:
-     * @return  list of IssuingCard objects with updated attributes
-     *          cursor to retrieve the next page of IssuingCard objects
+     * @return IssuingCard.Page object:
+     * IssuingCard.Page.cards: list of IssuingCard objects with updated attributes
+     * IssuingCard.Page.cursor: cursor to retrieve the next page of IssuingCard objects
      * @throws Exception error in the request
      */
     public static Page page() throws Exception {
         return page(new HashMap<>(), null);
+    }
+
+    /**
+     * Retrieve a specific IssuingCard
+     * <p>
+     * Receive a single IssuingCard object previously created in the Stark Infra API by its id
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param params map of parameters
+     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * <p>
+     * Return:
+     * @return  IssuingCard object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static IssuingCard get(String id, Map<String, Object> params, User user) throws Exception{
+        return Rest.getId(data, id, params, user);
+    }
+
+    /**
+     * Retrieve a specific IssuingCard
+     * <p>
+     * Receive a single IssuingCard object previously created in the Stark Infra API by its id
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param params map of parameters
+     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * <p>
+     * Return:
+     * @return  IssuingCard object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static IssuingCard get(String id, Map<String, Object> params) throws Exception{
+        return IssuingCard.get(id, params, null);
     }
 
     /**
@@ -429,7 +502,7 @@ public final class IssuingCard extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingCard get(String id, User user) throws Exception{
-        return Rest.getId(data, id, user);
+        return IssuingCard.get(id, null, user);
     }
 
     /**
@@ -445,7 +518,7 @@ public final class IssuingCard extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingCard get(String id) throws Exception{
-        return Rest.getId(data, id, null);
+        return IssuingCard.get( id, null, null);
     }
 
     /**

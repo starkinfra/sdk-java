@@ -102,7 +102,7 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * Return:
      * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingTransaction get(String id, User user) throws Exception{
         return Rest.getId(data, id, user);
@@ -118,7 +118,7 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * Return:
      * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingTransaction get(String id) throws Exception{
         return Rest.getId(data, id, null);
@@ -131,7 +131,7 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * Return:
      * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingTransaction get() throws Exception{
         return Rest.getId(data, null, null);
@@ -146,16 +146,16 @@ public final class IssuingTransaction extends Resource {
      * @param params map of parameters
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * ids [list of strings, default []]: purchase IDs
+     * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @return generator of IssuingTransaction objects with updated attributes
+     * @throws Exception error in the transaction
      */
     public static Generator<IssuingTransaction> query(Map<String, Object> params, User user) throws Exception{
         return Rest.getStream(data, params, user);
@@ -169,22 +169,22 @@ public final class IssuingTransaction extends Resource {
      * @param params map of parameters
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * ids [list of strings, default []]: purchase IDs
+     * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @return generator of IssuingTransaction objects with updated attributes
+     * @throws Exception error in the transaction
      */
     public static Generator<IssuingTransaction> query(Map<String, Object> params) throws Exception{
         return Rest.getStream(data, params, null);
     }
 
     /**
-     * Retrieve IssuingTransaction
+     * Retrieve IssuingTransactions
      * <p>
      * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
      * <p>
@@ -192,21 +192,21 @@ public final class IssuingTransaction extends Resource {
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @return generator of IssuingTransaction objects with updated attributes
+     * @throws Exception error in the transaction
      */
     public static Generator<IssuingTransaction> query(User user) throws Exception{
         return Rest.getStream(data, new HashMap<>(), user);
     }
 
     /**
-     * Retrieve IssuingTransaction
+     * Retrieve IssuingTransactions
      * <p>
      * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * @return generator of IssuingTransaction objects with updated attributes
+     * @throws Exception error in the transaction
      */
     public static Generator<IssuingTransaction> query() throws Exception{
         return Rest.getStream(data, new HashMap<>(), null);
@@ -223,65 +223,86 @@ public final class IssuingTransaction extends Resource {
     }
 
     /**
-     * Retrieve IssuingTransaction
+     * Retrieve paged IssuingTransactions
      * <p>
-     * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
+     * Receive a list of up to 100 IssuingTransaction objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page transactions.
+     * <p>
+     * Return:
+     * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes
+     * IssuingTransaction.Page.cursor: cursor to retrieve the next page of IssuingTransaction objects
+     * @throws Exception error in the request
+     */
+    public static IssuingTransaction.Page page() throws Exception {
+        return page(new HashMap<>(), null);
+    }
+
+    /**
+     * Retrieve paged IssuingTransactions
+     * <p>
+     * Receive a list of up to 100 IssuingTransaction objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page transactions.
      * <p>
      * Parameters:
      * @param params map of parameters
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * ids [list of strings, default []]: purchase IDs
+     * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * cursor [string, default ""]: cursor returned on the previous page function call
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes
+     * IssuingTransaction.Page.cursor: cursor to retrieve the next page of IssuingTransaction objects
+     * @throws Exception error in the request
      */
     public static IssuingTransaction.Page page(Map<String , Object> params) throws Exception {
         return page(params, null);
     }
 
     /**
-     * Retrieve IssuingTransaction
+     * Retrieve paged IssuingTransactions
      * <p>
-     * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
+     * Receive a list of up to 100 IssuingTransaction objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page transactions.
      * <p>
      * Parameters:
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes
+     * IssuingTransaction.Page.cursor: cursor to retrieve the next page of IssuingTransaction objects
+     * @throws Exception error in the request
      */
     public static IssuingTransaction.Page page(User user) throws Exception {
         return page(new HashMap<>(), user);
     }
 
     /**
-     * Retrieve IssuingTransaction
+     * Retrieve paged IssuingTransactions
      * <p>
-     * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
+     * Receive a list of up to 100 IssuingTransaction objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page transactions.
      * <p>
      * Parameters:
      * @param params map of parameters
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * ids [list of strings, default []]: purchase IDs
+     * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * cursor [string, default ""]: cursor returned on the previous page function call
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
      * <p>
      * Return:
-     * @return IssuingTransaction object with updated attributes
-     * @throws Exception error in the statement
+     * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes
+     * IssuingTransaction.Page.cursor: cursor to retrieve the next page of IssuingTransaction objects
+     * @throws Exception error in the request
      */
     public static IssuingTransaction.Page page(Map<String , Object> params, User user) throws Exception {
         com.starkinfra.utils.Page page = Rest.getPage(data, params, user);

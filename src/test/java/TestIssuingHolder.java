@@ -4,7 +4,6 @@ import com.starkinfra.IssuingRule;
 import com.starkinfra.Settings;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.util.*;
 
 
@@ -63,11 +62,17 @@ public class TestIssuingHolder {
         holders.add(example(false));
         holders.add(example(true));
         holders = IssuingHolder.create(holders);
+
+        HashMap<String, Object> expand = new HashMap<>();
+        expand.put("expand", Collections.singletonList("rules"));
+
         System.out.println(holders);
         for (IssuingHolder holder : holders) {
             Assert.assertNotNull(holder.id);
-            String id = IssuingHolder.get(holder.id).id;
+            holder = IssuingHolder.get(holder.id, expand);
+            String id = holder.id;
             Assert.assertEquals(id, holder.id);
+            System.out.println(holder);
         }
     }
 

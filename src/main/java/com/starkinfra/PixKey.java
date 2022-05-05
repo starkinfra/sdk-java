@@ -165,6 +165,8 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param params map of parameters
+     * payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * <p>
      * Return:
      * @return PixKey object with updated attributes
@@ -181,6 +183,8 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param params map of parameters
+     * payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:

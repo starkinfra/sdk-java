@@ -189,6 +189,43 @@ public final class IssuingHolder extends Resource {
     /**
      * Retrieve a specific IssuingHolder
      * <p>
+     * Receive a single IssuingHolder object previously created by the Stark Infra API by passing its id
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param params map of parameters
+     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * <p>
+     * Return:
+     * @return IssuingHolder Log object with updated attributes
+     * @throws Exception error in the holder
+     */
+    public static IssuingHolder get(String id, Map<String, Object> params, User user) throws Exception {
+        return Rest.getId(data, id, params, user);
+    }
+
+    /**
+     * Retrieve a specific IssuingHolder
+     * <p>
+     * Receive a single IssuingHolder object previously created by the Stark Infra API by passing its id
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param params map of parameters
+     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * <p>
+     * Return:
+     * @return IssuingHolder Log object with updated attributes
+     * @throws Exception error in the holder
+     */
+    public static IssuingHolder get(String id, Map<String, Object> params) throws Exception {
+        return IssuingHolder.get(id, params, null);
+    }
+
+    /**
+     * Retrieve a specific IssuingHolder
+     * <p>
      * Receive a single IssuingHolder object previously created in the Stark Infra API by its id
      * <p>
      * Parameters:
@@ -199,8 +236,7 @@ public final class IssuingHolder extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingHolder get(String id, User user) throws Exception{
-
-        return Rest.getId(data, id, user);
+        return IssuingHolder.get( id, null, user);
     }
 
     /**
@@ -215,21 +251,28 @@ public final class IssuingHolder extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingHolder get(String id) throws Exception{
-        return Rest.getId(data, id, null);
+        return IssuingHolder.get( id, null, null);
     }
 
     /**
-     * Retrieve a specific IssuingHolder
+     * Retrieve IssuingHolders
      * <p>
-     * Receive a single IssuingHolder object previously created in the Stark Infra API by its id
+     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API.
+     * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
      * @param params map of parameters
-     * id [string]: object unique id. ex: "5656565656565656"
+     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return  IssuingHolder object with updated attributes
+     * @return generator of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingHolder> query(Map<String, Object> params, User user) throws Exception{
@@ -237,16 +280,40 @@ public final class IssuingHolder extends Resource {
     }
 
     /**
-     * Retrieve a specific IssuingHolder
+     * Retrieve IssuingHolders
      * <p>
-     * Receive a single IssuingHolder object previously created in the Stark Infra API by its id
+     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API.
+     * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
+     * <p>
+     * Parameters:
+     * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return generator of IssuingHolder objects with updated attributes
+     * @throws Exception error in the request
+     */
+    public static Generator<IssuingHolder> query(User user) throws Exception{
+        return Rest.getStream(data, new HashMap<>(), user);
+    }
+
+    /**
+     * Retrieve IssuingHolders
+     * <p>
+     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API.
+     * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
      * @param params map of parameters
-     * id [string]: object unique id. ex: "5656565656565656"
+     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
      * <p>
      * Return:
-     * @return  IssuingHolder object with updated attributes
+     * @return generator of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingHolder> query(Map<String, Object> params) throws Exception{
@@ -254,12 +321,12 @@ public final class IssuingHolder extends Resource {
     }
 
     /**
-     * Retrieve a specific IssuingHolder
+     * Retrieve IssuingHolders
      * <p>
-     * Receive a single IssuingHolder object previously created in the Stark Infra API by its id
+     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API
      * <p>
      * Return:
-     * @return  IssuingHolder object with updated attributes
+     * @return generator of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingHolder> query() throws Exception{
@@ -276,40 +343,61 @@ public final class IssuingHolder extends Resource {
         }
     }
 
-    /**
-     * Retrieve IssuingHolders
+     /**
+     * Retrieve paged IssuingHolders
      * <p>
-     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API
+     * Receive a list of up to 100 IssuingHolder objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your holders.
+     * <p>
+     * Return:
+     * @return IssuingHolder.Page object:
+     * IssuingHolder.Page.holders: list of IssuingHolder objects with updated attributes
+     * IssuingHolder.Page.cursor: cursor to retrieve the next page of IssuingHolder objects
+     * @throws Exception error in the request
+     */
+    public static IssuingHolder.Page page() throws Exception {
+        return page(new HashMap<>(), null);
+    }
+
+    /**
+     * Retrieve paged IssuingHolders
+     * <p>
+     * Receive a list of up to 100 IssuingHolder objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your holders.
      * <p>
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
      * <p>
      * Return:
-     * @return  IssuingHolder object with updated attributes
+     * @return IssuingHolder.Page object:
+     * IssuingHolder.Page.holders: list of IssuingHolder objects with updated attributes
+     * IssuingHolder.Page.cursor: cursor to retrieve the next page of IssuingHolder objects
      * @throws Exception error in the request
      */
     public static IssuingHolder.Page page(Map<String , Object> params) throws Exception {
-
         return page(params, null);
     }
 
     /**
-     * Retrieve IssuingHolders
+     * Retrieve paged IssuingHolders
      * <p>
-     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API
+     * Receive a list of up to 100 IssuingHolder objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your holders.
      * <p>
      * Parameters:
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return  IssuingHolder object with updated attributes
+     * @return IssuingHolder.Page object:
+     * IssuingHolder.Page.holders: list of IssuingHolder objects with updated attributes
+     * IssuingHolder.Page.cursor: cursor to retrieve the next page of IssuingHolder objects
      * @throws Exception error in the request
      */
     public static IssuingHolder.Page page(User user) throws Exception {
@@ -318,23 +406,26 @@ public final class IssuingHolder extends Resource {
     }
 
     /**
-     * Retrieve IssuingHolders
+     * Retrieve paged IssuingHolders
      * <p>
-     * Receive a generator of IssuingHolder objects previously created in the Stark Infra API
+     * Receive a list of up to 100 IssuingHolder objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your holders.
      * <p>
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
      * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return  IssuingHolder object with updated attributes
+     * @return IssuingHolder.Page object:
+     * IssuingHolder.Page.holders: list of IssuingHolder objects with updated attributes
+     * IssuingHolder.Page.cursor: cursor to retrieve the next page of IssuingHolder objects
      * @throws Exception error in the request
      */
     public static IssuingHolder.Page page(Map<String , Object> params, User user) throws Exception {

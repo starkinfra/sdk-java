@@ -88,7 +88,6 @@ public final class PixDirector extends SubResource {
      * teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
      * <p>
      * Attributes (return-only):
-     * id         [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
      * status     [string]: current PixDirector status. ex: "success"
      * @throws Exception error in the request
      */

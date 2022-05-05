@@ -38,7 +38,7 @@ public final class IssuingPurchase extends Resource {
      * merchantName             [string]: merchant name. ex: "Google Cloud Platform"
      * walletId                 [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode               [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * score                    [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
+     * score                    [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * issuingTransactionIds    [string]: ledger transaction ids linked to this Purchase
      * endToEndId               [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * status                   [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
@@ -100,7 +100,7 @@ public final class IssuingPurchase extends Resource {
      * @param merchantName [string]: merchant name. ex: "Google Cloud Platform"
      * @param walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * @param methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * @param score [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
+     * @param score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * @param issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
      * @param endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * @param status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
@@ -162,7 +162,7 @@ public final class IssuingPurchase extends Resource {
      * merchantName [string]: merchant name. ex: "Google Cloud Platform"
      * walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * score [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
+     * score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
      * endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
@@ -218,7 +218,7 @@ public final class IssuingPurchase extends Resource {
      * <p>
      * Return:
      * @return IssuingPurchase object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingPurchase get(String id, User user) throws Exception{
         return Rest.getId(data, id, user);
@@ -234,7 +234,7 @@ public final class IssuingPurchase extends Resource {
      * <p>
      * Return:
      * @return IssuingPurchase object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingPurchase get(String id) throws Exception{
         return Rest.getId(data, id, null);
@@ -252,8 +252,8 @@ public final class IssuingPurchase extends Resource {
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -261,14 +261,14 @@ public final class IssuingPurchase extends Resource {
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(Map<String, Object> params, User user) throws Exception{
         return Rest.getStream(data, params, user);
     }
 
     /**
-     * Retrieve IssuingPurchase
+     * Retrieve IssuingPurchases
      * <p>
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
@@ -279,22 +279,22 @@ public final class IssuingPurchase extends Resource {
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(Map<String, Object> params) throws Exception{
         return Rest.getStream(data, params, null);
     }
 
     /**
-     * Retrieve IssuingPurchase
+     * Retrieve IssuingPurchases
      * <p>
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
@@ -303,20 +303,20 @@ public final class IssuingPurchase extends Resource {
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(User user) throws Exception{
         return Rest.getStream(data, new HashMap<>(), user);
     }
 
     /**
-     * Retrieve IssuingPurchase
+     * Retrieve IssuingPurchases
      * <p>
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query() throws Exception{
         return Rest.getStream(data, new HashMap<>(), null);
@@ -333,59 +333,76 @@ public final class IssuingPurchase extends Resource {
     }
 
     /**
-     * Retrieve paged IssuingPurchase
+     * Retrieve paged IssuingPurchases
      * <p>
-     * Receive a list of IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
      * <p>
+     * Return:
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
+     */
+    public static IssuingPurchase.Page page() throws Exception {
+        return page(new HashMap<>(), null);
+    }
+
+    /**
+     * Retrieve paged IssuingPurchases
+     * <p>
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
+     * * <p>
      * Parameters:
      * @param params map of parameters
      * endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * cursor [string, default ""]: cursor returned on the previous page function call
      * <p>
      * Return:
-     * @return IssuingPurchase.Page of IssuingPurchase objects with updated attributeslist of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(Map<String , Object> params) throws Exception {
-
         return page(params, null);
     }
 
     /**
-     * Retrieve paged IssuingPurchase
+     * Retrieve paged IssuingPurchases
      * <p>
-     * Receive a list of IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
      * <p>
      * Return:
-     * @return IssuingPurchase.Page of IssuingPurchase objects with updated attributeslist of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(User user) throws Exception {
-
         return page(new HashMap<>(), user);
     }
 
     /**
-     * Retrieve paged IssuingPurchase
+     * Retrieve paged IssuingPurchases
      * <p>
-     * Receive a list of IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
-     * <p>
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
      * Parameters:
      * @param params map of parameters
      * endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -393,8 +410,9 @@ public final class IssuingPurchase extends Resource {
      * <p>
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
      * Return:
-     * @return IssuingPurchase.Page of IssuingPurchase objects with updated attributeslist of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(Map<String , Object> params, User user) throws Exception {
         com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
@@ -425,7 +443,7 @@ public final class IssuingPurchase extends Resource {
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param reversal [IssuingPurchase]: IssuingPurchase entity to which the log refers to.
          * @param errors [list of strings]: list of errors linked to the IssuingPurchase event.
-         * @param type [string]: type of the IssuingPurchase event which triggered the log creation. ex: "processing" or "success"
+         * @param type [string]: type of the IssuingPurchase event which triggered the log creation. ex: ["approved", "denied"]
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         public Log(String created, String type, List<ErrorElement> errors, IssuingPurchase reversal, String id) {
@@ -480,7 +498,7 @@ public final class IssuingPurchase extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
@@ -533,7 +551,7 @@ public final class IssuingPurchase extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
@@ -567,7 +585,7 @@ public final class IssuingPurchase extends Resource {
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:

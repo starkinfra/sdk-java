@@ -40,6 +40,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixDirector](#create-a-pixdirector): Create a Pix Director
     - [InfractionReport](#create-an-infractionreport): Create a Pix Key
     - [ReversalRequest](#create-a-reversalrequest): Claim a Pix Key
+    - [BrcodeCertificate](#query-brcodecertificates): View registered SPI participants certificates
   - [Credit Note](#credit-note)
     - [CreditNote](#create-creditnotes): Create credit notes
   - [Webhook Events](#webhook-events):
@@ -398,7 +399,7 @@ holders.add(new IssuingHolder(data));
 holders = IssuingHolder.create(holders);
 
 for (IssuingHolder holder : holders) {
-        System.out.println(holder);
+    System.out.println(holder);
 }
 ```
 
@@ -1670,6 +1671,21 @@ import com.starkinfra.*;
 ReversalRequest.Log log = ReversalRequest.Log.get("6532638269505536");
 
 System.out.println(log);
+```
+
+### Query BrcodeCertificates
+
+You can query for certificates of registered SPI participants able to issue dynamic QR Codes.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+Generator<BrcodeCertificate> certificates = BrcodeCertificate.query();
+for (BrcodeCertificate certificate : certificates) {
+    System.out.println(certificate);
+}
 ```
 
 ## Credit Note

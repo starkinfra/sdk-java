@@ -3,11 +3,7 @@ import com.starkinfra.IssuingCard;
 import com.starkinfra.*;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class TestIssuingCard {
@@ -59,10 +55,13 @@ public class TestIssuingCard {
         params.put("limit", 3);
         Generator<IssuingCard> cards = IssuingCard.query(params);
 
+        HashMap<String, Object> expand = new HashMap<>();
+        expand.put("expand", Arrays.asList("rules", "number", "expiration", "securityCode"));
+
         for (IssuingCard card : cards) {
-            IssuingCard cardExpected = IssuingCard.get(card.id);
+            IssuingCard cardExpected = IssuingCard.get(card.id, expand);
             Assert.assertNotNull(card.id, cardExpected.id);
-            System.out.println(card);
+            System.out.println(cardExpected);
         }
     }
 
