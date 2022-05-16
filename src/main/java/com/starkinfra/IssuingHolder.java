@@ -265,7 +265,7 @@ public final class IssuingHolder extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
-     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
+     * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
@@ -307,7 +307,7 @@ public final class IssuingHolder extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
-     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
+     * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
@@ -370,7 +370,7 @@ public final class IssuingHolder extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
-     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
+     * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
@@ -416,7 +416,7 @@ public final class IssuingHolder extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
-     * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
+     * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
@@ -520,7 +520,6 @@ public final class IssuingHolder extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
         public IssuingHolder holder;
 
         /**
@@ -533,15 +532,13 @@ public final class IssuingHolder extends Resource {
          * Attributes:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param holder [IssuingHolder]: IssuingHolder entity to which the log refers to.
-         * @param errors [list of strings]: list of errors linked to the IssuingHolder event.
          * @param type [string]: type of the IssuingHolder event which triggered the log creation. ex: "processing" or "success"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Log(String created, String type, List<ErrorElement> errors, IssuingHolder holder, String id) {
+        public Log(String created, String type, IssuingHolder holder, String id) {
             super(id);
             this.created = created;
             this.type = type;
-            this.errors = errors;
             this.holder = holder;
         }
 

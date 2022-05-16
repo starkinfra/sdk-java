@@ -21,9 +21,13 @@ public final class Rest {
     }
 
     public static <T extends SubResource> List<T> post(SubResource.ClassData resource, List<T> entities, User user) throws Exception {
+        return post(resource, entities, null, user);
+    }
+
+    public static <T extends SubResource> List<T> post(SubResource.ClassData resource, List<T> entities, Map<String, Object> data, User user) throws Exception {
         JsonObject payload = new JsonObject();
         payload.add(Api.getLastNamePlural(resource), new Gson().toJsonTree(entities).getAsJsonArray());
-        String content = Response.fetch(Api.endpoint(resource), "POST", payload, null, user).content();
+        String content = Response.fetch(Api.endpoint(resource), "POST", payload, data, user).content();
         JsonObject contentJson = new Gson().fromJson(content, JsonObject.class);
         List<T> postEntities = new ArrayList<>();
         JsonArray jsonArray = contentJson.get(Api.getLastNamePlural(resource)).getAsJsonArray();

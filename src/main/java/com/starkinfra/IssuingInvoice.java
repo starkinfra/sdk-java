@@ -348,7 +348,6 @@ public final class IssuingInvoice extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
         public IssuingInvoice invoice;
 
         /**
@@ -361,15 +360,13 @@ public final class IssuingInvoice extends Resource {
          * Attributes:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param invoice [IssuingInvoice]: IssuingInvoice entity to which the log refers to.
-         * @param errors [list of strings]: list of errors linked to the IssuingInvoice event.
          * @param type [string]: type of the IssuingInvoice event which triggered the log creation. Options: "created", "paid", "credited", "canceled"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Log(String created, String type, List<ErrorElement> errors, IssuingInvoice invoice, String id) {
+        public Log(String created, String type, IssuingInvoice invoice, String id) {
             super(id);
             this.created = created;
             this.type = type;
-            this.errors = errors;
             this.invoice = invoice;
         }
 

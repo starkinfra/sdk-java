@@ -229,13 +229,14 @@ public final class IssuingCard extends Resource {
      * <p>
      * Parameters:
      * @param cards [list of IssuingCard objects]: list of IssuingCard objects to be created in the API
+     * @param expand [list of strings, default null]: fields to expand information. ex: ["rules", "securityCode", "number", "expiration"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
      * Return:
      * @return list of IssuingCard objects with updated attributes
      * @throws Exception error in the request
      */
     @SuppressWarnings("unchecked")
-    public static List<IssuingCard> create(List<?> cards, User user) throws Exception {
+    public static List<IssuingCard> create(List<?> cards, Map<String, Object> expand, User user) throws Exception {
         List<IssuingCard> cardList = new ArrayList<>();
         for (Object card : cards){
             if (card instanceof Map){
@@ -248,7 +249,39 @@ public final class IssuingCard extends Resource {
             }
             throw new Exception("Unknown type \"" + card.getClass() + "\", use IssuingCard or HashMap");
         }
-        return Rest.post(data, cardList, user);
+        return Rest.post(data, cardList, expand, user);
+    }
+
+    /**
+     * Create IssuingCards
+     * <p>
+     * Send a list of IssuingCard objects for creation in the Stark Infra API
+     * <p>
+     * Parameters:
+     * @param cards [list of IssuingCard objects]: list of IssuingCard objects to be created in the API
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * Return:
+     * @return list of IssuingCard objects with updated attributes
+     * @throws Exception error in the request
+     */
+    public static List<IssuingCard> create(List<?> cards, User user) throws Exception {
+        return IssuingCard.create(cards, null, user);
+    }
+
+    /**
+     * Create IssuingCards
+     * <p>
+     * Send a list of IssuingCard objects for creation in the Stark Infra API
+     * <p>
+     * Parameters:
+     * @param cards [list of IssuingCard objects]: list of IssuingCard objects to be created in the API
+     * @param expand [list of strings, default null]: fields to expand information. ex: ["rules", "securityCode", "number", "expiration"]
+     * Return:
+     * @return list of IssuingCard objects with updated attributes
+     * @throws Exception error in the request
+     */
+    public static List<IssuingCard> create(List<?> cards, Map<String, Object> expand) throws Exception {
+        return IssuingCard.create(cards, expand, null);
     }
 
     /**
@@ -263,7 +296,7 @@ public final class IssuingCard extends Resource {
      * @throws Exception error in the request
      */
     public static List<IssuingCard> create(List<?> cards) throws Exception {
-        return IssuingCard.create(cards, null);
+        return IssuingCard.create(cards, null, null);
     }
 
     /**
@@ -603,7 +636,6 @@ public final class IssuingCard extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
         public IssuingCard card;
 
         /**
@@ -616,15 +648,13 @@ public final class IssuingCard extends Resource {
          * Attributes:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param card [IssuingCard]: IssuingCard entity to which the log refers to.
-         * @param errors [list of strings]: list of errors linked to the IssuingCard event.
          * @param type [string]: type of the IssuingCard event which triggered the log creation. ex: "processing" or "success"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Log(String created, String type, List<ErrorElement> errors, IssuingCard card, String id) {
+        public Log(String created, String type, IssuingCard card, String id) {
             super(id);
             this.card = card;
             this.type = type;
-            this.errors = errors;
             this.created = created;
         }
 

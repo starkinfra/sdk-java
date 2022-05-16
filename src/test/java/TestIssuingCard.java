@@ -14,6 +14,9 @@ public class TestIssuingCard {
         List<IssuingCard> cards = new ArrayList<>();
         cards.add(example(false));
         cards.add(example(true));
+        HashMap<String, Object> expand = new HashMap<>();
+        expand.put("expand", Arrays.asList("rules", "number", "expiration", "securityCode"));
+
         cards = IssuingCard.create(cards);
         System.out.println(cards);
     }
