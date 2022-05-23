@@ -5,7 +5,11 @@ import com.starkinfra.Settings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 
 public class TestIssuingHolder {
@@ -63,11 +67,17 @@ public class TestIssuingHolder {
         holders.add(example(false));
         holders.add(example(true));
         holders = IssuingHolder.create(holders);
+
+        HashMap<String, Object> expand = new HashMap<>();
+        expand.put("expand", Collections.singletonList("rules"));
+
         System.out.println(holders);
         for (IssuingHolder holder : holders) {
             Assert.assertNotNull(holder.id);
-            String id = IssuingHolder.get(holder.id).id;
+            holder = IssuingHolder.get(holder.id, expand);
+            String id = holder.id;
             Assert.assertEquals(id, holder.id);
+            System.out.println(holder);
         }
     }
 
@@ -75,7 +85,7 @@ public class TestIssuingHolder {
     public void testUpdateStatus() throws Exception {
         Settings.user = utils.User.defaultProject();
 
-        Map<String, Object> patchData = new HashMap<>();;
+        HashMap<String, Object> patchData = new HashMap<>();;
         patchData.put("status", "blocked");
 
         HashMap<String, Object> params = new HashMap<>();
@@ -91,7 +101,7 @@ public class TestIssuingHolder {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> params = new HashMap<>();
@@ -100,9 +110,9 @@ public class TestIssuingHolder {
         Generator<IssuingHolder> holders = IssuingHolder.query(params);
 
         for (IssuingHolder holder : holders) {
-            IssuingHolder deletedIssuingHolder = IssuingHolder.delete(holder.id);
-            Assert.assertEquals("canceled", deletedIssuingHolder.status);
-            System.out.println(deletedIssuingHolder);
+            IssuingHolder canceledIssuingHolder = IssuingHolder.cancel(holder.id);
+            Assert.assertEquals("canceled", canceledIssuingHolder.status);
+            System.out.println(canceledIssuingHolder);
         }
     }
 

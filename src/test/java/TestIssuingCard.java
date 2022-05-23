@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 
 public class TestIssuingCard {
@@ -18,6 +19,9 @@ public class TestIssuingCard {
         List<IssuingCard> cards = new ArrayList<>();
         cards.add(example(false));
         cards.add(example(true));
+        HashMap<String, Object> expand = new HashMap<>();
+        expand.put("expand", Arrays.asList("rules", "number", "expiration", "securityCode"));
+
         cards = IssuingCard.create(cards);
         System.out.println(cards);
     }
@@ -59,10 +63,13 @@ public class TestIssuingCard {
         params.put("limit", 3);
         Generator<IssuingCard> cards = IssuingCard.query(params);
 
+        HashMap<String, Object> expand = new HashMap<>();
+        expand.put("expand", Arrays.asList("rules", "number", "expiration", "securityCode"));
+
         for (IssuingCard card : cards) {
-            IssuingCard cardExpected = IssuingCard.get(card.id);
-            Assert.assertNotNull(card.id, cardExpected.id);
-            System.out.println(card);
+            IssuingCard expectedCard = IssuingCard.get(card.id, expand);
+            Assert.assertNotNull(card.id, expectedCard.id);
+            System.out.println(expectedCard);
         }
     }
 
@@ -84,16 +91,16 @@ public class TestIssuingCard {
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
         params.put("status", "active");
         Generator<IssuingCard> cards = IssuingCard.query(params);
         for (IssuingCard card : cards) {
-            IssuingCard deletedIssuingCard = IssuingCard.delete(card.id);
-            Assert.assertEquals("canceled", deletedIssuingCard.status);
-            System.out.println(deletedIssuingCard);
+            IssuingCard canceledIssuingCard = IssuingCard.cancel(card.id);
+            Assert.assertEquals("canceled", canceledIssuingCard.status);
+            System.out.println(canceledIssuingCard);
         }
     }
 

@@ -4,7 +4,11 @@ import com.starkinfra.PixKey;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.List;
 
 
 public class TestPixKey {
@@ -31,9 +35,7 @@ public class TestPixKey {
         for (PixKey key : keys) {
             i += 1;
             System.out.println(key);
-            HashMap<String, Object> data = new HashMap<>();
-            data.put("payerId", "012.345.678-90");
-            key = PixKey.get(key.id, data);
+            key = PixKey.get(key.id, "012.345.678-90");
             Assert.assertNotNull(key.id);
         }
     }
@@ -149,7 +151,7 @@ public class TestPixKey {
     }
 
     @Test
-    public void testPixKeyQueryAndDelete() throws Exception{
+    public void testPixKeyQueryAndCancel() throws Exception{
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
@@ -157,7 +159,7 @@ public class TestPixKey {
         int i = 0;
         for (PixKey key : PixKey.query(params)) {
             i ++;
-            key = PixKey.delete(key.id);
+            key = PixKey.cancel(key.id);
             Assert.assertNotNull(key.id);
             System.out.println(key);
         }
@@ -176,8 +178,7 @@ public class TestPixKey {
             patchData.put("name", "Arya Stark");
             patchData.put("accountNumber", "0000000000");
             patchData.put("accountType", "savings");
-            patchData.put("reason", "userRequested");
-            PixKey updatedPixKey = PixKey.update(key.id, patchData);
+            PixKey updatedPixKey = PixKey.update(key.id, "userRequested", patchData);
             Assert.assertNotNull(updatedPixKey.id);
             Assert.assertEquals(updatedPixKey.name, "Arya Stark");
             System.out.println(updatedPixKey);

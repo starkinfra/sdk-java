@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public final class IssuingPurchase extends Resource {
     /**
      * IssuingPurchase object
@@ -33,16 +34,17 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencySymbol   [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode     [string]: merchant category code. ex: "fastFoodRestaurants"
      * merchantCountryCode      [string]: merchant country code. ex: "USA"
+     * merchantFee              [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * acquirerId               [string]: acquirer ID. ex: "5656565656565656"
      * merchantId               [string]: merchant ID. ex: "5656565656565656"
      * merchantName             [string]: merchant name. ex: "Google Cloud Platform"
      * walletId                 [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode               [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * score                    [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
-     * issuingTransactionIds    [string]: ledger transaction ids linked to this Purchase
-     * endToEndId               [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
+     * score                    [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
+     * issuingTransactionIds    [list of strings]: list of ledger transaction ids linked to this Purchase
+     * endToEndId               [string]: unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
      * status                   [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * tags                     [string]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
+     * tags                     [list of strings]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
      * updated                  [string]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * created                  [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -64,10 +66,11 @@ public final class IssuingPurchase extends Resource {
     public String acquirerId;
     public String merchantId;
     public String merchantName;
+    public Integer merchantFee;
     public String walletId;
     public String methodCode;
     public String score;
-    public String issuingTransactionIds;
+    public String[] issuingTransactionIds;
     public String endToEndId;
     public String status;
     public String[] tags;
@@ -98,17 +101,24 @@ public final class IssuingPurchase extends Resource {
      * @param acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * @param merchantId [string]: merchant ID. ex: "5656565656565656"
      * @param merchantName [string]: merchant name. ex: "Google Cloud Platform"
+     * @param merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * @param walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * @param methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * @param score [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
-     * @param issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
-     * @param endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
+     * @param score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
+     * @param issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
+     * @param endToEndId [string]: Unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. Example: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
      * @param status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * @param tags [string]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
+     * @param tags [list of strings]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
      * @param updated [string]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IssuingPurchase(String id, String holderName, String cardId, String cardEnding, String amount, String tax, String issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol, String merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol, String merchantCategoryCode, String merchantCountryCode, String acquirerId, String merchantId, String merchantName, String walletId, String methodCode, String score, String issuingTransactionIds, String endToEndId, String status, String[] tags, String updated, String created){
+    public IssuingPurchase(String id, String holderName, String cardId, String cardEnding, String amount, String tax,
+                           String issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol,
+                           String merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol,
+                           String merchantCategoryCode, String merchantCountryCode, String acquirerId, String merchantId,
+                           String merchantName,  Integer merchantFee, String walletId, String methodCode, String score,
+                           String[] issuingTransactionIds, String endToEndId, String status, String[] tags, String updated,
+                           String created){
         super(id);
         this.holderName = holderName;
         this.cardId = cardId;
@@ -126,6 +136,7 @@ public final class IssuingPurchase extends Resource {
         this.acquirerId = acquirerId;
         this.merchantId = merchantId;
         this.merchantName = merchantName;
+        this.merchantFee = merchantFee;
         this.walletId = walletId;
         this.methodCode = methodCode;
         this.score = score;
@@ -160,10 +171,11 @@ public final class IssuingPurchase extends Resource {
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
      * merchantName [string]: merchant name. ex: "Google Cloud Platform"
+     * merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-     * score [float]: internal score calculated for the authenticity of the purchase. None in case of insufficient data. ex: 7.6
-     * issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
+     * score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
+     * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * tags [string]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
@@ -192,6 +204,7 @@ public final class IssuingPurchase extends Resource {
         this.acquirerId = null;
         this.merchantId = null;
         this.merchantName = null;
+        this.merchantFee = null;
         this.walletId = null;
         this.methodCode = null;
         this.score = null;
@@ -210,15 +223,15 @@ public final class IssuingPurchase extends Resource {
     /**
      * Retrieve a specific IssuingPurchase
      * <p>
-     * Receive a single IssuingPurchase object previously created in the Stark Bank API by its id
+     * Receive a single IssuingPurchase object previously created in the Stark Infra API by its id
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return IssuingPurchase object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingPurchase get(String id, User user) throws Exception{
         return Rest.getId(data, id, user);
@@ -227,14 +240,14 @@ public final class IssuingPurchase extends Resource {
     /**
      * Retrieve a specific IssuingPurchase
      * <p>
-     * Receive a single IssuingPurchase object previously created in the Stark Bank API by its id
+     * Receive a single IssuingPurchase object previously created in the Stark Infra API by its id
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
      * <p>
      * Return:
      * @return IssuingPurchase object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingPurchase get(String id) throws Exception{
         return Rest.getId(data, id, null);
@@ -252,23 +265,23 @@ public final class IssuingPurchase extends Resource {
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(Map<String, Object> params, User user) throws Exception{
         return Rest.getStream(data, params, user);
     }
 
     /**
-     * Retrieve IssuingPurchase
+     * Retrieve IssuingPurchases
      * <p>
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
@@ -279,44 +292,44 @@ public final class IssuingPurchase extends Resource {
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(Map<String, Object> params) throws Exception{
         return Rest.getStream(data, params, null);
     }
 
     /**
-     * Retrieve IssuingPurchase
+     * Retrieve IssuingPurchases
      * <p>
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(User user) throws Exception{
         return Rest.getStream(data, new HashMap<>(), user);
     }
 
     /**
-     * Retrieve IssuingPurchase
+     * Retrieve IssuingPurchases
      * <p>
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query() throws Exception{
         return Rest.getStream(data, new HashMap<>(), null);
@@ -333,68 +346,86 @@ public final class IssuingPurchase extends Resource {
     }
 
     /**
-     * Retrieve paged IssuingPurchase
+     * Retrieve paged IssuingPurchases
      * <p>
-     * Receive a list of IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
      * <p>
+     * Return:
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
+     */
+    public static IssuingPurchase.Page page() throws Exception {
+        return page(new HashMap<>(), null);
+    }
+
+    /**
+     * Retrieve paged IssuingPurchases
+     * <p>
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
+     * * <p>
      * Parameters:
      * @param params map of parameters
      * endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * cursor [string, default ""]: cursor returned on the previous page function call
      * <p>
      * Return:
-     * @return IssuingPurchase.Page of IssuingPurchase objects with updated attributeslist of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(Map<String , Object> params) throws Exception {
-
         return page(params, null);
     }
 
     /**
-     * Retrieve paged IssuingPurchase
+     * Retrieve paged IssuingPurchases
      * <p>
-     * Receive a list of IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
      * <p>
      * Return:
-     * @return IssuingPurchase.Page of IssuingPurchase objects with updated attributeslist of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(User user) throws Exception {
-
         return page(new HashMap<>(), user);
     }
 
     /**
-     * Retrieve paged IssuingPurchase
+     * Retrieve paged IssuingPurchases
      * <p>
-     * Receive a list of IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
-     * <p>
+     * Receive a list of up to 100 IssuingPurchase objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page purchases.
      * Parameters:
      * @param params map of parameters
      * endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
      * cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * cursor [string, default ""]: cursor returned on the previous page function call
      * <p>
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * Return:
-     * @return IssuingPurchase.Page of IssuingPurchase objects with updated attributeslist of IssuingPurchase objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
+     * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
+     * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(Map<String , Object> params, User user) throws Exception {
         com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
@@ -425,7 +456,7 @@ public final class IssuingPurchase extends Resource {
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param reversal [IssuingPurchase]: IssuingPurchase entity to which the log refers to.
          * @param errors [list of strings]: list of errors linked to the IssuingPurchase event.
-         * @param type [string]: type of the IssuingPurchase event which triggered the log creation. ex: "processing" or "success"
+         * @param type [string]: type of the IssuingPurchase event which triggered the log creation. ex: "approved" or "denied"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         public Log(String created, String type, List<ErrorElement> errors, IssuingPurchase reversal, String id) {
@@ -480,7 +511,7 @@ public final class IssuingPurchase extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
@@ -533,7 +564,7 @@ public final class IssuingPurchase extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
@@ -567,7 +598,7 @@ public final class IssuingPurchase extends Resource {
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:

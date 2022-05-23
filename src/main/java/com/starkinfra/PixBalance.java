@@ -58,7 +58,7 @@ public final class PixBalance extends Resource {
      * Receive the PixBalance object linked to your workspace in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call     *
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return PixBalance object with updated attributes

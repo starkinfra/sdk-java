@@ -19,11 +19,11 @@ public final class PixDirector extends SubResource {
      * Parameters:
      * name       [string]: name of the PixDirector. ex: "Edward Stark".
      * taxId      [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
-     * phone      [string]: phone of the PixDirector. ex: "+55-1198989898"
+     * phone      [string]: phone of the PixDirector. ex: "+551198989898"
      * email      [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
      * password   [string]: password of the PixDirector. ex: "12345678"
      * teamEmail  [string]: team email. ex: "aria.stark@starkbank.com"
-     * teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
+     * teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
      * id         [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
      * status     [string]: current PixDirector status. ex: "success"
      */
@@ -48,11 +48,11 @@ public final class PixDirector extends SubResource {
      * Parameters:
      * @param name [string]: name of the PixDirector. ex: "Edward Stark".
      * @param taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
-     * @param phone [string]: phone of the PixDirector. ex: "+55-1198989898"
+     * @param phone [string]: phone of the PixDirector. ex: "+551198989898"
      * @param email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
      * @param password [string]: password of the PixDirector. ex: "12345678"
      * @param teamEmail [string]: team email. ex: "aria.stark@starkbank.com"
-     * @param teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
+     * @param teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
      * @param id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
      * @param status [string]: current PixDirector status. ex: "success"
      *
@@ -81,15 +81,15 @@ public final class PixDirector extends SubResource {
      * @param data map of properties for the creation of the PixDirector
      * name       [string]: name of the PixDirector. ex: "Edward Stark".
      * taxId      [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
-     * phone      [string]: phone of the PixDirector. ex: "+55-1198989898"
+     * phone      [string]: phone of the PixDirector. ex: "+551198989898"
      * email      [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
      * password   [string]: password of the PixDirector. ex: "12345678"
      * teamEmail  [string]: team email. ex: "aria.stark@starkbank.com"
-     * teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
+     * teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
      * <p>
      * Attributes (return-only):
-     * id         [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
      * status     [string]: current PixDirector status. ex: "success"
+     * id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
      * @throws Exception error in the request
      */
     public PixDirector(Map<String, Object> data) throws Exception {

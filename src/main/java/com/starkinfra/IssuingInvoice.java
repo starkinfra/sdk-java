@@ -1,6 +1,5 @@
 package com.starkinfra;
 
-import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
@@ -22,8 +21,8 @@ public final class IssuingInvoice extends Resource {
      * amount [integer]: IssuingInvoice value in cents. ex: 1234 (= R$ 12.34)
      * taxId [string, default sub-issuer tax ID]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
      * name [string, default sub-issuer name]: payer name. ex: "Iron Bank S.A."
-     * tags [list of strings, default b]: list of strings for tagging. ex: ["travel", "food"]
-     * status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
+     * tags [list of strings, default null]: list of strings for tagging. ex: ["travel", "food"]
+     * status [string]: current IssuingInvoice status. ex: "created", "paid", "overdue" and "expired"
      * issuingTransactionId [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
      * updated [string]: latest update datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -113,15 +112,15 @@ public final class IssuingInvoice extends Resource {
      * Send an IssuingInvoice object for creation in the Stark Infra API
      * <p>
      * Parameters:
-     * @param statement [IssuingInvoice object]: IssuingInvoice object to be created in the API
+     * @param invoice [IssuingInvoice object]: IssuingInvoice object to be created in the API
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return IssuingInvoice object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the IssuingInvoice
      */
-    public static IssuingInvoice create(IssuingInvoice statement, User user) throws Exception {
-        return Rest.postSingle(data, statement, user);
+    public static IssuingInvoice create(IssuingInvoice invoice, User user) throws Exception {
+        return Rest.postSingle(data, invoice, user);
     }
 
     /**
@@ -130,14 +129,14 @@ public final class IssuingInvoice extends Resource {
      * Send an IssuingInvoice object for creation in the Stark Infra API
      * <p>
      * Parameters:
-     * @param statement [IssuingInvoice object]: IssuingInvoice object to be created in the API
+     * @param invoice [IssuingInvoice object]: IssuingInvoice object to be created in the API
      * <p>
      * Return:
      * @return IssuingInvoice object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the IssuingInvoice
      */
-    public static IssuingInvoice create(IssuingInvoice statement) throws Exception {
-        return Rest.postSingle(data, statement, null);
+    public static IssuingInvoice create(IssuingInvoice invoice) throws Exception {
+        return Rest.postSingle(data, invoice, null);
     }
 
     /**
@@ -151,7 +150,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Return:
      * @return IssuingInvoice object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingInvoice get(String id, User user) throws Exception{
         return Rest.getId(data, id, user);
@@ -167,7 +166,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Return:
      * @return IssuingInvoice object with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static IssuingInvoice get(String id) throws Exception{
         return Rest.getId(data, id, null);
@@ -181,15 +180,15 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * after [date string, default null] date filter for objects created only after specified date. ex:"2020-03-10"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * status [string, default null]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return generator of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query(Map<String, Object> params, User user) throws Exception{
         return Rest.getStream(data, params, user);
@@ -203,14 +202,14 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * status [string, default null]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * <p>
      * Return:
      * @return generator of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query(Map<String, Object> params) throws Exception{
         return Rest.getStream(data, params, null);
@@ -226,7 +225,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Return:
      * @return generator of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query(User user) throws Exception{
         return Rest.getStream(data, new HashMap<>(), user);
@@ -239,7 +238,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Return:
      * @return generator of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query() throws Exception{
         return Rest.getStream(data, new HashMap<>(), null);
@@ -256,61 +255,82 @@ public final class IssuingInvoice extends Resource {
     }
 
     /**
-     * Retrieve IssuingInvoices
+     * Retrieve paged IssuingInvoices
      * <p>
-     * Receive a list of IssuingInvoices objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingInvoice objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your IssuingInvoices.
+     * <p>
+     * Return:
+     * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
+     * IssuingInvoice.Page.cursor: cursor to retrieve the next page of IssuingInvoice objects
+     * @throws Exception error in the request
+     */
+    public static Page page() throws Exception {
+        return page(new HashMap<>(), null);
+    }
+
+    /**
+     * Retrieve paged IssuingInvoices
+     * <p>
+     * Receive a list of up to 100 IssuingInvoice objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your IssuingInvoices.
      * <p>
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * status [string, default ""]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * cursor [string, default ""]: cursor returned on the previous page function call
      * <p>
      * Return:
-     * @return IssuingInvoice.Page of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
+     * IssuingInvoice.Page.cursor: cursor to retrieve the next page of IssuingInvoice objects
+     * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params) throws Exception {
         return page(params, null);
     }
 
     /**
-     * Retrieve IssuingInvoices
+     * Retrieve paged IssuingInvoices
      * <p>
-     * Receive a list of IssuingInvoices objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingInvoice objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your IssuingInvoices.
      * <p>
      * Parameters:
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
-     * @return IssuingInvoice.Page of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
+     * IssuingInvoice.Page.cursor: cursor to retrieve the next page of IssuingInvoice objects
+     * @throws Exception error in the request
      */
     public static Page page(User user) throws Exception {
         return page(new HashMap<>(), user);
     }
 
     /**
-     * Retrieve IssuingInvoices
+     * Retrieve paged IssuingInvoices
      * <p>
-     * Receive a list of IssuingInvoices objects previously created in the Stark Infra API and the cursor to the next page.
+     * Receive a list of up to 100 IssuingInvoice objects previously created in the Stark Infra API and the cursor to the next page.
+     * Use this function instead of query if you want to manually page your IssuingInvoices.
      * <p>
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-     * before [date string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-     * status [string, default ""]: filter for status of retrieved objects. ex: "paid" or "registered"
+     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * status [string, default ""]: filter for status of retrieved objects. Options: created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * cursor [string, default ""]: cursor returned on the previous page function call
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
-     * @return IssuingInvoice.Page of IssuingInvoices objects with updated attributes
-     * @throws Exception error in the statement
+     * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
+     * IssuingInvoice.Page.cursor: cursor to retrieve the next page of IssuingInvoice objects
+     * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params, User user) throws Exception {
         com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
@@ -327,7 +347,6 @@ public final class IssuingInvoice extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
         public IssuingInvoice invoice;
 
         /**
@@ -340,15 +359,13 @@ public final class IssuingInvoice extends Resource {
          * Attributes:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param invoice [IssuingInvoice]: IssuingInvoice entity to which the log refers to.
-         * @param errors [list of strings]: list of errors linked to the IssuingInvoice event.
-         * @param type [string]: type of the IssuingInvoice event which triggered the log creation. ex: "processing" or "success"
+         * @param type [string]: type of the IssuingInvoice event which triggered the log creation. Options: created", "expired", "overdue", "paid".
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Log(String created, String type, List<ErrorElement> errors, IssuingInvoice invoice, String id) {
+        public Log(String created, String type, IssuingInvoice invoice, String id) {
             super(id);
             this.created = created;
             this.type = type;
-            this.errors = errors;
             this.invoice = invoice;
         }
 
@@ -362,7 +379,7 @@ public final class IssuingInvoice extends Resource {
          * <p>
          * Return:
          * @return IssuingInvoice Log object with updated attributes
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log get(String id) throws Exception {
             return IssuingInvoice.Log.get(id, null);
@@ -379,7 +396,7 @@ public final class IssuingInvoice extends Resource {
          * <p>
          * Return:
          * @return IssuingInvoice Log object with updated attributes
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log get(String id, User user) throws Exception {
             return Rest.getId(data, id, user);
@@ -396,12 +413,12 @@ public final class IssuingInvoice extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
          * @return generator of IssuingInvoice Log objects with updated attributes
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static Generator<IssuingInvoice.Log> query(Map<String, Object> params) throws Exception {
             return IssuingInvoice.Log.query(params, null);
@@ -418,7 +435,7 @@ public final class IssuingInvoice extends Resource {
          * <p>
          * Return:
          * @return generator of IssuingInvoice Log objects with updated attributes
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static Generator<IssuingInvoice.Log> query(User user) throws Exception {
             return IssuingInvoice.Log.query(new HashMap<>(), user);
@@ -432,7 +449,7 @@ public final class IssuingInvoice extends Resource {
          * <p>
          * Return:
          * @return generator of IssuingInvoice Log objects with updated attributes
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static Generator<IssuingInvoice.Log> query() throws Exception {
             return IssuingInvoice.Log.query(new HashMap<>(), null);
@@ -449,13 +466,13 @@ public final class IssuingInvoice extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types.  Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
          * @return generator of IssuingInvoice Log objects with updated attributes
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static Generator<IssuingInvoice.Log> query(Map<String, Object> params, User user) throws Exception {
             return Rest.getStream(data, params, user);
@@ -475,7 +492,7 @@ public final class IssuingInvoice extends Resource {
          * Retrieve paged IssuingInvoice.Logs
          * <p>
          * Receive a list of up to 100 IssuingInvoice.Log objects previously created in the Stark Infra API and the cursor to the next page.
-         * Use this function instead of query if you want to manually page your invoices.
+         * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Parameters:
          * @param params parameters of the query
@@ -483,14 +500,14 @@ public final class IssuingInvoice extends Resource {
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
          * @return IssuingInvoice.Log.Page object:
          * IssuingInvoice.Log.Page.logs: list of IssuingInvoice.Log objects with updated attributes
          * IssuingInvoice.Log.Page.cursor: cursor to retrieve the next page of IssuingInvoice.Log objects
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log.Page page(Map<String, Object> params) throws Exception {
             return IssuingInvoice.Log.page(params, null);
@@ -500,7 +517,7 @@ public final class IssuingInvoice extends Resource {
          * Retrieve paged IssuingInvoice.Logs
          * <p>
          * Receive a list of up to 100 IssuingInvoice.Log objects previously created in the Stark Infra API and the cursor to the next page.
-         * Use this function instead of query if you want to manually page your invoices.
+         * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Parameters:
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
@@ -509,7 +526,7 @@ public final class IssuingInvoice extends Resource {
          * @return IssuingInvoice.Log.Page object:
          * IssuingInvoice.Log.Page.logs: list of IssuingInvoice.Log objects with updated attributes
          * IssuingInvoice.Log.Page.cursor: cursor to retrieve the next page of IssuingInvoice.Log objects
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log.Page page(User user) throws Exception {
             return IssuingInvoice.Log.page(new HashMap<>(), user);
@@ -519,13 +536,13 @@ public final class IssuingInvoice extends Resource {
          * Retrieve paged IssuingInvoice.Logs
          * <p>
          * Receive a list of up to 100 IssuingInvoice.Log objects previously created in the Stark Infra API and the cursor to the next page.
-         * Use this function instead of query if you want to manually page your invoices.
+         * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Return:
          * @return IssuingInvoice.Log.Page object:
          * IssuingInvoice.Log.Page.logs: list of IssuingInvoice.Log objects with updated attributes
          * IssuingInvoice.Log.Page.cursor: cursor to retrieve the next page of IssuingInvoice.Log objects
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log.Page page() throws Exception {
             return IssuingInvoice.Log.page(new HashMap<>(), null);
@@ -535,7 +552,7 @@ public final class IssuingInvoice extends Resource {
          * Retrieve paged IssuingInvoice.Logs
          * <p>
          * Receive a list of up to 100 IssuingInvoice.Log objects previously created in the Stark Infra API and the cursor to the next page.
-         * Use this function instead of query if you want to manually page your invoices.
+         * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Parameters:
          * @param params parameters of the query
@@ -551,7 +568,7 @@ public final class IssuingInvoice extends Resource {
          * @return IssuingInvoice.Log.Page object:
          * IssuingInvoice.Log.Page.logs: list of IssuingInvoice.Log objects with updated attributes
          * IssuingInvoice.Log.Page.cursor: cursor to retrieve the next page of IssuingInvoice.Log objects
-         * @throws Exception error in the invoice
+         * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log.Page page(Map<String, Object> params, User user) throws Exception {
             com.starkinfra.utils.Page page = Rest.getPage(data, params, user);

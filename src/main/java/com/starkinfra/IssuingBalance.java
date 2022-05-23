@@ -56,10 +56,10 @@ public final class IssuingBalance extends Resource {
     /**
      * Retrieve the IssuingBalance object
      * <p>
-     * Receive the IssuingBalance object linked to your workspace in the Stark Bank API
+     * Receive the IssuingBalance object linked to your workspace in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return IssuingBalance object with updated attributes
@@ -77,7 +77,7 @@ public final class IssuingBalance extends Resource {
     /**
      * Retrieve the Balance object
      * <p>
-     * Receive the Balance object linked to your workspace in the Stark Bank API
+     * Receive the Balance object linked to your workspace in the Stark Infra API
      * <p>
      * Return:
      * @return IssuingBalance object with updated attributes

@@ -7,8 +7,8 @@ import com.starkbank.ellipticcurve.Ecdsa;
 import com.starkbank.ellipticcurve.PublicKey;
 import com.starkbank.ellipticcurve.Signature;
 import com.starkbank.ellipticcurve.utils.ByteString;
-import com.starkinfra.Settings;
 import com.starkinfra.User;
+import com.starkinfra.Settings;
 import com.starkinfra.error.InvalidSignatureError;
 
 import java.lang.reflect.Type;

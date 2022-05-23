@@ -421,41 +421,77 @@ public final class PixClaim extends Resource {
     }
 
     /**
-     * Update notification PixClaim entity
+     * Update PixClaim entity
      * <p>
      * Update the PixClaim by passing id.
      * <p>
      * Parameters:
-     * @param id        [string]: PixClaim id. ex: '5656565656565656'
-     * @param patchData map of patch parameters
-     *                  status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
-     *                  reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
+     * @param id [string]: PixClaim id. ex: "5656565656565656"
+     * @param status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
      * <p>
      * Return:
      * @return PixClaim object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixClaim update(String id, Map<String, Object> patchData) throws Exception {
-        return PixClaim.update(id, patchData, null);
+    public static PixClaim update(String id, String status) throws Exception {
+        return PixClaim.update(id, status, new HashMap<>(), null);
     }
 
     /**
-     * Update notification PixClaim entity
+     * Update PixClaim entity
      * <p>
-     * Update notification PixClaim by passing id.
+     * Update the PixClaim by passing id.
      * <p>
      * Parameters:
-     * @param id        [string]: PixClaim id. ex: '5656565656565656'
+     * @param id [string]: PixClaim id. ex: "5656565656565656"
+     * @param status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
      * @param patchData map of patch parameters
-     *                  status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
-     *                  reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
+     * reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
+     * <p>
+     * Return:
+     * @return PixClaim object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static PixClaim update(String id, String status, Map<String, Object> patchData) throws Exception {
+        return PixClaim.update(id, status, patchData, null);
+    }
+
+    /**
+     * Update PixClaim entity
+     * <p>
+     * Update the PixClaim by passing id.
+     * <p>
+     * Parameters:
+     * @param id [string]: PixClaim id. ex: "5656565656565656"
+     * @param status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return PixClaim object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixClaim update(String id, Map<String, Object> patchData, User user) throws Exception {
+    public static PixClaim update(String id, String status, User user) throws Exception {
+        return PixClaim.update(id, status, new HashMap<>(), user);
+    }
+
+    /**
+     * Update PixClaim entity
+     * <p>
+     * Update PixClaim by passing id.
+     * <p>
+     * Parameters:
+     * @param id [string]: PixClaim id. ex: "656565656565656"
+     * @param status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
+     * @param patchData map of patch parameters
+     * reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * <p>
+     * Return:
+     * @return PixClaim object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static PixClaim update(String id, String status, Map<String, Object> patchData, User user) throws Exception {
+        patchData.put("status", status);
         return Rest.patch(data, id, patchData, user);
     }
 

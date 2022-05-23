@@ -2,7 +2,9 @@ package com.starkinfra;
 
 import com.starkinfra.utils.Resource;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -118,5 +120,26 @@ public final class IssuingRule extends Resource {
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    static List<IssuingRule> parseRules(List<Object> rules) throws Exception {
+        if (rules == null)
+            return null;
+
+        List<IssuingRule> parsed = new ArrayList<>();
+        if (rules.size() == 0 || rules.get(0) instanceof IssuingRule) {
+            for (Object rule : rules) {
+                parsed.add((IssuingRule) rule);
+            }
+            return parsed;
+        }
+
+        for (Object rule : rules) {
+            IssuingRule ruleObject = new IssuingRule((Map<String, Object>) rule);
+            parsed.add(ruleObject);
+        }
+
+        return parsed;
     }
 }

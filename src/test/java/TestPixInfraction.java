@@ -1,49 +1,63 @@
-import com.starkinfra.InfractionReport;
 import com.starkinfra.utils.EndToEndId;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.PixInfraction;
 import com.starkinfra.Settings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.List;
 
 
-public class TestInfractionReport {
+public class TestPixInfraction {
 
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
-        InfractionReport report = InfractionReport.create(example());
-        Assert.assertNotNull(report.id);
-        System.out.println(report);
+
+        List<PixInfraction> infractions = new ArrayList<>();
+        infractions.add(example());
+        infractions = PixInfraction.create(infractions);
+
+        for (PixInfraction infraction : infractions) {
+            Assert.assertNotNull(infraction.id);
+            String id = PixInfraction.get(infraction.id).id;
+            Assert.assertEquals(id, infraction.id);
+        }
+        System.out.println(infractions);
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("status", "delivered");
-        Generator<InfractionReport> reports = InfractionReport.query(params);
-        for (InfractionReport report : reports) {
-            report = InfractionReport.delete(report.id);
-            Assert.assertEquals(report.status, "canceled");
-            System.out.println(report);
+        Generator<PixInfraction> infractions = PixInfraction.query(params);
+        for (PixInfraction infraction : infractions) {
+            if (Objects.equals(infraction.agent, "reporter")) {
+                infraction = PixInfraction.cancel(infraction.id);
+                Assert.assertEquals(infraction.status, "canceled");
+                System.out.println(infraction);
+            }
         }
     }
 
     @Test
-    public void testInfractionReportQueryAndDelete() throws Exception{
+    public void testQueryAndCancel() throws Exception{
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
         params.put("status", "created");
         int i = 0;
-        for (InfractionReport report : InfractionReport.query(params)) {
+        for (PixInfraction infraction : PixInfraction.query(params)) {
             i ++;
-            report = InfractionReport.delete(report.id);
-            Assert.assertEquals(report.status, "canceled");
-            System.out.println(report);
+            infraction = PixInfraction.cancel(infraction.id);
+            Assert.assertEquals(infraction.status, "canceled");
+            System.out.println(infraction);
         }
     }
 
@@ -56,13 +70,13 @@ public class TestInfractionReport {
         params.put("status", "created");
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
-        Generator<InfractionReport> reports = InfractionReport.query(params);
+        Generator<PixInfraction> infractions = PixInfraction.query(params);
 
         int i = 0;
-        for (InfractionReport report : reports) {
+        for (PixInfraction infraction : infractions) {
             i += 1;
-            report = InfractionReport.get(report.id);
-            System.out.println(report);
+            infraction = PixInfraction.get(infraction.id);
+            System.out.println(infraction);
         }
         System.out.println(i);
     }
@@ -74,14 +88,14 @@ public class TestInfractionReport {
         params.put("limit", 3);
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
-        Generator<InfractionReport.Log> logs = InfractionReport.Log.query(params);
+        Generator<PixInfraction.Log> logs = PixInfraction.Log.query(params);
 
         int i = 0;
-        for (InfractionReport.Log log : logs) {
+        for (PixInfraction.Log log : logs) {
             i += 1;
-            log = InfractionReport.Log.get(log.id);
+            log = PixInfraction.Log.get(log.id);
             Assert.assertNotNull(log.id);
-            Assert.assertNotNull(log.report.id);
+            Assert.assertNotNull(log.infraction.id);
             System.out.println(log);
         }
         Assert.assertTrue(i > 0);
@@ -93,26 +107,26 @@ public class TestInfractionReport {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 10);
-        Generator<InfractionReport> reports = InfractionReport.query(params);
+        Generator<PixInfraction> infractions = PixInfraction.query(params);
 
-        ArrayList<String> reportsIdsExpected = new ArrayList<>();
-        for (InfractionReport report : reports) {
-            Assert.assertNotNull(report.id);
-            reportsIdsExpected.add(report.id);
+        ArrayList<String> infractionsIdsExpected = new ArrayList<>();
+        for (PixInfraction infraction : infractions) {
+            Assert.assertNotNull(infraction.id);
+            infractionsIdsExpected.add(infraction.id);
         }
 
-        params.put("ids", reportsIdsExpected.toArray(new String[0]));
-        Generator<InfractionReport> reportsResult = InfractionReport.query(params);
+        params.put("ids", infractionsIdsExpected.toArray(new String[0]));
+        Generator<PixInfraction> infractionsResult = PixInfraction.query(params);
 
-        ArrayList<String> reportsIdsResult = new ArrayList<>();
-        for (InfractionReport report : reportsResult){
-            Assert.assertNotNull(report.id);
-            reportsIdsResult.add(report.id);
+        ArrayList<String> infractionsIdsResult = new ArrayList<>();
+        for (PixInfraction infraction : infractionsResult){
+            Assert.assertNotNull(infraction.id);
+            infractionsIdsResult.add(infraction.id);
         }
 
-        Collections.sort(reportsIdsExpected);
-        Collections.sort(reportsIdsResult);
-        Assert.assertEquals(reportsIdsExpected, reportsIdsResult);
+        Collections.sort(infractionsIdsExpected);
+        Collections.sort(infractionsIdsResult);
+        Assert.assertEquals(infractionsIdsExpected, infractionsIdsResult);
     }
 
     @Test
@@ -127,13 +141,13 @@ public class TestInfractionReport {
 
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            InfractionReport.Page page = InfractionReport.page(params);
-            for (InfractionReport report: page.reports) {
-                System.out.println(report);
-                if (ids.contains(report.id)) {
+            PixInfraction.Page page = PixInfraction.page(params);
+            for (PixInfraction infraction: page.infractions) {
+                System.out.println(infraction);
+                if (ids.contains(infraction.id)) {
                     throw new Exception("repeated id");
                 }
-                ids.add(report.id);
+                ids.add(infraction.id);
             }
             if (page.cursor == null) {
                 break;
@@ -158,8 +172,8 @@ public class TestInfractionReport {
 
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            InfractionReport.Log.Page page = InfractionReport.Log.page(params);
-            for (InfractionReport.Log log: page.logs) {
+            PixInfraction.Log.Page page = PixInfraction.Log.page(params);
+            for (PixInfraction.Log log: page.logs) {
                 System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
@@ -180,45 +194,42 @@ public class TestInfractionReport {
     @Test
     public void testUpdateStatus() throws Exception {
         Settings.user = utils.User.defaultProject();
-        List<InfractionReport> reports = getReportToPatch();
+        List<PixInfraction> infractions = getReportToPatch();
 
-        for (InfractionReport report : reports) {
-            System.out.println(report);
-            HashMap<String, Object> patchData = new HashMap<>();
-            patchData.put("result", "agreed");
-            InfractionReport updatedInfractionReport = InfractionReport.update(report.id, patchData);
-            Assert.assertNotNull(updatedInfractionReport.id);
-            System.out.println(updatedInfractionReport);
+        for (PixInfraction infraction : infractions) {
+            System.out.println(infraction);
+            PixInfraction updatedPixInfraction = PixInfraction.update(infraction.id, "agreed");
+            Assert.assertNotNull(updatedPixInfraction.id);
+            System.out.println(updatedPixInfraction);
         }
     }
 
-    public List<InfractionReport> getReportToPatch() throws Exception {
+    public List<PixInfraction> getReportToPatch() throws Exception {
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 1);
         params.put("cursor", null);
         params.put("status", "delivered");
-        List<InfractionReport> reports = new ArrayList<>();
-        while (reports.size() < 1) {
-            InfractionReport.Page page = InfractionReport.page(params);
-            for (InfractionReport report: page.reports) {
-                if (report.agent.equals("reporter")){
-                    reports.add(report);
+        List<PixInfraction> infractions = new ArrayList<>();
+        while (infractions.size() < 1) {
+            PixInfraction.Page page = PixInfraction.page(params);
+            for (PixInfraction infraction: page.infractions) {
+                if (infraction.agent.equals("reporter")){
+                    infractions.add(infraction);
                 }
-                System.out.println(report);
             }
             if (page.cursor == null) {
                 break;
             }
             params.put("cursor", page.cursor);
         }
-        return(reports);
+        return(infractions);
     }
 
-    static InfractionReport example() throws Exception{
+    static PixInfraction example() throws Exception{
         String bankCode = utils.User.bankCode();
         HashMap<String, Object> data = new HashMap<>();
         data.put("referenceId", EndToEndId.create(bankCode));
         data.put("type","fraud");
-        return new InfractionReport(data);
+        return new PixInfraction(data);
     }
 }

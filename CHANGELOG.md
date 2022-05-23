@@ -13,6 +13,21 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PixDomain resource for Indirect and Direct Participants
+- PixDirector resource for Direct Participants
+- CreditNote.Signer sub-resource
+- CreditNote.Invoice sub-resource
+- CreditNote.Transfer sub-resource
+- issuinginvoice.Log.get() function
+- Webhook resource to receive Events
+- merchantFee atribute to IssuingPurchase
+### Changed
+- CreditNote.transfer parameter to payment and paymentType
+- InfractionReport resource name to PixInfraction
+- ReversalRequest resource name to PixChargeback
+- PixInfraction and PixChargeback to post in batches
+- delete methods name to cancel
 
 ## [0.0.2] - 2022-05-02
 ### Added
