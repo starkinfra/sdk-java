@@ -165,13 +165,14 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * <p>
      * Return:
      * @return PixKey object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixKey get(String id, Map<String, Object> params) throws Exception {
-        return PixKey.get(id, params, null);
+    public static PixKey get(String id, String payerId) throws Exception {
+        return PixKey.get(id, payerId, new HashMap<>(), null);
     }
 
     /**
@@ -181,46 +182,87 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
+     * @param params map of parameters
+     * endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
+     * <p>
+     * Return:
+     * @return PixKey object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static PixKey get(String id, String payerId, Map<String, Object> params) throws Exception {
+        return PixKey.get(id, payerId, params, null);
+    }
+
+    /**
+     * Retrieve a specific PixKey
+     * <p>
+     * Receive a single PixKey object previously created in the Stark Infra API by passing its id
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return PixKey object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixKey get(String id, Map<String, Object> params, User user) throws Exception {
+    public static PixKey get(String id, String payerId, User user) throws Exception {
+        return PixKey.get(id, payerId, new HashMap<>(), user);
+    }
+
+    /**
+     * Retrieve a specific PixKey
+     * <p>
+     * Receive a single PixKey object previously created in the Stark Infra API by passing its id
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
+     * @param params map of parameters
+     * endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * <p>
+     * Return:
+     * @return PixKey object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static PixKey get(String id, String payerId, Map<String, Object> params, User user) throws Exception {
+        params.put("payerId", payerId);
         return Rest.getId(data, id, params, user);
     }
 
     /**
-     * Delete a PixKey entity
+     * Cancel a PixKey entity
      * <p>
-     * Delete a PixKey entity previously created in the Stark Infra API
+     * Cancel a PixKey entity previously created in the Stark Infra API
      * <p>
      * Parameters:
      * @param id [string]: PixKey unique id. ex: "5656565656565656"
      * <p>
      * Return:
-     * @return deleted PixKey object
+     * @return canceled PixKey object
      * @throws Exception error in the request
      */
-    public static PixKey delete(String id) throws Exception {
-        return PixKey.delete(id, null);
+    public static PixKey cancel(String id) throws Exception {
+        return PixKey.cancel(id, null);
     }
 
     /**
-     * Delete a PixKey entity
+     * Cancel a PixKey entity
      * <p>
-     * Delete a PixKey entity previously created in the Stark Infra API
+     * Cancel a PixKey entity previously created in the Stark Infra API
      * <p>
      * Parameters:
      * @param id [string]: PixKey unique id. ex: "5656565656565656"
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
-     * @return deleted PixKey object
+     * @return canceled PixKey object
      * @throws Exception error in the request
      */
-    public static PixKey delete(String id, User user) throws Exception {
+    public static PixKey cancel(String id, User user) throws Exception {
         return Rest.delete(data, id, user);
     }
 
@@ -443,49 +485,50 @@ public final class PixKey extends Resource {
     }
 
     /**
-     * Update notification PixKey entity
+     * Update PixKey entity
      * <p>
      * Update the PixKey by passing id.
      * <p>
      * Parameters:
-     * @param id        [string]: PixKey id. ex: '5656565656565656'
+     * @param id        [string]: PixKey id. ex: "5656565656565656"
+     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
      * @param patchData map of patch parameters
-     *                  reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
-     *                  accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
-     *                  accountNumber [string, default null]: number of the account to be linked. ex: "76543".
-     *                  accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
-     *                  branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
-     *                  name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
+     * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
+     * accountNumber [string, default null]: number of the account to be linked. ex: "76543".
+     * accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
+     * branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
+     * name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
      * <p>
      * Return:
      * @return PixKey object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixKey update(String id, Map<String, Object> patchData) throws Exception {
-        return PixKey.update(id, patchData, null);
+    public static PixKey update(String id, String reason, Map<String, Object> patchData) throws Exception {
+        return PixKey.update(id, reason, patchData, null);
     }
 
     /**
-     * Update notification PixKey entity
+     * Update PixKey entity
      * <p>
-     * Update notification PixKey by passing id.
+     * Update PixKey by passing id.
      * <p>
      * Parameters:
-     * @param id        [string]: PixKey id. ex: '5656565656565656'
+     * @param id        [string]: PixKey id. ex: "5656565656565656"
+     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
      * @param patchData map of patch parameters
-     *                  reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
-     *                  accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
-     *                  accountNumber [string, default null]: number of the account to be linked. ex: "76543".
-     *                  accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
-     *                  branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
-     *                  name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
+     * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
+     * accountNumber [string, default null]: number of the account to be linked. ex: "76543".
+     * accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
+     * branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
+     * name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return PixKey object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixKey update(String id, Map<String, Object> patchData, User user) throws Exception {
+    public static PixKey update(String id, String reason, Map<String, Object> patchData, User user) throws Exception {
+        patchData.put("reason", reason);
         return Rest.patch(data, id, patchData, user);
     }
 

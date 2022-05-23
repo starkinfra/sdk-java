@@ -1,50 +1,63 @@
-import com.starkinfra.ReversalRequest;
+import com.starkinfra.PixChargeback;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.PixRequest;
 import com.starkinfra.Settings;
 import com.starkinfra.utils.*;
 import org.junit.Assert;
 import org.junit.Test;
-import java.util.*;
+
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.List;
 
 
-public class TestReversalRequest {
+public class TestPixChargeback {
 
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
-        System.out.println(example());
-        ReversalRequest request = ReversalRequest.create(example());
-        Assert.assertNotNull(request.id);
+
+        List<PixChargeback> chargebacks = new ArrayList<>();
+        chargebacks.add(example());
+        chargebacks = PixChargeback.create(chargebacks);
+
+        for (PixChargeback chargeback : chargebacks) {
+            Assert.assertNotNull(chargeback.id);
+            String id = PixChargeback.get(chargeback.id).id;
+            Assert.assertEquals(id, chargeback.id);
+        }
+        System.out.println(chargebacks);
     }
 
     @Test
-    public void testDelete() throws Exception {
+    public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 1);
         params.put("status", "delivered");
-        Generator<ReversalRequest> requests = ReversalRequest.query(params);
-        for (ReversalRequest request : requests) {
-            System.out.println(request.id);
-            request = ReversalRequest.delete(request.id);
-            Assert.assertEquals(request.status, "canceled");
-            System.out.println(request);
+        Generator<PixChargeback> chargebacks = PixChargeback.query(params);
+        for (PixChargeback chargeback : chargebacks) {
+            System.out.println(chargeback.id);
+            chargeback = PixChargeback.cancel(chargeback.id);
+            Assert.assertEquals(chargeback.status, "canceled");
+            System.out.println(chargeback);
         }
     }
     
     @Test
-    public void testReversalRequestQueryAndDelete() throws Exception{
+    public void testQueryAndCancel() throws Exception{
         Settings.user = utils.User.defaultProject();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
         params.put("status", "created");
         int i = 0;
-        for (ReversalRequest request : ReversalRequest.query(params)) {
+        for (PixChargeback chargeback : PixChargeback.query(params)) {
             i ++;
-            request = ReversalRequest.delete(request.id);
-            Assert.assertEquals(request.status, "canceled");
-            System.out.println(request);
+            chargeback = PixChargeback.cancel(chargeback.id);
+            Assert.assertEquals(chargeback.status, "canceled");
+            System.out.println(chargeback);
         }
     }
     @Test
@@ -57,13 +70,13 @@ public class TestReversalRequest {
         params.put("status", "created");
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
-        Generator<ReversalRequest> requests = ReversalRequest.query(params);
+        Generator<PixChargeback> chargebacks = PixChargeback.query(params);
 
         int i = 0;
-        for (ReversalRequest request : requests) {
+        for (PixChargeback chargeback : chargebacks) {
             i += 1;
-            request = ReversalRequest.get(request.id);
-            System.out.println(request);
+            chargeback = PixChargeback.get(chargeback.id);
+            System.out.println(chargeback);
         }
         System.out.println(i);
     }
@@ -75,13 +88,13 @@ public class TestReversalRequest {
         params.put("limit", 3);
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
-        Generator<ReversalRequest.Log> logs = ReversalRequest.Log.query(params);
+        Generator<PixChargeback.Log> logs = PixChargeback.Log.query(params);
         int i = 0;
-        for (ReversalRequest.Log log : logs) {
+        for (PixChargeback.Log log : logs) {
             i += 1;
-            log = ReversalRequest.Log.get(log.id);
+            log = PixChargeback.Log.get(log.id);
             Assert.assertNotNull(log.id);
-            Assert.assertNotNull(log.request.id);
+            Assert.assertNotNull(log.chargeback.id);
             System.out.println(log);
         }
         Assert.assertTrue(i > 0);
@@ -93,26 +106,26 @@ public class TestReversalRequest {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 10);
-        Generator<ReversalRequest> requests = ReversalRequest.query(params);
+        Generator<PixChargeback> chargebacks = PixChargeback.query(params);
 
-        ArrayList<String> requestsIdsExpected = new ArrayList<>();
-        for (ReversalRequest request : requests) {
-            Assert.assertNotNull(request.id);
-            requestsIdsExpected.add(request.id);
+        ArrayList<String> chargebacksIdsExpected = new ArrayList<>();
+        for (PixChargeback chargeback : chargebacks) {
+            Assert.assertNotNull(chargeback.id);
+            chargebacksIdsExpected.add(chargeback.id);
         }
 
-        params.put("ids", requestsIdsExpected.toArray(new String[0]));
-        Generator<ReversalRequest> requestsResult = ReversalRequest.query(params);
+        params.put("ids", chargebacksIdsExpected.toArray(new String[0]));
+        Generator<PixChargeback> chargebacksResult = PixChargeback.query(params);
 
-        ArrayList<String> requestsIdsResult = new ArrayList<>();
-        for (ReversalRequest request : requestsResult){
-            Assert.assertNotNull(request.id);
-            requestsIdsResult.add(request.id);
+        ArrayList<String> chargebacksIdsResult = new ArrayList<>();
+        for (PixChargeback chargeback : chargebacksResult){
+            Assert.assertNotNull(chargeback.id);
+            chargebacksIdsResult.add(chargeback.id);
         }
 
-        Collections.sort(requestsIdsExpected);
-        Collections.sort(requestsIdsResult);
-        Assert.assertEquals(requestsIdsExpected, requestsIdsResult);
+        Collections.sort(chargebacksIdsExpected);
+        Collections.sort(chargebacksIdsResult);
+        Assert.assertEquals(chargebacksIdsExpected, chargebacksIdsResult);
     }
 
     @Test
@@ -127,13 +140,13 @@ public class TestReversalRequest {
 
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            ReversalRequest.Page page = ReversalRequest.page(params);
-            for (ReversalRequest request: page.requests) {
-                System.out.println(request);
-                if (ids.contains(request.id)) {
+            PixChargeback.Page page = PixChargeback.page(params);
+            for (PixChargeback chargeback: page.chargebacks) {
+                System.out.println(chargeback);
+                if (ids.contains(chargeback.id)) {
                     throw new Exception("repeated id");
                 }
-                ids.add(request.id);
+                ids.add(chargeback.id);
             }
             if (page.cursor == null) {
                 break;
@@ -158,8 +171,8 @@ public class TestReversalRequest {
 
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            ReversalRequest.Log.Page page = ReversalRequest.Log.page(params);
-            for (ReversalRequest.Log log: page.logs) {
+            PixChargeback.Log.Page page = PixChargeback.Log.page(params);
+            for (PixChargeback.Log log: page.logs) {
                 System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
@@ -182,17 +195,16 @@ public class TestReversalRequest {
         Settings.user = utils.User.defaultProject();
         String bankCode = utils.User.bankCode();
 
-        String requestId = getRequestIdToPatch();
+        String chargebackId = getRequestIdToPatch();
         HashMap<String, Object> patchData = new HashMap<>();
-        patchData.put("result", "accepted");
         patchData.put("reversalReferenceId", ReturnId.create(bankCode));
-        if (!(requestId == null)) {
-            ReversalRequest updatedReversalRequest = ReversalRequest.update(requestId, patchData);
-            Assert.assertNotNull(updatedReversalRequest.id);
-            System.out.println(updatedReversalRequest);
+        if (!(chargebackId == null)) {
+            PixChargeback updatedPixChargeback = PixChargeback.update(chargebackId, "accepted", patchData);
+            Assert.assertNotNull(updatedPixChargeback.id);
+            System.out.println(updatedPixChargeback);
         }
         else {
-            System.out.println("There are no ReversalRequests to patch");
+            System.out.println("There are no PixChargebacks to patch");
             Assert.assertNotNull(null);
         }
     }
@@ -203,12 +215,12 @@ public class TestReversalRequest {
         params.put("limit", 1);
         params.put("cursor", null);
         params.put("status", "delivered");
-        String requestId = null;
-        while (requestId == null) {
-            ReversalRequest.Page page = ReversalRequest.page(params);
-            for (ReversalRequest request: page.requests) {
-                if (!request.senderBankCode.equals(bankCode)){
-                    requestId = request.id;
+        String chargebackId = null;
+        while (chargebackId == null) {
+            PixChargeback.Page page = PixChargeback.page(params);
+            for (PixChargeback chargeback: page.chargebacks) {
+                if (!chargeback.senderBankCode.equals(bankCode)){
+                    chargebackId = chargeback.id;
                     break;
                 }
             }
@@ -217,16 +229,16 @@ public class TestReversalRequest {
             }
             params.put("cursor", page.cursor);
         }
-        return requestId;
+        return chargebackId;
     }
 
-    static ReversalRequest example() throws Exception{
+    static PixChargeback example() throws Exception{
         Random random = new Random();
         HashMap<String, Object> data = new HashMap<>();
         data.put("amount", random.nextInt(100000));
         data.put("referenceId", endToEndIdFromPixRequest());
         data.put("reason","fraud");
-        return new ReversalRequest(data);
+        return new PixChargeback(data);
     }
 
     static String endToEndIdFromPixRequest() throws Exception{
@@ -234,9 +246,9 @@ public class TestReversalRequest {
         Random random = new Random();
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 10);
-        Generator<PixRequest> requests = PixRequest.query(params);
-        for (PixRequest request : requests) {
-            endToEndIds.add(request.endToEndId);
+        Generator<PixRequest> chargebacks = PixRequest.query(params);
+        for (PixRequest chargeback : chargebacks) {
+            endToEndIds.add(chargeback.endToEndId);
         }
         return endToEndIds.get(random.nextInt(10));
     }

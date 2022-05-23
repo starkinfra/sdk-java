@@ -4,7 +4,11 @@ import com.starkinfra.Settings;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.List;
 
 
 public class TestPixClaim {
@@ -157,8 +161,7 @@ public class TestPixClaim {
         for (PixClaim claim : claims) {
             HashMap<String, Object> patchData = new HashMap<>();
             patchData.put("reason", "userRequested");
-            patchData.put("status", "canceled");
-            PixClaim updatedPixClaim = PixClaim.update(claim.id, patchData);
+            PixClaim updatedPixClaim = PixClaim.update(claim.id,"canceled", patchData);
             Assert.assertNotNull(updatedPixClaim.id);
             System.out.println(updatedPixClaim);
         }

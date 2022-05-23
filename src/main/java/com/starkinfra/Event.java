@@ -507,7 +507,7 @@ public class Event extends Resource {
          * Receive a single Event.Attempt object previously created by the Stark Infra API by its id
          * <p>
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
          * <p>
          * Return:
          * @return Event.Attempt object with updated attributes
@@ -609,8 +609,8 @@ public class Event extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-         * before [string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * webhookIds [list of strings, default null]: list of Webhook ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * <p>
@@ -669,8 +669,8 @@ public class Event extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-         * before [string, default null] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
+         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * webhookIds [list of strings, default null]: list of Webhook ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call

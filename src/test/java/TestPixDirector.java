@@ -13,17 +13,17 @@ public class TestPixDirector {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> data = new HashMap<>();
-        data.put("name","Eddard Stark");
-        data.put("taxId","012.345.678-90");
-        data.put("phone","+55-11998989898");
-        data.put("email","eddard@starkbank.com");
+        data.put("name","Stark Sociedade de Crédito Direto S.A.");
+        data.put("taxId","39.908.427/0001-28");
+        data.put("phone","+551141164616");
+        data.put("email","bacen@starkbank.com");
         data.put("password","12345678");
-        data.put("teamEmail","starkfamily@starkbank.com");
-        data.put("teamPhones", new String[] {"+55-11997979797", "+55-11996969696"});
+        data.put("teamEmail","bacen@starkbank.com");
+        data.put("teamPhones", new String[] {"+551141164616"});
         PixDirector director = PixDirector.create(new PixDirector(data));
 
         System.out.println(director);
-        Assert.assertEquals(director.name, "Eddard Stark");
-        Assert.assertEquals(director.taxId, "012.345.678-90");
+        Assert.assertEquals(director.name, "Stark Sociedade de Crédito Direto S.A.");
+        Assert.assertEquals(director.taxId, "39.908.427/0001-28");
     }
 }
