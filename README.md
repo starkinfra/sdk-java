@@ -1239,12 +1239,14 @@ for (PixKey key : keys){
 
 ### Get a PixKey
 
-After its creation, information on a Pix key may be retrieved by its id and the tax id of the consulting agent.
+Information on any Pix key may be retrieved by its id and the tax ID of the consulting agent.
+If the request results in the creation of a Pix Request, the same end to end id should be used. 
+If this parameter is not passed, one endToEndId will be automatically created.
 
 ```java
 import com.starkinfra.*;
 
-PixKey key = PixKey.get("+5541998989898");
+PixKey key = PixKey.get("+5541998989898", "012.345.678-90", EndToEndId.create("20018183"));
 
 System.out.println(key);
 ```
@@ -1270,9 +1272,8 @@ import com.starkinfra.*;
 import java.util.HashMap;
 
 HashMap<String, Object> patchData = new HashMap<>();
-patchData.put("reason", "branchTransfer");
 patchData.put("name", "Jamie Lannister");
-PixKey key = PixKey.update("+5541998989898", patchData);
+PixKey key = PixKey.update("+5541998989898", "branchTransfer", patchData);
 
 System.out.println(key);
 ```
@@ -1378,9 +1379,7 @@ canceled by the donor if the reason is fraud. A sent Pix Claim can also be cance
 import com.starkinfra.*;
 import java.util.HashMap;
 
-HashMap<String, Object> patchData = new HashMap<>();
-patchData.put("status", "confirmed");
-PixClaim claim = PixClaim.update("5155165527080960", patchData);
+PixClaim claim = PixClaim.update("5155165527080960", "confirmed");
 
 System.out.println(claim);
 ```
@@ -1521,9 +1520,7 @@ is Patched, its status changes to closed.
 import com.starkinfra.*;
 import java.util.HashMap;
 
-HashMap<String, Object> patchData = new HashMap<>();
-patchData.put("result", "agreed");
-PixInfraction infraction = PixInfraction.update("5155165527080960", patchData);
+PixInfraction infraction = PixInfraction.update("5155165527080960", "agreed");
 
 System.out.println(infraction);
 ```
@@ -1643,9 +1640,8 @@ import com.starkinfra.utils.*;
 import java.util.HashMap;
 
 HashMap<String, Object> patchData = new HashMap<>();
-patchData.put("result", "accepted");
 patchData.put("reversalReferenceId", ReturnId.create("20018183"));
-PixChargeback chargeback = PixChargeback.update("5155165527080960", patchData);
+PixChargeback chargeback = PixChargeback.update("5155165527080960", "accepted", patchData);
 
 System.out.println(chargeback);
 ```
