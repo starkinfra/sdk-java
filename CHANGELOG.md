@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.0.3] - 2022-05-23
 ### Added
 - PixDomain resource for Indirect and Direct Participants
 - PixDirector resource for Direct Participants

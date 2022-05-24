@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.starkinfra'
-version '0.0.2'
+version '0.0.3'
 
 sourceCompatibility = 1.8
 
@@ -19,6 +19,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation "junit:junit:4.13.2"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.8.2"
 }
 
 apply plugin: 'maven-publish'
@@ -42,7 +44,7 @@ publishing {
 
             groupId = 'com.starkinfra'
             artifactId = 'sdk'
-            version = '0.0.2'
+            version = '0.0.3'
             from components.java
 
             pom {

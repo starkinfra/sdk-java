@@ -85,7 +85,7 @@ and add it to your project.
 
 ```sh
 dependencies {
-  implementation 'com.starkinfra:sdk:0.0.2'
+  implementation 'com.starkinfra:sdk:0.0.3'
 }
 ```
 
@@ -95,7 +95,7 @@ dependencies {
 <dependency>
   <groupId>com.starkinfra</groupId>
   <artifactId>sdk</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
 </dependency>
 ```
 
