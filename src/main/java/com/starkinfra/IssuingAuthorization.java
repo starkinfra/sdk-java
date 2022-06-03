@@ -192,12 +192,12 @@ public final class IssuingAuthorization extends Resource {
      * <p>
      * Create a single IssuingAuthorization object received from IssuingAuthorization at the informed endpoint.
      * If the provided digital signature does not check out with the StarkInfra public key, a
-     * starkinfra.exception.InvalidSignatureException will be raised.
+     * starkinfra.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
      * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Parsed IssuingAuthorization object
@@ -212,7 +212,7 @@ public final class IssuingAuthorization extends Resource {
      * <p>
      * Create a single IssuingAuthorization object received from IssuingAuthorization at the informed endpoint.
      * If the provided digital signature does not check out with the StarkInfra public key, a
-     * starkinfra.exception.InvalidSignatureException will be raised.
+     * starkinfra.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)

@@ -25,11 +25,11 @@ public final class PixStatement extends Resource {
      * after             [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)
      * before            [string]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)
      * type              [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]
-     * id                [string, default null]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-     * status            [string, default null]: current PixStatement status. ex: "success" or "failed"
-     * transactionCount  [integer, default null]: number of transactions that happened during the day that the PixStatement was requested. ex 11
-     * created           [string, default null]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated           [string, default null]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id                [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
+     * status            [string]: current PixStatement status. ex: "success" or "failed"
+     * transactionCount  [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+     * created           [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated           [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixStatement.class, "PixStatement");
@@ -54,11 +54,11 @@ public final class PixStatement extends Resource {
      * @param after [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)
      * @param before [string]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)
      * @param type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]
-     * @param id [string, default null]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-     * @param status [string, default null]: current PixStatement status. ex: "success" or "failed"
-     * @param transactionCount [integer, default null]: number of transactions that happened during the day that the PixStatement was requested. ex 11
-     * @param created [string, default null]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated [string, default null]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
+     * @param status [string]: current PixStatement status. ex: "success" or "failed"
+     * @param transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+     * @param created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixStatement(String after, String before, String type, String id, String status, Integer transactionCount,
@@ -85,11 +85,11 @@ public final class PixStatement extends Resource {
      * after             [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: (2022-01-01)
      * before            [string]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: (2022-01-01)
      * type              [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]
-     * id                [string, default null]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-     * status            [string, default null]: current PixStatement status. ex: "success" or "failed"
-     * transactionCount  [integer, default null]: number of transactions that happened during the day that the PixStatement was requested. ex 11
-     * created           [string, default null]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated           [string, default null]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id                [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
+     * status            [string]: current PixStatement status. ex: "success" or "failed"
+     * transactionCount  [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+     * created           [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated           [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixStatement(Map<String, Object> data) throws Exception {
@@ -132,7 +132,7 @@ public final class PixStatement extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixStatement object with updated attributes
@@ -168,7 +168,7 @@ public final class PixStatement extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixStatement objects with updated attributes
@@ -202,7 +202,7 @@ public final class PixStatement extends Resource {
      * @param params parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixStatement objects with updated attributes
@@ -251,7 +251,7 @@ public final class PixStatement extends Resource {
      * Use this function instead of query if you want to manually page your statements.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixStatement.Page object:
@@ -290,7 +290,7 @@ public final class PixStatement extends Resource {
      * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixStatement.Page object:
@@ -330,7 +330,7 @@ public final class PixStatement extends Resource {
      * <p>
      * Parameters:
      * @param statement [PixStatement object]: PixStatement object to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixStatement object with updated attributes
@@ -363,7 +363,7 @@ public final class PixStatement extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixStatement csv file

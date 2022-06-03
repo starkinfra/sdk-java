@@ -45,7 +45,7 @@ public final class Parse{
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
      * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if stark.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event object with updated attributes

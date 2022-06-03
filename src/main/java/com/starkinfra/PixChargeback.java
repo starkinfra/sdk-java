@@ -28,17 +28,17 @@ public final class PixChargeback extends Resource {
      * referenceId           [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
      * reason                [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
      * description           [string, default null]: description for the PixChargeback.
-     * analysis              [string, default null]: analysis that led to the result.
-     * bacenId               [string, default null]: central bank's unique UUID that identifies the PixChargeback.
-     * senderBankCode        [string, default null]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
-     * receiverBankCode      [string, default null]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
-     * rejectionReason       [string, default null]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-     * reversalReferenceId   [string, default null]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
-     * id                    [string, default null]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
-     * result                [string, default null]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
-     * status                [string, default null]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * created               [string, default null]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated               [string, default null]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * analysis              [string]: analysis that led to the result.
+     * bacenId               [string]: central bank's unique UUID that identifies the PixChargeback.
+     * senderBankCode        [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
+     * receiverBankCode      [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
+     * rejectionReason       [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
+     * reversalReferenceId   [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
+     * id                    [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
+     * result                [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+     * status                [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * created               [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated               [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixChargeback.class, "PixChargeback");
@@ -73,17 +73,17 @@ public final class PixChargeback extends Resource {
      * @param referenceId           [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
      * @param reason                [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
      * @param description           [string, default null]: description for the PixChargeback.
-     * @param analysis              [string, default null]: analysis that led to the result.
-     * @param bacenId               [string, default null]: central bank's unique UUID that identifies the PixChargeback.
-     * @param senderBankCode        [string, default null]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
-     * @param receiverBankCode      [string, default null]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
-     * @param rejectionReason       [string, default null]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-     * @param reversalReferenceId   [string, default null]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
-     * @param id                    [string, default null]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
-     * @param result                [string, default null]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
-     * @param status                [string, default null]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * @param created               [string, default null]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated               [string, default null]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param analysis              [string]: analysis that led to the result.
+     * @param bacenId               [string]: central bank's unique UUID that identifies the PixChargeback.
+     * @param senderBankCode        [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
+     * @param receiverBankCode      [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
+     * @param rejectionReason       [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
+     * @param reversalReferenceId   [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
+     * @param id                    [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
+     * @param result                [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+     * @param status                [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * @param created               [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated               [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixChargeback(Number amount, String referenceId, String reason, String description, String analysis,
@@ -126,17 +126,17 @@ public final class PixChargeback extends Resource {
      * description [string, default null]: description for the PixChargeback.
      * <p>
      * Attributes (return-only):
-     * analysis [string, default null]: analysis that led to the result.
-     * bacenId [string, default null]: central bank's unique UUID that identifies the PixChargeback.
-     * senderBankCode [string, default null]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
-     * receiverBankCode [string, default null]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
-     * rejectionReason [string, default null]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-     * reversalReferenceId [string, default null]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
-     * id [string, default null]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
-     * result [string, default null]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
-     * status [string, default null]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * created [string, default null]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated [string, default null]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * analysis [string]: analysis that led to the result.
+     * bacenId [string]: central bank's unique UUID that identifies the PixChargeback.
+     * senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
+     * receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
+     * rejectionReason [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
+     * reversalReferenceId [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
+     * id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
+     * result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+     * status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public PixChargeback(Map<String, Object> data) throws Exception {
@@ -186,7 +186,7 @@ public final class PixChargeback extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixChargeback object with updated attributes
@@ -225,7 +225,7 @@ public final class PixChargeback extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixChargeback objects with updated attributes
@@ -262,7 +262,7 @@ public final class PixChargeback extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled"
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixChargeback objects with updated attributes
@@ -314,7 +314,7 @@ public final class PixChargeback extends Resource {
      * Use this function instead of query if you want to manually page your chargebacks.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixChargeback.Page object:
@@ -356,7 +356,7 @@ public final class PixChargeback extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixChargeback.Page object:
@@ -396,7 +396,7 @@ public final class PixChargeback extends Resource {
      * <p>
      * Parameters:
      * @param chargebacks [list of PixChargeback objects or HashMaps]: list of PixChargebacks to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixChargeback object with updated attributes
@@ -441,7 +441,7 @@ public final class PixChargeback extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: PixChargeback unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return canceled PixChargeback object
@@ -476,7 +476,7 @@ public final class PixChargeback extends Resource {
      * Parameters:
      * @param id [string]: PixChargeback id. ex: "5656565656565656"
      * @param result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixChargeback object with updated attributes
@@ -519,7 +519,7 @@ public final class PixChargeback extends Resource {
      * rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
      * reversalReferenceId [string, default null]: return_id of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
      * analysis [string, default null]: description of the analysis that led to the result.
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixChargeback object with updated attributes
@@ -583,7 +583,7 @@ public final class PixChargeback extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixChargeback Log object with updated attributes
@@ -623,7 +623,7 @@ public final class PixChargeback extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixChargeback Log objects with updated attributes
@@ -713,7 +713,7 @@ public final class PixChargeback extends Resource {
          * Use this function instead of query if you want to manually page your chargebacks.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixChargeback.Log.Page object:
@@ -756,7 +756,7 @@ public final class PixChargeback extends Resource {
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * chargebackIds [string, default null]: list of PixChargeback IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixChargeback.Log.Page object:

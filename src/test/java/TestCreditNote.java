@@ -203,6 +203,12 @@ public class TestCreditNote {
         data.put("externalId", UUID.randomUUID().toString());
         data.put("tags", new String[]{"War supply", "Invoice #1234"});
         data.put("rebateAmount", 0);
+        data.put("streetLine1", "Rua ABC");
+        data.put("streetLine2", "Ap 123");
+        data.put("district", "Jardim Paulista");
+        data.put("city", "São Paulo");
+        data.put("stateCode", "SP");
+        data.put("zipCode", "01234-567");
 
         creditNotes.add(new CreditNote(data));
         return creditNotes;
@@ -266,6 +272,12 @@ public class TestCreditNote {
         data.put("externalId", UUID.randomUUID().toString());
         data.put("tags", new String[]{"War supply", "Invoice #1234"});
         data.put("rebateAmount", 0);
+        data.put("streetLine1", "Rua ABC");
+        data.put("streetLine2", "Ap 123");
+        data.put("district", "Jardim Paulista");
+        data.put("city", "São Paulo");
+        data.put("stateCode", "SP");
+        data.put("zipCode", "01234-567");
 
         creditNotes.add(new CreditNote(data));
         return creditNotes;

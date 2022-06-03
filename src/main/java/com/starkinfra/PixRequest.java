@@ -43,13 +43,13 @@ public final class PixRequest extends Resource {
      * cashierType           [string, default null]: Cashier's type. ex: [merchant, other, participant]
      * tags                  [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
      * method                [string]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
-     * id                    [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"
-     * fee                   [integer, default 0: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * status                [string, default null]: current PixRequest status. ex: "registered" or "paid"
-     * flow                  [string, default null]: direction of money flow. ex: "in" or "out"
-     * senderBankCode        [string, default null]: sender's bank institution code in Brazil. ex: "20018183"
-     * created               [string, default null]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated               [string, default null]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id                    [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
+     * fee                   [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
+     * status                [string]: current PixRequest status. ex: "registered" or "paid"
+     * flow                  [string]: direction of money flow. ex: "in" or "out"
+     * senderBankCode        [string]: sender's bank institution code in Brazil. ex: "20018183"
+     * created               [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated               [string]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixRequest.class, "PixRequest");
@@ -117,13 +117,13 @@ public final class PixRequest extends Resource {
      * @param cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
      * @param method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
-     * @param id [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"
-     * @param fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * @param status [string, default null]: current PixRequest status. ex: "registered" or "paid"
-     * @param flow [string, default null]: direction of money flow. ex: "in" or "out"
-     * @param senderBankCode [string, default null]: sender's bank institution code in Brazil. ex: "20018183"
-     * @param created [string, default null]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated [string, default null]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
+     * @param fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
+     * @param status [string]: current PixRequest status. ex: "registered" or "paid"
+     * @param flow [string]: direction of money flow. ex: "in" or "out"
+     * @param senderBankCode [string]: sender's bank institution code in Brazil. ex: "20018183"
+     * @param created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public PixRequest(long amount, String externalId, String senderName, String senderTaxId, String senderBranchCode,
                       String senderAccountNumber, String senderAccountType, String receiverName, String receiverTaxId,
@@ -202,13 +202,13 @@ public final class PixRequest extends Resource {
      * method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
      * <p>
      * Attributes (return-only):
-     * id [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"
-     * fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * status [string, default null]: current PixRequest status. ex: "registered" or "paid"
-     * flow [string, default null]: direction of money flow. ex: "in" or "out"
-     * senderBankCode [string, default null]: sender's bank institution code in Brazil. ex: "20018183"
-     * created [string, default null]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated [string, default null]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
+     * fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
+     * status [string]: current PixRequest status. ex: "registered" or "paid"
+     * flow [string]: direction of money flow. ex: "in" or "out"
+     * senderBankCode [string]: sender's bank institution code in Brazil. ex: "20018183"
+     * created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public PixRequest(Map<String, Object> data) throws Exception {
@@ -273,7 +273,7 @@ public final class PixRequest extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixRequest object with updated attributes
@@ -315,7 +315,7 @@ public final class PixRequest extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixRequest objects with updated attributes
@@ -355,7 +355,7 @@ public final class PixRequest extends Resource {
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
      * externalIds [list of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixRequest objects with updated attributes
@@ -410,7 +410,7 @@ public final class PixRequest extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixRequest.Page object:
@@ -455,7 +455,7 @@ public final class PixRequest extends Resource {
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
      * externalIds [list of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixRequest.Page object:
@@ -495,7 +495,7 @@ public final class PixRequest extends Resource {
      * <p>
      * Parameters:
      * @param requests [list of PixRequest objects or HashMaps]: list of PixRequest objects to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return list of PixRequest objects with updated attributes
@@ -547,7 +547,7 @@ public final class PixRequest extends Resource {
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
      * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Parsed PixRequest object
@@ -610,7 +610,7 @@ public final class PixRequest extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixRequest Log object with updated attributes
@@ -629,8 +629,8 @@ public final class PixRequest extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
@@ -650,7 +650,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixRequest Log objects with updated attributes
@@ -683,12 +683,12 @@ public final class PixRequest extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixRequest Log objects with updated attributes
@@ -741,7 +741,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixRequest.Log.Page object:
@@ -784,7 +784,7 @@ public final class PixRequest extends Resource {
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * reconciliationId [string, default null]: PixRequest reconciliation id to filter retrieved objects. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixRequest.Log.Page object:

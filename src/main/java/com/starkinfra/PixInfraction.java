@@ -26,17 +26,17 @@ public final class PixInfraction extends Resource {
      * referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * type              [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
      * description       [string, default null]: description for any details that can help with the infraction investigation.
-     * creditedBankCode  [string, default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
-     * agent             [string, default null]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-     * analysis          [string, default null]: analysis that led to the result.
-     * bacenId           [string, default null]: central bank's unique UUID that identifies the Pix Infraction.
-     * debitedBankCode   [string, default null]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-     * id                [string, default null]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
-     * reportedBy        [string, default null]: agent that reported the PixInfraction. Options: "debited", "credited".
-     * result            [string, default null]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
-     * status            [string, default null]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * created           [string, default null]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated           [string, default null]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * creditedBankCode  [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * agent             [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
+     * analysis          [string]: analysis that led to the result.
+     * bacenId           [string]: central bank's unique UUID that identifies the Pix Infraction.
+     * debitedBankCode   [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+     * id                [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * reportedBy        [string]: agent that reported the PixInfraction. Options: "debited", "credited".
+     * result            [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
+     * status            [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * created           [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated           [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixInfraction.class, "PixInfraction");
@@ -66,17 +66,17 @@ public final class PixInfraction extends Resource {
      * @param referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * @param type              [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
      * @param description       [string, default null]: description for any details that can help with the infraction investigation.
-     * @param creditedBankCode  [string, default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
-     * @param agent             [string, default null]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-     * @param analysis          [string, default null]: analysis that led to the result.
-     * @param bacenId           [string, default null]: central bank's unique UUID that identifies the Pix Infraction.
-     * @param debitedBankCode   [string, default null]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-     * @param id                [string, default null]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
-     * @param reportedBy        [string, default null]: agent that reported the PixInfraction. Options: "debited", "credited".
-     * @param result            [string, default null]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
-     * @param status            [string, default null]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * @param created           [string, default null]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated           [string, default null]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param creditedBankCode  [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * @param agent             [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
+     * @param analysis          [string]: analysis that led to the result.
+     * @param bacenId           [string]: central bank's unique UUID that identifies the Pix Infraction.
+     * @param debitedBankCode   [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+     * @param id                [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * @param reportedBy        [string]: agent that reported the PixInfraction. Options: "debited", "credited".
+     * @param result            [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
+     * @param status            [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * @param created           [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated           [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixInfraction(String referenceId, String type, String description, String creditedBankCode, String agent,
@@ -111,19 +111,19 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters (optional):
      * description [string, default null]: description for any details that can help with the infraction investigation.
-     * creditedBankCode [string, default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
      * <p>
      * Attributes (return-only):
-     * agent [string, default null]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-     * analysis [string, default null]: analysis that led to the result.
-     * bacenId [string, default null]: central bank's unique UUID that identifies the Pix Infraction.
-     * debitedBankCode [string, default null]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-     * id [string, default null]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
-     * reportedBy [string, default null]: agent that reported the PixInfraction. Options: "debited", "credited".
-     * result [string, default null]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
-     * status [string, default null]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * created [string, default null]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated [string, default null]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
+     * analysis [string]: analysis that led to the result.
+     * bacenId [string]: central bank's unique UUID that identifies the Pix Infraction.
+     * debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+     * creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
+     * result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
+     * status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public PixInfraction(Map<String, Object> data) throws Exception {
@@ -172,7 +172,7 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
@@ -212,7 +212,7 @@ public final class PixInfraction extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixInfraction objects with updated attributes
@@ -250,7 +250,7 @@ public final class PixInfraction extends Resource {
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixInfraction objects with updated attributes
@@ -303,7 +303,7 @@ public final class PixInfraction extends Resource {
      * Use this function instead of query if you want to manually page your infractions.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction.Page object:
@@ -346,7 +346,7 @@ public final class PixInfraction extends Resource {
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction.Page object:
@@ -386,7 +386,7 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * @param infractions [list of PixInfraction objects or HashMaps]: list of PixInfraction objects to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
@@ -431,7 +431,7 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: PixInfraction unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return canceled PixInfraction object
@@ -466,7 +466,7 @@ public final class PixInfraction extends Resource {
      * Parameters:
      * @param id [string]: PixInfraction id. ex: "5656565656565656"
      * @param result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
@@ -505,7 +505,7 @@ public final class PixInfraction extends Resource {
      * @param result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
      * @param patchData map of patch parameters:
      * analysis [string, default null]: analysis that led to the result.
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
@@ -570,7 +570,7 @@ public final class PixInfraction extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixInfraction.Log object with updated attributes
@@ -610,7 +610,7 @@ public final class PixInfraction extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixInfraction.Log objects with updated attributes
@@ -700,7 +700,7 @@ public final class PixInfraction extends Resource {
          * Use this function instead of query if you want to manually page your infractions.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixInfraction.Log.Page object:
@@ -743,7 +743,7 @@ public final class PixInfraction extends Resource {
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * infractionIds [string, default null]: list of PixInfraction IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixInfraction.Log.Page object:

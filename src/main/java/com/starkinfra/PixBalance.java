@@ -19,10 +19,10 @@ public final class PixBalance extends Resource {
      * can be retrieved to see the information available.
      * <p>
      * Attributes (return-only):
-     * id [string, default null]: unique id returned when PixBalance is created. ex: "5656565656565656"
-     * amount [long, default null]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-     * currency [string, default null]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
-     * updated [string, default null]: update datetime for the balance. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id [string]: unique id returned when PixBalance is created. ex: "5656565656565656"
+     * amount [long]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+     * currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
+     * updated [string]: update datetime for the balance. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixBalance.class, "PixBalance");
@@ -40,10 +40,10 @@ public final class PixBalance extends Resource {
      * can be retrieved to see the information available.
      * <p>
      * Attributes (return-only):
-     * @param id [string, default null]: unique id returned when PixBalance is created. ex: "5656565656565656"
-     * @param amount [long, default null]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-     * @param currency [string, default null]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
-     * @param updated [string, default null]: update datetime for the balance. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param id [string]: unique id returned when PixBalance is created. ex: "5656565656565656"
+     * @param amount [long]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+     * @param currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
+     * @param updated [string]: update datetime for the balance. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public PixBalance(long amount, String currency, String updated, String id) {
         super(id);
@@ -58,7 +58,7 @@ public final class PixBalance extends Resource {
      * Receive the PixBalance object linked to your workspace in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixBalance object with updated attributes

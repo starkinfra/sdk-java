@@ -159,7 +159,7 @@ public class Event extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event object with updated attributes
@@ -197,7 +197,7 @@ public class Event extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of Event objects with updated attributes
@@ -233,7 +233,7 @@ public class Event extends Resource {
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * isDelivered [bool, default null]: bool to filter successfully delivered events. ex: true or false
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of Event objects with updated attributes
@@ -284,7 +284,7 @@ public class Event extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event.Page object:
@@ -325,7 +325,7 @@ public class Event extends Resource {
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * isDelivered [bool, default null]: bool to filter successfully delivered events. ex: true or false
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event.Page object:
@@ -365,7 +365,7 @@ public class Event extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: Event unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return deleted Event object
@@ -404,7 +404,7 @@ public class Event extends Resource {
      * @param id [string]: Event unique ids. ex: "5656565656565656"
      * @param patchData map of properties to patch
      * isDelivered [bool]: If True and event hasn't been delivered already, event will be set as delivered. ex: true
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event object with updated attributes
@@ -419,7 +419,7 @@ public class Event extends Resource {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * starkinfra.exception.InvalidSignatureException will be raised.
+     * starkinfra.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [String]: response content from request received at user endpoint (not parsed)
@@ -438,12 +438,12 @@ public class Event extends Resource {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * starkinfra.exception.InvalidSignatureException will be raised.
+     * starkinfra.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [String]: response content from request received at user endpoint (not parsed)
      * @param signature [String]: base-64 digital signature received at response header "Digital-Signature"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event object with updated attributes
@@ -507,7 +507,7 @@ public class Event extends Resource {
          * Receive a single Event.Attempt object previously created by the Stark Infra API by its id
          * <p>
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return Event.Attempt object with updated attributes
@@ -544,7 +544,7 @@ public class Event extends Resource {
          * Receive a generator of Event.Attempt objects previously created in the Stark Infra API
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of Event.Attempt objects with updated attributes
@@ -579,7 +579,7 @@ public class Event extends Resource {
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * webhookIds [list of strings, default null]: list of Webhook ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of Event.Attempt objects with updated attributes
@@ -609,8 +609,8 @@ public class Event extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * webhookIds [list of strings, default null]: list of Webhook ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * <p>
@@ -631,7 +631,7 @@ public class Event extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return Event.Attempt.Page object:
@@ -669,11 +669,11 @@ public class Event extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
          * webhookIds [list of strings, default null]: list of Webhook ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return Event.Attempt.Page object:

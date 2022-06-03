@@ -74,15 +74,15 @@ public final class PixClaim extends Resource {
      * @param name              [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
      * @param taxId             [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
      * @param keyId             [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
-     * @param id                [string, default null]: unique id returned when the PixClaim is created. ex: "5656565656565656"
-     * @param status            [string, default null]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
-     * @param type              [string, default null]: type of Pix Claim. Options: "ownership", "portability".
-     * @param keyType           [string, default null]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
-     * @param agent             [string, default null]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-     * @param bankCode          [string, default null]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
-     * @param claimedBankCode   [string, default null]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
-     * @param created           [string, default null]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated           [string, default null]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param id                [string]: unique id returned when the PixClaim is created. ex: "5656565656565656"
+     * @param status            [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
+     * @param type              [string]: type of Pix Claim. Options: "ownership", "portability".
+     * @param keyType           [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
+     * @param agent             [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
+     * @param bankCode          [string]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
+     * @param claimedBankCode   [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
+     * @param created           [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated           [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixClaim(String accountCreated, String accountNumber, String accountType, String branchCode, String name,
@@ -125,15 +125,15 @@ public final class PixClaim extends Resource {
      * keyId [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
      * <p>
      * Attributes (return-only):
-     * id [string, default null]: unique id returned when the PixClaim is created. ex: "5656565656565656"
-     * status [string, default null]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
-     * type [string, default null]: type of Pix Claim. Options: "ownership", "portability".
-     * keyType [string, default null]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
-     * agent [string, default null]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-     * bankCode [string, default null]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
-     * claimedBankCode [string, default null]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
-     * created [string, default null]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated [string, default null]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656"
+     * status [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
+     * type [string]: type of Pix Claim. Options: "ownership", "portability".
+     * keyType [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
+     * agent [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
+     * bankCode [string]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
+     * claimedBankCode [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
+     * created [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public PixClaim(Map<String, Object> data) throws Exception {
@@ -184,7 +184,7 @@ public final class PixClaim extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixClaim object with updated attributes
@@ -227,7 +227,7 @@ public final class PixClaim extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixClaim objects with updated attributes
@@ -268,7 +268,7 @@ public final class PixClaim extends Resource {
      * agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
      * keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
      * keyId [string, default null]: Filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixClaim objects with updated attributes
@@ -324,7 +324,7 @@ public final class PixClaim extends Resource {
      * Use this function instead of query if you want to manually page your claims.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixClaim.Page object:
@@ -370,7 +370,7 @@ public final class PixClaim extends Resource {
      * agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
      * keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
      * keyId [string, default null]: Filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixClaim.Page object:
@@ -410,7 +410,7 @@ public final class PixClaim extends Resource {
      * <p>
      * Parameters:
      * @param claim [PixClaim object or HashMap]: PixClaim object to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixClaim object with updated attributes
@@ -464,7 +464,7 @@ public final class PixClaim extends Resource {
      * Parameters:
      * @param id [string]: PixClaim id. ex: "5656565656565656"
      * @param status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixClaim object with updated attributes
@@ -484,7 +484,7 @@ public final class PixClaim extends Resource {
      * @param status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
      * @param patchData map of patch parameters
      * reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixClaim object with updated attributes
@@ -554,7 +554,7 @@ public final class PixClaim extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixClaim Log object with updated attributes
@@ -594,7 +594,7 @@ public final class PixClaim extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixClaim Log objects with updated attributes
@@ -684,7 +684,7 @@ public final class PixClaim extends Resource {
          * Use this function instead of query if you want to manually page your claims.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixClaim.Log.Page object:
@@ -727,7 +727,7 @@ public final class PixClaim extends Resource {
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: ["created"] or ["failed"]
          * claimIds [list of strings, default null]: list of PixClaim IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixClaim.Log.Page object:

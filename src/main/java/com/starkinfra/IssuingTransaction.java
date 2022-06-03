@@ -98,7 +98,7 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingTransaction object with updated attributes
@@ -151,7 +151,7 @@ public final class IssuingTransaction extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingTransaction objects with updated attributes
@@ -189,7 +189,7 @@ public final class IssuingTransaction extends Resource {
      * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingTransaction objects with updated attributes
@@ -252,7 +252,7 @@ public final class IssuingTransaction extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * cursor [string, default ""]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on the previous page function call
      * <p>
      * Return:
      * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes
@@ -270,7 +270,7 @@ public final class IssuingTransaction extends Resource {
      * Use this function instead of query if you want to manually page transactions.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes
@@ -296,8 +296,8 @@ public final class IssuingTransaction extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * cursor [string, default ""]: cursor returned on the previous page function call
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * cursor [string, default null]: cursor returned on the previous page function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * IssuingTransaction.Page.transactions: list of IssuingTransaction objects with updated attributes

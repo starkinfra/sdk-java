@@ -15,7 +15,7 @@ public final class IssuingBin extends Resource {
     /**
      * IssuingBin object
      * <p>
-     * The IssuingBin object displays the informations of BINs registered to your Workspace.
+     * The IssuingBin object displays information of registered BINs to your Workspace.
      * They represent a group of cards that begin with the same numbers (BIN) and offer the same product to end customers.
      * <p>
      * Attributes (return-only):
@@ -95,8 +95,8 @@ public final class IssuingBin extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingBin objects with updated attributes
@@ -113,7 +113,7 @@ public final class IssuingBin extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * <p>
      * Return:
      * @return generator of IssuingBin objects with updated attributes
@@ -129,7 +129,7 @@ public final class IssuingBin extends Resource {
      * Receive a generator of IssuingBin objects previously registered in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingBin objects with updated attributes
@@ -170,9 +170,9 @@ public final class IssuingBin extends Resource {
      * <p>
      * Parameters:
      * @param params parameters of the query
-     * cursor [string, default ""]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingBin.Page object:
@@ -196,7 +196,7 @@ public final class IssuingBin extends Resource {
      * <p>
      * Parameters:
      * @param params parameters of the query
-     * cursor [string, default ""]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * <p>
      * Return:
@@ -215,7 +215,7 @@ public final class IssuingBin extends Resource {
      * Receive a list of up to 100 IssuingBin objects previously registered in the Stark Infra API and the cursor to the next page.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingBin.Page object:
