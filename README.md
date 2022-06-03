@@ -336,21 +336,20 @@ To simplify the following SDK examples, we will only use the `query` function, b
 # Testing in Sandbox
 
 Your initial balance is zero. For many operations in Stark Infra, you'll need funds
-in your account, which can be added to your balance by creating a Pix Request.
+in your account, which can be added to your balance by creating a starkbank.Invoice.
 
-In the Sandbox environment, most of the created Pix Requests will be automatically paid,
+In the Sandbox environment, most of the created starkbank.Invoices will be automatically paid,
 so there's nothing else you need to do to add funds to your account. Just create
-a few Pix Request and wait around a bit.
+a few starkbank.Invoices and wait around a bit.
 
-In Production, you (or one of your clients) will need to actually pay this Pix Request
+In Production, you (or one of your clients) will need to actually pay this starkbank.Invoice
 for the value to be credited to your account.
-
 
 # Usage
 
 Here are a few examples on how to use the SDK. If you have any doubts, use the built-in
 `help()` function to get more info on the desired functionality
-(for example: `help(starkinfra.boleto.create)`)
+(for example: `help(starkinfra.IssuingInvoice.create)`)
 
 ## Issuing
 
@@ -1753,10 +1752,16 @@ data.put("signers", signers );
 data.put("externalId", "my-internal-id-8435356");
 data.put("tags", new String[]{"War supply", "Invoice #1234"});
 data.put("rebateAmount", 0);
+data.put("streetLine1", "Rua ABC");
+data.put("streetLine2", "Ap 123");
+data.put("district", "Jardim Paulista");
+data.put("city", "São Paulo");
+data.put("stateCode", "SP");
+data.put("zipCode", "01234-567");
 
 creditNotes.add(new CreditNote(data));
 creditNote = CreditNote.create(creditNotes);
- 
+
 for(CreditNote creditNote : creditNotes) {
     System.out.println(creditNote);
 }

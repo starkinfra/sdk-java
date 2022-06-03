@@ -25,14 +25,14 @@ public final class PixReversal extends Resource {
      * endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * reason     [string]: reason why the PixReversal is being reversed. Options are "bankError", "fraud", "chashierError", "customerreversal"
      * tags       [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
-     * id         [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
-     * returnId   [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * bank_code  [string, default null]: code of the bank institution in Brazil. ex: "20018183"
-     * fee        [integer, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-     * status     [string, default null]: current PixReversal status. ex: "registered" or "paid"
-     * flow       [string, default null]: direction of money flow. ex: "in" or "out"
-     * created    [string, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated    [string, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id         [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
+     * returnId   [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
+     * bank_code  [string]: code of the bank institution in Brazil. ex: "20018183"
+     * fee        [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
+     * status     [string]: current PixReversal status. ex: "registered" or "paid"
+     * flow       [string]: direction of money flow. ex: "in" or "out"
+     * created    [string]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated    [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixReversal.class, "PixReversal");
@@ -65,14 +65,14 @@ public final class PixReversal extends Resource {
      * @param endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * @param reason [string]: reason why the PixReversal is being reversed. Options are "bankError", "fraud", "chashierError", "customerreversal"
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
-     * @param id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
-     * @param returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * @param bankCode [string, default null]: code of the bank institution in Brazil. ex: "20018183"
-     * @param fee [integer, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-     * @param status [string, default null]: current PixReversal status. ex: "registered" or "paid"
-     * @param flow [string, default null]: direction of money flow. ex: "in" or "out"
-     * @param created [string, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated [string, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
+     * @param returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
+     * @param bankCode [string]: code of the bank institution in Brazil. ex: "20018183"
+     * @param fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
+     * @param status [string]: current PixReversal status. ex: "registered" or "paid"
+     * @param flow [string]: direction of money flow. ex: "in" or "out"
+     * @param created [string]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     public PixReversal(long amount, String externalId, String endToEndId, String reason, String[] tags, String id,
@@ -113,14 +113,14 @@ public final class PixReversal extends Resource {
      * tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
      * <p>
      * Attributes (return-only):
-     * id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
-     * returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * bank_code [string, default null]: code of the bank institution in Brazil. ex: "20018183"
-     * fee [integer, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-     * status [string, default null]: current PixReversal status. ex: "registered" or "paid"
-     * flow [string, default null]: direction of money flow. ex: "in" or "out"
-     * created [string, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated [string, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
+     * returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
+     * bank_code [string]: code of the bank institution in Brazil. ex: "20018183"
+     * fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
+     * status [string]: current PixReversal status. ex: "registered" or "paid"
+     * flow [string]: direction of money flow. ex: "in" or "out"
+     * created [string]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the reversal
      */
     public PixReversal(Map<String, Object> data) throws Exception {
@@ -166,7 +166,7 @@ public final class PixReversal extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixReversal object with updated attributes
@@ -208,7 +208,7 @@ public final class PixReversal extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixReversal objects with updated attributes
@@ -248,7 +248,7 @@ public final class PixReversal extends Resource {
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
      * externalIds [list of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixReversal objects with updated attributes
@@ -303,7 +303,7 @@ public final class PixReversal extends Resource {
      * Use this function instead of query if you want to manually page your reversals.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixReversal.Page object:
@@ -348,7 +348,7 @@ public final class PixReversal extends Resource {
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
      * externalIds [list of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixReversal.Page object:
@@ -388,7 +388,7 @@ public final class PixReversal extends Resource {
      * <p>
      * Parameters:
      * @param reversals [list of PixReversal objects or HashMaps]: list of PixReversal objects to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return list of PixReversal objects with updated attributes
@@ -440,7 +440,7 @@ public final class PixReversal extends Resource {
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
      * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Parsed PixReversal object
@@ -503,7 +503,7 @@ public final class PixReversal extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixReversal Log object with updated attributes
@@ -522,8 +522,8 @@ public final class PixReversal extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
@@ -542,7 +542,7 @@ public final class PixReversal extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixReversal Log objects with updated attributes
@@ -575,11 +575,11 @@ public final class PixReversal extends Resource {
          * Parameters:
          * @param params parameters of the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of PixReversal Log objects with updated attributes
@@ -609,8 +609,8 @@ public final class PixReversal extends Resource {
          * @param params parameters of the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
@@ -631,7 +631,7 @@ public final class PixReversal extends Resource {
          * Use this function instead of query if you want to manually page your reversals.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixReversal.Log.Page object:
@@ -673,7 +673,7 @@ public final class PixReversal extends Resource {
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return PixReversal.Log.Page object:

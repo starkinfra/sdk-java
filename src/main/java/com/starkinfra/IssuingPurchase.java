@@ -183,7 +183,6 @@ public final class IssuingPurchase extends Resource {
      * created [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
-
     public IssuingPurchase(Map<String, Object> data) throws Exception {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
@@ -227,7 +226,7 @@ public final class IssuingPurchase extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingPurchase object with updated attributes
@@ -270,7 +269,7 @@ public final class IssuingPurchase extends Resource {
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
@@ -312,7 +311,7 @@ public final class IssuingPurchase extends Resource {
      * Receive a generator of IssuingPurchases objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingPurchase objects with updated attributes
@@ -377,7 +376,7 @@ public final class IssuingPurchase extends Resource {
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * cursor [string, default ""]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on the previous page function call
      * <p>
      * Return:
      * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
@@ -419,9 +418,9 @@ public final class IssuingPurchase extends Resource {
      * ids [list of strings, default []]: purchase IDs
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * cursor [string, default ""]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on the previous page function call
      * <p>
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * Return:
      * IssuingPurchase.Page.purchases: list of IssuingPurchase objects with updated attributes
      * IssuingPurchase.Page.cursor: cursor to retrieve the next page of IssuingPurchase objects
@@ -490,7 +489,7 @@ public final class IssuingPurchase extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingPurchase Log object with updated attributes
@@ -529,7 +528,7 @@ public final class IssuingPurchase extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of IssuingPurchase Log objects with updated attributes
@@ -566,7 +565,7 @@ public final class IssuingPurchase extends Resource {
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: ["approved", "denied"]
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of IssuingPurchase Log objects with updated attributes
@@ -618,7 +617,7 @@ public final class IssuingPurchase extends Resource {
          * Use this function instead of query if you want to manually page your reversals.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingPurchase.Log.Page object:
@@ -660,7 +659,7 @@ public final class IssuingPurchase extends Resource {
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of IssuingPurchase ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingPurchase.Log.Page object:

@@ -48,7 +48,7 @@ public final class PixDomain extends SubResource {
      * Receive a generator of PixDomain objects.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of PixDomain objects with updated attributes

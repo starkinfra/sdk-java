@@ -113,7 +113,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Parameters:
      * @param invoice [IssuingInvoice object]: IssuingInvoice object to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingInvoice object with updated attributes
@@ -146,7 +146,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingInvoice object with updated attributes
@@ -180,11 +180,11 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex:"2020-03-10"
-     * before [date string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * after [date string, default null]: date filter for objects created only after specified date. ex:"2020-03-10"
+     * before [date string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default null]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingInvoices objects with updated attributes
@@ -202,8 +202,8 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-     * before [date string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * after [date string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [date string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default null]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * <p>
@@ -221,7 +221,7 @@ public final class IssuingInvoice extends Resource {
      * Receive a generator of IssuingInvoices objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingInvoices objects with updated attributes
@@ -278,11 +278,11 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
-     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * cursor [string, default ""]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on the previous page function call
      * <p>
      * Return:
      * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
@@ -300,7 +300,7 @@ public final class IssuingInvoice extends Resource {
      * Use this function instead of query if you want to manually page your IssuingInvoices.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
@@ -320,12 +320,12 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
-     * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
+     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. Options: created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * cursor [string, default ""]: cursor returned on the previous page function call
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * cursor [string, default null]: cursor returned on the previous page function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * IssuingInvoice.Page.invoices: list of IssuingInvoice objects with updated attributes
@@ -392,7 +392,7 @@ public final class IssuingInvoice extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingInvoice Log object with updated attributes
@@ -431,7 +431,7 @@ public final class IssuingInvoice extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of IssuingInvoice Log objects with updated attributes
@@ -468,7 +468,7 @@ public final class IssuingInvoice extends Resource {
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types.  Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of IssuingInvoice Log objects with updated attributes
@@ -520,7 +520,7 @@ public final class IssuingInvoice extends Resource {
          * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingInvoice.Log.Page object:
@@ -562,7 +562,7 @@ public final class IssuingInvoice extends Resource {
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingInvoice.Log.Page object:

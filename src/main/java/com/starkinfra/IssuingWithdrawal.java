@@ -24,7 +24,7 @@ public final class IssuingWithdrawal extends Resource {
      * description              [string]: IssuingWithdrawal description. ex: "sending money back"
      * tags                     [list of strings, default []]: list of strings for tagging. ex: ["tony", "stark"]
      * id                       [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
-     * transactionId            [string]: Stark Bank ledger transaction ids linked to this IssuingWithdrawal
+     * transactionId            [string]: Stark Infra ledger transaction ids linked to this IssuingWithdrawal
      * issuingTransactionId     [string]: issuing ledger transaction ids linked to this IssuingWithdrawal
      * updated                  [string]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
      * created                  [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -52,7 +52,7 @@ public final class IssuingWithdrawal extends Resource {
      * @param description [string]: IssuingWithdrawal description. ex: "sending money back"
      * @param tags [list of strings, default []]: list of strings for tagging. ex: ["tony", "stark"]
      * @param id [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
-     * @param transactionId [string]: Stark Bank ledger transaction ids linked to this IssuingWithdrawal
+     * @param transactionId [string]: Stark Infra ledger transaction ids linked to this IssuingWithdrawal
      * @param issuingTransactionId [string]: issuing ledger transaction ids linked to this IssuingWithdrawal
      * @param updated [string]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -86,7 +86,7 @@ public final class IssuingWithdrawal extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
-     * transactionId [string]: Stark Bank ledger transaction ids linked to this IssuingWithdrawal
+     * transactionId [string]: Stark Infra ledger transaction ids linked to this IssuingWithdrawal
      * issuingTransactionId [string]: issuing ledger transaction ids linked to this IssuingWithdrawal
      * updated [string]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -119,7 +119,7 @@ public final class IssuingWithdrawal extends Resource {
      * <p>
      * Parameters:
      * @param withdrawal [IssuingWithdrawal object]: IssuingWithdrawal object to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingWithdrawal object with updated attributes
@@ -152,7 +152,7 @@ public final class IssuingWithdrawal extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingWithdrawal object with updated attributes
@@ -190,7 +190,7 @@ public final class IssuingWithdrawal extends Resource {
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingWithdrawal objects with updated attributes
@@ -227,7 +227,7 @@ public final class IssuingWithdrawal extends Resource {
      * Receive a generator of IssuingWithdrawal objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingWithdrawals objects with updated attributes
@@ -305,7 +305,7 @@ public final class IssuingWithdrawal extends Resource {
      * Use this function instead of query if you want to manually page purchases.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * IssuingWithdrawal.Page.withdrawals: list of IssuingWithdrawal objects with updated attributes
@@ -329,7 +329,7 @@ public final class IssuingWithdrawal extends Resource {
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * IssuingWithdrawal.Page.withdrawals: list of IssuingWithdrawal objects with updated attributes

@@ -44,7 +44,6 @@ public final class IssuingBalance extends Resource {
      * @param currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
      * @param updated  [string]: latest update datetime for the IssuingBalance. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-
     public IssuingBalance(String id, long amount, String currency, String updated){
         super(id);
 
@@ -59,7 +58,7 @@ public final class IssuingBalance extends Resource {
      * Receive the IssuingBalance object linked to your workspace in the Stark Infra API
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingBalance object with updated attributes

@@ -19,8 +19,8 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * name         [string]: card holder name.
-     * taxId        [string]: card holder tax ID
-     * externalId   [string]: card holder external ID
+     * taxId        [string]: card holder tax id.
+     * externalId   [string]: card holder external id.
      * rules        [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
      * tags         [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * id           [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
@@ -46,8 +46,8 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param name          [string]: card holder name.
-     * @param taxId         [string]: card holder tax ID
-     * @param externalId    [string] card holder external ID
+     * @param taxId         [string]: card holder tax id
+     * @param externalId    [string]: card holder external id
      * @param rules         [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
      * @param tags          [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * @param id            [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
@@ -76,8 +76,8 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param data map of properties for the creation of the PixRequest
      * name [string]: card holder name.
-     * taxId [string]: card holder tax ID
-     * externalId [string] card holder external ID
+     * taxId [string]: card holder tax id
+     * externalId [string]: card holder external id
      * <p>
      * Parameters (optional):
      * rules [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
@@ -148,7 +148,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param holders [list of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * Return:
      * @return list of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
@@ -166,7 +166,7 @@ public final class IssuingHolder extends Resource {
      * @param holders [list of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
      * @param params map of parameters
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * Return:
      * @return list of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
@@ -203,7 +203,7 @@ public final class IssuingHolder extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingHolder objects with updated attributes
@@ -220,7 +220,7 @@ public final class IssuingHolder extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of IssuingHolder objects with updated attributes
@@ -326,7 +326,7 @@ public final class IssuingHolder extends Resource {
      * Use this function instead of query if you want to manually page your holders.
      * <p>
      * Parameters:
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingHolder.Page object:
@@ -354,7 +354,7 @@ public final class IssuingHolder extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingHolder.Page object:
@@ -382,7 +382,7 @@ public final class IssuingHolder extends Resource {
      * @param id [string]: object unique id. ex: "5656565656565656"
      * @param params map of parameters
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return IssuingHolder Log object with updated attributes
@@ -417,7 +417,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * Return:
      * @return IssuingHolder object with updated attributes
      * @throws Exception error in the request
@@ -452,7 +452,7 @@ public final class IssuingHolder extends Resource {
      * status [string]: You may block the IssuingHolder by passing 'blocked' in the status
      * name [string]: card holder name.
      * tags [list of strings]: list of strings for tagging
-     * rules [list of IssuingRule or HashMap, default []]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
+     * rules [list of IssuingRules or HashMaps, default []]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
      * <p>
      * Return:
      * @return target IssuingHolder with updated attributes
@@ -474,7 +474,7 @@ public final class IssuingHolder extends Resource {
      * name [string]: card holder name.
      * tags [list of strings]: list of strings for tagging
      * rules [list of dictionaries, default []]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return target IssuingHolder with updated attributes
@@ -507,7 +507,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: IssuingHolder id. ex: "5656565656565656"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return canceled IssuingHolder object
@@ -567,7 +567,7 @@ public final class IssuingHolder extends Resource {
          * <p>
          * Parameters:
          * @param id [string]: object unique id. ex: "5656565656565656"
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingHolder Log object with updated attributes
@@ -607,7 +607,7 @@ public final class IssuingHolder extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of IssuingHolder Log objects with updated attributes
@@ -645,7 +645,7 @@ public final class IssuingHolder extends Resource {
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * holderIds [list of strings, default null]: list of IssuingHolder ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of IssuingHolder Log objects with updated attributes
@@ -698,7 +698,7 @@ public final class IssuingHolder extends Resource {
          * Use this function instead of query if you want to manually page your holders.
          * <p>
          * Parameters:
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingHolder.Log.Page object:
@@ -741,7 +741,7 @@ public final class IssuingHolder extends Resource {
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * holderIds [list of strings, default null]: list of IssuingHolder ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+         * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return IssuingHolder.Log.Page object:

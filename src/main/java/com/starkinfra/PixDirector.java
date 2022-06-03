@@ -132,7 +132,7 @@ public final class PixDirector extends SubResource {
      * <p>
      * Parameters:
      * @param director [PixDirector object or HashMaps]: PixDirector object to be created in the API
-     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixDirector object with updated attributes
