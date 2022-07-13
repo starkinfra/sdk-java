@@ -24,7 +24,6 @@ public final class IssuingBin extends Resource {
      * settlement   [string]: settlement type. ex: "credit"
      * category     [string]: purchase category. ex: "prepaid"
      * client       [string]: client type. ex: "business"
-     * updated      [string]: latest update datetime for the Bin. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     static ClassData data = new ClassData(IssuingBin.class, "IssuingBin");
 
@@ -32,7 +31,6 @@ public final class IssuingBin extends Resource {
     public String settlement;
     public String category;
     public String client;
-    public String updated;
     public String created;
 
     /**
@@ -46,15 +44,13 @@ public final class IssuingBin extends Resource {
      * @param settlement    [string]: settlement type. ex: "credit"
      * @param category      [string]: purchase category. ex: "prepaid"
      * @param client        [string]: client type. ex: "business"
-     * @param updated       [string]: latest update datetime for the Bin. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IssuingBin(String id, String network, String settlement, String category, String client, String updated, String created){
+    public IssuingBin(String id, String network, String settlement, String category, String client, String created){
         super(id);
         this.network = network;
         this.settlement = settlement;
         this.category = category;
         this.client = client;
-        this.updated = updated;
         this.created = created;
     }
 
@@ -69,7 +65,6 @@ public final class IssuingBin extends Resource {
      * settlement [string]: settlement type. ex: "credit"
      * category [string]: purchase category. ex: "prepaid"
      * client [string]: client type. ex: "business"
-     * updated [string]: latest update datetime for the Bin. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public IssuingBin(Map<String, Object> data) throws Exception {
@@ -81,7 +76,6 @@ public final class IssuingBin extends Resource {
         this.category = null;
         this.client = null;
         this.created = null;
-        this.updated = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");

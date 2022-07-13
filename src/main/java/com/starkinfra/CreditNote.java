@@ -1065,8 +1065,6 @@ public final class CreditNote extends Resource {
          * Parameters (optional):
          * due               [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
          * expiration        [number, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
-         * fine              [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
-         * interest          [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
          * tags              [list of strings, default []]: list of strings for tagging
          * descriptions      [list of HashMaps, default []]: list of HashMaps with "key":string and (optional) "value":string pairs
          * Attributes (return-only):
@@ -1074,6 +1072,8 @@ public final class CreditNote extends Resource {
          * taxId             [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
          * pdf               [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
          * link              [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
+         * fine              [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
+         * interest          [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
          * nominalAmount     [number]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
          * fineAmount        [number]: Invoice fine value calculated over nominal_amount. ex: 20000
          * interestAmount    [number]: Invoice interest value calculated over nominal_amount. ex: 10000
@@ -1092,8 +1092,6 @@ public final class CreditNote extends Resource {
         public Number amount;
         public String due;
         public Number expiration;
-        public Number fine;
-        public Number interest;
         public List<CreditNote.Invoice.Discount> discounts;
         public String[] tags;
         public List<CreditNote.Invoice.Description> descriptions;
@@ -1101,6 +1099,8 @@ public final class CreditNote extends Resource {
         public String taxId;
         public String pdf;
         public String link;
+        public Number fine;
+        public Number interest;
         public Number nominalAmount;
         public Number fineAmount;
         public Number interestAmount;
