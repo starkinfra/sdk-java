@@ -27,7 +27,6 @@ public final class PixReversal extends Resource {
      * tags       [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
      * id         [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * returnId   [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * bank_code  [string]: code of the bank institution in Brazil. ex: "20018183"
      * fee        [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
      * status     [string]: current PixReversal status. ex: "registered" or "paid"
      * flow       [string]: direction of money flow. ex: "in" or "out"
@@ -43,7 +42,6 @@ public final class PixReversal extends Resource {
     public String reason;
     public String[] tags;
     public String returnId;
-    public String bankCode;
     public Number fee;
     public String status;
     public String flow;
@@ -67,7 +65,6 @@ public final class PixReversal extends Resource {
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
      * @param id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * @param returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * @param bankCode [string]: code of the bank institution in Brazil. ex: "20018183"
      * @param fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
      * @param status [string]: current PixReversal status. ex: "registered" or "paid"
      * @param flow [string]: direction of money flow. ex: "in" or "out"
@@ -76,7 +73,7 @@ public final class PixReversal extends Resource {
      *
      */
     public PixReversal(long amount, String externalId, String endToEndId, String reason, String[] tags, String id,
-                       String returnId, String bankCode, Number fee, String status, String flow, String created,
+                       String returnId, Number fee, String status, String flow, String created,
                        String updated) {
         super(id);
         this.amount = amount;
@@ -85,7 +82,6 @@ public final class PixReversal extends Resource {
         this.reason = reason;
         this.tags = tags;
         this.returnId = returnId;
-        this.bankCode = bankCode;
         this.fee = fee;
         this.status = status;
         this.flow = flow;
@@ -115,7 +111,6 @@ public final class PixReversal extends Resource {
      * Attributes (return-only):
      * id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-     * bank_code [string]: code of the bank institution in Brazil. ex: "20018183"
      * fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
      * status [string]: current PixReversal status. ex: "registered" or "paid"
      * flow [string]: direction of money flow. ex: "in" or "out"
@@ -132,6 +127,7 @@ public final class PixReversal extends Resource {
         this.endToEndId = (String) dataCopy.remove("endToEndId");
         this.reason = (String) dataCopy.remove("reason");
         this.tags = (String[]) dataCopy.remove("tags");
+        this.returnId = null;
         this.fee = null;
         this.status = null;
         this.flow = null;

@@ -158,16 +158,12 @@ public class TestCreditNote {
         List<HashMap<String, Object>> invoices = new ArrayList<>();
         HashMap<String, Object> invoice = new HashMap<String, Object>() {{
             put("amount", 50000);
-            put("fine", 10);
-            put("interest", 2);
             put("due", getDateString(60));
         }};
         invoices.add(invoice);
 
         invoice = new HashMap<String, Object>() {{
             put("amount", 51000);
-            put("fine", 10);
-            put("interest", 2);
             put("due", getDateString(30));
         }};
         invoices.add(invoice);
@@ -219,8 +215,6 @@ public class TestCreditNote {
         List<CreditNote.Invoice> invoices = new ArrayList<>();
         HashMap<String, Object> invoice = new HashMap<String, Object>() {{
             put("amount", 50000);
-            put("fine", 10);
-            put("interest", 2);
             put("due", getDateString(60));
         }};
         invoices.add(new CreditNote.Invoice(invoice));
@@ -234,8 +228,6 @@ public class TestCreditNote {
 
         invoice = new HashMap<String, Object>() {{
             put("amount", 51000);
-            put("fine", 10);
-            put("interest", 2);
             put("due", getDateString(30));
             put("descriptions", descriptions);
         }};
