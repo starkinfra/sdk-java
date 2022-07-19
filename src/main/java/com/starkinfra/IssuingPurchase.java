@@ -3,6 +3,7 @@ package com.starkinfra;
 
 import com.starkinfra.error.ErrorElement;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.Parse;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.SubResource;
@@ -24,6 +25,7 @@ public final class IssuingPurchase extends Resource {
      * holderName               [string]: card holder name. ex: "Tony Stark"
      * cardId                   [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding               [string]: last 4 digits of the card number. ex: "1234"
+     * purpose                  [string]: purchase purpose. ex: "purchase"
      * amount                   [integer]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * tax                      [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * issuerAmount             [integer]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -34,19 +36,22 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencySymbol   [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode     [string]: merchant category code. ex: "fastFoodRestaurants"
      * merchantCountryCode      [string]: merchant country code. ex: "USA"
-     * merchantFee              [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * acquirerId               [string]: acquirer ID. ex: "5656565656565656"
      * merchantId               [string]: merchant ID. ex: "5656565656565656"
      * merchantName             [string]: merchant name. ex: "Google Cloud Platform"
+     * merchantFee              [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * walletId                 [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode               [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
      * score                    [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
-     * issuingTransactionIds    [list of strings]: list of ledger transaction ids linked to this Purchase
      * endToEndId               [string]: unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
-     * status                   [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * tags                     [list of strings]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
+     * issuingTransactionIds    [list of strings]: list of ledger transaction ids linked to this Purchase
+     * status                   [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * updated                  [string]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * created                  [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
+     * isPartialAllowed         [bool]: true if the the merchant allows partial purchases. ex: False
+     * cardTags                 [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+     * holderTags               [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      */
     static ClassData data = new ClassData(IssuingPurchase.class, "IssuingPurchase");
 
@@ -433,7 +438,170 @@ public final class IssuingPurchase extends Resource {
             issuingPurchases.add((IssuingPurchase) issuingPurchase);
         }
         return new IssuingPurchase.Page(issuingPurchases, page.cursor);
+    }
 
+    /**
+     * Create a single verified IssuingPurchase authorization request from a content string
+     * <p>
+     * Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.
+     * Authorization requests are posted to your registered endpoint whenever IssuingPurchases are received.
+     * They present IssuingPurchase data that must be analyzed and answered with approval or declination.
+     * If the provided digital signature does not check out with the StarkInfra public key, a stark.exception.InvalidSignatureException will be raised.
+     * If the authorization request is not answered within 2 seconds or is not answered with an HTTP status code 200 the IssuingPurchase will go through the pre-configured stand-in validation.
+     * <p>
+     * Parameters:
+     * @param content [string]: response content from request received at user endpoint (not parsed)
+     * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
+     * @param user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+     * <p>
+     * Return:
+     * @return Parsed IssuingPurchase object
+     * @throws Exception error in the request
+     */
+    public static IssuingPurchase parse(String content, String signature, User user) throws Exception{
+        return Parse.parseAndVerify(data, content, signature, user);
+    }
+
+    /**
+     * Create a single verified IssuingPurchase authorization request from a content string
+     * <p>
+     * Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.
+     * Authorization requests are posted to your registered endpoint whenever IssuingPurchases are received.
+     * They present IssuingPurchase data that must be analyzed and answered with approval or declination.
+     * If the provided digital signature does not check out with the StarkInfra public key, a stark.exception.InvalidSignatureException will be raised.
+     * If the authorization request is not answered within 2 seconds or is not answered with an HTTP status code 200 the IssuingPurchase will go through the pre-configured stand-in validation.
+     * <p>
+     * Parameters:
+     * @param content [string]: response content from request received at user endpoint (not parsed)
+     * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
+     * <p>
+     * Return:
+     * @return Parsed IssuingPurchase object
+     * @throws Exception error in the request
+     */
+    public static IssuingPurchase parse(String content, String signature) throws Exception{
+        return Parse.parseAndVerify(data, content, signature, null);
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param amount [integer, default 0]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
+     * @param reason [string, default ""]: denial reason. ex: "other"
+     * @param tags [list of strings, default []]: tags to filter retrieved object. ex: ["tony", "stark"]
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, Number amount, String reason, String[] tags){
+        return "{authorization: {" +
+                "status:" + status + "," +
+                "amount:" + amount + "," +
+                "reason:" + reason + "," +
+                "tags: [" + String.join(", ", tags) + "]" +
+                "}}";
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param amount [integer, default 0]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
+     * @param reason [string, default ""]: denial reason. ex: "other"
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, Number amount, String reason) {
+        return IssuingPurchase.response(status, amount, reason, new String[]{});
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param amount [integer, default 0]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
+     * @param tags [list of strings, default []]: tags to filter retrieved object. ex: ["tony", "stark"]
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, Number amount, String[] tags) {
+        return IssuingPurchase.response(status, amount, "", tags);
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param amount [integer, default 0]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, Number amount){
+        return IssuingPurchase.response(status, amount, "", new String[]{});
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param reason [string, default ""]: denial reason. ex: "other"
+     * @param tags [list of strings, default []]: tags to filter retrieved object. ex: ["tony", "stark"]
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, String reason, String[] tags) {
+        return IssuingPurchase.response(status, 0, reason, tags);
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param reason [string, default ""]: denial reason. ex: "other"
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, String reason) {
+        return IssuingPurchase.response(status, 0, reason, new String[]{});
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * @param tags [list of strings, default []]: tags to filter retrieved object. ex: ["tony", "stark"]
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status, String[] tags){
+        return IssuingPurchase.response(status, 0, "", tags);
+    }
+
+    /**
+     * Helps you respond IssuingPurchase requests.
+     * <p>
+     * Parameters:
+     * @param status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us on the IssuingPurchase request
+     */
+    public static String response(String status){
+        return IssuingPurchase.response(status, 0, "", new String[]{});
     }
 
     public final static class Log extends Resource {
