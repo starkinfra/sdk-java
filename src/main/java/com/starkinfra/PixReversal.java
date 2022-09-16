@@ -462,7 +462,7 @@ public final class PixReversal extends Resource {
      * Helps you respond to a PixReversal authorization
      * <p>
      * Parameters:
-     * @params params to be returned on a PixReversal read.
+     * @param params to be returned on a PixReversal read.
      * status [string]: response to the authorization. ex: "approved" or "denied"
      * reason [string, default None]: denial reason. Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
      * <p>

@@ -522,7 +522,7 @@ public final class IssuingPurchase extends Resource {
      * Helps you respond to a IssuingPurchase authorization request
      * <p>
      * Parameters:
-     * @params params to be returned on a IssuingPurchase read.
+     * @param params to be returned on a IssuingPurchase read.
      * status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
      * amount [integer, default 0]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
      * reason [string, default ""]: denial reason. ex: "other"

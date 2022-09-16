@@ -417,7 +417,7 @@ public final class DynamicBrcode extends Resource {
      * an HTTP status code 200.
      * <p>
      * Parameters (required):
-     * @params params to be returned on a due DynamicBrcode read.
+     * @param params to be returned on a due DynamicBrcode read.
      * version [integer]: integer that represents how many times the BR Code was updated.
      * created [string]: creation datetime in ISO format of the DynamicBrcode. ex: "2020-03-10T10:30:00.000000+00:00"
      * due [string]: requested payment due datetime in ISO format. ex: "2020-03-10T10:30:00.000000+00:00"
@@ -458,7 +458,7 @@ public final class DynamicBrcode extends Resource {
      * The get request must be answered in the following format within 5 seconds and with an HTTP status code 200.
      * <p>
      * Parameters (required):
-     * @params params to be returned on an instant DynamicBrcode read.
+     * @param params to be returned on an instant DynamicBrcode read.
      * version [integer]: integer that represents how many times the BR Code was updated.
      * created [string]: creation datetime of the DynamicBrcode. ex: "2020-03-10T10:30:00.000000+00:00"
      * keyId [string]: receiver's PixKey id. Can be a taxId (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
