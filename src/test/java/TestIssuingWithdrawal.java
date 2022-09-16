@@ -1,13 +1,14 @@
-import com.starkinfra.IssuingWithdrawal;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.starkinfra.Settings;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.IssuingWithdrawal;
+
 import java.util.List;
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class TestIssuingWithdrawal {
@@ -15,6 +16,7 @@ public class TestIssuingWithdrawal {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         IssuingWithdrawal withdrawal = IssuingWithdrawal.create(example());
         System.out.println(withdrawal);
         Assert.assertNotNull(withdrawal.id);
@@ -69,7 +71,7 @@ public class TestIssuingWithdrawal {
 
     static IssuingWithdrawal example() throws Exception{
         HashMap<String, Object> data = new HashMap<>();
-        data.put("amount", 1);
+        data.put("amount", Long.valueOf(1000));
         data.put("externalId", UUID.randomUUID().toString());
         data.put("description", "Sending back");
 

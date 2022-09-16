@@ -25,6 +25,9 @@ public class EndToEndId {
             }
             params.put("cursor", page.cursor);
         }
+        if (endToEndId == null){
+            throw new Error("There are no inbound PixRequests to be reversed");
+        }
         return endToEndId;
     }
 }

@@ -1,43 +1,46 @@
 package com.starkinfra;
 
-import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.SubResource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
+import com.starkinfra.error.ErrorElement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class PixClaim extends Resource {
     /**
      * PixClaim object
      * <p>
-     * PixClaims intend to transfer a PixKey from one account to another.
+     * A Pix Claim is a request to transfer a Pix Key from an account hosted at another
+     * Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.
+     * <p>
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * accountCreated    [string]: opening Date or DateTime for the account claiming the PixKey. ex: "2022-01-01".
-     * accountNumber     [string]: number of the account claiming the PixKey. ex: "76543".
-     * accountType       [string]: type of the account claiming the PixKey. Options: "checking", "savings", "salary" or "payment".
-     * branchCode        [string]: branch code of the account claiming the PixKey. ex: 1234".
-     * name              [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
-     * taxId             [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
-     * keyId             [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
-     * id                [string, default null]: unique id returned when the PixClaim is created. ex: "5656565656565656"
-     * status            [string, default null]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
-     * type              [string, default null]: type of Pix Claim. Options: "ownership", "portability".
-     * keyType           [string, default null]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
-     * agent             [string, default null]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-     * bankCode          [string, default null]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
-     * claimedBankCode   [string, default null]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
-     * created           [string, default null]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated           [string, default null]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * accountCreated [string]: opening Date or DateTime for the account claiming the PixKey. ex: "2022-01-01".
+     * accountNumber [string]: number of the account claiming the PixKey. ex: "76543".
+     * accountType [string]: type of the account claiming the PixKey. Options: "checking", "savings", "salary" or "payment".
+     * branchCode [string]: branch code of the account claiming the PixKey. ex: 1234".
+     * name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
+     * taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
+     * keyId [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * id [string, default null]: unique id returned when the PixClaim is created. ex: "5656565656565656"
+     * status [string, default null]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
+     * type [string, default null]: type of Pix Claim. Options: "ownership", "portability".
+     * keyType [string, default null]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * claimerBankCode [string], bank code of the Pix participant that created the PixClaim. ex: "20018183".
+     * claimedBankCode [string, default null]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
+     * created [string, default null]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string, default null]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixClaim.class, "PixClaim");
@@ -49,11 +52,12 @@ public final class PixClaim extends Resource {
     public String name;
     public String taxId;
     public String keyId;
+    public String[] tags;
     public String status;
     public String type;
     public String keyType;
-    public String agent;
-    public String bankCode;
+    public String flow;
+    public String claimerBankCode;
     public String claimedBankCode;
     public String created;
     public String updated;
@@ -61,33 +65,36 @@ public final class PixClaim extends Resource {
     /**
      * PixClaim object
      * <p>
-     * PixClaims intend to transfer a PixKey from one account to another.
+     * A Pix Claim is a request to transfer a Pix Key from an account hosted at another
+     * Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.
+     * <p>
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
-     * to the Stark Infra API and returns the list of created objects.
+     * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * @param accountCreated    [string]: opening Date or DateTime for the account claiming the PixKey. ex: "2022-01-01".
-     * @param accountNumber     [string]: number of the account claiming the PixKey. ex: "76543".
-     * @param accountType       [string]: type of the account claiming the PixKey. Options: "checking", "savings", "salary" or "payment".
-     * @param branchCode        [string]: branch code of the account claiming the PixKey. ex: 1234".
-     * @param name              [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
-     * @param taxId             [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
-     * @param keyId             [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
-     * @param id                [string]: unique id returned when the PixClaim is created. ex: "5656565656565656"
-     * @param status            [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
-     * @param type              [string]: type of Pix Claim. Options: "ownership", "portability".
-     * @param keyType           [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
-     * @param agent             [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-     * @param bankCode          [string]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
-     * @param claimedBankCode   [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
-     * @param created           [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated           [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
-     *
+     * @param accountCreated [string]: opening Date or DateTime for the account claiming the PixKey. ex: "2022-01-01".
+     * @param accountNumber [string]: number of the account claiming the PixKey. ex: "76543".
+     * @param accountType [string]: type of the account claiming the PixKey. Options: "checking", "savings", "salary" or "payment".
+     * @param branchCode [string]: branch code of the account claiming the PixKey. ex: 1234".
+     * @param name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
+     * @param taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
+     * @param keyId [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
+     * @param tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * @param id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656"
+     * @param status [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
+     * @param type [string]: type of Pix Claim. Options: "ownership", "portability".
+     * @param keyType [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
+     * @param flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * @param claimerBankCode [string], bank code of the Pix participant that created the PixClaim. ex: "20018183".
+     * @param claimedBankCode [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
+     * @param created [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public PixClaim(String accountCreated, String accountNumber, String accountType, String branchCode, String name,
-                    String taxId, String keyId, String id, String status, String type, String keyType, String agent,
-                    String bankCode, String claimedBankCode, String created, String updated) {
+                    String taxId, String keyId, String[] tags, String id, String status, String type, String keyType,
+                    String claimerBankCode, String flow, String claimedBankCode, String created, String updated
+    ) {
         super(id);
         this.accountCreated = accountCreated;
         this.accountNumber = accountNumber;
@@ -96,11 +103,12 @@ public final class PixClaim extends Resource {
         this.name = name;
         this.taxId = taxId;
         this.keyId = keyId;
+        this.tags = tags;
         this.status = status;
         this.type = type;
         this.keyType = keyType;
-        this.agent = agent;
-        this.bankCode = bankCode;
+        this.flow = flow;
+        this.claimerBankCode = claimerBankCode;
         this.claimedBankCode = claimedBankCode;
         this.created = created;
         this.updated = updated;
@@ -109,10 +117,12 @@ public final class PixClaim extends Resource {
     /**
      * PixClaim object
      * <p>
-     * PixClaims intend to transfer a PixKey from one account to another.
+     * A Pix Claim is a request to transfer a Pix Key from an account hosted at another
+     * Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.
+     * <p>
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
-     * to the Stark Infra API and returns the list of created objects.
+     * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
      * @param data map of properties for the creation of the PixClaim
@@ -124,13 +134,16 @@ public final class PixClaim extends Resource {
      * taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
      * keyId [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
      * <p>
+     * Parameters (optional):
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656"
      * status [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
      * type [string]: type of Pix Claim. Options: "ownership", "portability".
      * keyType [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
-     * agent [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-     * bankCode [string]: bank code of the account linked to the PixKey being claimed. ex: "20018183".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * claimerBankCode [string], bank code of the Pix participant that created the PixClaim. ex: "20018183".
      * claimedBankCode [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
      * created [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -147,11 +160,12 @@ public final class PixClaim extends Resource {
         this.name = (String) dataCopy.remove("name");
         this.taxId = (String) dataCopy.remove("taxId");
         this.keyId = (String) dataCopy.remove("keyId");
+        this.tags = (String[]) dataCopy.remove("tags");
         this.status = null;
         this.type = null;
         this.keyType = null;
-        this.agent = null;
-        this.bankCode = null;
+        this.flow = null;
+        this.claimerBankCode = null;
         this.claimedBankCode = null;
         this.created = null;
         this.updated = null;
@@ -208,9 +222,10 @@ public final class PixClaim extends Resource {
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
-     * agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
      * keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
      * keyId [string, default null]: filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Return:
      * @return generator of PixClaim objects with updated attributes
@@ -258,16 +273,17 @@ public final class PixClaim extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of properties for the creation of the PixClaim
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
-     * agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
      * keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
      * keyId [string, default null]: Filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -295,17 +311,18 @@ public final class PixClaim extends Resource {
      * Use this function instead of query if you want to manually page your claims.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
-     * agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
      * keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
      * keyId [string, default null]: Filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Return:
      * @return PixClaim.Page object:
@@ -359,17 +376,18 @@ public final class PixClaim extends Resource {
      * Use this function instead of query if you want to manually page your claims.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
-     * agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
      * keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
      * keyId [string, default null]: Filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -388,9 +406,10 @@ public final class PixClaim extends Resource {
     }
 
     /**
-     * Create a PixClaim
+     * Create a PixClaim object
      * <p>
-     * Send a PixClaim object for creation in the Stark Infra API
+     * Create a Pix Claim to request the transfer of a Pix Key from an account
+     * hosted at another Pix participant to an account under your bank code.
      * <p>
      * Parameters:
      * @param claim [PixClaim object or HashMap]: PixClaim object to be created in the API
@@ -404,9 +423,10 @@ public final class PixClaim extends Resource {
     }
 
     /**
-     * Create a PixClaim
+     * Create a PixClaim object
      * <p>
-     * Send a PixClaim object for creation in the Stark Infra API
+     * Create a Pix Claim to request the transfer of a Pix Key from an account
+     * hosted at another Pix participant to an account under your bank code.
      * <p>
      * Parameters:
      * @param claim [PixClaim object or HashMap]: PixClaim object to be created in the API
@@ -501,7 +521,6 @@ public final class PixClaim extends Resource {
         public String created;
         public String type;
         public List<ErrorElement> errors;
-        public String agent;
         public String reason;
         public PixClaim claim;
 
@@ -517,16 +536,14 @@ public final class PixClaim extends Resource {
          * @param created [string]: creation datetime for the log. ex: "2020-03-29"
          * @param type [string]: type of the PixClaim event which triggered the log creation. ex: "registered" or "paid"
          * @param errors [list of strings]: list of errors linked to this PixClaim event
-         * @param agent [string]: agent that performed the modification in the PixClaim. Options: "claimer", "claimed".
          * @param reason [string]: reason for the modification in the PixClaim. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".
          * @param claim [PixClaim]: PixClaim entity to which the log refers to.
          */
-        public Log(String created, String type, List<ErrorElement> errors, String agent, String reason, PixClaim claim, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, String reason, PixClaim claim, String id) {
             super(id);
             this.created = created;
             this.type = type;
             this.errors = errors;
-            this.agent = agent;
             this.reason = reason;
             this.claim = claim;
         }
@@ -571,7 +588,7 @@ public final class PixClaim extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
@@ -625,7 +642,7 @@ public final class PixClaim extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
@@ -658,10 +675,10 @@ public final class PixClaim extends Resource {
          * Use this function instead of query if you want to manually page your claims.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: ["created"] or ["failed"]
@@ -719,10 +736,10 @@ public final class PixClaim extends Resource {
          * Use this function instead of query if you want to manually page your claims.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: ["created"] or ["failed"]

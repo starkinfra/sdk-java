@@ -1,14 +1,14 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.SubResource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class Webhook extends Resource {
@@ -96,7 +96,7 @@ public final class Webhook extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * <p>
      * Return:
@@ -145,7 +145,7 @@ public final class Webhook extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
@@ -174,7 +174,7 @@ public final class Webhook extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
      * <p>
@@ -230,7 +230,7 @@ public final class Webhook extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call

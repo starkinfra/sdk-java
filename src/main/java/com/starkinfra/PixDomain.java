@@ -4,8 +4,8 @@ import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.SubResource;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 
 
 public final class PixDomain extends SubResource {
@@ -16,7 +16,7 @@ public final class PixDomain extends SubResource {
      * SPI participants able to issue dynamic QR Codes.
      * They are used in the validation of the URLs contained in the dynamic QR Codes.
      * <p>
-     * Attributes (return-only):
+     * Parameters:
      * certificates [list of Certificate objects]: list of Certificate objects of the SPI participant in PEM format.
      * name [string]: current active domain (URL) of the SPI participant.
      *
@@ -33,7 +33,7 @@ public final class PixDomain extends SubResource {
      * SPI participants able to issue dynamic QR Codes.
      * They are used in the validation of the URLs contained in the dynamic QR Codes.
      * <p>
-     * Attributes (return-only):
+     * Parameters:
      * @param certificates [list of Certificate objects]: list of Certificate objects of the SPI participant in PEM format.
      * @param name  [string]: current active domain (URL) of the SPI participant.
      */
@@ -71,7 +71,7 @@ public final class PixDomain extends SubResource {
         return PixDomain.query(null);
     }
 
-    /***
+    /**
      * PixDomain Certificate object
      * <p>
      * The Certificate object displays the certificate's content from a specific domain.

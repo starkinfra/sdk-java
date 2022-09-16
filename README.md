@@ -22,7 +22,7 @@ This SDK version is compatible with the Stark Infra API v2.
 - [Testing in Sandbox](#testing-in-sandbox)
 - [Usage](#usage)
   - [Issuing](#issuing)
-    - [BINs](#query-issuingbins): View available sub-issuer BINs (a.k.a. card number ranges)
+    - [Products](#query-issuinproducts): View available sub-issuer Products (a.k.a. card number ranges)
     - [Holders](#create-issuingholders): Manage card holders
     - [Cards](#create-issuingcards): Create virtual and/or physical cards
     - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
@@ -30,6 +30,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
     - [Balance](#get-your-issuingbalance): View your issuing balance
     - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
+    - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
   - [Pix](#Pix)
     - [PixRequests](#create-pixrequests): Create Pix transactions
     - [PixReversals](#create-pixreversals): Reverse Pix transactions
@@ -41,11 +42,15 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
     - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
     - [PixDomain](#query-pixdomains): View registered SPI participants certificates
+    - [StaticBrcode](#create-staticbrcodes): Create static Pix BR Codes
+    - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR Codes
+    - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
   - [Credit Note](#credit-note)
     - [CreditNote](#create-creditnotes): Create credit notes
+  - [Credit Preview](#credit-preview)
+    - [CreditNotePreview](#create-creditnotepreviews): Create credit note previews
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
-  - [Webhook Events](#webhook-events):
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
 - [Handling errors](#handling-errors)
@@ -353,18 +358,18 @@ Here are a few examples on how to use the SDK. If you have any doubts, use the b
 
 ## Issuing
 
-### Query IssuingBins
+### Query IssuingProducts
 
-To take a look at the sub-issuer BINs available to you, just run the following:
+To take a look at the sub-issuer Products available to you, just run the following:
 
 ```java
 import com.starkinfra.*;
 import com.starkinfra.utils.Generator;
 
-Generator<IssuingBin> bins = IssuingBin.query();
+Generator<IssuingProduct> products = IssuingProduct.query();
 
-for (IssuingBin bin : bins) {
-    System.out.println(bin);
+for (IssuingProduct product : products) {
+    System.out.println(product);
 }
 ```
 
@@ -394,7 +399,6 @@ rule.put("interval", "day");
 rule.put("amount", 100000);
 rule.put("currencyCode", "USD");
 data.put("rules", new IssuingRule[]{new IssuingRule(rule)});
-
 holders.add(new IssuingHolder(data));
 
 holders = IssuingHolder.create(holders);
@@ -454,6 +458,7 @@ import java.util.HashMap;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingHolder.Log> logs = IssuingHolder.Log.query(params);
 
 for (IssuingHolder.Log log : logs) {
@@ -479,7 +484,6 @@ You can issue cards with specific spending rules.
 
 ```java
 import com.starkinfra.*;
-import com.starkinfra.utils.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -496,7 +500,6 @@ rule.put("interval", "week");
 rule.put("amount", 50000);
 rule.put("currencyCode", "USD");
 data.put("rules", new IssuingRule[]{new IssuingRule(rule)});
-
 cards.add(new IssuingHolder(data));
 
 cards = IssuingCard.create(cards);
@@ -518,6 +521,7 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingCard> cards = IssuingCard.query(params);
 
 for (IssuingCard card : cards) {
@@ -547,13 +551,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-Map<String, Object> patchData = new HashMap<>();;
-patchData.put("status", "blocked");
+Map<String, Object> data = new HashMap<>();;
+data.put("status", "blocked");
 
-IssuingCard card = IssuingCard.update("5760854205136896", patchData);
+IssuingCard card = IssuingCard.update("5760854205136896", data);
 
 System.out.println(card);
-```
+``` 
 
 ### Cancel an IssuingCard
 
@@ -569,7 +573,7 @@ System.out.println(card);
 
 ### Query IssuingCard logs
 
-Logs are pretty important to understand the life cycle of a card.
+Logs are pretty important to understand the life cycles of a card.
 
 ```java
 import com.starkinfra.*;
@@ -579,6 +583,7 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingCard.Log> logs = IssuingCard.Log.query(params);
 
 for (IssuingCard.Log log : logs) {
@@ -600,7 +605,8 @@ System.out.println(log);
 
 ### Process Purchase authorizations
 
-It's easy to process Authorizations delivered to your endpoint.
+It's easy to process purchase authorizations delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
 If you do not approve or decline the authorization within 2 seconds, the authorization will be denied.
 
 ```java
@@ -611,7 +617,7 @@ Request request = Listener.listen(); // this is the method you made to get the e
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
 
-IssuingAuthorization event = IssuingAuthorization.parse(content, valid_signature);
+IssuingAuthorization event = IssuingAuthorization.parse(content, validSignature);
 
 sendResponse(  // you should also implement this method
     IssuingAuthorization.response(  // this optional method just helps you build the response JSON
@@ -644,6 +650,7 @@ import java.util.List;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingPurchase> purchases = IssuingPurchase.query(params);
 
 for (IssuingPurchase purchase : purchases) {
@@ -665,7 +672,7 @@ System.out.println(purchase);
 
 ### Query IssuingPurchase logs
 
-Logs are pretty important to understand the life cycle of a purchase.
+Logs are pretty important to understand the life cycles of a purchase.
 
 ```java
 import com.starkinfra.*;
@@ -675,6 +682,7 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingPurchase.Log> logs = IssuingPurchase.Log.query(params);
 
 for (IssuingPurchase.Log log : logs) {
@@ -714,8 +722,6 @@ invoice = IssuingInvoice.create(invoice);
 System.out.println(invoice);
 ```
 
-**Note**: Instead of using IssuingInvoice objects, you can also pass each element in dictionary format
-
 ### Get an IssuingInvoice
 
 After its creation, information on an invoice may be retrieved by its id.
@@ -741,6 +747,7 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingInvoice> invoices = IssuingInvoice.query(params);
 
 for (IssuingInvoice invoice : invoices) {
@@ -750,7 +757,7 @@ for (IssuingInvoice invoice : invoices) {
 
 ### Query IssuingInvoice logs
 
-Logs are pretty important to understand the life cycle of an invoice.
+Logs are pretty important to understand the life cycles of an invoice.
 
 ```java
 import com.starkinfra.*;
@@ -760,11 +767,24 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingInvoice.Log> logs = Issuinginvoice.Log.query(params);
 
 for (Issuinginvoice.Log log : logs) {
     System.out.println(log);
 }
+```
+
+### Get an IssuingInvoice log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingInvoice.Log log = IssuingInvoice.Log.get("4899337284878336");
+
+System.out.println(log);
 ```
 
 ### Create IssuingWithdrawals
@@ -788,8 +808,6 @@ withdrawal = IssuingWithdrawal.create(withdrawal);
 
 System.out.println(withdrawal);
 ```
-
-**Note**: Instead of using IssuingWithdrawal objects, you can also pass each element in dictionary format
 
 ### Get an IssuingWithdrawal
 
@@ -815,6 +833,7 @@ import com.starkinfra.utils.Generator;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
+
 Generator<IssuingWithdrawal> withdrawals = IssuingWithdrawal.query(params);
 
 for (IssuingWithdrawal withdrawal : withdrawals){
@@ -850,6 +869,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
 params.put("after", "2020-01-01");
 params.put("before", "2020-03-01")
+        
 Generator<IssuingWithdrawal> transactions = IssuingWithdrawal.query(params);
 
 for (IssuingWithdrawal transaction : transactions) {
@@ -868,6 +888,71 @@ IssuingTransaction transaction = IssuingTransaction.get("5396424728510464");
 
 System.out.println(transaction);
 ```
+### Issuing Enums
+
+#### Query MerchantCategories
+
+You can query any merchant categories using this resource.
+You may also use MerchantCategories to define specific category filters in IssuingRules.
+Either codes (which represents specific MCCs) or types (code groups) will be accepted as filters.
+
+```java
+import com.starkinfra.utils.Generator;
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("search", "food");
+
+Generator<MerchantCategory> categories = MerchantCategory.query(params);
+
+for (MerchantCategory category : categories) {
+    System.out.println(category);
+}
+```
+
+#### Query MerchantCountries
+
+You can query any merchant countries using this resource.
+You may also use MerchantCountries to define specific country filters in IssuingRules.
+
+```java
+import com.starkinfra.utils.Generator;
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("search", "brazil");
+
+Generator<MerchantCountry> countries = MerchantCountry.query(params);
+
+for (MerchantCountry country : countries) {
+    System.out.println(country);
+}
+```
+
+#### Query CardMethods
+
+You can query available card methods using this resource.
+You may also use CardMethods to define specific purchase method filters in IssuingRules.
+
+```java
+import com.starkinfra.utils.Generator;
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("search", "token");
+
+Generator<CardMethod> methods = CardMethod.query(params);
+
+for (CardMethod method : methods) {
+    System.out.println(method);
+}
+```
 
 ## Pix
 
@@ -877,7 +962,7 @@ You can create a Pix request to transfer money from one of your users to anyone 
 
 ```java
 import com.starkinfra.*;
-import com.starkinfra.utils.*;
+import com.starkinfra.utils.EndToEndId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -907,8 +992,6 @@ for (PixRequest request : requests){
 }
 ```
 
-**Note**: Instead of using PixRequest objects, you can also pass each element in dictionary format
-
 ### Query PixRequests
 
 You can query multiple Pix requests according to filters.
@@ -925,6 +1008,7 @@ params.put("before", "2020-04-30");
 params.put("status", new String[] {"success", "failed"});
 params.put("tags", new String[] {"iron", "suit"});
 params.put("endToEndIds", new String[] {"E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX55ghz77r"});
+
 Generator<PixRequest> requests = PixRequest.query(params);
 
 for (PixRequest request : requests){
@@ -976,6 +1060,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<PixRequest.Log> logs = PixRequest.Log.query(params);
 
 for (PixRequest.Log log : logs){
@@ -1036,6 +1121,7 @@ params.put("before", "2020-04-30");
 params.put("status", new String[] {"success", "failed"});
 params.put("tags", new String[] {"iron", "suit"});
 params.put("returnIds", new String[] {"D20018183202202030109X3OoBHG74wo", "D20018183202202030109X3OoBHGxc22"});
+
 Generator<PixReversal> reversals = PixReversal.query(params);
 
 for (PixReversal reversal : reversals){
@@ -1045,7 +1131,8 @@ for (PixReversal reversal : reversals){
 
 ### Get a PixReversal
 
-After its creation, information on a Pix reversal may be retrieved by its id. Its status indicates whether it has been paid.
+After its creation, information on a Pix reversal may be retrieved by its id. 
+Its status indicates whether it has been paid.
 
 ```java
 import com.starkinfra.*;
@@ -1087,6 +1174,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<PixReversal.Log> logs = PixReversal.Log.query(params);
 
 for (PixReversal.Log log : logs){
@@ -1132,7 +1220,6 @@ HashMap<String, Object> data = new HashMap<>();
 data.put("after", "2022-01-01");
 data.put("before", "2022-01-01");
 data.put("type", "transaction");
-
 PixStatement statement = new PixStatement(data);
 
 statement = PixStatement.create(statement);
@@ -1151,6 +1238,7 @@ import java.util.HashMap;
 HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("ids", new String[] {"5155966664310784", "4225966664310755"});
+
 Generator<PixStatement> statements = PixStatement.query(params);
 
 for (PixStatement statement : statements){
@@ -1229,6 +1317,7 @@ params.put("after", "2022-01-20");
 params.put("before", "2022-01-24");
 params.put("status", "registered");
 params.put("ids", new String[] {"+5541998989898", "+5541999999999"});
+        
 Generator<PixKey> keys = PixKey.query(params);
 
 for (PixKey key : keys){
@@ -1250,6 +1339,22 @@ PixKey key = PixKey.get("+5541998989898", "012.345.678-90", EndToEndId.create("2
 System.out.println(key);
 ```
 
+### Update a PixKey
+
+Update the account information linked to a Pix Key.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("name", "Jamie Lannister");
+
+PixKey key = PixKey.update("+5541998989898", "branchTransfer", patchData);
+
+System.out.println(key);
+```
+
 ### Cancel a PixKey
 
 To cancel a Pix key, run:
@@ -1258,21 +1363,6 @@ To cancel a Pix key, run:
 import com.starkinfra.*;
 
 PixKey key = PixKey.cancel("+5541998989898");
-
-System.out.println(key);
-```
-
-### Update a PixKey
-
-Update the account information or the holder's name linked to a Pix key.
-
-```java
-import com.starkinfra.*;
-import java.util.HashMap;
-
-HashMap<String, Object> patchData = new HashMap<>();
-patchData.put("name", "Jamie Lannister");
-PixKey key = PixKey.update("+5541998989898", "branchTransfer", patchData);
 
 System.out.println(key);
 ```
@@ -1290,6 +1380,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<PixKey.Log> logs = PixKey.Log.query(params);
 
 for (PixKey.Log log : logs){
@@ -1311,7 +1402,7 @@ System.out.println(log);
 
 ### Create a PixClaim
 
-You can create a Pix claim to request the transfer of a Pix key to another account:
+You can create a Pix claim to request the transfer of a Pix key from an account on another bank to one of your accounts:
 
 ```java
 import com.starkinfra.*;
@@ -1349,6 +1440,7 @@ params.put("after", "2022-01-20");
 params.put("before", "2022-01-24");
 params.put("status", "registered");
 params.put("keyId", "+5541998989898");
+
 Generator<PixClaim> claims = PixClaim.query(params);
 
 for (PixClaim claim : claims){
@@ -1370,9 +1462,10 @@ System.out.println(claim);
 
 ### Update a PixClaim
 
-A Pix Claim can be patched for two distinct reasons. A received Pix Claim can be confirmed or canceled by patching
-its status. A received Pix Claim must be confirmed by the donor to be completed. Ownership Pix Claims can only be
-canceled by the donor if the reason is fraud. A sent Pix Claim can also be canceled by patching its status.
+A Pix Claim can be confirmed or canceled by patching its status.
+A received Pix Claim must be confirmed by the donor to be completed.
+Ownership Pix Claims can only be canceled by the donor if the reason is "fraud".
+A sent Pix Claim can also be canceled.
 
 ```java
 import com.starkinfra.*;
@@ -1396,6 +1489,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<PixClaim.Log> logs = PixClaim.Log.query(params);
 
 for (PixClaim.Log log : logs){
@@ -1479,6 +1573,7 @@ params.put("after", "2022-01-20");
 params.put("before", "2022-01-24");
 params.put("status", "delivered");
 params.put("ids", new String[] {"5155165527080960", "4023146587080960"});
+
 Generator<PixInfraction> infractions = PixInfraction.query(params);
 
 for (PixInfraction infraction : infractions){
@@ -1498,28 +1593,28 @@ PixInfraction infraction = PixInfraction.get("5155165527080960");
 System.out.println(infraction);
 ```
 
-### Cancel a PixInfraction
-
-To cancel a Pix infraction, run:
-
-```java
-import com.starkinfra.*;
-
-PixInfraction infraction = PixInfraction.cancel("5155165527080960");
-
-System.out.println(infraction);
-```
-
 ### Update a PixInfraction
 
-A received Pix Infraction can be confirmed or declined by patching its status. After a Pix Infraction
-is Patched, its status changes to closed.
+A received Pix Infraction can be confirmed or declined by patching its status.
+After a Pix Infraction is patched, its status changes to closed.
 
 ```java
 import com.starkinfra.*;
 import java.util.HashMap;
 
 PixInfraction infraction = PixInfraction.update("5155165527080960", "agreed");
+
+System.out.println(infraction);
+```
+
+### Cancel a PixInfraction
+
+Cancel a specific Pix Infraction using its id.
+
+```java
+import com.starkinfra.*;
+
+PixInfraction infraction = PixInfraction.cancel("5155165527080960");
 
 System.out.println(infraction);
 ```
@@ -1537,6 +1632,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<PixInfraction.Log> logs = PixInfraction.Log.query(params);
 
 for (PixInfraction.Log log : logs){
@@ -1597,6 +1693,7 @@ params.put("after", "2022-01-20");
 params.put("before", "2022-01-24");
 params.put("status", "delivered");
 params.put("ids", new String[] {"5155165527080960", "4023146587080960"});
+
 Generator<PixChargeback> chargebacks = PixChargeback.query(params);
 
 for (PixChargeback chargeback : chargebacks){
@@ -1616,6 +1713,24 @@ PixChargeback chargeback = PixChargeback.get("5155165527080960");
 System.out.println(chargeback);
 ```
 
+### Update a PixChargeback
+
+A received Pix Chargeback can be confirmed or declined by patching its status. After a Pix Chargeback
+is Patched, its status changes to closed.
+
+```java
+import com.starkinfra.PixChargeback;
+import com.starkinfra.utils.ReturnId;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("reversalReferenceId", ReturnId.create("20018183"));
+
+PixChargeback chargeback = PixChargeback.update("5155165527080960", "accepted", patchData);
+
+System.out.println(chargeback);
+```
+
 ### Cancel a PixChargeback
 
 To cancel a Pix chargeback, run:
@@ -1624,23 +1739,6 @@ To cancel a Pix chargeback, run:
 import com.starkinfra.*;
 
 PixChargeback chargeback = PixChargeback.cancel("5155165527080960");
-
-System.out.println(chargeback);
-```
-
-### Update a PixChargeback
-
-A received Pix Chargeback can be confirmed or declined by patching its status. After a Pix Chargeback
-is Patched, its status changes to closed.
-
-```java
-import com.starkinfra.*;
-import com.starkinfra.utils.*;
-import java.util.HashMap;
-
-HashMap<String, Object> patchData = new HashMap<>();
-patchData.put("reversalReferenceId", ReturnId.create("20018183"));
-PixChargeback chargeback = PixChargeback.update("5155165527080960", "accepted", patchData);
 
 System.out.println(chargeback);
 ```
@@ -1658,6 +1756,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 10);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<PixChargeback.Log> logs = PixChargeback.Log.query(params);
 
 for (PixChargeback.Log log : logs){
@@ -1679,7 +1778,8 @@ System.out.println(log);
 
 ### Query PixDomains
 
-You can query for certificates of registered SPI participants able to issue dynamic QR Codes.
+Here you can list all Pix Domains registered at the Brazilian Central Bank. The Pix Domain object displays the domain
+name and the QR Code domain certificates of registered Pix participants able to issue dynamic QR Codes.
 
 ```java
 import com.starkinfra.*;
@@ -1687,9 +1787,253 @@ import com.starkinfra.utils.Generator;
 import java.util.HashMap;
 
 Generator<PixDomain> domains = PixDomain.query();
+
 for (PixDomain domain : domains) {
     System.out.println(domain);
 }
+```
+
+### Create StaticBrcodes
+
+StaticBrcodes store account information via a BR Code or an image (QR code)
+that represents a PixKey and a few extra fixed parameters, such as an amount
+and a reconciliation ID. They can easily be used to receive Pix transactions.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<StaticBrcode> brcodes = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("name", "Tony Stark");
+data.put("keyId", "+5541999999999");
+data.put("city", "Rio de Janeiro");
+data.put("amount", 1000);
+brcodes.add(new StaticBrcode(data));
+
+brcodes = StaticBrcode.create(brcodes);
+
+for (StaticBrcode brcode : brcodes){
+    System.out.println(brcode);
+}
+```
+
+### Query StaticBrcodes
+
+You can query multiple StaticBrcodes according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+params.put("uuid", "147642085d6a4142a3c6c248ce69f3e3");
+
+Generator<StaticBrcode> brcodes = StaticBrcode.query(params);
+
+for (StaticBrcode brcode : brcodes) {
+    System.out.println(brcode);
+}
+```
+
+### Get a StaticBrcodes
+
+After its creation, information on a StaticBrcode may be retrieved by its UUID.
+
+```java
+import com.starkinfra.*;
+
+StaticBrcode brcode = StaticBrcode.get("91a6b9f33291446e9750ef20a2457633");
+
+System.out.println(brcode);
+```
+
+### Create DynamicBrcodes
+
+BR Codes store information represented by Pix QR Codes, which are used to send
+or receive Pix transactions in a convenient way.
+DynamicBrcodes represent charges with information that can change at any time,
+since all data needed for the payment is requested dynamically to an URL stored
+in the BR Code. Stark Infra will receive the GET request and forward it to your
+registered endpoint with a GET request containing the UUID of the BR Code for
+identification.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<DynamicBrcode> brcodes = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("name", "Tony Stark");
+data.put("city", "Rio de Janeiro");
+data.put("externalId", "my-internal-id-12333456");
+data.put("type", "instant");
+brcodes.add(new DynamicBrcode(data));
+
+brcodes = DynamicBrcode.create(brcodes);
+
+for (DynamicBrcode brcode : brcodes) {
+    System.out.println(brcode);
+}
+```
+
+### Query DynamicBrcodes
+
+You can query multiple DynamicBrcodes according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("uuid", "58397397ed0c4a158ecc37cde6e0fd2a");
+
+Generator<DynamicBrcode> brcodes = DynamicBrcode.query(params);
+
+for (DynamicBrcode brcode : brcodes) {
+    System.out.println(brcode);
+}
+```
+
+### Get a DynamicBrcode
+
+After its creation, information on a DynamicBrcode may be retrieved by its UUID.
+
+```java
+import com.starkinfra.*;
+
+DynamicBrcode brcode = DynamicBrcode.get("7cc0974604224a63a67764b921836e67");
+
+System.out.println(brcode);
+```
+
+### Verify a DynamicBrcode read
+
+When a DynamicBrcode is read by your user, a GET request will be made to the your regitered URL to
+retrieve additional information needed to complete the transaction.
+Use this method to verify the authenticity of a GET request received at your registered endpoint.
+If the provided digital signature does not check out with the StarkInfra public key, a com.starkinfra.error.InvalidSignatureError will be raised.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is the method you made to listen to BR Code reads made to your registered endpoint
+
+String uuid = DynamicBrcode.verify(
+    getUuid(request.url); // you should implement this method to extract the uuid from the request's URL
+    request.headers.get("Digital-Signature")
+);
+```
+
+### Answer to a Due DynamicBrcode read
+
+When a Due DynamicBrcode is read by your user, a GET request containing
+the BR Code UUID will be made to your registered URL to retrieve additional
+information needed to complete the transaction.
+
+The GET request must be answered in the following format within 5 seconds
+and with an HTTP status code 200.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is the method you made to get the events posted to your webhook
+
+String uuid = DynamicBrcode.verify(
+    getUuid(request.url); // you should implement this method to extract the uuid from the request's URL 
+    request.headers.get("Digital-Signature")
+);
+
+Invoice invoice = getMyInvoice(uuid) # you should implement this method to get the information of the BR Code from its uuid
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("version", invoice.version);
+data.put("created", invoice.created);
+data.put("due", invoice.due);
+data.put("keyId", invoice.keyId);
+data.put("status", invoice.status);
+data.put("reconciliationId", invoice.reconciliationId);
+data.put("amount", invoice.amount);
+data.put("senderName", invoice.senderName);
+data.put("receiverName", invoice.receiverName);
+data.put("receiverStreetLine", invoice.receiverStreetLine);
+data.put("receiverCity", invoice.receiverCity);
+data.put("receiverStateCode", invoice.receiverStateCode);
+data.put("receiverZipCode", invoice.receiverZipCode);
+        
+Response Sender.sendResponse(  # you should also implement this method to respond the read request
+    String responseDues = DynamicBrcode.responseDue(data);
+);
+```
+
+### Answer to an Instant DynamicBrcode read
+
+When an Instant DynamicBrcode is read by your user, a GET request
+containing the BR Code UUID will be made to your registered URL to retrieve
+additional information needed to complete the transaction.
+
+The get request must be answered in the following format
+within 5 seconds and with an HTTP status code 200.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is the method you made to listen to BR Code reads made to your registered endpoint
+
+String uuid = DynamicBrcode.verify(
+    getUuid(request.url); // you should implement this method to extract the uuid from the request's URL 
+    request.headers.get("Digital-Signature")
+);
+
+Invoice invoice = getMyInvoice(uuid) // you should implement this method to get the information of the BR Code from its uuid
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("version", invoice.version);
+data.put("created", invoice.created);
+data.put("keyId", invoice.keyId);
+data.put("status", invoice.status);
+data.put("reconciliationId", invoice.reconciliationId);
+data.put("amount", invoice.amount);
+data.put("cashierType", invoice.cashierType);
+data.put("cashierBankCode", invoice.cashierBankCode);
+data.put("cashAmount", invoice.cashAmount);        
+        
+Response Sender.sendResponse(  // you should also implement this method to respond the read request
+    String responseInstant = DynamicBrcode.responseInstant(data);
+);
+
+```
+
+## Create BrcodePreviews
+
+You can create BrcodePreviews to preview BR Codes before paying them.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<BrcodePreview> previews = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("id", "00020126360014br.gov.bcb.pix0114+5541999999999520400005303986540510.005802BR5910Tony Stark6014Rio de Janeiro62070503***630466B7");
+previews.add(new BrcodePreview(data));
+
+List<BrcodePreview> previews = (List<BrcodePreview>) BrcodePreview.create(previews);
+
+System.out.println(previews);
 ```
 
 ## Credit Note
@@ -1758,16 +2102,14 @@ data.put("district", "Jardim Paulista");
 data.put("city", "São Paulo");
 data.put("stateCode", "SP");
 data.put("zipCode", "01234-567");
-
 creditNotes.add(new CreditNote(data));
+
 creditNote = CreditNote.create(creditNotes);
 
 for(CreditNote creditNote : creditNotes) {
     System.out.println(creditNote);
 }
 ```
-
-**Note**: Instead of using CreditNote objects, you can also pass each element in dictionary format
 
 ### Query CreditNotes
 
@@ -1782,6 +2124,7 @@ params.put("limit", 3);
 params.put("status", "success");
 params.put("after", "2019-04-01");
 params.put("before", "2030-04-30");
+
 Generator<CreditNote> creditNotes = CreditNote.query(params);
 
 for (CreditNote creditNote : creditNotes) {
@@ -1825,6 +2168,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("limit", 3);
 params.put("after", "2019-04-01");
 params.put("before", "2030-04-30");
+
 Generator<CreditNote.Log> logs = CreditNote.Log.query(params);
 
 for (CreditNote.Log log : logs) {
@@ -1844,6 +2188,75 @@ CreditNote.Log log = CreditNote.Log.get("5155165527080960");
 System.out.println(log);
 ```
 
+## Credit Preview
+
+You can preview different types of credits before creating them (Currently we only have CreditNote previews):
+
+### Create CreditNotePreviews
+
+You can preview Credit Notes before the creation CCB contracts:
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> sac = new HashMap<>();
+sac.put("type", "sac");
+sac.put("nominalAmount", 100000);
+sac.put("scheduled", getDateString(3));
+sac.put("taxId", "20.018.183/0001-80");
+sac.put("initialDue", getDateString(4));
+sac.put("nominalInterest", 15);
+sac.put("count", 1);
+sac.put("interval", "year");
+sac.put("rebateAmount", 0);
+
+HashMap<String, Object> price = new HashMap<>();
+price.put("type", "price");
+price.put("nominalAmount", 10000null);
+price.put("scheduled", getDateString(3));
+price.put("taxId", "20.018.183/0001-80");
+price.put("initialDue", getDateString(4));
+price.put("nominalInterest", 15);
+price.put("count", 15);
+price.put("interval", "year");
+price.put("rebateAmount", 900);
+
+HashMap<String, Object> american = new HashMap<>();
+american.put("type", "american");
+american.put("nominalAmount", 100000);
+american.put("scheduled", getDateString(3));
+american.put("taxId", "20.018.183/0001-80");
+american.put("initialDue", getDateString(4));
+american.put("nominalInterest", 15);
+american.put("count", 5);
+american.put("interval", "month");
+american.put("rebateAmount", 900);
+
+HashMap<String, Object> bullet = new HashMap<>();
+bullet.put("type", "bullet");
+bullet.put("nominalAmount", 100000);
+bullet.put("scheduled", getDateString(3));
+bullet.put("taxId", "20.018.183/0001-80");
+bullet.put("initialDue", getDateString(4));
+bullet.put("nominalInterest", 15);
+bullet.put("rebateAmount", 0);
+
+List<CreditPreview> previews = new ArrayList<>();
+previews.add(new CreditPreview(new CreditNotePreview(sac), "credit-note"));
+previews.add(new CreditPreview(new CreditNotePreview(price), "credit-note"));
+previews.add(new CreditPreview(new CreditNotePreview(american),"credit-note"));
+previews.add(new CreditPreview(new CreditNotePreview(bullet), "credit-note"));
+
+List<CreditPreview> previews = CreditPreview.create(previews);
+
+for (CreditPreview preview : previews){
+    System.out.println(preview);
+}
+```
+
 ## Webhook
 
 ### Create a webhook subscription
@@ -1861,6 +2274,7 @@ data.put("subscriptions", new String[]{
     "issuing-card", "issuing-invoice", "issuing-purchase",
     "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction"
 });
+
 Webhook webhook = Webhook.create(data);
 
 System.out.println(webhook);
@@ -1905,13 +2319,10 @@ Webhook webhook = Webhook.delete("6699417864241152");
 System.out.println(webhook);
 ```
 
-## Webhook events
-
 ### Process webhook events
 
-It's easy to process events delivered to your Webhook endpoint. Remember to pass the
-signature header so the SDK can make sure it was really StarkInfra that sent you
-the event.
+It's easy to process events delivered to your Webhook endpoint.
+Remember to pass the signature header so the SDK can make sure it was StarkInfra that sent you the event.
 
 ```java
 import com.starkinfra.*;
@@ -1961,6 +2372,7 @@ HashMap<String, Object> params = new HashMap<>();
 params.put("isDelivered", false);
 params.put("after", "2020-04-01");
 params.put("before", "2020-04-30");
+
 Generator<Event> events = Event.query(params);
 
 for (Event event : events){
@@ -2004,6 +2416,7 @@ import java.util.HashMap;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("isDelivered", true);
+
 Event event = Event.update("5824181711142912", params);
 
 System.out.println(event);
@@ -2019,6 +2432,7 @@ import java.util.HashMap;
 
 HashMap<String, Object> params = new HashMap<>();
 params.put("after", "2020-03-20");
+
 Generator<Event.Attempt> attempts = Event.Attempt.query(params);
 
 for (Event.Attempt attempt: attempts) {
@@ -2080,13 +2494,13 @@ is already rushing in to fix the mistake and get you back up to speed.
 __UnknownError__ will be raised if a request encounters an error that is
 neither __InputErrors__ nor an __InternalServerError__, such as connectivity problems.
 
-__InvalidSignatureError__ will be raised specifically by starkinfra.event.parse()
+__InvalidSignatureError__ will be raised specifically by starkinfra.Event.parse()
 when the provided content and signature do not check out with the Stark Infra public
 key.
 
 # Help and Feedback
 
-If you have any questions about our SDK, just send us an email.
+If you have any questions about our SDK, just email us.
 We will respond you quickly, pinky promise. We are here to help you integrate with us ASAP.
 We also love feedback, so don't be shy about sharing your thoughts with us.
 

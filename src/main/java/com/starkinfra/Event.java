@@ -1,17 +1,37 @@
 package com.starkinfra;
-import com.starkinfra.utils.*;
+
 
 import com.google.gson.*;
+import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Parse;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
 
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.lang.reflect.Type;
 
 
 public class Event extends Resource {
+    /**
+     * Webhook Event object
+     * <p>
+     * An Event is the notification received from the subscription to the Webhook.
+     * Events cannot be created, but may be retrieved from the Stark Infra API to
+     * list all generated updates on entities.
+     * <p>
+     * Parameters:
+     * id [string]: unique id returned when the event is created. ex: "5656565656565656"
+     * created [string]: creation datetime for the notification event. ex: "2020-03-10 10:30:00.000000+00:00"
+     * isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
+     * subscription [string]: service that triggered this event. ex: "pix-key", "infraction-report"
+     * workspaceId [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
+     *
+     */
     static ClassData data = new ClassData(Event.class, "Event");
 
     public String created;
@@ -26,14 +46,15 @@ public class Event extends Resource {
      * Events cannot be created, but may be retrieved from the Stark Infra API to
      * list all generated updates on entities.
      * <p>
-     * Attributes:
+     * Parameters:
      * @param id [string]: unique id returned when the event is created. ex: "5656565656565656"
      * @param created [string]: creation datetime for the notification event. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
      * @param subscription [string]: service that triggered this event. ex: "pix-key", "infraction-report"
      * @param workspaceId [string]: ID of the Workspace that generated this event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
      */
-    public Event(String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+    public Event(String created, Boolean isDelivered, String subscription, String id, String workspaceId
+    ) {
         super(id);
         this.created = created;
         this.isDelivered = isDelivered;
@@ -57,6 +78,18 @@ public class Event extends Resource {
             if (stringType.contains("pix-reversal")) {
                 return context.deserialize(jsonObject, PixReversalEvent.class);
             }
+            if (stringType.contains("pix-chargeback")) {
+                return context.deserialize(jsonObject, PixChargebackEvent.class);
+            }
+            if (stringType.contains("pix-infraction")) {
+                return context.deserialize(jsonObject, PixInfractionEvent.class);
+            }
+            if (stringType.contains("pix-key")) {
+                return context.deserialize(jsonObject, PixKeyEvent.class);
+            }
+            if (stringType.contains("pix-claim")) {
+                return context.deserialize(jsonObject, PixClaimEvent.class);
+            }
             if (stringType.contains("issuing-card")) {
                 return context.deserialize(jsonObject, IssuingCardEvent.class);
             }
@@ -77,6 +110,42 @@ public class Event extends Resource {
         public PixRequest.Log log;
 
         public PixRequestEvent(PixRequest.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixKeyEvent extends Event {
+        public PixKey.Log log;
+
+        public PixKeyEvent(PixKey.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixClaimEvent extends Event {
+        public PixClaim.Log log;
+
+        public PixClaimEvent(PixClaim.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixInfractionEvent extends Event {
+        public PixInfraction.Log log;
+
+        public PixInfractionEvent(PixInfraction.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixChargebackEvent extends Event {
+        public PixChargeback.Log log;
+
+        public PixChargebackEvent(PixChargeback.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
             super(created, isDelivered, subscription, id, workspaceId);
             this.log = log;
         }
@@ -176,7 +245,7 @@ public class Event extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -228,7 +297,7 @@ public class Event extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -260,7 +329,7 @@ public class Event extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
@@ -319,7 +388,7 @@ public class Event extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
@@ -469,7 +538,7 @@ public class Event extends Resource {
          * When an Event delivery fails, an event attempt will be registered.
          * It carries information meant to help you debug event reception issues.
          * <p>
-         * Attributes:
+         * Parameters:
          * @param id [string]: unique id that identifies the delivery attempt. ex: "5656565656565656"
          * @param code [string]: delivery error code. ex: badHttpStatus, badConnection, timeout
          * @param message [string]: delivery error full description. ex: "HTTP POST request returned status 404"
@@ -523,7 +592,7 @@ public class Event extends Resource {
          * Receive a generator of Event.Attempt objects previously created in the Stark Infra API
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -573,7 +642,7 @@ public class Event extends Resource {
          * Receive a generator of Event.Attempt objects previously created in the Stark Infra API
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -606,7 +675,7 @@ public class Event extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
@@ -666,7 +735,7 @@ public class Event extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"

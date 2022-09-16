@@ -1,12 +1,18 @@
 package com.starkinfra;
 
+import com.google.gson.Gson;
+import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Parse;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.Objects;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class PixRequest extends Resource {
@@ -15,46 +21,47 @@ public final class PixRequest extends Resource {
      * <p>
      * PixRequests are used to receive or send instant payments to accounts
      * hosted in any Pix participant.
+     * <p>
      * When you initialize a PixRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * amount                [long]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)
-     * externalId            [string]: url safe string that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
-     * senderName            [string]: sender's full name. ex: "Anthony Edward Stark"
-     * senderTaxId           [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-     * senderBranchCode      [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
-     * senderAccountNumber   [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"
-     * senderAccountType     [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
-     * receiverName          [string]: receiver's full name. ex: "Anthony Edward Stark"
-     * receiverTaxId         [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-     * receiverBankCode      [string]: receiver's bank institution code in Brazil. ex: "20018183"
+     * amount [Long]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)
+     * externalId [string]: url safe string that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
+     * senderName [string]: sender's full name. ex: "Anthony Edward Stark"
+     * senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+     * senderBranchCode [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
+     * senderAccountNumber [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"
+     * senderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * receiverName [string]: receiver's full name. ex: "Anthony Edward Stark"
+     * receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+     * receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183"
      * receiverAccountNumber [string]: receiver's bank account number. Use '-' before the verifier digit. ex: "876543-2"
-     * receiverBranchCode    [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
-     * receiverAccountType   [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
-     * endToEndId            [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
-     * receiverKeyId         [string, default null]: receiver's dict key. ex: "20.018.183/0001-80"
-     * description           [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
-     * reconciliationId      [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
-     * initiatorTaxId        [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"
-     * cashAmount            [Long, default 0]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)
-     * cashierBankCode       [string, default null]: Cashier's bank code. ex: "00000000"
-     * cashierType           [string, default null]: Cashier's type. ex: [merchant, other, participant]
-     * tags                  [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
-     * method                [string]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
-     * id                    [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
-     * fee                   [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * status                [string]: current PixRequest status. ex: "registered" or "paid"
-     * flow                  [string]: direction of money flow. ex: "in" or "out"
-     * senderBankCode        [string]: sender's bank institution code in Brazil. ex: "20018183"
-     * created               [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated               [string]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * receiverBranchCode [string]: receiver's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
+     * receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
+     * receiverKeyId [string, default null]: receiver's dict key. ex: "20.018.183/0001-80"
+     * description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
+     * reconciliationId [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
+     * initiatorTaxId [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"
+     * cashAmount [Long, default 0]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)
+     * cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
+     * cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
+     * tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
+     * method [string]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
+     * fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
+     * status [string]: current PixRequest status. ex: "registered" or "paid"
+     * flow [string]: direction of money flow. ex: "in" or "out"
+     * senderBankCode [string]: sender's bank institution code in Brazil. ex: "20018183"
+     * created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixRequest.class, "PixRequest");
 
-    public long amount;
+    public Long amount;
     public String externalId;
     public String senderName;
     public String senderTaxId;
@@ -77,7 +84,7 @@ public final class PixRequest extends Resource {
     public String cashierType;
     public String[] tags;
     public String method;
-    public Number fee;
+    public Integer fee;
     public String status;
     public String flow;
     public String senderBankCode;
@@ -89,12 +96,13 @@ public final class PixRequest extends Resource {
      * <p>
      * PixRequests are used to receive or send instant payments to accounts
      * hosted in any Pix participant.
+     * <p>
      * When you initialize a PixRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * @param amount [long]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)
+     * @param amount [Long]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)
      * @param externalId [string]: url safe string that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
      * @param senderName [string]: sender's full name. ex: "Anthony Edward Stark"
      * @param senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
@@ -125,13 +133,14 @@ public final class PixRequest extends Resource {
      * @param created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public PixRequest(long amount, String externalId, String senderName, String senderTaxId, String senderBranchCode,
+    public PixRequest(Long amount, String externalId, String senderName, String senderTaxId, String senderBranchCode,
                       String senderAccountNumber, String senderAccountType, String receiverName, String receiverTaxId,
                       String receiverBankCode, String receiverAccountNumber, String receiverBranchCode,
                       String receiverAccountType, String endToEndId, String receiverKeyId, String description,
                       String reconciliationId, String initiatorTaxId, Long cashAmount, String cashierBankCode,
-                      String cashierType, String[] tags, String method, Number fee, String status, String flow,
-                      String senderBankCode, String created, String updated, String id) {
+                      String cashierType, String[] tags, String method, Integer fee, String status, String flow,
+                      String senderBankCode, String created, String updated, String id
+    ) {
         super(id);
         this.amount = amount;
         this.externalId = externalId;
@@ -169,13 +178,14 @@ public final class PixRequest extends Resource {
      * <p>
      * PixRequests are used to receive or send instant payments to accounts
      * hosted in any Pix participant.
+     * <p>
      * When you initialize a PixRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
-     * Parameters:
+     * Parameters (required):
      * @param data map of properties for the creation of the PixRequest
-     * amount [long]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)
+     * amount [Long]: amount in cents to be transferred. ex: 11234 (= R$ 112.34)
      * externalId [string]: url safe string that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
      * senderName [string]: sender's full name. ex: "Anthony Edward Stark"
      * senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
@@ -346,7 +356,7 @@ public final class PixRequest extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of properties for the creation of the PixRequest
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
      * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
@@ -382,9 +392,9 @@ public final class PixRequest extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
      * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
      * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
@@ -445,9 +455,9 @@ public final class PixRequest extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-29"
      * before [string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-30"
      * status [list of strings, default null]: filter for status of retrieved objects. ex: "success" or "failed"
@@ -533,8 +543,14 @@ public final class PixRequest extends Resource {
      * @return Parsed PixRequest object
      * @throws Exception error in the request
      */
-    public static<T extends Resource> T parse(String content, String signature) throws Exception {
-        return Parse.parseAndVerify(data, content, signature, Settings.user);
+    public static<T extends PixRequest> T parse(String content, String signature) throws Exception {
+        T Resource = Parse.parseAndVerify(data, content, signature, Settings.user);
+
+        Resource.fee = Resource.fee != null ? Resource.fee : 0;
+        Resource.tags = Resource.tags != null ? Resource.tags : new String[]{};
+        Resource.externalId = !Objects.equals(Resource.externalId, "") ? Resource.externalId : "";
+        Resource.description = !Objects.equals(Resource.description, "") ? Resource.description : "";
+        return Resource;
     }
 
     /**
@@ -555,6 +571,22 @@ public final class PixRequest extends Resource {
      */
     public static Event parse(String content, String signature, User user) throws Exception {
         return Parse.parseAndVerify(data ,content, signature, user);
+    }
+
+    /**
+     * Helps you respond to a PixRequest authorization
+     * <p>
+     * Parameters:
+     * @params params to be returned on a PixRequest read.
+     * status [string]: response to the authorization. ex: "approved" or "denied"
+     * reason [string, default None]: denial reason. Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
+     * <p>
+     * Return:
+     * @return Dumped JSON string that must be returned to us
+     */
+    public static String response(Map<String, Object> params){
+        Gson gson = new Gson();
+        return gson.toJson(params);
     }
 
     public final static class Log extends Resource {
@@ -627,7 +659,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -681,7 +713,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -715,7 +747,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
@@ -776,7 +808,7 @@ public final class PixRequest extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"

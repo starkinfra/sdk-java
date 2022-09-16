@@ -1,10 +1,10 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.SubResource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.SubResource;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 
 public final class PixDirector extends SubResource {
@@ -12,20 +12,21 @@ public final class PixDirector extends SubResource {
      * PixDirector object
      * <p>
      * Mandatory data that must be registered within the Central Bank for emergency contact purposes.
+     * <p>
      * When you initialize a PixDirector, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * name       [string]: name of the PixDirector. ex: "Edward Stark".
-     * taxId      [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
-     * phone      [string]: phone of the PixDirector. ex: "+551198989898"
-     * email      [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
-     * password   [string]: password of the PixDirector. ex: "12345678"
-     * teamEmail  [string]: team email. ex: "aria.stark@starkbank.com"
+     * name [string]: name of the PixDirector. ex: "Edward Stark".
+     * taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
+     * phone [string]: phone of the PixDirector. ex: "+551198989898"
+     * email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
+     * password [string]: password of the PixDirector. ex: "12345678"
+     * teamEmail [string]: team email. ex: "aria.stark@starkbank.com"
      * teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
-     * id         [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
-     * status     [string]: current PixDirector status. ex: "success"
+     * status [string]: current PixDirector status. ex: "success"
+     *
      */
     static ClassData data = new ClassData(PixDirector.class, "PixDirector");
 
@@ -41,6 +42,8 @@ public final class PixDirector extends SubResource {
     /**
      * PixDirector object
      * <p>
+     * Mandatory data that must be registered within the Central Bank for emergency contact purposes.
+     * <p>
      * When you initialize a PixDirector, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -53,12 +56,11 @@ public final class PixDirector extends SubResource {
      * @param password [string]: password of the PixDirector. ex: "12345678"
      * @param teamEmail [string]: team email. ex: "aria.stark@starkbank.com"
      * @param teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
-     * @param id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
      * @param status [string]: current PixDirector status. ex: "success"
-     *
      */
     public PixDirector(String name, String taxId, String phone, String email, String password, String teamEmail,
-                       String[] teamPhones, String id, String status) {
+                       String[] teamPhones, String status
+    ) {
         this.name = name;
         this.taxId = taxId;
         this.phone = phone;
@@ -73,23 +75,23 @@ public final class PixDirector extends SubResource {
      * PixDirector object
      * <p>
      * Mandatory data that must be registered within the Central Bank for emergency contact purposes.
+     * <p>
      * When you initialize a PixDirector, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
      * @param data map of properties for the creation of the PixDirector
-     * name       [string]: name of the PixDirector. ex: "Edward Stark".
-     * taxId      [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
-     * phone      [string]: phone of the PixDirector. ex: "+551198989898"
-     * email      [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
-     * password   [string]: password of the PixDirector. ex: "12345678"
-     * teamEmail  [string]: team email. ex: "aria.stark@starkbank.com"
+     * name [string]: name of the PixDirector. ex: "Edward Stark".
+     * taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
+     * phone [string]: phone of the PixDirector. ex: "+551198989898"
+     * email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
+     * password [string]: password of the PixDirector. ex: "12345678"
+     * teamEmail [string]: team email. ex: "aria.stark@starkbank.com"
      * teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
      * <p>
      * Attributes (return-only):
-     * status     [string]: current PixDirector status. ex: "success"
-     * id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
+     * status [string]: current PixDirector status. ex: "success"
      * @throws Exception error in the request
      */
     public PixDirector(Map<String, Object> data) throws Exception {

@@ -1,14 +1,15 @@
-import com.starkinfra.utils.Generator;
+import org.junit.Test;
+import org.junit.Assert;
+
 import com.starkinfra.PixClaim;
 import com.starkinfra.Settings;
-import org.junit.Assert;
-import org.junit.Test;
+import com.starkinfra.utils.Generator;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class TestPixClaim {
@@ -16,6 +17,7 @@ public class TestPixClaim {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         PixClaim claim = PixClaim.create(example());
         System.out.println(claim);
         Assert.assertNotNull(claim.id);
@@ -43,6 +45,7 @@ public class TestPixClaim {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2019-04-01");
@@ -154,9 +157,10 @@ public class TestPixClaim {
     @Test
     public void testUpdateStatus() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("status", "delivered");
-        params.put("agent", "claimer");
+        params.put("flow", "in");
         Generator<PixClaim> claims = PixClaim.query(params);
         for (PixClaim claim : claims) {
             HashMap<String, Object> patchData = new HashMap<>();

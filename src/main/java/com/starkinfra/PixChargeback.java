@@ -1,15 +1,15 @@
 package com.starkinfra;
 
-import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.SubResource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
+import com.starkinfra.error.ErrorElement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class PixChargeback extends Resource {
@@ -19,26 +19,28 @@ public final class PixChargeback extends Resource {
      * A Pix Chargeback can be created when fraud is detected on a transaction or a system malfunction
      * results in an erroneous transaction.
      * It notifies another participant of your request to reverse the payment they have received.
+     * <p>
      * When you initialize a PixChargeback, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * amount                [number]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)
-     * referenceId           [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
-     * reason                [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
-     * description           [string, default null]: description for the PixChargeback.
-     * analysis              [string]: analysis that led to the result.
-     * bacenId               [string]: central bank's unique UUID that identifies the PixChargeback.
-     * senderBankCode        [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
-     * receiverBankCode      [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
-     * rejectionReason       [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-     * reversalReferenceId   [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
-     * id                    [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
-     * result                [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
-     * status                [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * created               [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated               [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * amount [number]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)
+     * referenceId [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
+     * reason [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
+     * description [string, default null]: description for the PixChargeback.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
+     * analysis [string]: analysis that led to the result.
+     * senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
+     * receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
+     * rejectionReason [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
+     * reversalReferenceId [string]: returnId or endToEndId of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
+     * result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+     * flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
+     * status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixChargeback.class, "PixChargeback");
@@ -47,13 +49,14 @@ public final class PixChargeback extends Resource {
     public String referenceId;
     public String reason;
     public String description;
+    public String[] tags;
     public String analysis;
-    public String bacenId;
     public String senderBankCode;
     public String receiverBankCode;
     public String rejectionReason;
     public String reversalReferenceId;
     public String result;
+    public String flow;
     public String status;
     public String created;
     public String updated;
@@ -64,44 +67,47 @@ public final class PixChargeback extends Resource {
      * A Pix Chargeback can be created when fraud is detected on a transaction or a system malfunction
      * results in an erroneous transaction.
      * It notifies another participant of your request to reverse the payment they have received.
+     * <p>
      * When you initialize a PixChargeback, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * @param amount                [number]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)
-     * @param referenceId           [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
-     * @param reason                [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
-     * @param description           [string, default null]: description for the PixChargeback.
-     * @param analysis              [string]: analysis that led to the result.
-     * @param bacenId               [string]: central bank's unique UUID that identifies the PixChargeback.
-     * @param senderBankCode        [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
-     * @param receiverBankCode      [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
-     * @param rejectionReason       [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-     * @param reversalReferenceId   [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
-     * @param id                    [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
-     * @param result                [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
-     * @param status                [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * @param created               [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated               [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
-     *
+     * @param amount [number]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)
+     * @param referenceId [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
+     * @param reason [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
+     * @param description [string, default null]: description for the PixChargeback.
+     * @param tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * @param id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
+     * @param analysis [string]: analysis that led to the result.
+     * @param senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
+     * @param receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
+     * @param rejectionReason [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
+     * @param reversalReferenceId [string]: returnId or endToEndId of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
+     * @param result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+     * @param flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
+     * @param status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * @param created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public PixChargeback(Number amount, String referenceId, String reason, String description, String analysis,
-                         String bacenId, String senderBankCode, String receiverBankCode, String rejectionReason,
-                         String reversalReferenceId, String id, String result, String status, String created,
-                         String updated) {
+    public PixChargeback(Number amount, String referenceId, String reason, String description, String[] tags,
+                         String analysis, String senderBankCode, String receiverBankCode, String rejectionReason,
+                         String reversalReferenceId, String id, String result, String flow, String status, String created,
+                         String updated
+    ) {
         super(id);
         this.amount = amount;
         this.referenceId = referenceId;
         this.reason = reason;
-        this.description = description ;
+        this.description = description;
+        this.tags = tags;
         this.analysis = analysis;
-        this.bacenId = bacenId;
         this.senderBankCode = senderBankCode;
         this.receiverBankCode = receiverBankCode;
         this.rejectionReason = rejectionReason;
         this.reversalReferenceId = reversalReferenceId;
         this.result = result;
+        this.flow = flow;
         this.status = status;
         this.created = created;
         this.updated = updated;
@@ -113,27 +119,30 @@ public final class PixChargeback extends Resource {
      * A Pix Chargeback can be created when fraud is detected on a transaction or a system malfunction
      * results in an erroneous transaction.
      * It notifies another participant of your request to reverse the payment they have received.
+     * <p>
      * When you initialize a PixChargeback, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
-     * Parameters:
+     * Parameters (required):
+     * @param data map of properties for the creation of the PixChargeback
      * amount [number]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)
      * referenceId [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
      * reason [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
      * <p>
      * Parameters (optional):
      * description [string, default null]: description for the PixChargeback.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Attributes (return-only):
+     * id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
      * analysis [string]: analysis that led to the result.
-     * bacenId [string]: central bank's unique UUID that identifies the PixChargeback.
      * senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
      * receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
      * rejectionReason [string]: reason for the rejection of the Pix Chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-     * reversalReferenceId [string]: return id of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
-     * id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
+     * reversalReferenceId [string]: returnId or endToEndId of the reversal transaction. ex: "D20018183202202030109X3OoBHG74wo".
      * result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+     * flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
      * status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
      * created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -147,13 +156,14 @@ public final class PixChargeback extends Resource {
         this.referenceId = (String) dataCopy.remove("referenceId");
         this.reason = (String) dataCopy.remove("reason");
         this.description = (String) dataCopy.remove("description");
+        this.tags = (String[]) dataCopy.remove("tags");
         this.analysis = null;
-        this.bacenId = null;
         this.senderBankCode = null;
         this.receiverBankCode = null;
         this.rejectionReason = null;
         this.reversalReferenceId = null;
         this.result = null;
+        this.flow = null;
         this.status = null;
         this.created = null;
         this.updated = null;
@@ -166,7 +176,7 @@ public final class PixChargeback extends Resource {
     /**
      * Retrieve a specific PixChargeback
      * <p>
-     * Receive a single PixChargeback object previously created in the Stark Infra API by passing its id
+     * Retrieve a PixChargeback object linked to your Workspace in the Stark Infra API using its id.
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
@@ -182,7 +192,7 @@ public final class PixChargeback extends Resource {
     /**
      * Retrieve a specific PixChargeback
      * <p>
-     * Receive a single PixChargeback object previously created in the Stark Infra API by passing its id
+     * Retrieve a PixChargeback object linked to your Workspace in the Stark Infra API using its id.
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
@@ -209,6 +219,8 @@ public final class PixChargeback extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled"
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Return:
      * @return generator of PixChargeback objects with updated attributes
@@ -256,12 +268,14 @@ public final class PixChargeback extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of properties for the creation of the PixChargeback
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled"
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -289,13 +303,15 @@ public final class PixChargeback extends Resource {
      * Use this function instead of query if you want to manually page your chargebacks.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Return:
      * @return PixChargeback.Page object:
@@ -349,13 +365,15 @@ public final class PixChargeback extends Resource {
      * Use this function instead of query if you want to manually page your chargebacks.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -496,7 +514,7 @@ public final class PixChargeback extends Resource {
      * @param result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".
      * @param patchData map of patch parameters
      * rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
-     * reversalReferenceId [string, default null]: return_id of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
+     * reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
      * analysis [string, default null]: description of the analysis that led to the result.
      * <p>
      * Return:
@@ -517,7 +535,7 @@ public final class PixChargeback extends Resource {
      * @param result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".
      * @param patchData map of patch parameters
      * rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
-     * reversalReferenceId [string, default null]: return_id of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
+     * reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
      * analysis [string, default null]: description of the analysis that led to the result.
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
@@ -600,7 +618,7 @@ public final class PixChargeback extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
@@ -654,7 +672,7 @@ public final class PixChargeback extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
@@ -687,10 +705,10 @@ public final class PixChargeback extends Resource {
          * Use this function instead of query if you want to manually page your chargebacks.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
@@ -748,10 +766,10 @@ public final class PixChargeback extends Resource {
          * Use this function instead of query if you want to manually page your chargebacks.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [strings, default null]: filter retrieved objects by types. ex: "success" or "failed"

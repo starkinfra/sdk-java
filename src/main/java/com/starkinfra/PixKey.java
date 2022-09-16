@@ -1,12 +1,16 @@
 package com.starkinfra;
 
+import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class PixKey extends Resource {
@@ -15,26 +19,27 @@ public final class PixKey extends Resource {
      * <p>
      * PixKeys link bank account information to key ids.
      * Key ids are a convenient way to search and pass bank account information.
+     * <p>
      * When you initialize a PixKey, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * accountCreated  [string]: opening Date or Datetime for the linked account. ex: "2022-01-01".
-     * accountNumber   [string]: number of the linked account. ex: "76543".
-     * accountType     [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
-     * branchCode      [string]: branch code of the linked account. ex: 1234".
-     * name            [string]: holder's name of the linked account. ex: "Jamie Lannister".
-     * taxId           [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
-     * id              [string, default null]: id of the registered PixKey. Allowed types are: CPF, CNPJ, phone number or email. If this parameter is not passed, an EVP will be created. ex: "+5511989898989";
-     * tags            [list of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
-     * owned           [string]: datetime when the key was owned by the holder. ex: "2022-04-13 00:37:47.393+00:00"
-     * ownerType       [string]: type of the owner of the PixKey. Options: "business" or "individual".
-     * status          [string]: current PixKey status. Options: "created", "registered", "canceled", "failed"
-     * bankCode        [string]: bankCode of the account linked to the PixKey. ex: "20018183".
-     * bankName        [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
-     * type            [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
-     * created         [string]: creation datetime for the PixKey. ex: "2020-03-10 10:30:00.000000+00:00"
+     * accountCreated [string]: opening Date or Datetime for the linked account. ex: "2022-01-01".
+     * accountNumber [string]: number of the linked account. ex: "76543".
+     * accountType [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
+     * branchCode [string]: branch code of the linked account. ex: 1234".
+     * name [string]: holder's name of the linked account. ex: "Jamie Lannister".
+     * taxId [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
+     * id [string, default null]: id of the registered PixKey. Allowed types are: CPF, CNPJ, phone number or email. If this parameter is not passed, an EVP will be created. ex: "+5511989898989";
+     * tags [list of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
+     * owned [string]: datetime when the key was owned by the holder. ex: "2022-04-13 00:37:47.393+00:00"
+     * ownerType [string]: type of the owner of the PixKey. Options: "business" or "individual".
+     * status [string]: current PixKey status. Options: "created", "registered", "canceled", "failed"
+     * bankCode [string]: bankCode of the account linked to the PixKey. ex: "20018183".
+     * bankName [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
+     * type [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
+     * created [string]: creation datetime for the PixKey. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixKey.class, "PixKey");
@@ -59,31 +64,32 @@ public final class PixKey extends Resource {
      * <p>
      * PixKeys link bank account information to key ids.
      * Key ids are a convenient way to search and pass bank account information.
+     * <p>
      * When you initialize a PixKey, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
      * @param accountCreated [string]: opening Date or Datetime for the linked account. ex: "2022-01-01".
-     * @param accountNumber  [string]: number of the linked account. ex: "76543".
-     * @param accountType    [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
-     * @param branchCode     [string]: branch code of the linked account. ex: 1234".
-     * @param name           [string]: holder's name of the linked account. ex: "Jamie Lannister".
-     * @param taxId          [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
-     * @param id             [string, default null]: id of the registered PixKey. Allowed types are: CPF, CNPJ, phone number or email. If this parameter is not passed, an EVP will be created. ex: "+5511989898989";
-     * @param tags           [list of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
-     * @param owned          [string]: datetime when the key was owned by the holder. ex: "2022-04-13 00:37:47.393+00:00"
-     * @param ownerType      [string]: type of the owner of the PixKey. Options: "business" or "individual".
-     * @param status         [string]: current PixKey status. Options: "created", "registered", "canceled", "failed"
-     * @param bankCode       [string]: bankCode of the account linked to the PixKey. ex: "20018183".
-     * @param bankName       [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
-     * @param type           [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
-     * @param created        [string]: creation datetime for the PixKey. ex: "2022-04-13 00:37:47.393+00:00"
-     *
+     * @param accountNumber [string]: number of the linked account. ex: "76543".
+     * @param accountType [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
+     * @param branchCode [string]: branch code of the linked account. ex: 1234".
+     * @param name [string]: holder's name of the linked account. ex: "Jamie Lannister".
+     * @param taxId [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
+     * @param id [string, default null]: id of the registered PixKey. Allowed types are: CPF, CNPJ, phone number or email. If this parameter is not passed, an EVP will be created. ex: "+5511989898989";
+     * @param tags [list of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
+     * @param owned [string]: datetime when the key was owned by the holder. ex: "2022-04-13 00:37:47.393+00:00"
+     * @param ownerType [string]: type of the owner of the PixKey. Options: "business" or "individual".
+     * @param status [string]: current PixKey status. Options: "created", "registered", "canceled", "failed"
+     * @param bankCode [string]: bankCode of the account linked to the PixKey. ex: "20018183".
+     * @param bankName [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
+     * @param type [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
+     * @param created [string]: creation datetime for the PixKey. ex: "2022-04-13 00:37:47.393+00:00"
      */
     public PixKey(String accountCreated, String accountNumber, String accountType, String branchCode, String name,
                   String taxId, String id, String[] tags, String owned, String ownerType, String status,
-                  String bankCode, String bankName, String type, String created) {
+                  String bankCode, String bankName, String type, String created
+    ) {
         super(id);
         this.accountCreated = accountCreated;
         this.accountNumber = accountNumber;
@@ -106,6 +112,7 @@ public final class PixKey extends Resource {
      * <p>
      * PixKeys link bank account information to key ids.
      * Key ids are a convenient way to search and pass bank account information.
+     * <p>
      * When you initialize a PixKey, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
@@ -164,7 +171,7 @@ public final class PixKey extends Resource {
      * Receive a single PixKey object previously created in the Stark Infra API by passing its id
      * <p>
      * Parameters:
-     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * <p>
      * Return:
@@ -181,7 +188,7 @@ public final class PixKey extends Resource {
      * Receive a single PixKey object previously created in the Stark Infra API by passing its id
      * <p>
      * Parameters:
-     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * @param params map of parameters
      * endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
@@ -200,7 +207,7 @@ public final class PixKey extends Resource {
      * Receive a single PixKey object previously created in the Stark Infra API by passing its id
      * <p>
      * Parameters:
-     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
@@ -218,7 +225,7 @@ public final class PixKey extends Resource {
      * Receive a single PixKey object previously created in the Stark Infra API by passing its id
      * <p>
      * Parameters:
-     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
      * @param params map of parameters
      * endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
@@ -239,7 +246,7 @@ public final class PixKey extends Resource {
      * Cancel a PixKey entity previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param id [string]: PixKey unique id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * <p>
      * Return:
      * @return canceled PixKey object
@@ -255,7 +262,7 @@ public final class PixKey extends Resource {
      * Cancel a PixKey entity previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param id [string]: PixKey unique id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -279,7 +286,7 @@ public final class PixKey extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled", "failed".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
      * <p>
      * Return:
@@ -328,13 +335,13 @@ public final class PixKey extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of properties for the creation of the PixKey
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-04-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled", "failed".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
@@ -363,14 +370,14 @@ public final class PixKey extends Resource {
      * Use this function instead of query if you want to manually page your keys.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-04-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled", "failed".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
      * <p>
      * Return:
@@ -425,14 +432,14 @@ public final class PixKey extends Resource {
      * Use this function instead of query if you want to manually page your keys.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-04-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled", "failed".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
@@ -490,7 +497,7 @@ public final class PixKey extends Resource {
      * Update the PixKey by passing id.
      * <p>
      * Parameters:
-     * @param id        [string]: PixKey id. ex: "5656565656565656"
+     * @param id  [string]: PixKey id. ex: "5656565656565656"
      * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
      * @param patchData map of patch parameters
      * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
@@ -513,7 +520,7 @@ public final class PixKey extends Resource {
      * Update PixKey by passing id.
      * <p>
      * Parameters:
-     * @param id        [string]: PixKey id. ex: "5656565656565656"
+     * @param id [string]: object unique id.  ex: "+5511989898989"
      * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
      * @param patchData map of patch parameters
      * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
@@ -548,7 +555,7 @@ public final class PixKey extends Resource {
          * user.
          * <p>
          * Attributes:
-         * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
+         * @param id [string]: object unique id.  ex: "+5511989898989"
          * @param key [PixKey]: PixKey entity to which the log refers to.
          * @param errors [list of strings]: list of errors linked to the PixKey event.
          * @param type [string]: type of the PixKey event which triggered the log creation. ex: "processing" or "success"
@@ -568,7 +575,7 @@ public final class PixKey extends Resource {
          * Receive a single PixKey Log object previously created by the Stark Infra API by passing its id
          * <p>
          * Parameters:
-         * @param id [string]: object unique id. ex: "5656565656565656"
+         * @param id [string]: object unique id.  ex: "+5511989898989"
          * <p>
          * Return:
          * @return PixKey Log object with updated attributes
@@ -584,7 +591,7 @@ public final class PixKey extends Resource {
          * Receive a single PixKey Log object previously created by the Stark Infra API by passing its id
          * <p>
          * Parameters:
-         * @param id [string]: object unique id. ex: "5656565656565656"
+         * @param id [string]: object unique id.  ex: "+5511989898989"
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:
@@ -602,13 +609,13 @@ public final class PixKey extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter PixKey Logs. ex: ["5656565656565656"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after specified date. ex: "2020-04-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
-         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
          * <p>
          * Return:
          * @return generator of PixKey Log objects with updated attributes
@@ -656,13 +663,13 @@ public final class PixKey extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter PixKey Logs. ex: ["5656565656565656"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after specified date. ex: "2020-04-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
-         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
          * <p>
          * Return:
          * @return generator of PixKey Log objects with updated attributes
@@ -689,14 +696,14 @@ public final class PixKey extends Resource {
          * Use this function instead of query if you want to manually page your keys.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter PixKey Logs. ex: ["5656565656565656"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after specified date. ex: "2020-04-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
-         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
          * <p>
          * Return:
          * @return PixKey.Log.Page object:
@@ -750,14 +757,14 @@ public final class PixKey extends Resource {
          * Use this function instead of query if you want to manually page your keys.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter PixKey Logs. ex: ["5656565656565656"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after specified date. ex: "2020-04-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-04-30"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
-         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+         * keyIds [list of strings, default null]: list of PixKey IDs to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
          * Return:

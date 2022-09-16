@@ -13,6 +13,36 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- StaticBrcode resource
+- BrcodePreview resource
+- DynamicBrcode resource
+- CardMethod sub-resource
+- CreditPreview sub-resource
+- MerchantCountry sub-resource
+- MerchantCategory sub-resource
+- CreditNotePreview sub-resource
+- flow parameter to query and page methods in PixClaim resource
+- tags parameter to PixChargeback, PixClaim and PixInfraction resources
+- tags parameter to query and page methods in PixChargeback, PixClaim and PixInfraction resources
+- code attribute to IssuingProduct resource
+- nominalInterest attribute to CreditNote resource
+- zipCode, purpose, isPartialAllowed, cardTags and holderTags attributes to IssuingPurchase resource
+- brcode, link and due attributes to IssuingInvoice resource
+### Changed
+- IssuingBin resource to IssuingProduct
+- fine and interest attributes to return only in CreditNote.Invoice sub-resource
+- expiration attribute returned-only to optional parameter in the CreditNote resource
+- settlement parameter to fundingType and client parameter to holderType in Issuing Product resource
+- bankCode parameter to claimerBankCode in PixClaim resource
+- agent parameter to flow in PixClaim and PixInfraction resources
+- agent parameter to flow on query and page methods in PixClaim resource
+- Creditnote.Signer sub-resource to CreditSigner resource
+### Removed
+- IssuingAuthorization resource
+- category parameter from IssuingProduct resource
+- agent parameter from PixClaim.Log resource
+- bacenId parameter from PixChargeback and PixInfraction resources
 
 ## [0.1.0] - 2022-06-03
 ### Added
@@ -21,11 +51,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [0.0.3] - 2022-05-23
 ### Added
 - PixDomain resource for Indirect and Direct Participants
+- code attribute to IssuingProduct resource
 - PixDirector resource for Direct Participants
 - CreditNote.Signer sub-resource
 - CreditNote.Invoice sub-resource
 - CreditNote.Transfer sub-resource
-- issuinginvoice.Log.get() function
+- get method to IssuingInvoice.Log resource
 - Webhook resource to receive Events
 - merchantFee atribute to IssuingPurchase
 ### Changed

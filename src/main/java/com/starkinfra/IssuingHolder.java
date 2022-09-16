@@ -5,10 +5,10 @@ import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.SubResource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class IssuingHolder extends Resource {
@@ -17,16 +17,21 @@ public final class IssuingHolder extends Resource {
      * <p>
      * The IssuingHolder describes a card holder that may group several cards.
      * <p>
+     * When you initialize a IssuingHolder, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
      * Parameters:
-     * name         [string]: card holder name.
-     * taxId        [string]: card holder tax id.
-     * externalId   [string]: card holder external id.
-     * rules        [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
-     * tags         [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
-     * id           [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
-     * status       [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
-     * updated      [string]: latest update datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
-     * created      [string]: creation datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
+     * name [string]: card holder name.
+     * taxId [string]: card holder tax id.
+     * externalId [string]: card holder external id.
+     * rules [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
+     * tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
+     * id [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
+     * status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
+     * updated [string]: latest update datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
+     * created [string]: creation datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
+     *
      */
     static ClassData data = new ClassData(IssuingHolder.class, "IssuingHolder");
 
@@ -44,26 +49,31 @@ public final class IssuingHolder extends Resource {
      * <p>
      * The IssuingHolder describes a card holder that may group several cards.
      * <p>
+     * When you initialize a IssuingHolder, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
      * Parameters:
-     * @param name          [string]: card holder name.
-     * @param taxId         [string]: card holder tax id
-     * @param externalId    [string]: card holder external id
-     * @param rules         [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
-     * @param tags          [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
-     * @param id            [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
-     * @param status        [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
-     * @param updated       [string]: latest update datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param created       [string]: creation datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param name [string]: card holder name.
+     * @param taxId [string]: card holder tax id
+     * @param externalId [string]: card holder external id
+     * @param rules [list of IssuingRule or HashMap, default []]: [EXPANDABLE] list of holder spending rules
+     * @param tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
+     * @param id [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
+     * @param status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
+     * @param updated [string]: latest update datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param created [string]: creation datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public IssuingHolder(String id, String name, String taxId, String externalId, String status, List<IssuingRule> rules,
-                         String[] tags, String updated, String created){
+                         String[] tags, String updated, String created
+    ) {
         super(id);
         this.name = name;
         this.taxId = taxId;
         this.externalId = externalId;
-        this.status = status;
         this.rules = rules;
         this.tags = tags;
+        this.status = status;
         this.updated = updated;
         this.created = created;
     }
@@ -73,8 +83,12 @@ public final class IssuingHolder extends Resource {
      * <p>
      * The IssuingHolder describes a card holder that may group several cards.
      * <p>
-     * Parameters:
-     * @param data map of properties for the creation of the PixRequest
+     * When you initialize a IssuingHolder, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
+     * Parameters (required):
+     * @param data map of properties for the creation of the IssuingHolder
      * name [string]: card holder name.
      * taxId [string]: card holder tax id
      * externalId [string]: card holder external id
@@ -116,6 +130,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param holders [list of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
+     * <p>
      * Return:
      * @return list of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
@@ -133,6 +148,7 @@ public final class IssuingHolder extends Resource {
      * @param holders [list of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
      * @param params map of parameters
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * <p>
      * Return:
      * @return list of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
@@ -149,6 +165,7 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param holders [list of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
      * Return:
      * @return list of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
@@ -167,6 +184,7 @@ public final class IssuingHolder extends Resource {
      * @param params map of parameters
      * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
      * Return:
      * @return list of IssuingHolder objects with updated attributes
      * @throws Exception error in the request
@@ -195,7 +213,7 @@ public final class IssuingHolder extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
@@ -237,7 +255,7 @@ public final class IssuingHolder extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
@@ -301,7 +319,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
@@ -347,7 +365,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
@@ -418,6 +436,7 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
      * Return:
      * @return IssuingHolder object with updated attributes
      * @throws Exception error in the request
@@ -433,6 +452,7 @@ public final class IssuingHolder extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
+     * <p>
      * Return:
      * @return IssuingHolder object with updated attributes
      * @throws Exception error in the request
@@ -584,7 +604,7 @@ public final class IssuingHolder extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
@@ -638,7 +658,7 @@ public final class IssuingHolder extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
@@ -672,7 +692,7 @@ public final class IssuingHolder extends Resource {
          * Use this function instead of query if you want to manually page your holders.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
@@ -733,7 +753,7 @@ public final class IssuingHolder extends Resource {
          * Use this function instead of query if you want to manually page your holders.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"

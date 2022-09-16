@@ -1,15 +1,16 @@
-import com.starkinfra.utils.EndToEndId;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.PixInfraction;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import com.starkinfra.Settings;
+import com.starkinfra.PixInfraction;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.EndToEndId;
+
 import java.util.List;
+import java.util.Objects;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class TestPixInfraction {
@@ -21,7 +22,6 @@ public class TestPixInfraction {
         List<PixInfraction> infractions = new ArrayList<>();
         infractions.add(example());
         infractions = PixInfraction.create(infractions);
-
         for (PixInfraction infraction : infractions) {
             Assert.assertNotNull(infraction.id);
             String id = PixInfraction.get(infraction.id).id;
@@ -33,12 +33,13 @@ public class TestPixInfraction {
     @Test
     public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("status", "delivered");
         Generator<PixInfraction> infractions = PixInfraction.query(params);
         for (PixInfraction infraction : infractions) {
-            if (Objects.equals(infraction.agent, "reporter")) {
+            if (Objects.equals(infraction.flow, "out")) {
                 infraction = PixInfraction.cancel(infraction.id);
                 Assert.assertEquals(infraction.status, "canceled");
                 System.out.println(infraction);
@@ -49,9 +50,10 @@ public class TestPixInfraction {
     @Test
     public void testQueryAndCancel() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
-        params.put("status", "created");
+        params.put("status", "delivered");
         int i = 0;
         for (PixInfraction infraction : PixInfraction.query(params)) {
             i ++;
@@ -67,7 +69,7 @@ public class TestPixInfraction {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        params.put("status", "created");
+        params.put("status", "delivered");
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
         Generator<PixInfraction> infractions = PixInfraction.query(params);
@@ -84,6 +86,7 @@ public class TestPixInfraction {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2019-04-01");
@@ -213,7 +216,7 @@ public class TestPixInfraction {
         while (infractions.size() < 1) {
             PixInfraction.Page page = PixInfraction.page(params);
             for (PixInfraction infraction: page.infractions) {
-                if (infraction.agent.equals("reporter")){
+                if (infraction.flow.equals("out")){
                     infractions.add(infraction);
                 }
             }

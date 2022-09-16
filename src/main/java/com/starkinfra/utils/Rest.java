@@ -1,10 +1,14 @@
 package com.starkinfra.utils;
+
 import com.google.gson.*;
 import com.starkinfra.User;
 
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.*;
 
 
 public final class Rest {

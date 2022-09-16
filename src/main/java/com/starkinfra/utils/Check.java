@@ -1,7 +1,7 @@
 package com.starkinfra.utils;
 
-import com.starkinfra.Settings;
 import com.starkinfra.User;
+import com.starkinfra.Settings;
 import com.starkbank.ellipticcurve.PrivateKey;
 
 import java.util.Arrays;
@@ -16,7 +16,7 @@ public final class Check {
                 throw new Exception();
             }
         } catch (Exception e) {
-            throw new Exception("private_key must be valid secp256k1 ECDSA string in pem format");
+            throw new Exception("privateKey must be valid secp256k1 ECDSA string in pem format");
         }
         return key;
     }

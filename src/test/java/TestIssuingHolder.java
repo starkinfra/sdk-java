@@ -1,15 +1,16 @@
-import com.starkinfra.utils.Generator;
-import com.starkinfra.IssuingHolder;
-import com.starkinfra.IssuingRule;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.starkinfra.Settings;
+import com.starkinfra.IssuingRule;
+import com.starkinfra.IssuingHolder;
+import com.starkinfra.utils.Generator;
+
 import java.util.UUID;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class TestIssuingHolder {
@@ -63,6 +64,7 @@ public class TestIssuingHolder {
     @Test
     public void testCreateAndGet() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         List<IssuingHolder> holders = new ArrayList<>();
         holders.add(example(false));
         holders.add(example(true));
@@ -85,8 +87,8 @@ public class TestIssuingHolder {
     public void testUpdateStatus() throws Exception {
         Settings.user = utils.User.defaultProject();
 
-        HashMap<String, Object> patchData = new HashMap<>();;
-        patchData.put("status", "blocked");
+        HashMap<String, Object> data = new HashMap<>();;
+        data.put("status", "blocked");
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
@@ -94,7 +96,7 @@ public class TestIssuingHolder {
         Generator<IssuingHolder> holders = IssuingHolder.query(params);
 
         for (IssuingHolder holder : holders) {
-            IssuingHolder updatedIssuingHolder = IssuingHolder.update(holder.id,patchData);
+            IssuingHolder updatedIssuingHolder = IssuingHolder.update(holder.id, data);
             Assert.assertEquals("blocked", updatedIssuingHolder.status);
             System.out.println(updatedIssuingHolder);
         }
@@ -119,6 +121,7 @@ public class TestIssuingHolder {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         Generator<IssuingHolder.Log> logs = IssuingHolder.Log.query(params);

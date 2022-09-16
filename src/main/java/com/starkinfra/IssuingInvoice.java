@@ -1,14 +1,14 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.SubResource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class IssuingInvoice extends Resource {
@@ -17,24 +17,36 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * The IssuingInvoice objects created in your Workspace load your Issuing balance when paid.
      * <p>
+     * When you initialize a IssuingInvoice, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
      * Parameters:
-     * amount [integer]: IssuingInvoice value in cents. ex: 1234 (= R$ 12.34)
+     * amount [Long]: IssuingInvoice value in cents. ex: 1234 (= R$ 12.34)
      * taxId [string, default sub-issuer tax ID]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
      * name [string, default sub-issuer name]: payer name. ex: "Iron Bank S.A."
      * tags [list of strings, default null]: list of strings for tagging. ex: ["travel", "food"]
-     * status [string]: current IssuingInvoice status. ex: "created", "paid", "overdue" and "expired"
+     * id [string, default null]: unique id returned when IssuingInvoice is created. ex: "5656565656565656"
+     * brcode [string]: BR Code for the Invoice payment. ex: "00020101021226930014br.gov.bcb.pix2571brcode-h.development.starkinfra.com/v2/d7f6546e194d4c64a153e8f79f1c41ac5204000053039865802BR5925Stark Bank S.A. - Institu6009Sao Paulo62070503***63042109"
+     * due [string]: Invoice due and expiration date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
+     * link [string, default null]: public Invoice webpage URL. ex: "https://starkbank-card-issuer.development.starkbank.com/invoicelink/d7f6546e194d4c64a153e8f79f1c41ac"
+     * status [string]: current IssuingInvoice status. ex: "created", "expired", "overdue", "paid"
      * issuingTransactionId [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
      * updated [string]: latest update datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
+     *
      */
     static ClassData data = new ClassData(IssuingInvoice.class, "IssuingInvoice");
 
-    public Number amount;
-    public String name;
+    public Long amount;
     public String taxId;
+    public String name;
+    public String[] tags;
+    public String due;
+    public String brcode;
+    public String link;
     public String status;
     public String issuingTransactionId;
-    public String[] tags;
     public String updated;
     public String created;
 
@@ -43,25 +55,37 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * The IssuingInvoice objects created in your Workspace load your Issuing balance when paid.
      * <p>
+     * When you initialize a IssuingInvoice, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
      * Parameters:
-     * @param amount [integer]: IssuingInvoice value in cents. ex: 1234 (= R$ 12.34)
+     * @param amount [Long]: IssuingInvoice value in cents. ex: 1234 (= R$ 12.34)
      * @param taxId [string, default sub-issuer tax ID]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
      * @param name [string, default sub-issuer name]: payer name. ex: "Iron Bank S.A."
-     * @param tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
-     * @param status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
+     * @param tags [list of strings, default null]: list of strings for tagging. ex: ["travel", "food"]
+     * @param id [string, default null]: unique id returned when IssuingInvoice is created. ex: "5656565656565656"
+     * @param brcode [string]: BR Code for the Invoice payment. ex: "00020101021226930014br.gov.bcb.pix2571brcode-h.development.starkinfra.com/v2/d7f6546e194d4c64a153e8f79f1c41ac5204000053039865802BR5925Stark Bank S.A. - Institu6009Sao Paulo62070503***63042109"
+     * @param due [string]: Invoice due and expiration date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
+     * @param link [string, default null]: public Invoice webpage URL. ex: "https://starkbank-card-issuer.development.starkbank.com/invoicelink/d7f6546e194d4c64a153e8f79f1c41ac"
+     * @param status [string]: current IssuingInvoice status. ex: "created", "expired", "overdue", "paid"
      * @param issuingTransactionId [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
      * @param updated [string]: latest update datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IssuingInvoice(String id, String name, Number amount, String taxId, String status,
-                          String issuingTransactionId, String[] tags, String updated, String created){
+    public IssuingInvoice(String id, String name, String brcode, String due, String link, Long amount, String taxId,
+                          String status, String issuingTransactionId, String[] tags, String updated, String created
+    ) {
         super(id);
         this.amount = amount;
-        this.name = name;
         this.taxId = taxId;
+        this.name = name;
+        this.tags = tags;
+        this.brcode = brcode;
+        this.due = due;
+        this.link = link;
         this.status = status;
         this.issuingTransactionId = issuingTransactionId;
-        this.tags = tags;
         this.updated = updated;
         this.created = created;
     }
@@ -71,31 +95,41 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * The IssuingInvoice objects created in your Workspace load your Issuing balance when paid.
      * <p>
-     * Parameters:
+     * When you initialize a IssuingInvoice, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
+     * Parameters (required):
+     * @param data map of properties for the creation of the IssuingInvoice
      * amount [integer]: IssuingInvoice value in cents. ex: 1234 (= R$ 12.34)
-     *<p>
+     * <p>
      * Parameters (optional):
      * taxId [string, default sub-issuer tax ID]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
      * name [string, default sub-issuer name]: payer name. ex: "Iron Bank S.A."
      * tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Attributes (return-only):
-     * status [string]: current IssuingHolder status. ex: "active", "blocked" or "canceled"
+     * due [string]: Invoice due and expiration date in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00"
+     * brcode [string]: BR Code for the Invoice payment. ex: "00020101021226930014br.gov.bcb.pix2571brcode-h.development.starkinfra.com/v2/d7f6546e194d4c64a153e8f79f1c41ac5204000053039865802BR5925Stark Bank S.A. - Institu6009Sao Paulo62070503***63042109"
+     * link [string, default null]: public Invoice webpage URL. ex: "https://starkbank-card-issuer.development.starkbank.com/invoicelink/d7f6546e194d4c64a153e8f79f1c41ac"
+     * status [string]: current IssuingInvoice status. ex: "active", "blocked" or "canceled"
      * issuingTransactionId [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
      * updated [string]: latest update datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
-
     @SuppressWarnings("unchecked")
     public IssuingInvoice(Map<String, Object> data) throws Exception {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.amount = (Number) dataCopy.remove("amount");
+        this.amount = ((Number) dataCopy.remove("amount")).longValue();
         this.name = (String) dataCopy.remove("name");
         this.taxId = (String) dataCopy.remove("taxId");
         this.tags = (String[]) dataCopy.remove("tags");
+        this.due = null;
+        this.brcode = null;
+        this.link = null;
         this.status = null;
         this.issuingTransactionId = null;
         this.updated = null;
@@ -175,10 +209,10 @@ public final class IssuingInvoice extends Resource {
     /**
      * Retrieve IssuingInvoices
      * <p>
-     * Receive a generator of IssuingInvoices objects previously created in the Stark Infra API
+     * Receive a generator of IssuingInvoice objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null]: date filter for objects created only after specified date. ex:"2020-03-10"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -187,7 +221,7 @@ public final class IssuingInvoice extends Resource {
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return generator of IssuingInvoices objects with updated attributes
+     * @return generator of IssuingInvoice objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query(Map<String, Object> params, User user) throws Exception{
@@ -197,10 +231,10 @@ public final class IssuingInvoice extends Resource {
     /**
      * Retrieve IssuingInvoices
      * <p>
-     * Receive a generator of IssuingInvoices objects previously created in the Stark Infra API
+     * Receive a generator of IssuingInvoice objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [date string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -208,7 +242,7 @@ public final class IssuingInvoice extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * <p>
      * Return:
-     * @return generator of IssuingInvoices objects with updated attributes
+     * @return generator of IssuingInvoice objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query(Map<String, Object> params) throws Exception{
@@ -218,13 +252,13 @@ public final class IssuingInvoice extends Resource {
     /**
      * Retrieve IssuingInvoices
      * <p>
-     * Receive a generator of IssuingInvoices objects previously created in the Stark Infra API
+     * Receive a generator of IssuingInvoice objects previously created in the Stark Infra API
      * <p>
      * Parameters:
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return generator of IssuingInvoices objects with updated attributes
+     * @return generator of IssuingInvoice objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query(User user) throws Exception{
@@ -234,10 +268,10 @@ public final class IssuingInvoice extends Resource {
     /**
      * Retrieve IssuingInvoices
      * <p>
-     * Receive a generator of IssuingInvoices objects previously created in the Stark Infra API
+     * Receive a generator of IssuingInvoice objects previously created in the Stark Infra API
      * <p>
      * Return:
-     * @return generator of IssuingInvoices objects with updated attributes
+     * @return generator of IssuingInvoice objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingInvoice> query() throws Exception{
@@ -277,7 +311,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
@@ -319,7 +353,7 @@ public final class IssuingInvoice extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. Options: created", "expired", "overdue", "paid".
@@ -353,8 +387,7 @@ public final class IssuingInvoice extends Resource {
          * IssuingInvoice Log object
          * <p>
          * Every time an IssuingInvoice entity is modified, a corresponding IssuingInvoice Log
-         * is generated for the entity. This log is never generated by the
-         * user.
+         * is generated for the entity. This log is never generated by the user.
          * <p>
          * Attributes:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
@@ -409,7 +442,7 @@ public final class IssuingInvoice extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
@@ -462,7 +495,7 @@ public final class IssuingInvoice extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
@@ -495,7 +528,7 @@ public final class IssuingInvoice extends Resource {
          * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
@@ -555,7 +588,7 @@ public final class IssuingInvoice extends Resource {
          * Use this function instead of query if you want to manually page your IssuingInvoices.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"

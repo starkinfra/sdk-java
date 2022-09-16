@@ -3,13 +3,14 @@ package com.starkinfra.utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import com.starkinfra.User;
+import com.starkinfra.Settings;
 import com.starkbank.ellipticcurve.Ecdsa;
 import com.starkbank.ellipticcurve.PublicKey;
 import com.starkbank.ellipticcurve.Signature;
-import com.starkbank.ellipticcurve.utils.ByteString;
-import com.starkinfra.User;
-import com.starkinfra.Settings;
 import com.starkinfra.error.InvalidSignatureError;
+import com.starkbank.ellipticcurve.utils.ByteString;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public final class Parse{
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * stark.exception.InvalidSignatureException will be raised.
+     * com.starkinfra.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
@@ -40,7 +41,7 @@ public final class Parse{
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * stark.exception.InvalidSignatureException will be raised.
+     * com.starkinfra.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
@@ -52,15 +53,20 @@ public final class Parse{
      * @throws Exception error in the request
      */
     public static <T extends Resource> T parseAndVerify(Resource.ClassData resource, String content, String signature, User user) throws Exception {
-        Gson gson = GsonEvent.getInstance();
-        JsonObject contentJson = gson.fromJson(content, JsonObject.class);
-        String x = Api.getLastName(resource);
+        String verifiedContent = verify(content, signature, user);
 
+        Gson gson = GsonEvent.getInstance();
+        JsonObject contentJson = gson.fromJson(verifiedContent, JsonObject.class);
         JsonObject jsonObject = contentJson.getAsJsonObject();
+
         if (Api.getLastName(resource).equals("event")){
             jsonObject = contentJson.get(Api.getLastName(resource)).getAsJsonObject();
         }
 
+        return gson.fromJson(jsonObject, (Type) resource.cls);
+    }
+
+    public static <T extends Resource> String verify (String content, String signature, User user) throws Exception {
         Signature signatureObject;
         try {
             signatureObject = Signature.fromBase64(new ByteString(signature.getBytes()));
@@ -69,10 +75,10 @@ public final class Parse{
         }
 
         if (verifySignature(user, content, signatureObject, false)) {
-            return gson.fromJson(jsonObject, (Type) resource.cls);
+            return content;
         }
         if (verifySignature(user, content, signatureObject, true)) {
-            return gson.fromJson(jsonObject, (Type) resource.cls);
+            return content;
         }
 
         throw new InvalidSignatureError("The provided signature and content do not match the Stark Infra public key");
