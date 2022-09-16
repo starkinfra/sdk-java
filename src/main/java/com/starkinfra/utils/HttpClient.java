@@ -1,13 +1,13 @@
 package com.starkinfra.utils;
 
+import retrofit2.Retrofit;
 import com.starkinfra.User;
 import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 import java.util.concurrent.TimeUnit;
 
 
-final class HttpClient {
+final class     HttpClient {
     private static ClientService productionInstance;
     private static ClientService sandboxInstance;
     private static final String version = "v2/";

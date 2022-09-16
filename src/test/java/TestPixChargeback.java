@@ -1,16 +1,17 @@
-import com.starkinfra.PixChargeback;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.PixRequest;
-import com.starkinfra.Settings;
-import com.starkinfra.utils.*;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import com.starkinfra.Settings;
+import com.starkinfra.PixRequest;
+import com.starkinfra.PixChargeback;
+import com.starkinfra.utils.ReturnId;
+import com.starkinfra.utils.Generator;
+
 import java.util.List;
+import java.util.Random;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class TestPixChargeback {
@@ -34,6 +35,7 @@ public class TestPixChargeback {
     @Test
     public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 1);
         params.put("status", "delivered");
@@ -49,6 +51,7 @@ public class TestPixChargeback {
     @Test
     public void testQueryAndCancel() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
         params.put("status", "created");
@@ -84,6 +87,7 @@ public class TestPixChargeback {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2019-04-01");
@@ -235,7 +239,7 @@ public class TestPixChargeback {
     static PixChargeback example() throws Exception{
         Random random = new Random();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("amount", random.nextInt(100000));
+        data.put("amount", Long.valueOf(random.nextInt(100000)));
         data.put("referenceId", endToEndIdFromPixRequest());
         data.put("reason","fraud");
         return new PixChargeback(data);

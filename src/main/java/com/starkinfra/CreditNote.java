@@ -1,13 +1,17 @@
 package com.starkinfra;
 
 import com.google.gson.*;
-import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.SubResource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
+import com.starkinfra.error.ErrorElement;
 
-import java.util.*;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.ArrayList;
 import java.lang.reflect.Type;
 
 
@@ -16,55 +20,54 @@ public final class CreditNote extends Resource {
      * CreditNote object
      * <p>
      * CreditNotes are used to generate CCB contracts between you and your customers.
+     * <p>
      * When you initialize a CreditNote, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
-     * Parameters (required):
-     * templateId       [string]: ID of the contract template on which the credit note will be based. ex: templateId="0123456789101112"
-     * name             [string]: credit receiver's full name. ex: name="Anthony Edward Stark"
-     * taxId            [string]: credit receiver's tax ID (CPF or CNPJ). ex: taxId="20.018.183/0001-80"
-     * nominalAmount    [number]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
-     * scheduled        [string]: date of payment execution. ex: "2020-03-11 08:00:00.000"
-     * invoices         [list of CreditNote.Invoice objects or maps]: list of invoices to be created and sent to the credit receiver.
-     * payment          [CreditNote.Transfer object or map]: Payment object or map to be created and sent to the credit receiver.
-     * signers          [list of CreditNote.Signer objects or maps]: Signer object or map containing signer's name, e-mail and delivery method.
-     * externalId       [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
-     * streetLine1      [string]: credit receiver main address. ex: "Av. Paulista, 200"
-     * streetLine2      [string]: credit receiver address complement. ex: "Apto. 123"
-     * district         [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
-     * city             [string]: credit receiver address city. ex: "Rio de Janeiro"
-     * stateCode        [string]: credit receiver address state. ex: "GO"
-     * zipCode          [string]: credit receiver address zip code. ex: "01311-200"
-     * Parameters (conditionally required):
-     * paymentType      [string, default null]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"
-     * Parameters (optional):
-     * rebateAmount     [number, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-     * tags             [list of strings, default null]: list of strings for reference when searching for credit notes. ex: ["employees", "monthly"]
-     * Attributes (return-only):
-     * id               [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-     * amount           [number]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
-     * expiration       [number]: time interval in seconds between due date and expiration date. ex 123456789
-     * documentId       [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
-     * status           [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"
-     * transactionIds   [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
-     * workspaceId      [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
-     * taxAmount        [number]: tax amount included in the CreditNote. ex: 100
-     * interest         [number]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
-     * created          [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
-     * updated          [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * Parameters:
+     * templateId [string]: ID of the contract template on which the CreditNote will be based. ex: templateId="0123456789101112"
+     * name [string]: credit receiver's full name. ex: "Anthony Edward Stark"
+     * taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
+     * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)
+     * scheduled [string]: date of payment execution. ex: "2020-03-11"
+     * invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
+     * payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
+     * signers [list of CreditSigner objects or map]: list of signer entities each containing signer's name, contact and delivery method for the signature request. ex: signers=[CreditSigner(), CreditSigner()]
+     * externalId [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"
+     * streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
+     * streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
+     * district [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
+     * city [string]: credit receiver address city. ex: "Rio de Janeiro"
+     * stateCode [string]: credit receiver address state. ex: "GO"
+     * zipCode [string]: credit receiver address zip code. ex: "01311-200"
+     * paymentType [string, default null]: payment type, inferred from the payment parameter if it is not a map. ex: "transfer"
+     * rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
+     * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
+     * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
+     * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
+     * amount [Long]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
+     * documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
+     * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
+     * transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
+     * workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+     * taxAmount [Long]: tax amount included in the CreditNote. ex: 100
+     * nominalInterest [Number]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5
+     * interest [Number]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
+     * created [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * updated [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     *
      */
-
     static ClassData data = new ClassData(CreditNote.class, "CreditNote");
 
     public String templateId;
     public String name;
     public String taxId;
-    public Number nominalAmount;
+    public Long nominalAmount;
     public String scheduled;
-    public Resource payment;
     public List<CreditNote.Invoice> invoices;
-    public List<CreditNote.Signer> signers;
+    public Resource payment;
+    public List<CreditSigner> signers;
     public String externalId;
     public String streetLine1;
     public String streetLine2;
@@ -73,72 +76,80 @@ public final class CreditNote extends Resource {
     public String stateCode;
     public String zipCode;
     public String paymentType;
-    public Number rebateAmount;
+    public Long rebateAmount;
     public String[] tags;
-    public Number amount;
-    public Number expiration;
+    public Long amount;
+    public Long expiration;
     public String documentId;
     public String status;
     public String[] transactionIds;
     public String workspaceId;
-    public Number taxAmount;
+    public Long taxAmount;
     public Number interest;
+    public Number nominalInterest;
     public String created;
     public String updated;
 
     /**
      * CreditNote object
+     * <p>
      * CreditNotes are used to generate CCB contracts between you and your customers.
+     * <p>
      * When you initialize a CreditNote, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
+     * <p>
      * To create scheduled CreditNotes, which will display the discount, interest, etc. on the final users banking interface,
      * use dates instead of datetimes on the "due" and "discounts" fields.
-     * All parameters are passed in a Map of String and Object object.
-     *
-     * @param templateId       [string]: ID of the contract template on which the credit note will be based. ex: templateId="0123456789101112"
-     * @param name             [string]: credit receiver's full name. ex: name="Anthony Edward Stark"
-     * @param taxId            [string]: credit receiver's tax ID (CPF or CNPJ). ex: taxId="20.018.183/0001-80"
-     * @param nominalAmount    [number]: amount in cents paid to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
-     * @param scheduled        [string, default now]: date of payment execution. ex: "2020-03-11 08:00:00.000"
-     * @param invoices         [list of CreditNote.Invoice objects or maps]: list of invoices to be created and sent to the credit receiver.
-     * @param payment          [CreditNote.Transfer object or map]: Payment object or map to be created and sent to the credit receiver.
-     * @param signers          [list of CreditNote.Signer objects or maps]: Signer object or map containing signer's name, e-mail and delivery method.
-     * @param externalId       [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
-     * @param streetLine1      [string]: credit receiver main address. ex: "Av. Paulista, 200"
-     * @param streetLine2      [string]: credit receiver address complement. ex: "Apto. 123"
-     * @param district         [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
-     * @param city             [string]: credit receiver address city. ex: "Rio de Janeiro"
-     * @param stateCode        [string]: credit receiver address state. ex: "GO"
-     * @param zipCode          [string]: credit receiver address zip code. ex: "01311-200"
-     * @param paymentType      [string, default null]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"
-     * @param rebateAmount     [number, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-     * @param tags             [list of strings, default null]: list of strings for reference when searching for credit notes. ex: ["employees", "monthly"]
-     * @param id               [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-     * @param amount           [number]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
-     * @param expiration       [number]: time interval in seconds between due date and expiration date. ex 123456789
-     * @param documentId       [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
-     * @param status           [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"
-     * @param transactionIds   [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
-     * @param workspaceId      [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
-     * @param taxAmount        [number]: tax amount included in the CreditNote. ex: 100
-     * @param interest         [number]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
-     * @param created          [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
-     * @param updated          [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * All parameters are passed in a Map of String and Object.
+     * <p>
+     * Parameters:
+     * @param templateId [string]: ID of the contract template on which the CreditNote will be based. ex: templateId="0123456789101112"
+     * @param name [string]: credit receiver's full name. ex: "Anthony Edward Stark"
+     * @param taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
+     * @param nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)
+     * @param scheduled [string]: date of payment execution. ex: "2020-03-11"
+     * @param invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
+     * @param payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
+     * @param signers [list of CreditSigner objects or map]: list of signer entities each containing signer's name, contact and delivery method for the signature request. ex: signers=[CreditSigner(), CreditSigner()]
+     * @param externalId [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"
+     * @param streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
+     * @param streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
+     * @param district [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
+     * @param city [string]: credit receiver address city. ex: "Rio de Janeiro"
+     * @param stateCode [string]: credit receiver address state. ex: "GO"
+     * @param zipCode [string]: credit receiver address zip code. ex: "01311-200"
+     * @param paymentType [string, default null]: payment type, inferred from the payment parameter if it is not a map. ex: "transfer"
+     * @param rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
+     * @param tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
+     * @param expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
+     * @param id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
+     * @param amount [Long]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
+     * @param documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
+     * @param status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
+     * @param transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
+     * @param workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+     * @param taxAmount [Long]: tax amount included in the CreditNote. ex: 100
+     * @param nominalInterest [Number]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5
+     * @param interest [Number]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
+     * @param created [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * @param updated [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
      */
-    public CreditNote(String templateId, String name, String taxId, Number nominalAmount, String scheduled, Resource payment,
-                      List<CreditNote.Invoice> invoices, List<CreditNote.Signer> signers, String externalId, String streetLine1,
-                      String streetLine2, String district, String city, String stateCode, String zipCode, String paymentType,
-                      Number rebateAmount, String[] tags, String id, Number amount, Number expiration,String documentId, String status,
-                      String[] transactionIds, String workspaceId, Number taxAmount, Number interest, String created, String updated) throws Exception{
+    public CreditNote(String templateId, String name, String taxId, Long nominalAmount, String scheduled,
+                      List<Invoice> invoices, Resource payment, List<CreditSigner> signers, String externalId,
+                      String streetLine1, String streetLine2, String district, String city, String stateCode,
+                      String zipCode, String paymentType, Long rebateAmount, String[] tags, String id, Long amount,
+                      Long expiration, String documentId, String status, String[] transactionIds, String workspaceId,
+                      Long taxAmount, Number interest, Number nominalInterest, String created, String updated
+    ) throws Exception {
         super(id);
         this.templateId = templateId;
         this.name = name;
         this.taxId = taxId;
         this.nominalAmount = nominalAmount;
         this.scheduled = scheduled;
-        this.payment = payment;
         this.invoices = invoices;
+        this.payment = payment;
         this.signers = signers;
         this.externalId = externalId;
         this.streetLine1 = streetLine1;
@@ -149,17 +160,17 @@ public final class CreditNote extends Resource {
         this.zipCode = zipCode;
         this.rebateAmount = rebateAmount;
         this.tags = tags;
-        this.amount = amount;
         this.expiration = expiration;
+        this.amount = amount;
         this.documentId = documentId;
         this.status = status;
         this.transactionIds = transactionIds;
         this.workspaceId = workspaceId;
         this.taxAmount = taxAmount;
+        this.nominalInterest = nominalInterest;
         this.interest = interest;
         this.created = created;
         this.updated = updated;
-
         this.paymentType = paymentType;
         if(paymentType == null) {
             this.paymentType = CreditNote.getType(payment);
@@ -170,45 +181,51 @@ public final class CreditNote extends Resource {
      * CreditNote object
      * <p>
      * CreditNotes are used to generate CCB contracts between you and your customers.
+     * <p>
      * When you initialize a CreditNote, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
-     * * All parameters are passed in a Map of String and Object object.
+     * All parameters are passed in a Map of String and Object.
      * <p>
-     * @param data map of parameters for the creation of the CreditNote
      * Parameters (required):
-     * templateId       [string]: ID of the contract template on which the credit note will be based. ex: templateId="0123456789101112"
-     * name             [string]: credit receiver's full name. ex: name="Anthony Edward Stark"
-     * taxId            [string]: credit receiver's tax ID (CPF or CNPJ). ex: taxId="20.018.183/0001-80"
-     * nominalAmount    [number]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
-     * scheduled        [string] date of payment execution. ex: "2020-03-11 08:00:00.000"
-     * invoices         [list of CreditNote.Invoice objects or maps]: list of invoices to be created and sent to the credit receiver.
-     * payment          [CreditNote.Transfer object or map]: Payment object or map to be created and sent to the credit receiver.
-     * signers          [list of CreditNote.Signer objects or maps]: Signer object or map containing signer's name, e-mail and delivery method.
-     * externalId       [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
-     * streetLine1      [string]: credit receiver main address. ex: "Av. Paulista, 200"
-     * streetLine2      [string]: credit receiver address complement. ex: "Apto. 123"
-     * district         [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
-     * city             [string]: credit receiver address city. ex: "Rio de Janeiro"
-     * stateCode        [string]: credit receiver address state. ex: "GO"
-     * zipCode          [string]: credit receiver address zip code. ex: "01311-200"
+     * @param data map of properties for the creation of the CreditNote
+     * templateId [string]: ID of the contract template on which the CreditNote will be based. ex: templateId="0123456789101112"
+     * name [string]: credit receiver's full name. ex: "Anthony Edward Stark"
+     * taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
+     * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)
+     * scheduled [string]: date of payment execution. ex: "2020-03-11"
+     * invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
+     * payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
+     * signers [list of CreditSigner objects or map]: list of signer entities each containing signer's name, contact and delivery method for the signature request. ex: signers=[CreditSigner(), CreditSigner()]
+     * externalId [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"
+     * streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
+     * streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
+     * district [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
+     * city [string]: credit receiver address city. ex: "Rio de Janeiro"
+     * stateCode [string]: credit receiver address state. ex: "GO"
+     * zipCode [string]: credit receiver address zip code. ex: "01311-200"
+     * <p>
      * Parameters (conditionally required):
-     * paymentType      [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"
+     * paymentType [string]: payment type, inferred from the payment parameter if it is not a map. ex: "transfer"
+     * <p>
      * Parameters (optional):
-     * rebateAmount     [number, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-     * tags             [list of strings, default null]: list of strings for reference when searching for credit notes. ex: ["employees", "monthly"]
+     * rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
+     * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
+     * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
+     * <p>
      * Attributes (return-only):
-     * id               [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-     * amount           [number]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
-     * expiration       [number]: time interval in seconds between due date and expiration date. ex 123456789
-     * documentId       [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
-     * status           [string]: current status of the CreditNote. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"
-     * transactionIds   [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
-     * workspaceId      [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
-     * taxAmount        [number]: tax amount included in the CreditNote. ex: 100
-     * interest         [number]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
-     * created          [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
-     * updated          [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
+     * amount [Long]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
+     * documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
+     * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
+     * transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
+     * workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+     * taxAmount [Long]: tax amount included in the CreditNote. ex: 100
+     * nominalInterest [Number]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5
+     * interest [Number]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
+     * created [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * updated [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
+     * @throws Exception error in the request
      */
     @SuppressWarnings("unchecked")
     public CreditNote(Map<String, Object> data) throws Exception {
@@ -218,7 +235,7 @@ public final class CreditNote extends Resource {
         this.templateId = (String) dataCopy.remove("templateId");
         this.name = (String) dataCopy.remove("name");
         this.taxId = (String) dataCopy.remove("taxId");
-        this.nominalAmount = (Number) dataCopy.remove("nominalAmount");
+        this.nominalAmount = ((Number) dataCopy.remove("nominalAmount")).longValue();
         this.scheduled = (String) dataCopy.remove("scheduled");
         this.invoices = parseInvoices((List<Object>) dataCopy.remove("invoices"));
         this.payment = (Resource) dataCopy.remove("payment");
@@ -230,15 +247,16 @@ public final class CreditNote extends Resource {
         this.city = (String) dataCopy.remove("city");
         this.stateCode = (String) dataCopy.remove("stateCode");
         this.zipCode = (String) dataCopy.remove("zipCode");
-        this.rebateAmount = (Number) dataCopy.remove("rebateAmount");
+        this.rebateAmount = ((Number) dataCopy.remove("rebateAmount")).longValue();
         this.tags = (String[]) dataCopy.remove("tags");
+        this.expiration = (Long) dataCopy.remove("expiration");
         this.amount = null;
-        this.expiration = null;
         this.documentId = null;
         this.status = null;
         this.transactionIds = null;
         this.workspaceId = null;
         this.taxAmount = null;
+        this.nominalInterest = null;
         this.interest = null;
         this.created = null;
         this.updated = null;
@@ -254,21 +272,21 @@ public final class CreditNote extends Resource {
     }
 
     @SuppressWarnings("unchecked")
-    private List<CreditNote.Signer> parseSigners(List<Object> signers) throws Exception {
+    private List<CreditSigner> parseSigners(List<Object> signers) throws Exception {
         if (signers == null)
             return null;
 
-        List<CreditNote.Signer> parsed = new ArrayList<>();
-        if (signers.size() == 0 || signers.get(0) instanceof CreditNote.Signer) {
+        List<CreditSigner> parsed = new ArrayList<>();
+        if (signers.size() == 0 || signers.get(0) instanceof CreditSigner) {
             for (Object signer : signers) {
-                parsed.add((CreditNote.Signer) signer);
+                parsed.add((CreditSigner) signer);
             }
 
             return parsed;
         }
 
         for (Object signer : signers) {
-            CreditNote.Signer signerObject = new CreditNote.Signer((Map<String, Object>) signer);
+            CreditSigner signerObject = new CreditSigner((Map<String, Object>) signer);
             parsed.add(signerObject);
         }
 
@@ -276,7 +294,7 @@ public final class CreditNote extends Resource {
     }
 
     @SuppressWarnings("unchecked")
-    private List<CreditNote.Invoice> parseInvoices(List<Object> invoices) throws Exception {
+    public static List<CreditNote.Invoice> parseInvoices(List<Object> invoices) throws Exception {
         if (invoices == null)
             return null;
 
@@ -320,7 +338,7 @@ public final class CreditNote extends Resource {
      * Send a list of CreditNote objects for creation in the Stark Infra API
      * <p>
      * Parameters:
-     * @param notes [list of CreditNotes objects or Maps]: list of CreditNotes objects to be created in the API
+     * @param notes [list of CreditNote objects or Maps]: list of CreditNote objects to be created in the API
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -364,10 +382,11 @@ public final class CreditNote extends Resource {
      * Retrieve a specific CreditNote
      * <p>
      * Receive a single CreditNote object previously created in the Stark Infra API by passing its id
+     * <p>
      * Parameters:
-     * @param id [string]: object unique id. ex: "5656565656565656"
-     * Parameters:
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
      * Return:
      * @return CreditNote object with updated attributes
      * @throws Exception error in the request
@@ -382,7 +401,8 @@ public final class CreditNote extends Resource {
      * Receive a single CreditNote object previously created in the Stark Infra API by passing its id
      * <p>
      * Parameters:
-     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
+     * <p>
      * Return:
      * @return CreditNote object with updated attributes
      * @throws Exception error in the request
@@ -398,14 +418,14 @@ public final class CreditNote extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of parameters
-     * limit            [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after            [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-     * before           [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-     * status           [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
-     * tags             [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids              [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * @param user      [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
+     * @param params map of parameters for the query
+     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * status [list of strings, default null]: filter for status of retrieved objects. Options: ["canceled", "created", "expired", "failed", "processing", "signed", "success"]
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return generator of CreditNote objects with updated attributes
@@ -422,13 +442,13 @@ public final class CreditNote extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of parameters
-     * limit        [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after        [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-     * before       [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-     * status       [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
-     * tags         [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids          [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * @param params parameters for the query
+     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * status [list of strings, default null]: filter for status of retrieved objects. Options: ["canceled", "created", "expired", "failed", "processing", "signed", "success"]
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * <p>
      * Return:
      * @return generator of CreditNote objects with updated attributes
@@ -460,6 +480,7 @@ public final class CreditNote extends Resource {
      * <p>
      * Receive a generator of CreditNote objects previously created in the Stark Infra API.
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
+     * <p>
      * Return:
      * @return generator of CreditNote objects with updated attributes
      * @throws Exception error in the request
@@ -484,14 +505,13 @@ public final class CreditNote extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
-     * cursor       [string, default null]: cursor returned on the previous page function call
-     * limit        [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-     * after        [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-     * before       [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-     * status       [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
-     * tags         [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids          [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * @param params map of parameters for the query
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+     * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * status [list of strings, default null]: filter for status of retrieved objects. Options: ["canceled", "created", "expired", "failed", "processing", "signed", "success"]
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -516,14 +536,14 @@ public final class CreditNote extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param params parameters of the query
-     * cursor       [string, default null]: cursor returned on the previous page function call
-     * limit        [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-     * after        [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-     * before       [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
-     * status       [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
-     * tags         [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-     * ids          [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+     * @param params map of parameters for the query
+     * cursor [string, default null]: cursor returned on the previous page function call
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+     * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+     * status [list of strings, default null]: filter for status of retrieved objects. Options: ["canceled", "created", "expired", "failed", "processing", "signed", "success"]
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * <p>
      * Return:
      * @return CreditNote.Page object:
@@ -542,7 +562,7 @@ public final class CreditNote extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Parameters:
-     * @param user      [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
      * @return CreditNote.Page object:
@@ -593,7 +613,7 @@ public final class CreditNote extends Resource {
      * Cancel a CreditNote entity previously created in the Stark Infra API
      * <p>
      * Parameters (required):
-     * @param id   [string]: CreditNote unique id. ex: "5656565656565656"
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
      * <p>
      * Return:
      * @return canceled CreditNote object
@@ -617,7 +637,7 @@ public final class CreditNote extends Resource {
          * Every time a CreditNote entity is modified, a corresponding CreditNote Log
          * is generated for the entity. This log is never generated by the user.
          * <p>
-         * Attributes:
+         * Parameters:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param note [CreditNote]: CreditNote entity to which the log refers to.
          * @param errors [list of strings]: list of errors linked to the CreditNote event.
@@ -639,10 +659,10 @@ public final class CreditNote extends Resource {
          * Receive a single CreditNote Log object previously created by the Stark Infra API by passing its id
          * <p>
          * Parameters:
-         * @param id [string]: object unique id. ex: "5656565656565656"
+         * @param id [string]: CreditNote unique id. ex: "5656565656565656"
          * <p>
          * Return:
-         * @return CreditNote Log object with updated attributes
+         * @return CreditNote.Log object with updated attributes
          * @throws Exception error in the request
          */
         public static Log get(String id) throws Exception {
@@ -655,11 +675,11 @@ public final class CreditNote extends Resource {
          * Receive a single CreditNote Log object previously created by the Stark Infra API by passing its id
          * <p>
          * Parameters:
-         * @param id    [string]: object unique id. ex: "5656565656565656"
-         * @param user  [Project object]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
+         * @param id [string]: CreditNote unique id. ex: "5656565656565656"
+         * @param user [Project object]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
          * <p>
          * Return:
-         * @return CreditNote Log object with updated attributes
+         * @return CreditNote.Log object with updated attributes
          * @throws Exception error in the request
          */
         public static Log get(String id, User user) throws Exception {
@@ -673,7 +693,7 @@ public final class CreditNote extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params map of parameters
+         * @param params parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
@@ -726,7 +746,7 @@ public final class CreditNote extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params map of parameters
+         * @param params parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
          * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
@@ -759,7 +779,7 @@ public final class CreditNote extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
@@ -819,7 +839,7 @@ public final class CreditNote extends Resource {
          * Use this function instead of query if you want to manually page your requests.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
@@ -851,88 +871,31 @@ public final class CreditNote extends Resource {
         throw new Exception("Payment must be a Transfer.");
     }
 
-    public static final class Signer extends SubResource{
-        /**
-         * CreditNote.Signer object
-         * <p>
-         * CreditNote signer's information.
-         * <p>
-         * Parameters (required):
-         * name          [string]: signer name. ex: "Tony Stark"
-         * contact       [string]: signer's contact information. ex: "tony@starkindustries.com"
-         * method        [string]: delivery method for the contract. ex: "link"
-         */
-        static ClassData data = new ClassData(Signer.class, "Signer");
-
-        public String name;
-        public String contact;
-        public String method;
-
-        /**
-         * CreditNote.Signer object
-         * <p>
-         * CreditNote signer's information.
-         * <p>
-         * Parameters (required):
-         * @param name          [string]: signer name. ex: "Tony Stark"
-         * @param contact       [string]: signer's contact information. ex: "tony@starkindustries.com"
-         * @param method        [string]: delivery method for the contract. ex: "link"
-         */
-        public Signer(String name, String contact, String method){
-            this.name = name;
-            this.contact = contact;
-            this.method = method;
-        }
-
-        /**
-         * CreditNote.Signer object
-         * <p>
-         * CreditNote signer's information.
-         * <p>
-         * Parameters (required):
-         * name          [string]: signer name. ex: "Tony Stark"
-         * contact       [string]: signer's contact information. ex: "tony@starkindustries.com"
-         * method        [string]: delivery method for the contract. ex: "link"
-         */
-        public Signer(Map<String, Object> data) throws Exception {
-            HashMap<String, Object> dataCopy = new HashMap<>(data);
-
-            this.name = (String) dataCopy.remove("name");
-            this.contact = (String) dataCopy.remove("contact");
-            this.method = (String) dataCopy.remove("method");
-
-            if (!dataCopy.isEmpty()) {
-                throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
-            }
-        }
-    }
-
     public static final class Transfer extends Resource{
         /**
          * CreditNote.Transfer object
          * <p>
          * Transfer object to be created after contract signature and sent to the credit receiver.
          * <p>
-         * Parameters (required):
-         * name            [string]: receiver full name. ex: "Anthony Edward Stark"
-         * taxId           [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-         * bankCode        [string]: code of the receiver bank institution in Brazil. ex: "20018183"
-         * branchCode      [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
-         * accountNumber   [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
-         * Parameters (optional):
-         * accountType     [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
-         * tags            [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-         * Attributes (return-only):
-         * amount          [number]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
-         * externalId      [string]: url safe string that must be unique among all your transfers. Duplicated externalIds will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
-         * scheduled       [string]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2022-10-10"
-         * description     [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
-         * id              [string]: unique id returned when the transfer is created. ex: "5656565656565656"
-         * fee             [number]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
-         * status          [string]: current transfer status. ex: "success" or "failed"
-         * transactionIds  [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
-         * created         [string]: creation datetime for the transfer. "2020-03-10 10:30:00.000000+00:00"
-         * updated         [string]: latest update datetime for the transfer. ex: "2020-03-10 10:30:00.000000+00:00"
+         * Parameters:
+         * name [string]: receiver full name. ex: "Anthony Edward Stark"
+         * taxId [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+         * bankCode [string]: code of the receiver bank institution in Brazil. ex: "20018183"
+         * branchCode [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
+         * accountNumber [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
+         * accountType [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
+         * tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+         * id [string]: unique id returned when the transfer is created. ex: "5656565656565656"
+         * amount [Long]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
+         * externalId [string]: url safe string that must be unique among all your transfers. Duplicated externalIds will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
+         * scheduled [string]: date when the transfer will be processed. May be pushed to next business day if necessary. ex: "2022-10-10"
+         * description [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
+         * fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
+         * status [string]: current transfer status. ex: "success" or "failed"
+         * transactionIds [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
+         * created [string]: creation datetime for the transfer. "2020-03-10 10:30:00.000000+00:00"
+         * updated [string]: latest update datetime for the transfer. ex: "2020-03-10 10:30:00.000000+00:00"
+         *
          */
         static ClassData data = new ClassData(Transfer.class, "Transfer");
 
@@ -947,7 +910,7 @@ public final class CreditNote extends Resource {
         public String externalId;
         public String scheduled;
         public String description;
-        public Number fee;
+        public Integer fee;
         public String status;
         public String[] transactionIds;
         public String created;
@@ -958,30 +921,30 @@ public final class CreditNote extends Resource {
          * <p>
          * Transfer object to be created after contract signature and sent to the credit receiver.
          * <p>
-         * Parameters (required):
-         * @param name            [string]: receiver full name. ex: "Anthony Edward Stark"
-         * @param taxId           [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-         * @param bankCode        [string]: code of the receiver bank institution in Brazil. ex: "20018183"
-         * @param branchCode      [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
-         * @param accountNumber   [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
-         * @param accountType     [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
-         * @param tags            [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-         * @param amount          [number]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
-         * @param externalId      [string]: url safe string that must be unique among all your transfers. Duplicated externalids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
-         * @param scheduled       [string]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2022-10-10"
-         * @param description     [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
-         * @param id              [string]: unique id returned when the transfer is created. ex: "5656565656565656"
-         * @param fee             [number]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
-         * @param status          [string]: current transfer status. ex: "success" or "failed"
-         * @param transactionIds  [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
-         * @param created         [string]: creation datetime for the transfer. "2020-03-10 10:30:00.000000+00:00"
-         * @param updated         [string]: latest update datetime for the transfer. ex: "2020-03-10 10:30:00.000000+00:00"
+         * Parameters:
+         * @param name [string]: receiver full name. ex: "Anthony Edward Stark"
+         * @param taxId [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+         * @param bankCode [string]: code of the receiver bank institution in Brazil. ex: "20018183"
+         * @param branchCode [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
+         * @param accountNumber [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
+         * @param accountType [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
+         * @param tags [list of strings, default []]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+         * @param amount [Long]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
+         * @param externalId [string]: url safe string that must be unique among all your transfers. Duplicated externalids will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
+         * @param scheduled [string]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2022-10-10"
+         * @param description [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
+         * @param id [string]: unique id returned when the transfer is created. ex: "5656565656565656"
+         * @param fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
+         * @param status [string]: current transfer status. ex: "success" or "failed"
+         * @param transactionIds [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
+         * @param created [string]: creation datetime for the transfer. "2020-03-10 10:30:00.000000+00:00"
+         * @param updated [string]: latest update datetime for the transfer. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         public Transfer(String name, String taxId, String bankCode, String branchCode, String accountNumber,
-                        String accountType, String[] tags, Number amount, String externalId, String scheduled,
-                        String description, String id, Number fee, String status, String[] transactionIds,
+                        String accountType, String[] tags, Long amount, String externalId, String scheduled,
+                        String description, String id, Integer fee, String status, String[] transactionIds,
                         String created, String updated
-        ){
+        ) {
             super(id);
             this.name = name;
             this.taxId = taxId;
@@ -1007,25 +970,28 @@ public final class CreditNote extends Resource {
          * Transfer object to be created after contract signature and sent to the credit receiver.
          * <p>
          * Parameters (required):
-         * name            [string]: receiver full name. ex: "Anthony Edward Stark"
-         * taxId           [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-         * bankCode        [string]: code of the receiver bank institution in Brazil. ex: "20018183"
-         * branchCode      [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
-         * accountNumber   [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
+         * @param data map of properties for the creation of the CreditNote.Transfer
+         * name [string]: receiver full name. ex: "Anthony Edward Stark"
+         * taxId [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+         * bankCode [string]: code of the receiver bank institution in Brazil. ex: "20018183"
+         * branchCode [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
+         * accountNumber [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
+         * <p>
          * Parameters (optional):
-         * accountType     [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
-         * tags            [list of strings, default null]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+         * accountType [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
+         * tags [list of strings, default null]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
+         * <p>
          * Attributes (return-only):
-         * amount          [number]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
-         * externalId      [string]: url safe string that must be unique among all your transfers. Duplicated externalIds will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
-         * scheduled       [string]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2022-10-10"
-         * description     [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
-         * id              [string]: unique id returned when the transfer is created. ex: "5656565656565656"
-         * fee             [number]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
-         * status          [string]: current transfer status. ex: "success" or "failed"
-         * transactionIds  [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
-         * created         [string]: creation datetime for the transfer. "2020-03-10 10:30:00.000000+00:00"
-         * updated         [string]: latest update datetime for the transfer. ex: "2020-03-10 10:30:00.000000+00:00"
+         * id [string]: unique id returned when the transfer is created. ex: "5656565656565656"
+         * amount [Long]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
+         * externalId [string]: url safe string that must be unique among all your transfers. Duplicated externalIds will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
+         * scheduled [string]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2022-10-10", "2020-03-10 10:30:00.000000+00:00"
+         * description [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
+         * fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
+         * status [string]: current transfer status. ex: "success" or "failed"
+         * transactionIds [list of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
+         * created [string]: creation datetime for the transfer. "2020-03-10 10:30:00.000000+00:00"
+         * updated [string]: latest update datetime for the transfer. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         public Transfer(Map<String, Object> data) throws Exception {
             super(null);
@@ -1060,54 +1026,53 @@ public final class CreditNote extends Resource {
          * <p>
          * Invoice to be issued after the contract is signed, to be paid by the credit receiver.
          * <p>
-         * Parameters (required):
-         * amount            [number]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
-         * Parameters (optional):
-         * due               [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
-         * expiration        [number, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
-         * fine              [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
-         * interest          [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
-         * tags              [list of strings, default []]: list of strings for tagging
-         * descriptions      [list of HashMaps, default []]: list of HashMaps with "key":string and (optional) "value":string pairs
-         * Attributes (return-only):
-         * name              [string]: payer name. ex: "Iron Bank S.A."
-         * taxId             [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-         * pdf               [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
-         * link              [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
-         * nominalAmount     [number]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
-         * fineAmount        [number]: Invoice fine value calculated over nominal_amount. ex: 20000
-         * interestAmount    [number]: Invoice interest value calculated over nominal_amount. ex: 10000
-         * discountAmount    [number]: Invoice discount value calculated over nominal_amount. ex: 3000
-         * discounts         [list of Discounts]: list of Discounts with "percentage":float and "due":string pairs
-         * id                [string]: unique id returned when Invoice is created. ex: "5656565656565656"
-         * brcode            [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
-         * status            [string]: current Invoice status. ex: "registered" or "paid"
-         * fee               [number]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
-         * transactionIds    [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
-         * created           [string]: creation datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
-         * updated           [string]: latest update datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
+         * Parameters:
+         * amount [Long]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
+         * due [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
+         * expiration [Long, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
+         * tags [list of strings, default []]: list of strings for tagging
+         * descriptions [list of HashMaps, default []]: list of HashMaps with "key":string and (optional) "value":string pairs
+         * id [string]: unique id returned when Invoice is created. ex: "5656565656565656"
+         * name [string]: payer name. ex: "Iron Bank S.A."
+         * taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+         * pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
+         * link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
+         * fine [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
+         * interest [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
+         * nominalAmount [Long]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
+         * fineAmount [Long]: Invoice fine value calculated over nominalAmount. ex: 20000
+         * interestAmount [Long]: Invoice interest value calculated over nominalAmount. ex: 10000
+         * discountAmount [Long]: Invoice discount value calculated over nominalAmount. ex: 3000
+         * discounts [list of CreditNote.Invoice.Discount objects]: list of Discount objects containing percentage and due parameters
+         * brcode [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
+         * status [string]: current Invoice status. ex: "registered" or "paid"
+         * fee [integer]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
+         * transactionIds [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
+         * created [string]: creation datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
+         * updated [string]: latest update datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
+         *
          */
         static ClassData data = new ClassData(Invoice.class, "Invoice");
 
-        public Number amount;
+        public Long amount;
         public String due;
-        public Number expiration;
-        public Number fine;
-        public Number interest;
-        public List<CreditNote.Invoice.Discount> discounts;
+        public Long expiration;
         public String[] tags;
         public List<CreditNote.Invoice.Description> descriptions;
         public String name;
         public String taxId;
         public String pdf;
         public String link;
-        public Number nominalAmount;
-        public Number fineAmount;
-        public Number interestAmount;
-        public Number discountAmount;
+        public Number fine;
+        public Number interest;
+        public Long nominalAmount;
+        public Long fineAmount;
+        public Long interestAmount;
+        public Long discountAmount;
+        public List<CreditNote.Invoice.Discount> discounts;
         public String brcode;
         public String status;
-        public Number fee;
+        public Integer fee;
         public String[] transactionIds;
         public String created;
         public String updated;
@@ -1117,57 +1082,54 @@ public final class CreditNote extends Resource {
          * <p>
          * Invoice object to be created after contract signature and sent to the credit receiver.
          * <p>
-         * Parameters (required):
-         * @param amount            [number]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
-         * Parameters (optional):
-         * @param due               [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
-         * @param expiration        [number, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
-         * @param fine              [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
-         * @param interest          [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
-         * @param tags              [list of strings, default []]: list of strings for tagging
-         * @param descriptions      [list of maps, default []]: list of maps with "key":string and (optional) "value":string pairs
-         * Attributes (return-only):
-         * @param name              [string]: payer name. ex: "Iron Bank S.A."
-         * @param taxId             [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-         * @param pdf               [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
-         * @param link              [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
-         * @param nominalAmount     [number]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
-         * @param fineAmount        [number]: Invoice fine value calculated over nominal_amount. ex: 20000
-         * @param interestAmount    [number]: Invoice interest value calculated over nominal_amount. ex: 10000
-         * @param discountAmount    [number]: Invoice discount value calculated over nominal_amount. ex: 3000
-         * @param discounts         [list of Discounts]: list of Discounts with "percentage":float and "due":string pairs
-         * @param id                [string]: unique id returned when Invoice is created. ex: "5656565656565656"
-         * @param brcode            [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
-         * @param status            [string]: current Invoice status. ex: "registered" or "paid"
-         * @param fee               [number]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
-         * @param transactionIds    [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
-         * @param created           [string]: creation datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
-         * @param updated           [string]: latest update datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
+         * Parameters:
+         * @param amount [Long]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
+         * @param due [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
+         * @param expiration [Long, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
+         * @param tags [list of strings, default []]: list of strings for tagging
+         * @param descriptions [list of HashMaps, default []]: list of HashMaps with "key":string and (optional) "value":string pairs
+         * @param id [string]: unique id returned when Invoice is created. ex: "5656565656565656"
+         * @param name [string]: payer name. ex: "Iron Bank S.A."
+         * @param taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+         * @param pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
+         * @param link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
+         * @param fine [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
+         * @param interest [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
+         * @param nominalAmount [Long]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
+         * @param fineAmount [Long]: Invoice fine value calculated over nominalAmount. ex: 20000
+         * @param interestAmount [Long]: Invoice interest value calculated over nominalAmount. ex: 10000
+         * @param discountAmount [Long]: Invoice discount value calculated over nominalAmount. ex: 3000
+         * @param discounts [list of CreditNote.Invoice.Discount objects]: list of Discount objects containing percentage and due parameters
+         * @param brcode [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
+         * @param status [string]: current Invoice status. ex: "registered" or "paid"
+         * @param fee [integer]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
+         * @param transactionIds [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
+         * @param created [string]: creation datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
+         * @param updated [string]: latest update datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Invoice(Number amount, String due, Number expiration, Number fine, Number interest,
-                        List<CreditNote.Invoice.Discount> discounts, String[] tags,
-                        List<CreditNote.Invoice.Description> descriptions, String name, String taxId,
-                        String pdf, String link, Number nominalAmount, Number fineAmount, Number interestAmount,
-                        Number discountAmount, String id, String brcode, String status, Number fee,
-                        String[] transactionIds, String created, String updated
-        ){
+        public Invoice(
+            Long amount, String due, Long expiration, String[] tags, List<CreditNote.Invoice.Description> descriptions,
+            String name, String taxId, String pdf, String link, Number fine, Number interest, Long nominalAmount,
+            Long fineAmount, Long interestAmount, Long discountAmount, List<CreditNote.Invoice.Discount> discounts,
+            String id, String brcode, String status, Integer fee, String[] transactionIds, String created, String updated
+        ) {
             super(id);
             this.amount = amount;
             this.due = due;
             this.expiration = expiration;
-            this.fine = fine;
-            this.interest = interest;
-            this.discounts = discounts;
             this.tags = tags;
             this.descriptions = descriptions;
             this.name = name;
             this.taxId = taxId;
             this.pdf = pdf;
             this.link = link;
+            this.fine = fine;
+            this.interest = interest;
             this.nominalAmount = nominalAmount;
             this.fineAmount = fineAmount;
             this.interestAmount = interestAmount;
             this.discountAmount = discountAmount;
+            this.discounts = discounts;
             this.brcode = brcode;
             this.status = status;
             this.fee = fee;
@@ -1182,45 +1144,48 @@ public final class CreditNote extends Resource {
          * Invoice object to be created after contract signature and sent to the credit receiver.
          * <p>
          * Parameters (required):
-         * amount            [number]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
+         * @param data map of properties for the creation of the CreditNote.Invoice
+         * amount [Long]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
+         * <p>
          * Parameters (optional):
-         * due               [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
-         * expiration        [number, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
-         * fine              [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
-         * interest          [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
-         * tags              [list of strings, default []]: list of strings for tagging
-         * descriptions      [list of maps, default []]: list of maps with "key":string and (optional) "value":string pairs
+         * due [string, default now + 2 days]: Invoice due date or datetime in UTC ISO format. ex: "2020-10-28T17:59:26.249976+00:00" for immediate invoices and "2020-10-28" for scheduled invoices
+         * expiration [Long, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
+         * tags [list of strings, default []]: list of strings for tagging
+         * descriptions [list of CreditNote.Invoice.Description objects, default []]: list of Discount objects containing key and value parameters
+         * <p>
          * Attributes (return-only):
-         * name              [string]: payer name. ex: "Iron Bank S.A."
-         * taxId             [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-         * pdf               [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
-         * link              [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
-         * nominalAmount     [number]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
-         * fineAmount        [number]: Invoice fine value calculated over nominal_amount. ex: 20000
-         * interestAmount    [number]: Invoice interest value calculated over nominal_amount. ex: 10000
-         * discountAmount    [number]: Invoice discount value calculated over nominal_amount. ex: 3000
-         * discounts         [list of Discounts]: list of maps with "percentage":float and "due":string pairs
-         * id                [string]: unique id returned when Invoice is created. ex: "5656565656565656"
-         * brcode            [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
-         * status            [string]: current Invoice status. ex: "registered" or "paid"
-         * fee               [number]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
-         * transactionIds    [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
-         * created           [string]: creation datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
-         * updated           [string]: latest update datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00
+         * id [string]: unique id returned when Invoice is created. ex: "5656565656565656"
+         * name [string]: payer name. ex: "Iron Bank S.A."
+         * taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+         * pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
+         * link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
+         * fine [number, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
+         * interest [number, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
+         * nominalAmount [Long]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
+         * fineAmount [Long]: Invoice fine value calculated over nominalAmount. ex: 20000
+         * interestAmount [Long]: Invoice interest value calculated over nominalAmount. ex: 10000
+         * discountAmount [Long]: Invoice discount value calculated over nominalAmount. ex: 3000
+         * discounts [list of CreditNote.Invoice.Discount objects]: list of Discount objects containing percentage and due parameters
+         * brcode [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
+         * status [string]: current Invoice status. ex: "registered" or "paid"
+         * fee [integer]: fee charged by this Invoice. ex: 200 (= R$ 2.00)
+         * transactionIds [list of strings]: ledger transaction ids linked to this Invoice (if there are more than one, all but the first are reversals or failed reversal chargebacks). ex: ["19827356981273"]
+         * created [string]: creation datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
+         * updated [string]: latest update datetime for the Invoice. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         @SuppressWarnings("unchecked")
         public Invoice(Map<String, Object> data) throws Exception {
             super(null);
             HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-            this.amount = (Number) dataCopy.remove("amount");
+            this.amount = ((Number) dataCopy.remove("amount")).longValue();
             this.due = (String) dataCopy.remove("due");
-            this.expiration = (Number) dataCopy.remove("expiration");
+            this.expiration = (Long) dataCopy.remove("expiration");
+            this.tags = (String[]) dataCopy.remove("tags");
+            this.descriptions = parseDescriptions((List<Object>) dataCopy.remove("descriptions"));
             this.fine = (Number) dataCopy.remove("fine");
             this.interest = (Number) dataCopy.remove("interest");
             this.discounts = parseDiscounts((List<Object>) dataCopy.remove("discounts"));
-            this.tags = (String[]) dataCopy.remove("tags");
-            this.descriptions = parseDescriptions((List<Object>) dataCopy.remove("descriptions"));
             this.name = null;
             this.taxId = null;
             this.pdf = null;
@@ -1288,9 +1253,10 @@ public final class CreditNote extends Resource {
          * <p>
          * Used to define a Discount in the Invoice
          * <p>
-         * Parameters (required):
-         * percentage   [number]: discount percentage that will be applied. ex: 2.5
-         * due          [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
+         * Parameters:
+         * percentage [number]: discount percentage that will be applied. ex: 2.5
+         * due [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
+         *
          */
         public final static class Discount extends SubResource{
             public Number percentage;
@@ -1299,10 +1265,12 @@ public final class CreditNote extends Resource {
 
             /**
              * CreditNote.Invoice.Discount object
+             * <p>
              * Used to define a Discount in the Invoice
-             * Parameters (required):
-             * @param percentage    [number]: discount percentage that will be applied. ex: 2.5
-             * @param due           [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
+             * <p>
+             * Parameters:
+             * @param percentage [number]: discount percentage that will be applied. ex: 2.5
+             * @param due [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
              */
             public Discount(Number percentage, String due){
                 this.percentage = percentage;
@@ -1311,10 +1279,13 @@ public final class CreditNote extends Resource {
 
             /**
              * CreditNote.Invoice.Discount object
+             * <p>
              * Used to define a Discount in the Invoice
-             * Parameters (required):
-             * percentage    [number]: discount percentage that will be applied. ex: 2.5
-             * due           [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
+             * <p>
+             * Parameters:
+             * @param data map of properties for the creation of the CreditNote.Invoice.Discount
+             * percentage [number]: discount percentage that will be applied. ex: 2.5
+             * due [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
              */
             public Discount(Map<String, Object> data) throws Exception {
                 HashMap<String, Object> dataCopy = new HashMap<>(data);
@@ -1334,8 +1305,9 @@ public final class CreditNote extends Resource {
          * Used to define a Description in the Invoice
          * <p>
          * Parameters:
-         * key      [string]: key describing a part of the invoice value. ex: "Taxes"
-         * value    [string]: value to which the key refers to. ex: "120"
+         * key [string]: key describing a part of the invoice value. ex: "Taxes"
+         * value [string]: value to which the key refers to. ex: "120"
+         *
          */
         public final static class Description extends SubResource {
             public String key;
@@ -1343,9 +1315,11 @@ public final class CreditNote extends Resource {
 
             /**
              * CreditNote.Invoice.Description object
+             * <p>
              * Used to define a Description in the Invoice
+             * <p>
              * Parameters:
-             * @param key   [string]: text indicating an item to be described. ex: "Taxes"
+             * @param key [string]: text indicating an item to be described. ex: "Taxes"
              * @param value [string]: text describing the specified item. ex: "Bad"
              */
             public Description(String key, String value){
@@ -1355,9 +1329,12 @@ public final class CreditNote extends Resource {
 
             /**
              * CreditNote.Invoice.Description object
+             * <p>
              * Used to define a Description for the Invoice
-             * Parameters (required):
-             * key   [string]: text indicating an item to be described. ex: "Taxes"
+             * <p>
+             * Parameters:
+             * @param data map of properties for the creation of the CreditNote.Invoice.Description
+             * key [string]: text indicating an item to be described. ex: "Taxes"
              * value [string]: text describing the specified item. ex: "Bad"
              */
             public Description(Map<String, Object> data) throws Exception {

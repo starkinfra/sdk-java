@@ -1,14 +1,14 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.SubResource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class IssuingWithdrawal extends Resource {
@@ -16,27 +16,32 @@ public final class IssuingWithdrawal extends Resource {
      * IssuingWithdrawal object
      * <p>
      * The IssuingWithdrawal objects created in your Workspace return cash from your Issuing balance to your
-     * Banking balance.
+     * Banking balance
+     * <p>
+     * When you initialize a IssuingWithdrawal, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * amount                   [integer]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
-     * externalId               [string] IssuingWithdrawal external ID. ex: "12345"
-     * description              [string]: IssuingWithdrawal description. ex: "sending money back"
-     * tags                     [list of strings, default []]: list of strings for tagging. ex: ["tony", "stark"]
-     * id                       [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
-     * transactionId            [string]: Stark Infra ledger transaction ids linked to this IssuingWithdrawal
-     * issuingTransactionId     [string]: issuing ledger transaction ids linked to this IssuingWithdrawal
-     * updated                  [string]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
-     * created                  [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * amount [Long]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+     * externalId [string] IssuingWithdrawal external ID. ex: "12345"
+     * description [string]: IssuingWithdrawal description. ex: "sending money back"
+     * tags [list of strings, default []]: list of strings for tagging. ex: ["tony", "stark"]
+     * id [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
+     * transactionId [string]: Stark Infra ledger transaction ids linked to this IssuingWithdrawal
+     * issuingTransactionId [string]: issuing ledger transaction ids linked to this IssuingWithdrawal
+     * updated [string]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
+     * created [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
+     *
      */
     static ClassData data = new ClassData(IssuingWithdrawal.class, "IssuingWithdrawal");
 
-    public Number amount;
+    public Long amount;
+    public String externalId;
     public String description;
+    public String[] tags;
     public String transactionId;
     public String issuingTransactionId;
-    public String externalId;
-    public String[] tags;
     public String updated;
     public String created;
 
@@ -46,8 +51,12 @@ public final class IssuingWithdrawal extends Resource {
      * The IssuingWithdrawal objects created in your Workspace return cash from your Issuing balance to your
      * Banking balance.
      * <p>
+     * When you initialize a IssuingWithdrawal, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
      * Parameters:
-     * @param amount [integer]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+     * @param amount [Long]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
      * @param externalId [string] IssuingWithdrawal external ID. ex: "12345"
      * @param description [string]: IssuingWithdrawal description. ex: "sending money back"
      * @param tags [list of strings, default []]: list of strings for tagging. ex: ["tony", "stark"]
@@ -57,14 +66,16 @@ public final class IssuingWithdrawal extends Resource {
      * @param updated [string]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    IssuingWithdrawal(String id, Number amount, String description, String transactionId, String issuingTransactionId, String externalId, String[] tags, String updated, String created){
+    IssuingWithdrawal(String id, Long amount, String description, String transactionId, String issuingTransactionId,
+                      String externalId, String[] tags, String updated, String created
+    ) {
         super(id);
         this.amount = amount;
+        this.externalId = externalId;
         this.description = description;
+        this.tags = tags;
         this.transactionId = transactionId;
         this.issuingTransactionId = issuingTransactionId;
-        this.externalId = externalId;
-        this.tags = tags;
         this.updated = updated;
         this.created = created;
 
@@ -76,8 +87,13 @@ public final class IssuingWithdrawal extends Resource {
      * The IssuingWithdrawal objects created in your Workspace return cash from your Issuing balance to your
      * Banking balance.
      * <p>
+     * When you initialize a IssuingWithdrawal, the entity will not be automatically
+     * created in the Stark Infra API. The 'create' function sends the objects
+     * to the Stark Infra API and returns the created object.
+     * <p>
      * Parameters:
-     * amount [integer]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+     * @param data map of properties for the creation of the IssuingWithdrawal
+     * amount [Long]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
      * externalId [string] IssuingWithdrawal external ID. ex: "12345"
      * description [string]: IssuingWithdrawal description. ex: "sending money back"
      * <p>
@@ -92,18 +108,17 @@ public final class IssuingWithdrawal extends Resource {
      * created [string]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
-
     @SuppressWarnings("unchecked")
     public IssuingWithdrawal(Map<String, Object> data) throws Exception {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.amount = (Number) dataCopy.remove("amount");
+        this.amount = ((Number) dataCopy.remove("amount")).longValue();
+        this.externalId = (String) dataCopy.remove("externalId");
         this.description = (String) dataCopy.remove("description");
+        this.tags = (String[]) dataCopy.remove("tags");
         this.transactionId = null;
         this.issuingTransactionId = null;
-        this.externalId = (String) dataCopy.remove("externalId");
-        this.tags = (String[]) dataCopy.remove("tags");
         this.updated = null;
         this.created = null;
 
@@ -184,7 +199,7 @@ public final class IssuingWithdrawal extends Resource {
      * Receive a generator of IssuingWithdrawal objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
@@ -206,7 +221,7 @@ public final class IssuingWithdrawal extends Resource {
      * Receive a generator of IssuingWithdrawal objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
@@ -214,7 +229,7 @@ public final class IssuingWithdrawal extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * <p>
      * Return:
-     * @return generator of IssuingWithdrawals objects with updated attributes
+     * @return generator of IssuingWithdrawal objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingWithdrawal> query(Map<String, Object> params) throws Exception{
@@ -230,7 +245,7 @@ public final class IssuingWithdrawal extends Resource {
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
-     * @return generator of IssuingWithdrawals objects with updated attributes
+     * @return generator of IssuingWithdrawal objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingWithdrawal> query(User user) throws Exception{
@@ -243,7 +258,7 @@ public final class IssuingWithdrawal extends Resource {
      * Receive a generator of IssuingWithdrawal objects previously created in the Stark Infra API
      * <p>
      * Return:
-     * @return generator of IssuingWithdrawals objects with updated attributes
+     * @return generator of IssuingWithdrawal objects with updated attributes
      * @throws Exception error in the request
      */
     public static Generator<IssuingWithdrawal> query() throws Exception{
@@ -283,7 +298,7 @@ public final class IssuingWithdrawal extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
@@ -324,7 +339,7 @@ public final class IssuingWithdrawal extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
      * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"

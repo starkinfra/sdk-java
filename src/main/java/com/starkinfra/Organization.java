@@ -19,9 +19,9 @@ public final class Organization extends User{
      * each request or may be defined as the default user at the start (See README).
      * If you are accessing a specific Workspace using Organization credentials, you should
      * specify the workspace ID when building the Organization object or by request, using
-     * the organization.set_workspace(workspace_id) method, which creates a copy of the organization
+     * the organization.setWorkspace(workspaceId) method, which creates a copy of the organization
      * object with the altered workspace ID. If you are listing or creating new Workspaces, the
-     * workspace_id should be null.
+     * workspaceId should be null.
      * <p>
      * Parameters (required):
      * @param environment [string]: environment where the organization is being used. ex: "sandbox" or "production"
@@ -50,9 +50,9 @@ public final class Organization extends User{
      * each request or may be defined as the default user at the start (See README).
      * If you are accessing a specific Workspace using Organization credentials, you should
      * specify the workspace ID when building the Organization object or by request, using
-     * the organization.set_workspace(workspace_id) method, which creates a copy of the organization
+     * the organization.replace(organization, workspaceId) method, which creates a copy of the organization
      * object with the altered workspace ID. If you are listing or creating new Workspaces, the
-     * workspace_id should be null.
+     * workspaceId should be null.
      * <p>
      * Parameters (required):
      * @param environment [string]: environment where the organization is being used. ex: "sandbox" or "production"
@@ -82,5 +82,4 @@ public final class Organization extends User{
             workspaceId
         );
     }
-
 }

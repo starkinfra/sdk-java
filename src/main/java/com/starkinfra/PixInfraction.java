@@ -1,15 +1,15 @@
 package com.starkinfra;
 
-import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.SubResource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.SubResource;
+import com.starkinfra.error.ErrorElement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class PixInfraction extends Resource {
@@ -18,25 +18,26 @@ public final class PixInfraction extends Resource {
      * <p>
      * Pix Infractions are used to report transactions that are suspected of
      * fraud, to request a refund or to reverse a refund.
+     * <p>
      * When you initialize a PixInfraction, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the created object.
      * <p>
      * Parameters:
-     * referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
-     * type              [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
-     * description       [string, default null]: description for any details that can help with the infraction investigation.
-     * creditedBankCode  [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
-     * agent             [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-     * analysis          [string]: analysis that led to the result.
-     * bacenId           [string]: central bank's unique UUID that identifies the Pix Infraction.
-     * debitedBankCode   [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-     * id                [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
-     * reportedBy        [string]: agent that reported the PixInfraction. Options: "debited", "credited".
-     * result            [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
-     * status            [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * created           [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
-     * updated           [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
+     * type [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
+     * description [string, default null]: description for any details that can help with the infraction investigation.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * analysis [string]: analysis that led to the result.
+     * debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+     * flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
+     * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
+     * result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
+     * status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      *
      */
     static ClassData data = new ClassData(PixInfraction.class, "PixInfraction");
@@ -44,11 +45,11 @@ public final class PixInfraction extends Resource {
     public String referenceId;
     public String type;
     public String description;
+    public String[] tags;
     public String creditedBankCode;
-    public String agent;
     public String analysis;
-    public String bacenId;
     public String debitedBankCode;
+    public String flow;
     public String reportedBy;
     public String result;
     public String status;
@@ -63,34 +64,34 @@ public final class PixInfraction extends Resource {
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * @param referenceId       [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
-     * @param type              [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
-     * @param description       [string, default null]: description for any details that can help with the infraction investigation.
-     * @param creditedBankCode  [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
-     * @param agent             [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-     * @param analysis          [string]: analysis that led to the result.
-     * @param bacenId           [string]: central bank's unique UUID that identifies the Pix Infraction.
-     * @param debitedBankCode   [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-     * @param id                [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
-     * @param reportedBy        [string]: agent that reported the PixInfraction. Options: "debited", "credited".
-     * @param result            [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
-     * @param status            [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
-     * @param created           [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
-     * @param updated           [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
-     *
+     * @param referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
+     * @param type [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
+     * @param description [string, default null]: description for any details that can help with the infraction investigation.
+     * @param tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * @param creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * @param analysis [string]: analysis that led to the result.
+     * @param debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+     * @param flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
+     * @param id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * @param reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
+     * @param result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
+     * @param status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
+     * @param created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public PixInfraction(String referenceId, String type, String description, String creditedBankCode, String agent,
-                         String analysis, String bacenId, String debitedBankCode, String id, String reportedBy,
-                         String result, String status, String created, String updated) {
+    public PixInfraction(String referenceId, String type, String description, String[] tags, String creditedBankCode,
+                         String analysis,String debitedBankCode, String flow, String id, String reportedBy,
+                         String result, String status, String created, String updated
+    ) {
         super(id);
         this.referenceId = referenceId;
         this.type = type;
         this.description = description;
+        this.tags = tags;
         this.creditedBankCode = creditedBankCode;
-        this.agent = agent;
         this.analysis = analysis;
-        this.bacenId = bacenId;
         this.debitedBankCode = debitedBankCode;
+        this.flow = flow;
         this.reportedBy = reportedBy;
         this.result = result;
         this.status = status;
@@ -105,20 +106,21 @@ public final class PixInfraction extends Resource {
      * created in the Stark Infra API. The 'create' function sends the objects
      * to the Stark Infra API and returns the list of created objects.
      * <p>
-     * Parameters:
+     * Parameters (required):
+     * @param data map of properties for the creation of the PixInfraction
      * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * type [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
      * <p>
      * Parameters (optional):
      * description [string, default null]: description for any details that can help with the infraction investigation.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Attributes (return-only):
-     * agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-     * analysis [string]: analysis that led to the result.
-     * bacenId [string]: central bank's unique UUID that identifies the Pix Infraction.
-     * debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-     * creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
      * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * analysis [string]: analysis that led to the result.
+     * debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+     * flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
+     * creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
      * reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
      * result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
      * status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
@@ -133,11 +135,11 @@ public final class PixInfraction extends Resource {
         this.referenceId = (String) dataCopy.remove("referenceId");
         this.type = (String) dataCopy.remove("type");
         this.description = (String) dataCopy.remove("description");
+        this.tags = (String[]) dataCopy.remove("tags");
         this.creditedBankCode = (String) dataCopy.remove("creditedBankCode");
-        this.agent = null;
         this.analysis = null;
-        this.bacenId = null;
         this.debitedBankCode = null;
+        this.flow = null;
         this.reportedBy = null;
         this.result = null;
         this.status = null;
@@ -196,6 +198,8 @@ public final class PixInfraction extends Resource {
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Return:
      * @return generator of PixInfraction objects with updated attributes
@@ -243,13 +247,15 @@ public final class PixInfraction extends Resource {
      * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
      * <p>
      * Parameters:
-     * @param params map of properties for the creation of the PixInfraction
+     * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -277,14 +283,16 @@ public final class PixInfraction extends Resource {
      * Use this function instead of query if you want to manually page your infractions.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Return:
      * @return PixInfraction.Page object:
@@ -338,14 +346,16 @@ public final class PixInfraction extends Resource {
      * Use this function instead of query if you want to manually page your infractions.
      * <p>
      * Parameters:
-     * @param params parameters of the query
+     * @param params map of parameters for the query
      * cursor [string, default null]: cursor returned on the previous page function call
-     * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+     * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -522,7 +532,6 @@ public final class PixInfraction extends Resource {
         public String created;
         public String type;
         public List<ErrorElement> errors;
-        public String agent;
         public PixInfraction infraction;
 
         /**
@@ -587,7 +596,7 @@ public final class PixInfraction extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
@@ -641,7 +650,7 @@ public final class PixInfraction extends Resource {
          * Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
@@ -674,10 +683,10 @@ public final class PixInfraction extends Resource {
          * Use this function instead of query if you want to manually page your infractions.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
@@ -735,10 +744,10 @@ public final class PixInfraction extends Resource {
          * Use this function instead of query if you want to manually page your infractions.
          * <p>
          * Parameters:
-         * @param params parameters of the query
+         * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * ids [list of strings, default null]: Log ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-         * limit [integer, default null]: maximum number of objects to be retrieved. Max = 100. ex: 35
+         * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
          * after [string, default null]: date filter for objects created after a specified date. ex: "2020-03-29"
          * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
          * types [strings, default null]: filter retrieved objects by types. ex: "success" or "failed"

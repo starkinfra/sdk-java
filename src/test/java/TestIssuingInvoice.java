@@ -1,12 +1,13 @@
-import com.starkinfra.utils.Generator;
-import com.starkinfra.IssuingInvoice;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.starkinfra.Settings;
+import com.starkinfra.IssuingInvoice;
+import com.starkinfra.utils.Generator;
+
 import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class TestIssuingInvoice {
@@ -14,6 +15,7 @@ public class TestIssuingInvoice {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         IssuingInvoice invoice = IssuingInvoice.create(example());
         System.out.println(invoice);
         Assert.assertNotNull(invoice.id);
@@ -66,6 +68,7 @@ public class TestIssuingInvoice {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         Generator<IssuingInvoice.Log> logs = IssuingInvoice.Log.query(params);
@@ -78,7 +81,7 @@ public class TestIssuingInvoice {
 
     static IssuingInvoice example() throws Exception{
         HashMap<String, Object> data = new HashMap<>();
-        data.put("amount", 1000);
+        data.put("amount", Long.valueOf(1000));
 
         return new IssuingInvoice(data);
     }

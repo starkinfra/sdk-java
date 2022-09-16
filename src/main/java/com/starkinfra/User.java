@@ -1,8 +1,8 @@
 package com.starkinfra;
 
-import com.starkbank.ellipticcurve.PrivateKey;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Check;
+import com.starkinfra.utils.Resource;
+import com.starkbank.ellipticcurve.PrivateKey;
 
 
 public abstract class User extends Resource{

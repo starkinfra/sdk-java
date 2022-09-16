@@ -1,7 +1,8 @@
-import com.starkinfra.PixDirector;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
+
+import com.starkinfra.Settings;
+import com.starkinfra.PixDirector;
 
 import java.util.HashMap;
 

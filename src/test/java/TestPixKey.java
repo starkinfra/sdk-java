@@ -1,14 +1,15 @@
-import com.starkinfra.utils.Generator;
-import com.starkinfra.Settings;
-import com.starkinfra.PixKey;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import com.starkinfra.PixKey;
+import com.starkinfra.Settings;
+import com.starkinfra.utils.Generator;
+
 import java.util.List;
+import java.util.Random;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class TestPixKey {
@@ -16,6 +17,7 @@ public class TestPixKey {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         PixKey key = PixKey.create(example());
         System.out.println(key);
         Assert.assertNotNull(key.id);
@@ -43,6 +45,7 @@ public class TestPixKey {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2019-04-01");
@@ -153,6 +156,7 @@ public class TestPixKey {
     @Test
     public void testPixKeyQueryAndCancel() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("status", "registered");
@@ -168,6 +172,7 @@ public class TestPixKey {
     @Test
     public void testUpdate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("status", "registered");
         params.put("type", "phone");

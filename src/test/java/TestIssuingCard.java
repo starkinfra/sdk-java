@@ -1,14 +1,16 @@
-import com.starkinfra.utils.Generator;
-import com.starkinfra.IssuingCard;
-import com.starkinfra.*;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.starkinfra.Settings;
+import com.starkinfra.IssuingRule;
+import com.starkinfra.IssuingCard;
+import com.starkinfra.utils.Generator;
+
 import java.util.*;
+import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class TestIssuingCard {
@@ -16,6 +18,7 @@ public class TestIssuingCard {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         List<IssuingCard> cards = new ArrayList<>();
         cards.add(example(false));
         cards.add(example(true));
@@ -93,6 +96,7 @@ public class TestIssuingCard {
     @Test
     public void testCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
         params.put("status", "active");
@@ -136,6 +140,7 @@ public class TestIssuingCard {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         Generator<IssuingCard.Log> logs = IssuingCard.Log.query(params);

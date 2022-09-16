@@ -1,15 +1,16 @@
-import com.starkinfra.error.InvalidSignatureError;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.PixReversal;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.starkinfra.Settings;
+import com.starkinfra.PixReversal;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.error.InvalidSignatureError;
+
 import java.util.List;
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class TestPixReversal {
@@ -17,6 +18,7 @@ public class TestPixReversal {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         List<PixReversal> reversals = new ArrayList<>();
         reversals.add(example());
         reversals = PixReversal.create(reversals);
@@ -51,6 +53,7 @@ public class TestPixReversal {
     @Test
     public void testLogQueryAndGet() throws Exception{
         Settings.user = utils.User.defaultProject();
+
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2019-04-01");
@@ -159,23 +162,39 @@ public class TestPixReversal {
     }
 
     @Test
+    public void testResponse() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> datas = new HashMap<>();
+        datas.put("status", "denied");
+        datas.put("reason", "accountClosed");
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("authorization", datas);
+
+        String response = PixReversal.response(data);
+        Assert.assertNotNull(response);
+        System.out.println(response);
+    }
+
+    @Test
     public void testPixReversalParse() throws Exception{
         String content = "{\"amount\": 1, \"bankCode\": \"20018183\", \"created\": \"2022-03-10T20:52:42.071257+00:00\", \"endToEndId\": \"E01572667202203101930az8mguuaoBZ\", \"externalId\": \"java-ac477bfe-5a39-4de8-8747-56b12cc66a32\", \"fee\": 35, \"flow\": \"out\", \"id\": \"5924184966299648\", \"reason\": \"fraud\", \"returnId\": \"D20018183202203102052ueYgps4qBTE\", \"status\": \"success\", \"updated\": \"2022-03-10T20:52:47.555513+00:00\"}";
-        String valid_signature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
-
+        String validSignature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
         Settings.user = utils.User.defaultProject();
-        PixReversal reversal = PixReversal.parse(content, valid_signature);
+
+        PixReversal reversal = PixReversal.parse(content, validSignature);
         System.out.println(reversal);
     }
 
     @Test
     public void testPixReversalParseInvalidSignature() throws Exception{
         String content = "{\"amount\": 1, \"bankCode\": \"20018183\", \"created\": \"2022-03-10T20:52:42.071257+00:00\", \"endToEndId\": \"E01572667202203101930az8mguuaoBZ\", \"externalId\": \"java-ac477bfe-5a39-4de8-8747-56b12cc66a32\", \"fee\": 35, \"flow\": \"out\", \"id\": \"5924184966299648\", \"reason\": \"fraud\", \"returnId\": \"D20018183202203102052ueYgps4qBTE\", \"status\": \"success\", \"updated\": \"2022-03-10T20:52:47.555513+00:00\"}";
-        String invalid_signature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
-
+        String invalidSignature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
         Settings.user = utils.User.defaultProject();
+
         try{
-            PixReversal.parse(content, invalid_signature);
+            PixReversal.parse(content, invalidSignature);
             throw new Error("Signature incorrectly validated");
         } catch (InvalidSignatureError e){
             System.out.println("Signature correctly rejected");
@@ -185,11 +204,11 @@ public class TestPixReversal {
     @Test
     public void testPixReversalParseMalformedSignature() throws Exception{
         String content = "{\"amount\": 1, \"bankCode\": \"20018183\", \"created\": \"2022-03-10T20:52:42.071257+00:00\", \"endToEndId\": \"E01572667202203101930az8mguuaoBZ\", \"externalId\": \"java-ac477bfe-5a39-4de8-8747-56b12cc66a32\", \"fee\": 35, \"flow\": \"out\", \"id\": \"5924184966299648\", \"reason\": \"fraud\", \"returnId\": \"D20018183202203102052ueYgps4qBTE\", \"status\": \"success\", \"updated\": \"2022-03-10T20:52:47.555513+00:00\"}";
-        String malformed_signature = "malformed signature";
-
+        String malformedSignature = "malformed signature";
         Settings.user = utils.User.defaultProject();
+
         try{
-            PixReversal.parse(content, malformed_signature);
+            PixReversal.parse(content, malformedSignature);
             throw new Error("Signature incorrectly validated");
         } catch (InvalidSignatureError e){
             System.out.println("Signature correctly rejected");
@@ -198,7 +217,7 @@ public class TestPixReversal {
 
     static PixReversal example() throws Exception{
         HashMap<String, Object> data = new HashMap<>();
-        data.put("amount", 1);
+        data.put("amount", Long.valueOf(100000));
         data.put("externalId", "java-" + UUID.randomUUID().toString());
         data.put("reason", "fraud");
         data.put("endToEndId", utils.EndToEndId.get());

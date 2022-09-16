@@ -1,13 +1,17 @@
-import com.starkinfra.utils.Generator;
-import com.starkinfra.PixStatement;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.nio.file.StandardCopyOption;
-import java.io.InputStream;
+import com.starkinfra.Settings;
+import com.starkinfra.PixStatement;
+import com.starkinfra.utils.Generator;
+
 import java.io.File;
-import java.util.*;
+import java.util.List;
+import java.util.HashMap;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.nio.file.StandardCopyOption;
 
 
 public class TestPixStatement {
@@ -15,6 +19,7 @@ public class TestPixStatement {
     @Test
     public void testCreate() throws Exception {
         Settings.user = utils.User.defaultProject();
+
         PixStatement statement = PixStatement.create(example());
         System.out.println(statement);
         Assert.assertNotNull(statement.id);
@@ -99,7 +104,6 @@ public class TestPixStatement {
 
     @Test
     public void testPixStatementCsvGet() throws Exception {
-
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 1);
         Generator<PixStatement> statements = PixStatement.query(params);

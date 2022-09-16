@@ -1,12 +1,13 @@
-import com.starkinfra.IssuingTransaction;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.Settings;
-import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Assert;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.starkinfra.Settings;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.IssuingTransaction;
+
 import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class TestIssuingTransaction {

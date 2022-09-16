@@ -1,14 +1,14 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.SubResource;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public final class IssuingTransaction extends Resource {
@@ -17,19 +17,20 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * The IssuingTransaction objects created in your Workspace to represent each balance shift.
      * <p>
-     * Attributes (return-only):
-     * id           [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
-     * amount       [integer]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
-     * balance      [integer]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
-     * description  [string]: IssuingTransaction description. ex: "Buying food"
-     * source       [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"
-     * tags         [string]: list of strings inherited from the source resource. ex: ["tony", "stark"]
-     * created      [string]: creation datetime for the IssuingTransaction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * Parameters:
+     * id [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
+     * amount [Long]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
+     * balance [Long]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
+     * description [string]: IssuingTransaction description. ex: "Buying food"
+     * source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"
+     * tags [string]: list of strings inherited from the source resource. ex: ["tony", "stark"]
+     * created [string]: creation datetime for the IssuingTransaction. ex: "2020-03-10 10:30:00.000000+00:00"
+     *
      */
     static ClassData data = new ClassData(IssuingTransaction.class, "IssuingTransaction");
 
-    public long amount;
-    public long balance;
+    public Long amount;
+    public Long balance;
     public String description;
     public String source;
     public String[] tags;
@@ -40,17 +41,18 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * The IssuingTransaction objects created in your Workspace to represent each balance shift.
      * <p>
-     * Attributes (return-only):
+     * Parameters:
      * @param id [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
-     * @param amount [integer]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
-     * @param balance [integer]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
+     * @param amount [Long]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
+     * @param balance [Long]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
      * @param description [string]: IssuingTransaction description. ex: "Buying food"
      * @param source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"
      * @param tags [string]: list of strings inherited from the source resource. ex: ["tony", "stark"]
      * @param created [string]: creation datetime for the IssuingTransaction. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IssuingTransaction(String id, long amount, long balance, String description,
-                              String source, String[] tags, String created){
+    public IssuingTransaction(String id, Long amount, Long balance, String description,
+                              String source, String[] tags, String created
+    ) {
         super(id);
         this.amount = amount;
         this.balance = balance;
@@ -67,8 +69,8 @@ public final class IssuingTransaction extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
-     * amount [integer]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
-     * balance [integer]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
+     * amount [Long]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
+     * balance [Long]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
      * description [string]: IssuingTransaction description. ex: "Buying food"
      * source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"
      * tags [string]: list of strings inherited from the source resource. ex: ["tony", "stark"]
@@ -79,12 +81,12 @@ public final class IssuingTransaction extends Resource {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.amount = 0;
-        this.balance = 0;
+        this.amount = null;
+        this.balance = null;
         this.description = null;
         this.source = null;
         this.tags = null;
-        this.created = created;
+        this.created = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
@@ -143,7 +145,7 @@ public final class IssuingTransaction extends Resource {
      * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
      * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
@@ -166,7 +168,7 @@ public final class IssuingTransaction extends Resource {
      * Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
      * <p>
      * Parameters:
-     * @param params map of parameters
+     * @param params map of parameters for the query
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
      * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
@@ -251,7 +253,7 @@ public final class IssuingTransaction extends Resource {
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * cursor [string, default null]: cursor returned on the previous page function call
      * <p>
      * Return:
@@ -295,7 +297,7 @@ public final class IssuingTransaction extends Resource {
      * before [date string, default null] date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
-     * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+     * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * cursor [string, default null]: cursor returned on the previous page function call
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
