@@ -24,6 +24,7 @@ public final class IssuingPurchase extends Resource {
      * Parameters:
      * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * holderName [string]: card holder name. ex: "Tony Stark"
+     * productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
      * purpose [string]: purchase purpose. ex: "purchase"
@@ -63,6 +64,7 @@ public final class IssuingPurchase extends Resource {
     static ClassData data = new ClassData(IssuingPurchase.class, "IssuingPurchase");
 
     public String holderName;
+    public String productId;
     public String cardId;
     public String cardEnding;
     public String purpose;
@@ -103,6 +105,7 @@ public final class IssuingPurchase extends Resource {
      * Parameters:
      * @param id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param holderName [string]: card holder name. ex: "Tony Stark"
+     * @param productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * @param cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param cardEnding [string]: last 4 digits of the card number. ex: "1234"
      * @param purpose [string]: purchase purpose. ex: "purchase"
@@ -136,7 +139,7 @@ public final class IssuingPurchase extends Resource {
      * @param cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
      * @param holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      */
-    public IssuingPurchase(String id, String holderName, String cardId, String cardEnding, String purpose, Long amount,
+    public IssuingPurchase(String id, String holderName, String productId, String cardId, String cardEnding, String purpose, Long amount,
                            Long tax, Long issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol,
                            Long merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol,
                            String merchantCategoryCode, String merchantCountryCode, String acquirerId, String merchantId,
@@ -146,6 +149,7 @@ public final class IssuingPurchase extends Resource {
     ) {
         super(id);
         this.holderName = holderName;
+        this.productId = productId;
         this.cardId = cardId;
         this.cardEnding = cardEnding;
         this.purpose = purpose;
@@ -186,6 +190,7 @@ public final class IssuingPurchase extends Resource {
      * Attributes (return-only):
      * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * holderName [string]: card holder name. ex: "Tony Stark"
+     * productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
      * purpose [string]: purchase purpose. ex: "purchase"
@@ -225,6 +230,7 @@ public final class IssuingPurchase extends Resource {
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
         this.holderName = null;
+        this.productId = null;
         this.cardId = null;
         this.cardEnding = null;
         this.purpose = null;
