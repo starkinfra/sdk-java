@@ -25,6 +25,10 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Products](#query-issuinproducts): View available sub-issuer Products (a.k.a. card number ranges)
     - [Holders](#create-issuingholders): Manage card holders
     - [Cards](#create-issuingcards): Create virtual and/or physical cards
+    - [Design](#query-issuingdesigns): View your current card or package designs
+    - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
+    - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
+    - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
     - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
     - [Invoices](#create-issuinginvoices): Add money to your issuing balance
     - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
@@ -599,6 +603,263 @@ You can get a single log by its id.
 import com.starkinfra.*;
 
 IssuingCard.Log log = IssuingCard.Log.get("5642114708799488");
+
+System.out.println(log);
+```
+
+### Query IssuingDesigns
+
+You can get a list of available designs given some filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+Generator<IssuingDesign> designs = IssuingDesign.query(params);
+
+for (IssuingDesign design : designs) {
+    System.out.println(design);
+}
+```
+
+### Get an IssuingDesign
+
+Information on a design may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingDesign design = IssuingDesign.get("5747368922185728");
+
+System.out.println(design);
+```
+
+### Query IssuingStocks
+
+You can get a list of available stocks given some filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("after", "2022-11-01");
+params.put("before", "2022-11-30");
+
+Generator<IssuingStock> stocks = IssuingStock.query(params);
+
+for (IssuingStock stock : stocks) {
+    System.out.println(stock);
+}
+```
+
+### Get an IssuingStock
+
+Information on a stock may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingStock stock = IssuingStock.get("5792731695677440");
+
+System.out.println(stock);
+```
+
+### Query IssuingStock logs
+
+Logs are pretty important to understand the life cycle of a stock.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 150);
+
+Generator<IssuingStock.Log> logs = IssuingStock.Log.query(params);
+
+for (IssuingStock.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IssuingStock log
+
+You can get a single log by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingStock.Log log = IssuingStock.Log.get("5809977331548160");
+
+System.out.println(log);
+```
+
+### Create IssuingRestocks
+
+You can order restocks for a specific IssuingStock.
+
+```java
+import com.starkinfra.*;
+
+List<IssuingRestock> restocks = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("count", 200);
+data.put("stockId", "5136459887542272");
+restocks.add(new IssuingRestock(data));
+
+restocks = IssuingRestock.create(restocks);
+
+for (IssuingRestock restock : restocks) {
+    System.out.println(restock);
+}
+```
+
+### Query IssuingRestocks
+
+You can get a list of created restocks given some filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("after", "2022-11-01");
+params.put("before", "2022-11-30");
+
+Generator<IssuingRestock> restocks = IssuingRestock.query(params);
+
+for (IssuingRestock restock : restocks) {
+    System.out.println(restock);
+}
+```
+
+### Get an IssuingRestock
+
+After its creation, information on a restock may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingRestock restock = IssuingRestock.get("5664445921492992");
+
+System.out.println(restock);
+```
+
+### Query IssuingRestock logs
+
+Logs are pretty important to understand the life cycle of a restock.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 150);
+
+Generator<IssuingRestock.Log> logs = IssuingRestock.Log.query(params);
+
+for (IssuingRestock.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IssuingRestock log
+
+You can get a single log by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingStock.Log log = IssuingStock.Log.get("6310318875607040");
+
+System.out.println(log);
+```
+
+### Create IssuingEmbossingRequests
+
+You can create a request to emboss a physical card.
+
+```java
+import com.starkinfra.*;
+
+List<IssuingEmbossingRequest> requests = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("cardDesignId", "5648359658356736");
+data.put("envelopeDesignId", "5747368922185728");
+data.put("cardId", "5714424132272128");
+data.put("displayName1", "Antonio Stark");
+data.put("shippingCity", "Sao Paulo");
+data.put("shippingCountryCode", "BRA");
+data.put("shippingDistrict", "Bela Vista");
+data.put("shippingService", "loggi");
+data.put("shippingStateCode", "SP");
+data.put("shippingStreetLine1", "Av. Paulista, 200");
+data.put("shippingStreetLine2", "10 andar");
+data.put("shippingTrackingNumber", "My_custom_tracking_number");
+data.put("shippingZipCode", "12345-678");
+data.put("embosserId", "5746980898734080");
+requests.add(new IssuingEmbossingRequest(data));
+
+requests = IssuingEmbossingRequest.create(requests);
+
+for (IssuingEmbossingRequest request : requests) {
+    System.out.println(request);
+}
+```
+
+### Query IssuingEmbossingRequests
+
+You can get a list of created embossing requests given some filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("after", "2022-11-01");
+params.put("before", "2022-11-30");
+
+Generator<IssuingEmbossingRequest> requests = IssuingEmbossingRequest.query(params);
+
+for (IssuingEmbossingRequest request : requests) {
+    System.out.println(request);
+}
+```
+
+### Get an IssuingEmbossingRequest
+
+After its creation, information on an embossing request may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingEmbossingRequest request = IssuingEmbossingRequest.get("5191752558313472");
+
+System.out.println(request);
+```
+
+### Query IssuingEmbossingRequest logs
+
+Logs are pretty important to understand the life cycle of an embossing request.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 150);
+
+Generator<IssuingEmbossingRequest.Log> logs = IssuingEmbossingRequest.Log.query(params);
+
+for (IssuingEmbossingRequest.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IssuingEmbossingRequest log
+
+You can get a single log by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingEmbossingRequest.Log log = IssuingEmbossingRequest.Log.get("6724771005857792");
 
 System.out.println(log);
 ```

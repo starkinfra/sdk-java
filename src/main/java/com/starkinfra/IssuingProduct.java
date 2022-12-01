@@ -134,7 +134,7 @@ public final class IssuingProduct extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<IssuingProduct> query(User user) throws Exception{
-        return Rest.getStream(data,  new HashMap<>(), user);
+        return Rest.getStream(data, new HashMap<>(), user);
     }
 
 

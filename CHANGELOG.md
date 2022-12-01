@@ -15,6 +15,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - productId attribute to IssuingPurchase resource
+- IssuingDesign resource
+- IssuingStock resource
+- IssuingRestock resource
+- IssuingEmbossingRequest resource
 
 ## [0.2.0] - 2022-09-16
 ### Added

@@ -191,7 +191,7 @@ public final class IssuingCard extends Resource {
         this.stateCode = (String) dataCopy.remove("stateCode");
         this.zipCode = (String) dataCopy.remove("zipCode");
         this.holderId = null;
-        this.type = null;
+        this.type = (String) dataCopy.remove("type");
         this.status = null;
         this.number = null;
         this.securityCode = null;
@@ -296,7 +296,7 @@ public final class IssuingCard extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
      * types [list of strings, default null]: card type. ex: ["virtual"]
      * holderIds [list of strings, default null]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -322,7 +322,7 @@ public final class IssuingCard extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
      * types [list of strings, default null]: card type. ex: ["virtual"]
      * holderIds [list of strings, default null]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -350,7 +350,7 @@ public final class IssuingCard extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<IssuingCard> query(User user) throws Exception{
-        return Rest.getStream(data,  new HashMap<>(), user);
+        return Rest.getStream(data, new HashMap<>(), user);
     }
 
 
@@ -388,7 +388,7 @@ public final class IssuingCard extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
      * types [list of strings, default null]: card type. ex: ["virtual"]
      * holderIds [list of strings, default null]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -422,7 +422,7 @@ public final class IssuingCard extends Resource {
      * status [string, default ""]: filter for status of retrieved objects. ex: "active", "blocked", "expired" or "canceled"
      * types [list of strings, default null]: card type. ex: ["virtual"]
      * holderIds [list of strings, default null]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -539,7 +539,7 @@ public final class IssuingCard extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingCard get(String id) throws Exception{
-        return IssuingCard.get( id, null, null);
+        return IssuingCard.get(id, null, null);
     }
 
     /**
@@ -687,8 +687,8 @@ public final class IssuingCard extends Resource {
          * Parameters:
          * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * cardIds [list of strings, default null]: list of IssuingCard ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -741,8 +741,8 @@ public final class IssuingCard extends Resource {
          * Parameters:
          * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * cardIds [list of strings, default null]: list of IssuingCard ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -776,8 +776,8 @@ public final class IssuingCard extends Resource {
          * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * cardIds [list of strings, default null]: list of IssuingCard ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
@@ -837,8 +837,8 @@ public final class IssuingCard extends Resource {
          * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * cardIds [list of strings, default null]: list of IssuingCard ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]

@@ -37,7 +37,7 @@ public final class MerchantCountry extends SubResource {
      * @param code [string]: country's code. ex: "BRA"
      * @param name [string]: country's name. ex: "Brazil"
      * @param number [string]: country's number. ex: "076"
-     * @param shortCode [string]:country's short code. ex: "BR"
+     * @param shortCode [string]: country's short code. ex: "BR"
      */
     public MerchantCountry(String code, String name, String number, String shortCode){
         this.code = code;
