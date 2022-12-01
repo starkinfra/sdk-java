@@ -214,7 +214,7 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null]: date filter for objects created only after specified date. ex:"2020-03-10"
+     * after [string, default null]: date filter for objects created only after specified date. ex:"2020-03-10"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default null]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -236,7 +236,7 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default null]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -312,7 +312,7 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. Options: "created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -354,7 +354,7 @@ public final class IssuingInvoice extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
-     * after [date string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null]: date filter for objects created only after specified date. ex: "2022-03-22"
      * before [date string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. Options: created", "expired", "overdue", "paid".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -444,8 +444,8 @@ public final class IssuingInvoice extends Resource {
          * Parameters:
          * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
@@ -497,8 +497,8 @@ public final class IssuingInvoice extends Resource {
          * Parameters:
          * @param params map of parameters for the query
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types.  Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
@@ -531,8 +531,8 @@ public final class IssuingInvoice extends Resource {
          * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. Options: "created", "paid", "credited", "canceled"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
@@ -591,8 +591,8 @@ public final class IssuingInvoice extends Resource {
          * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * invoiceIds [list of strings, default null]: list of IssuingInvoice ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call

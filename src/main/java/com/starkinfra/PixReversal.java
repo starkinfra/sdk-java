@@ -464,7 +464,7 @@ public final class PixReversal extends Resource {
      * Parameters:
      * @param params to be returned on a PixReversal read.
      * status [string]: response to the authorization. ex: "approved" or "denied"
-     * reason [string, default None]: denial reason. Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
+     * reason [string, default null]: denial reason. Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
      * <p>
      * Return:
      * @return Dumped JSON string that must be returned to us
@@ -693,8 +693,8 @@ public final class PixReversal extends Resource {
          * @param params map of parameters for the query
          * cursor [string, default null]: cursor returned on the previous page function call
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-         * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-09"
-         * before [string, default null] date filter for objects created only before specified date. ex: "2020-03-10"
+         * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
+         * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
          * reversalIds [list of strings, default null]: list of PixReversal ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
