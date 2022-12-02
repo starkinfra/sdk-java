@@ -148,7 +148,7 @@ public final class IssuingTransaction extends Resource {
      * @param params map of parameters for the query
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
@@ -171,7 +171,7 @@ public final class IssuingTransaction extends Resource {
      * @param params map of parameters for the query
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
@@ -249,7 +249,7 @@ public final class IssuingTransaction extends Resource {
      * @param params map of parameters
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs
@@ -293,7 +293,7 @@ public final class IssuingTransaction extends Resource {
      * @param params map of parameters
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default ""]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
      * ids [list of strings, default []]: transaction IDs

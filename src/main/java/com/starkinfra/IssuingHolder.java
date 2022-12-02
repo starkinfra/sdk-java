@@ -215,7 +215,7 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -257,7 +257,7 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param params map of parameters for the query
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -320,7 +320,7 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -366,7 +366,7 @@ public final class IssuingHolder extends Resource {
      * Parameters:
      * @param params map of parameters
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
-     * after [date string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
+     * after [string, default null] date filter for objects created only after specified date. ex: "2022-03-22"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2022-03-22"
      * status [string, default null]: filter for status of retrieved objects. ex: "active", "blocked" or "canceled"
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
