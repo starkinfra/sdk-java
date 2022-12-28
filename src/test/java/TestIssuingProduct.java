@@ -14,13 +14,13 @@ public class TestIssuingProduct {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> params = new HashMap<>();
-        params.put("limit", 2);
+        params.put("limit", 1);
         params.put("cursor", null);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             IssuingProduct.Page page = IssuingProduct.page(params);
             Assert.assertNotNull(page);
-            Assert.assertEquals(2, page.products.size());
+            Assert.assertEquals(1, page.products.size());
             for (IssuingProduct product: page.products) {
                 Assert.assertNotNull(product.id);
             }

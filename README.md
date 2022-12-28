@@ -49,10 +49,10 @@ This SDK version is compatible with the Stark Infra API v2.
     - [StaticBrcode](#create-staticbrcodes): Create static Pix BR Codes
     - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR Codes
     - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
-  - [Credit Note](#credit-note)
+  - [Lending](#lending)
     - [CreditNote](#create-creditnotes): Create credit notes
-  - [Credit Preview](#credit-preview)
-    - [CreditNotePreview](#create-creditnotepreviews): Create credit note previews
+    - [CreditPreview](#create-creditpreviews): Create credit previews
+    - [CreditHolmes](#create-creditholmes): Create credit holmes debt verification
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -2297,7 +2297,12 @@ List<BrcodePreview> previews = (List<BrcodePreview>) BrcodePreview.create(previe
 System.out.println(previews);
 ```
 
-## Credit Note
+## Lending
+
+If you want to establish a lending operation, you can use Stark Infra to
+create a CCB contract. This will enable your business to lend money without
+requiring a banking license, as long as you use a Credit Fund 
+or Securitization company.
 
 ### Create CreditNotes
 
@@ -2449,13 +2454,9 @@ CreditNote.Log log = CreditNote.Log.get("5155165527080960");
 System.out.println(log);
 ```
 
-## Credit Preview
+### Create CreditPreviews
 
-You can preview different types of credits before creating them (Currently we only have CreditNote previews):
-
-### Create CreditNotePreviews
-
-You can preview Credit Notes before the creation CCB contracts:
+You can preview a credit operation before creating them (Currently we only have CreditNote / CCB previews):
 
 ```java
 import com.starkinfra.*;
@@ -2516,6 +2517,120 @@ List<CreditPreview> previews = CreditPreview.create(previews);
 for (CreditPreview preview : previews){
     System.out.println(preview);
 }
+```
+
+### Create CreditHolmes
+
+Before you request a credit operation, you may want to check previous credit operations
+the credit receiver has taken.
+
+For that, open up a CreditHolmes investigation to receive information on all debts and credit
+operations registered for that individual or company inside the Central Bank's SCR.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<CreditHolmes> creditHolmes = new ArrayList<>();
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("taxId", "012.345.678-90");
+data.put("competence", "2022-09-01");
+creditHolmes.add(new CreditHolmes(data));
+
+data = new HashMap<>();
+data.put("taxId", "012.345.678-90");
+data.put("competence", "2022-08-01");
+creditHolmes.add(new CreditHolmes(data));
+
+data = new HashMap<>();
+data.put("taxId", "012.345.678-90");
+data.put("competence", "2022-07-01");
+creditHolmes.add(new CreditHolmes(data));
+
+List<CreditHolmes> holmes= CreditHolmes.create(creditHolmes);
+
+for (CreditHolmes sherlock : holmes) {
+    System.out.println(sherlock);
+}
+```
+
+### Query CreditHolmes
+
+You can query multiple credit holmes according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+params.put("status", "success");
+
+Generator<CreditHolmes> holmes = CreditHolmes.query(params);
+
+for (CreditHolmes sherlock : holmes) {
+    System.out.println(sherlock);
+}
+```
+
+### Get a CreditHolmes
+
+After its creation, information on a credit holmes may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+CreditHolmes holmes = CreditHolmes.get("5657818854064128");
+
+System.out.println(holmes);
+```
+
+### Query CreditHolmes logs
+
+You can query credit holmes logs to better understand their life cycles. 
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<String> types = new ArrayList<>();
+types.add("created");
+
+List<String> ids = new ArrayList<>();
+ids.add("5433445668880384");
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 50);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+params.put("types", types);
+params.put("holmesIds", ids);
+
+Generator<CreditHolmes.Log> logs = CreditHolmes.Log.query(params);
+
+for (CreditHolmes.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a CreditHolmes log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+CreditHolmes.Log log = CreditHolmes.Log.get("5155165527080960");
+
+System.out.println(log);
 ```
 
 ## Webhook

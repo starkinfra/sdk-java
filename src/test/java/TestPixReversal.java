@@ -179,8 +179,8 @@ public class TestPixReversal {
 
     @Test
     public void testPixReversalParse() throws Exception{
-        String content = "{\"amount\": 1, \"bankCode\": \"20018183\", \"created\": \"2022-03-10T20:52:42.071257+00:00\", \"endToEndId\": \"E01572667202203101930az8mguuaoBZ\", \"externalId\": \"java-ac477bfe-5a39-4de8-8747-56b12cc66a32\", \"fee\": 35, \"flow\": \"out\", \"id\": \"5924184966299648\", \"reason\": \"fraud\", \"returnId\": \"D20018183202203102052ueYgps4qBTE\", \"status\": \"success\", \"updated\": \"2022-03-10T20:52:47.555513+00:00\"}";
-        String validSignature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
+        String content = "{\"status\": \"processing\", \"returnId\": \"D34052649202212081809BSc6b12oLsF\", \"amount\": 10, \"updated\": \"2022-12-08T18:09:38.344943+00:00\", \"tags\": [\"lannister\", \"chargeback\"], \"reason\": \"fraud\", \"created\": \"2022-12-08T18:09:38.344936+00:00\", \"flow\": \"in\", \"id\": \"5685338043318272\", \"endToEndId\": \"E35547753202201201450oo8srGorhf1\"}";
+        String validSignature = "MEQCIFiONlW6TV4+U3XWfACP2IttNrxPi8E++FCuXEsf1NjuAiAD2wktgT1tTzxcz+MMJWDPuw3PZjp2kJG+Wf9yF1lcGg==";
         Settings.user = utils.User.defaultProject();
 
         PixReversal reversal = PixReversal.parse(content, validSignature);

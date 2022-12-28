@@ -32,7 +32,7 @@ public class TestBrcodePreview {
         Assert.assertEquals(3, i);
         Assert.assertNotNull(ids);
 
-        List<BrcodePreview> previews = (List<BrcodePreview>) BrcodePreview.create(ids);
+        List<BrcodePreview> previews = BrcodePreview.create(ids);
         Assert.assertEquals(previews.size(), ids.size());
         for (BrcodePreview preview : previews) {
             Assert.assertNotNull(preview);
