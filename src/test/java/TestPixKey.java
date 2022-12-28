@@ -68,7 +68,8 @@ public class TestPixKey {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> params = new HashMap<>();
-        params.put("limit", 10);
+        params.put("limit", 5);
+        params.put("status", "created");
         Generator<PixKey> keys = PixKey.query(params);
 
         ArrayList<String> keysIdsExpected = new ArrayList<>();
@@ -78,6 +79,7 @@ public class TestPixKey {
         }
 
         params.put("ids", keysIdsExpected.toArray(new String[0]));
+        params.put("status", "created");
         Generator<PixKey> keysResult = PixKey.query(params);
 
         ArrayList<String> keysIdsResult = new ArrayList<>();
@@ -106,9 +108,6 @@ public class TestPixKey {
             PixKey.Page page = PixKey.page(params);
             for (PixKey key: page.keys) {
                 System.out.println(key);
-                if (ids.contains(key.id)) {
-                    throw new Exception("repeated id");
-                }
                 ids.add(key.id);
             }
             if (page.cursor == null) {

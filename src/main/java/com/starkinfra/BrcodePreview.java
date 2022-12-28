@@ -206,7 +206,7 @@ public final class BrcodePreview extends Resource {
      * @return list of BrcodePreview objects with updated attributes
      * @throws Exception error in the request
      */
-    public static List<?> create(List<?> previews) throws Exception {
+    public static List<BrcodePreview> create(List<?> previews) throws Exception {
         return BrcodePreview.create(previews, null);
     }
 
@@ -224,7 +224,7 @@ public final class BrcodePreview extends Resource {
      * @throws Exception error in the request
      */
     @SuppressWarnings("unchecked")
-    public static List<?> create(List<?> previews, User user) throws Exception {
+    public static List<BrcodePreview> create(List<?> previews, User user) throws Exception {
         List<BrcodePreview> previewList = new ArrayList<>();
         for (Object preview : previews){
             if (preview instanceof Map){

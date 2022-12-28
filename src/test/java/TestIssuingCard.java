@@ -153,6 +153,7 @@ public class TestIssuingCard {
 
     static IssuingCard example(Boolean useRules) throws Exception{
         HashMap<String, Object> data = new HashMap<>();
+        data.put("productId", "52233227");
         data.put("holderExternalId", "123456");
         data.put("holderName", "Developers");
         data.put("holderTaxId", "012.345.678-90");
