@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.4.0] - 2022-12-28
 ### Added
 - CreditHolmes resource
 
