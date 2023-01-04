@@ -1,10 +1,10 @@
+import com.starkcore.utils.Generator;
 import org.junit.Test;
 import org.junit.Assert;
 
 import com.starkinfra.Settings;
 import com.starkinfra.IssuingRestock;
 import com.starkinfra.IssuingStock;
-import com.starkinfra.utils.Generator;
 
 import java.util.List;
 import java.util.HashMap;

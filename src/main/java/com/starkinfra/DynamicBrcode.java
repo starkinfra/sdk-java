@@ -1,11 +1,12 @@
 package com.starkinfra;
 
 import com.google.gson.Gson;
-import com.starkinfra.utils.Rest;
+import com.starkcore.user.User;
+import com.starkcore.utils.Generator;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.utils.Parse;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkinfra.utils.Rest;
 
 import java.util.Map;
 import java.util.List;
@@ -353,7 +354,7 @@ public final class DynamicBrcode extends Resource {
      * @throws Exception error in the request
      */
     public static DynamicBrcode.Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<DynamicBrcode> brcodes = new ArrayList<>();
         for (SubResource request: page.entities) {
             brcodes.add((DynamicBrcode) request);

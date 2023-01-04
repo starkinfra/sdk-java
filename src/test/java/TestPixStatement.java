@@ -1,9 +1,9 @@
+import com.starkcore.utils.Generator;
 import org.junit.Test;
 import org.junit.Assert;
 
 import com.starkinfra.Settings;
 import com.starkinfra.PixStatement;
-import com.starkinfra.utils.Generator;
 
 import java.io.File;
 import java.util.List;

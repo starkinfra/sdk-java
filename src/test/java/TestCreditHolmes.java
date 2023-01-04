@@ -1,6 +1,6 @@
+import com.starkcore.utils.Generator;
 import com.starkinfra.CreditHolmes;
 import com.starkinfra.Settings;
-import com.starkinfra.utils.Generator;
 import org.junit.Assert;
 import org.junit.Test;
 

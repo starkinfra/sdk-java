@@ -1,9 +1,10 @@
 package com.starkinfra;
 
+import com.starkcore.user.User;
+import com.starkcore.utils.Generator;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
 
 import java.util.Map;
 import java.util.List;
@@ -367,7 +368,7 @@ public final class IssuingInvoice extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IssuingInvoice> invoices = new ArrayList<>();
         for (SubResource issuingInvoice: page.entities) {
             invoices.add((IssuingInvoice) issuingInvoice);
@@ -604,7 +605,7 @@ public final class IssuingInvoice extends Resource {
          * @throws Exception error in the IssuingInvoice
          */
         public static IssuingInvoice.Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<IssuingInvoice.Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((IssuingInvoice.Log) log);

@@ -1,7 +1,9 @@
 package com.starkinfra;
 
+import com.starkcore.user.User;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Resource;
 
 import java.util.Map;
 import java.util.List;
@@ -43,7 +45,7 @@ public final class BrcodePreview extends Resource {
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      *
      */
-    static ClassData data = new ClassData(BrcodePreview.class, "BrcodePreview");
+    static SubResource.ClassData data = new ClassData(BrcodePreview.class, "BrcodePreview");
 
     public String accountNumber;
     public String accountType;

@@ -1,10 +1,10 @@
+import com.starkcore.utils.Generator;
 import org.junit.Test;
 import org.junit.Assert;
 
 import com.starkinfra.Settings;
 import com.starkinfra.IssuingRule;
 import com.starkinfra.IssuingCard;
-import com.starkinfra.utils.Generator;
 
 import java.util.*;
 import java.util.Map;

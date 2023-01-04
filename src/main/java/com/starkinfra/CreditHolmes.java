@@ -1,9 +1,11 @@
 package com.starkinfra;
 
+import com.starkcore.user.User;
+import com.starkcore.utils.Generator;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
@@ -380,7 +382,7 @@ public final class CreditHolmes extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<CreditHolmes> holmes = new ArrayList<>();
         for (SubResource CreditHolmes: page.entities) {
             holmes.add((CreditHolmes) CreditHolmes);
@@ -625,7 +627,7 @@ public final class CreditHolmes extends Resource {
          * @throws Exception error in the request
          */
         public static Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((Log) log);

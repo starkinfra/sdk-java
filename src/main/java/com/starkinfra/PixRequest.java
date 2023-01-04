@@ -1,12 +1,13 @@
 package com.starkinfra;
 
 import com.google.gson.Gson;
-import com.starkinfra.utils.Rest;
+import com.starkcore.user.User;
+import com.starkcore.utils.Generator;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.utils.Parse;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
+import com.starkinfra.utils.Rest;
 
 import java.util.Map;
 import java.util.List;
@@ -474,7 +475,7 @@ public final class PixRequest extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<PixRequest> requests = new ArrayList<>();
         for (SubResource request: page.entities) {
             requests.add((PixRequest) request);
@@ -544,7 +545,7 @@ public final class PixRequest extends Resource {
      * @throws Exception error in the request
      */
     public static<T extends PixRequest> T parse(String content, String signature) throws Exception {
-        T Resource = Parse.parseAndVerify(data, content, signature, Settings.user);
+        T Resource = Parse.parseAndVerify(content, signature, data, Settings.user);
 
         Resource.fee = Resource.fee != null ? Resource.fee : 0;
         Resource.tags = Resource.tags != null ? Resource.tags : new String[]{};
@@ -570,7 +571,7 @@ public final class PixRequest extends Resource {
      * @throws Exception error in the request
      */
     public static Event parse(String content, String signature, User user) throws Exception {
-        return Parse.parseAndVerify(data ,content, signature, user);
+        return Parse.parseAndVerify(content, signature, data, user);
     }
 
     /**
@@ -825,7 +826,7 @@ public final class PixRequest extends Resource {
          * @throws Exception error in the request
          */
         public static Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((Log) log);

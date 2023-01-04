@@ -1,9 +1,10 @@
 package com.starkinfra;
 
+import com.starkcore.user.User;
+import com.starkcore.utils.Generator;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
 
 import java.util.Map;
 import java.util.List;
@@ -256,7 +257,7 @@ public final class IssuingStock extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IssuingStock> stocks = new ArrayList<>();
         for (SubResource issuingStock: page.entities) {
             stocks.add((IssuingStock) issuingStock);
@@ -570,7 +571,7 @@ public final class IssuingStock extends Resource {
          * @throws Exception error in the stock
          */
         public static IssuingStock.Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<IssuingStock.Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((IssuingStock.Log) log);

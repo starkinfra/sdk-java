@@ -1,6 +1,6 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.Resource;
+import com.starkcore.utils.Resource;
 
 import java.util.Map;
 import java.util.List;

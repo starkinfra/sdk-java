@@ -1,9 +1,9 @@
+import com.starkcore.utils.Generator;
 import org.junit.Test;
 import org.junit.Assert;
 
 import com.starkinfra.Settings;
 import com.starkinfra.IssuingPurchase;
-import com.starkinfra.utils.Generator;
 import com.starkinfra.error.InvalidSignatureError;
 
 import java.util.List;

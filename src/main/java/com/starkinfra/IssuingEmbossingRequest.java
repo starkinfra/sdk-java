@@ -1,10 +1,11 @@
 package com.starkinfra;
 
-import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Resource;
+import com.starkcore.user.User;
+import com.starkcore.utils.Generator;
+import com.starkcore.utils.Resource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkinfra.utils.Rest;
 
 import java.util.Map;
 import java.util.List;
@@ -355,7 +356,7 @@ public final class IssuingEmbossingRequest extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String , Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IssuingEmbossingRequest> requests = new ArrayList<>();
         for (SubResource card: page.entities) {
             requests.add((IssuingEmbossingRequest) card);
@@ -691,7 +692,7 @@ public final class IssuingEmbossingRequest extends Resource {
          * @throws Exception error in the request
          */
         public static IssuingEmbossingRequest.Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<IssuingEmbossingRequest.Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((IssuingEmbossingRequest.Log) log);

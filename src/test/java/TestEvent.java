@@ -1,3 +1,4 @@
+import com.starkcore.utils.Generator;
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.AssumptionViolatedException;
@@ -6,7 +7,6 @@ import com.starkinfra.Event;
 import com.starkinfra.Settings;
 import com.starkinfra.PixRequest;
 import com.starkinfra.PixReversal;
-import com.starkinfra.utils.Generator;
 import com.starkinfra.error.InvalidSignatureError;
 
 
