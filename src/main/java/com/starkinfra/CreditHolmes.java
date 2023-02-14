@@ -522,7 +522,7 @@ public final class CreditHolmes extends Resource {
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
          * types [list of strings, default null]: filter for log event types. ex: ["canceled", "created", "expired", "failed", "refunded", "registered", "sending", "sent", "signed", "success"]
          * holmesIds [list of strings, default null]: list of CreditHolmes ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
-         * @param user  [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
+         * @param user [Project object, default null]: Project object. Not necessary if StarkInfra.Settings.user was set before function call
          * <p>
          * Return:
          * @return generator of CreditHolmes Log objects with updated attributes
