@@ -22,7 +22,7 @@ This SDK version is compatible with the Stark Infra API v2.
 - [Testing in Sandbox](#testing-in-sandbox)
 - [Usage](#usage)
   - [Issuing](#issuing)
-    - [Products](#query-issuinproducts): View available sub-issuer Products (a.k.a. card number ranges)
+    - [Products](#query-issuingproducts): View available sub-issuer Products (a.k.a. card number ranges)
     - [Holders](#create-issuingholders): Manage card holders
     - [Cards](#create-issuingcards): Create virtual and/or physical cards
     - [Design](#query-issuingdesigns): View your current card or package designs
@@ -53,6 +53,9 @@ This SDK version is compatible with the Stark Infra API v2.
     - [CreditNote](#create-creditnotes): Create credit notes
     - [CreditPreview](#create-creditpreviews): Create credit previews
     - [CreditHolmes](#create-creditholmes): Create credit holmes debt verification
+  - [Identity](#identity)
+    - [IndividualIdentity](#create-individualidentities): Create individual identities
+    - [IndividualDocument](#create-individualdocuments): Create individual documents
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -2304,9 +2307,22 @@ create a CCB contract. This will enable your business to lend money without
 requiring a banking license, as long as you use a Credit Fund 
 or Securitization company.
 
+The required steps to initiate the operation are:
+
+ 1. Have funds in your Credit Fund or Securitization account
+ 2. Request the creation of an [Identity Check](#create-individualidentities)
+for the credit receiver (make sure you have their documents and express authorization)
+ 3. (Optional) Create a [Credit Simulation](#create-creditpreviews) 
+with the desired installment plan to display information for the credit receiver
+ 4. Create a [Credit Note](#create-creditnotes)
+with the desired installment plan
+
 ### Create CreditNotes
 
-You can create a Credit Note to generate a CCB contract:
+For lending operations, you can create a CreditNote to generate a CCB contract.
+
+Note that you must have recently created an identity check for that same Tax ID before
+being able to create a credit operation for them.
 
 ```java
 import com.starkinfra.CreditNote;
@@ -2593,7 +2609,7 @@ System.out.println(holmes);
 
 ### Query CreditHolmes logs
 
-You can query credit holmes logs to better understand their life cycles. 
+You can query credit holmes logs to better understand their life cycles.
 
 ```java
 import com.starkinfra.*;
@@ -2629,6 +2645,255 @@ You can also get a specific log by its id.
 import com.starkinfra.*;
 
 CreditHolmes.Log log = CreditHolmes.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
+## Identity
+
+Several operations, especially credit ones, require that the identity
+of a person or business is validated beforehand.
+
+Identities are validated according to the following sequence:
+
+1. The Identity resource is created for a specific Tax ID
+2. Documents are attached to the Identity resource
+3. The Identity resource is updated to indicate that all documents have been attached
+4. The Identity is sent for validation and returns a webhook notification to reflect
+the success or failure of the operation
+
+### Create IndividualIdentities
+
+You can create an IndividualIdentity to validate a document of a natural person
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> identity = new HashMap<>();
+identity.put("name", "Walter White");
+identity.put("taxId", "012.345.678-90");
+identity.put("tags", new String[]{"breaking", "bad"});
+
+List<IndividualIdentity> identities = new ArrayList<>();
+identities.add(new IndividualIdentity(identity));
+
+identities = IndividualIdentity.create(identities);
+
+for (IndividualIdentity identity : identities){
+    System.out.println(identity);
+}
+```
+
+**Note**: Instead of using IndividualIdentity objects, you can also pass each element in dictionary format
+
+### Query IndividualIdentities
+
+You can query multiple IndividualIdentities according to filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "success");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualIdentity> identities = IndividualIdentity.query(params);
+
+for (IndividualIdentity identity : identities) {
+    System.out.println(identity);
+}
+```
+
+### Get an IndividualIdentity
+
+After its creation, information on a IndividualIdentity may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualIdentity identity = IndividualIdentity.get("5155165527080960");
+
+System.out.println(identity);
+```
+
+### Update an IndividualIdentity
+
+You can update a specific identity status to send it to validation.
+
+```java
+import com.starkinfra.*;
+
+IndividualIdentity identity = IndividualIdentity.update("5155165527080960", "processing")
+
+System.out.println(identity);
+```
+
+**Note**: For apply it to processing status, you should send required IndividualDocuments
+
+### Cancel an IndividualIdentity
+
+You can cancel a IndividualIdentity before update status to processing.
+
+```java
+import com.starkinfra.*;
+
+IndividualIdentity identity = IndividualIdentity.cancel("5155165527080960");
+
+System.out.println(identity);
+```
+  
+### Query IndividualIdentity logs
+
+You can query IndividualIdentity logs to better understand IndividualIdentity life cycles.
+
+```java
+import com.starkinfra.IndividualIdentity;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualIdentity.Log> logs = IndividualIdentity.Log.query(params);
+
+for (IndividualIdentity.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IndividualIdentity log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualIdentity.Log log = IndividualIdentity.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
+### Create IndividualDocuments
+
+You can create a IndividualDocument for attach images of documents to IndividualIdentity
+
+```java
+import com.starkinfra.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.io.File;
+
+File documentFrontFile = new File(path);
+byte[] documentFrontBytes = Files.readAllBytes(documentFrontFile.toPath());
+
+HashMap<String, Object> documentFront = new HashMap<>();
+documentFront.put("type", "identity-front");
+documentFront.put("content", documentFrontBytes);
+documentFront.put("contentType", "image/png");
+documentFront.put("identityId", "5155165527080960");
+documentFront.put("tags", new String[]{"breaking", "bad"});
+
+File documentBackFile = new File(path);
+byte[] documentBackBytes = Files.readAllBytes(documentBackFile.toPath());
+
+HashMap<String, Object> documentBack = new HashMap<>();
+documentBack.put("type", "identity-back");
+documentBack.put("content", documentBackBytes);
+documentBack.put("contentType", "image/png");
+documentBack.put("identityId", "5155165527080960");
+documentBack.put("tags", new String[]{"breaking", "bad"});
+
+File selfieFile = new File(path);
+byte[] selfieBytes = Files.readAllBytes(selfieFile.toPath());
+
+HashMap<String, Object> selfie = new HashMap<>();
+selfie.put("type", "selfie");
+selfie.put("content", selfieBytes);
+selfie.put("contentType", "image/png");
+selfie.put("identityId", "5155165527080960");
+selfie.put("tags", new String[]{"breaking", "bad"});
+
+List<IndividualDocument> documents = new ArrayList<>();
+documents.add(new IndividualDocument(documentFront));
+documents.add(new IndividualDocument(documentBack));
+documents.add(new IndividualDocument(selfie));
+
+documents = IndividualDocument.create(documents);
+
+for (IndividualDocument document : documents){
+    System.out.println(document);
+}
+```
+
+**Note**: Instead of using IndividualDocument objects, you can also pass each element in dictionary format
+
+### Query IndividualDocuments
+
+You can query multiple IndividualDocuments according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "success");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualDocument> documents = IndividualDocument.query(params);
+
+for (IndividualDocument document : documents) {
+    System.out.println(document);
+}
+```
+
+### Get an IndividualDocument
+
+After its creation, information on a IndividualDocument may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualDocument document = IndividualDocument.get("5155165527080960");
+
+System.out.println(document);
+```
+  
+### Query IndividualDocument logs
+
+You can query IndividualDocument logs to better understand IndividualDocument life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualDocument.Log> logs = IndividualDocument.Log.query(params);
+
+for (IndividualDocument.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IndividualDocument log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualDocument.Log log = IndividualDocument.Log.get("5155165527080960");
 
 System.out.println(log);
 ```

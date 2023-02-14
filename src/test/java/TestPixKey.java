@@ -38,6 +38,7 @@ public class TestPixKey {
             i += 1;
             System.out.println(key);
             key = PixKey.get(key.id, "012.345.678-90");
+            System.out.println(key);
             Assert.assertNotNull(key.id);
         }
     }
