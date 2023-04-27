@@ -26,6 +26,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Holders](#create-issuingholders): Manage card holders
     - [Cards](#create-issuingcards): Create virtual and/or physical cards
     - [Design](#query-issuingdesigns): View your current card or package designs
+    - [EmbossingKit](#query-issuingembossingkits): Create embossing kits
     - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
     - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
     - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
@@ -638,6 +639,36 @@ IssuingDesign design = IssuingDesign.get("5747368922185728");
 System.out.println(design);
 ```
 
+### Query IssuingEmbossingKits
+
+You can get a list of created embossing kits given some filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("after", "2022-11-01");
+params.put("before", "2022-11-30");
+
+Generator<IssuingEmbossingKit> kits = IssuingEmbossingKit.query(params);
+
+for (IssuingEmbossingKit kit : kits) {
+    System.out.println(kit);
+}
+```
+
+### Get an IssuingEmbossingKit
+
+After its creation, information on an embossing kit may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingEmbossingKit kit = IssuingEmbossingKit.get("5792731695677440");
+
+System.out.println(kit);
+```
+
 ### Query IssuingStocks
 
 You can get a list of available stocks given some filters.
@@ -785,8 +816,7 @@ import com.starkinfra.*;
 
 List<IssuingEmbossingRequest> requests = new ArrayList<>();
 HashMap<String, Object> data = new HashMap<>();
-data.put("cardDesignId", "5648359658356736");
-data.put("envelopeDesignId", "5747368922185728");
+data.put("kitId", "5648359658356736");
 data.put("cardId", "5714424132272128");
 data.put("displayName1", "Antonio Stark");
 data.put("shippingCity", "Sao Paulo");

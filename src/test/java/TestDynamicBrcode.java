@@ -205,8 +205,16 @@ public class TestDynamicBrcode {
     public void testExample() throws Exception {
         Settings.user = utils.User.defaultProject();
 
-        DynamicBrcode brcode = DynamicBrcode.get("7cc0974604224a63a67764b921836e67");
-
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        Generator<DynamicBrcode> brcodes = DynamicBrcode.query(params);
+        
+        DynamicBrcode brcode = null;
+        
+        for(DynamicBrcode code : brcodes) {
+            brcode = code;
+        }
+        
         System.out.println(brcode);
     }
 }

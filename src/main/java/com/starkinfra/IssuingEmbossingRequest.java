@@ -24,8 +24,7 @@ public final class IssuingEmbossingRequest extends Resource {
      * <p>
      * Parameters:
      * cardId [string]: id of the IssuingCard to be embossed. ex "5656565656565656"
-     * cardDesignId [string]: card IssuingDesign id. ex "5656565656565656"
-     * envelopeDesignId [string]: envelope IssuingDesign id. ex "5656565656565656"
+     * kitId [string]: card embossing kit id. ex "5656565656565656"
      * displayName1 [string]: card displayed name. ex: "ANTHONY STARK"
      * shippingCity [string]: shipping city. ex: "NEW YORK"
      * shippingCountryCode [string]: shipping country code. ex: "US"
@@ -50,8 +49,7 @@ public final class IssuingEmbossingRequest extends Resource {
     static ClassData data = new ClassData(IssuingEmbossingRequest.class, "IssuingEmbossingRequest");
 
     public String cardId;
-    public String cardDesignId;
-    public String envelopeDesignId;
+    public String kitId;
     public String displayName1;
     public String shippingCity;
     public String shippingCountryCode;
@@ -83,8 +81,7 @@ public final class IssuingEmbossingRequest extends Resource {
      * <p>
      * Parameters:
      * @param cardId [string]: id of the IssuingCard to be embossed. ex "5656565656565656"
-     * @param cardDesignId [string]: card IssuingDesign id. ex "5656565656565656"
-     * @param envelopeDesignId [string]: envelope IssuingDesign id. ex "5656565656565656"
+     * @param kitId [string]: card embossing kit id. ex "5656565656565656".
      * @param displayName1 [string]: card displayed name. ex: "ANTHONY STARK"
      * @param shippingCity [string]: shipping city. ex: "NEW YORK"
      * @param shippingCountryCode [string]: shipping country code. ex: "US"
@@ -107,7 +104,7 @@ public final class IssuingEmbossingRequest extends Resource {
      * @param created [string]: creation datetime for the IssuingEmbossingRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public IssuingEmbossingRequest(
-        String cardId, String cardDesignId, String envelopeDesignId, String displayName1, 
+        String cardId, String kitId, String displayName1,
         String shippingCity, String shippingCountryCode, String shippingDistrict, 
         String shippingStateCode, String shippingStreetLine1, String shippingStreetLine2, 
         String shippingService, String shippingTrackingNumber, String shippingZipCode, 
@@ -116,8 +113,7 @@ public final class IssuingEmbossingRequest extends Resource {
     ) {
         super(id);
         this.cardId = cardId;
-        this.cardDesignId = cardDesignId;
-        this.envelopeDesignId = envelopeDesignId;
+        this.kitId = kitId;
         this.displayName1 = displayName1;
         this.shippingCity = shippingCity;
         this.shippingCountryCode = shippingCountryCode;
@@ -151,8 +147,7 @@ public final class IssuingEmbossingRequest extends Resource {
      * Parameters (required):
      * @param data map of properties for the creation of the IssuingEmbossingRequest
      * cardId [string]: id of the IssuingCard to be embossed. ex "5656565656565656"
-     * cardDesignId [string]: card IssuingDesign id. ex "5656565656565656"
-     * envelopeDesignId [string]: envelope IssuingDesign id. ex "5656565656565656"
+     * kitId [string]: card embossing kit id. ex "5656565656565656"
      * displayName1 [string]: card displayed name. ex: "ANTHONY STARK"
      * shippingCity [string]: shipping city. ex: "NEW YORK"
      * shippingCountryCode [string]: shipping country code. ex: "US"
@@ -184,8 +179,7 @@ public final class IssuingEmbossingRequest extends Resource {
         HashMap<String, Object> dataCopy = new HashMap<>(data);
         
         this.cardId = (String) dataCopy.remove("cardId");
-        this.cardDesignId = (String) dataCopy.remove("cardDesignId");
-        this.envelopeDesignId = (String) dataCopy.remove("envelopeDesignId");
+        this.kitId = (String) dataCopy.remove("kitId");
         this.displayName1 = (String) dataCopy.remove("displayName1");
         this.shippingCity = (String) dataCopy.remove("shippingCity");
         this.shippingCountryCode = (String) dataCopy.remove("shippingCountryCode");

@@ -26,6 +26,7 @@ public final class StaticBrcode extends Resource {
      * keyId [string]: receiver's Pixkey id. ex: "+5541999999999"
      * city [string, default "Sao Paulo"]: receiver's city name. ex: "Rio de Janeiro"
      * amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)
+     * cashierBankCode [string, default ""] Cashier's bank code. ex: "20018183".
      * reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric characters' ex: "cd65c78aeb6543eaaa017"
      * tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -41,6 +42,7 @@ public final class StaticBrcode extends Resource {
     public String keyId;
     public String city;
     public Long amount;
+    public String cashierBankCode;
     public String reconciliationId;
     public String[] tags;
     public String uuid;
@@ -62,6 +64,7 @@ public final class StaticBrcode extends Resource {
      * @param keyId [string]: receiver's Pixkey id. ex: "+5541999999999"
      * @param city [string]: receiver's city name. ex: "Rio de Janeiro"
      * @param amount [Long]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
+     * @param cashierBankCode [string, default ""] Cashier's bank code. ex: "20018183".
      * @param reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric characters. ex: "ah27s53agj6493hjds6836v49"
      * @param tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * @param id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -70,14 +73,15 @@ public final class StaticBrcode extends Resource {
      * @param created [string]: creation datetime for the StaticBrcode. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the StaticBrcode. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public StaticBrcode(String name, String city, String keyId, Long amount, String id, String reconciliationId,
-                        String[] tags, String uuid, String url, String created, String updated
+    public StaticBrcode(String name, String city, String keyId, Long amount, String cashierBankCode, String id,
+                        String reconciliationId, String[] tags, String uuid, String url, String created, String updated
     ) {
         super(id);
         this.name = name;
         this.keyId = keyId;
         this.city = city;
         this.amount = amount;
+        this.cashierBankCode = cashierBankCode;
         this.reconciliationId = reconciliationId;
         this.tags = tags;
         this.uuid = uuid;
