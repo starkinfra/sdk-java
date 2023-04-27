@@ -1,10 +1,7 @@
+import com.starkinfra.*;
 import org.junit.Test;
 import org.junit.Assert;
 
-import com.starkinfra.Settings;
-import com.starkinfra.IssuingCard;
-import com.starkinfra.IssuingEmbossingRequest;
-import com.starkinfra.IssuingHolder;
 import com.starkinfra.utils.Generator;
 
 import java.util.List;
@@ -113,11 +110,18 @@ public class TestIssuingEmbossingRequest {
 
         List<IssuingEmbossingRequest> requests = new ArrayList<>();
 
+        HashMap<String, Object> kitParams = new HashMap<>();
+        Generator<IssuingEmbossingKit> kits = IssuingEmbossingKit.query(kitParams);
+
+        String kitId = "";
+        for(IssuingEmbossingKit kit : kits) {
+            kitId = kit.id;
+        }
+
         for (int i = 0; i < 4; i++) {
             HashMap<String, Object> data = new HashMap<>();
-            data.put("cardDesignId", "5648359658356736");
+            data.put("kitId", kitId);
             data.put("displayName1", "teste");
-            data.put("envelopeDesignId", "5747368922185728");
             data.put("shippingCity", "Sao Paulo");
             data.put("shippingCountryCode", "BRA");
             data.put("shippingDistrict", "Bela Vista");

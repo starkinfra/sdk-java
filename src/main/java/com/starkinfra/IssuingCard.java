@@ -551,6 +551,7 @@ public final class IssuingCard extends Resource {
      * @param id [string]: IssuingCard id. ex: "5656565656565656"
      * @param patchData map of parameters
      * status [string]: You may block the IssuingCard by passing 'blocked' in the status
+     * pin [string, default ""]: You may unlock your physical card by passing its PIN. This is also the PIN you use to authorize a purchase.
      * displayName [string, default ""]: card displayed name
      * rules [list of IssuingRule or HashMap, default null]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
      * tags [list of strings, default null]: list of strings for tagging
@@ -573,6 +574,7 @@ public final class IssuingCard extends Resource {
      * @param id [string]: IssuingCard id. ex: "5656565656565656"
      * @param patchData map of parameters
      * status [string]: You may block the IssuingCard by passing 'blocked' in the status
+     * pin [string, default ""]: You may unlock your physical card by passing its PIN. This is also the PIN you use to authorize a purchase.
      * displayName [string, default null]: card displayed name
      * rules [list of IssuingRule or HashMap, default null]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
      * tags [list of strings, default null]: list of strings for tagging

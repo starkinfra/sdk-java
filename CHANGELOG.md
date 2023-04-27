@@ -13,6 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- IssuingEmbossingKit resource
+- pin parameter to update method in IssuingCard resource
+- cashierBankCode attribute to StaticBrcode resource
+### Removed
+- cardDesignId and envelopeDesignId attributes to IssuingEmbossingRequest resource
 
 ## [0.5.0] - 2023-02-14
 ### Added
