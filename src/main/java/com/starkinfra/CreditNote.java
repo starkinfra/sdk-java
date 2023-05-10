@@ -26,14 +26,13 @@ public final class CreditNote extends Resource {
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * templateId [string]: ID of the contract template on which the CreditNote will be based. ex: templateId="0123456789101112"
+     * templateId [string]: ID of the contract template on which the CreditNote will be based. ex: "0123456789101112"
      * name [string]: credit receiver's full name. ex: "Anthony Edward Stark"
      * taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
-     * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)
      * scheduled [string]: date of payment execution. ex: "2020-03-11"
-     * invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
-     * payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
-     * signers [list of CreditSigner objects or map]: list of signer entities each containing signer's name, contact and delivery method for the signature request. ex: signers=[CreditSigner(), CreditSigner()]
+     * invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: [Invoice(), Invoice()]
+     * payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: Creditnote.Transfer()
+     * signers [list of CreditSigner objects or map]: list of signer entities each containing signer's name, contact and delivery method for the signature request. ex: [CreditSigner(), CreditSigner()]
      * externalId [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"
      * streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
      * streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
@@ -41,12 +40,13 @@ public final class CreditNote extends Resource {
      * city [string]: credit receiver address city. ex: "Rio de Janeiro"
      * stateCode [string]: credit receiver address state. ex: "GO"
      * zipCode [string]: credit receiver address zip code. ex: "01311-200"
+     * nominalAmount [Long]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)
+     * amount [Long]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)
      * paymentType [string, default null]: payment type, inferred from the payment parameter if it is not a map. ex: "transfer"
      * rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
      * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
      * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-     * amount [Long]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
      * documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
      * transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
@@ -63,7 +63,6 @@ public final class CreditNote extends Resource {
     public String templateId;
     public String name;
     public String taxId;
-    public Long nominalAmount;
     public String scheduled;
     public List<CreditNote.Invoice> invoices;
     public Resource payment;
@@ -76,9 +75,10 @@ public final class CreditNote extends Resource {
     public String stateCode;
     public String zipCode;
     public String paymentType;
+    public Long nominalAmount;
+    public Long amount;
     public Long rebateAmount;
     public String[] tags;
-    public Long amount;
     public Long expiration;
     public String documentId;
     public String status;
@@ -107,7 +107,6 @@ public final class CreditNote extends Resource {
      * @param templateId [string]: ID of the contract template on which the CreditNote will be based. ex: templateId="0123456789101112"
      * @param name [string]: credit receiver's full name. ex: "Anthony Edward Stark"
      * @param taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
-     * @param nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)
      * @param scheduled [string]: date of payment execution. ex: "2020-03-11"
      * @param invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
      * @param payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
@@ -120,11 +119,12 @@ public final class CreditNote extends Resource {
      * @param stateCode [string]: credit receiver address state. ex: "GO"
      * @param zipCode [string]: credit receiver address zip code. ex: "01311-200"
      * @param paymentType [string, default null]: payment type, inferred from the payment parameter if it is not a map. ex: "transfer"
+     * @param nominalAmount [Long]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)
+     * @param amount [Long]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)
      * @param rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
      * @param tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * @param expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
      * @param id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-     * @param amount [Long]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
      * @param documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * @param status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
      * @param transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
@@ -135,10 +135,10 @@ public final class CreditNote extends Resource {
      * @param created [string]: creation datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
      * @param updated [string]: latest update datetime for the CreditNote. ex: "2020-03-11 08:00:00.000"
      */
-    public CreditNote(String templateId, String name, String taxId, Long nominalAmount, String scheduled,
-                      List<Invoice> invoices, Resource payment, List<CreditSigner> signers, String externalId,
-                      String streetLine1, String streetLine2, String district, String city, String stateCode,
-                      String zipCode, String paymentType, Long rebateAmount, String[] tags, String id, Long amount,
+    public CreditNote(String templateId, String name, String taxId, String scheduled, List<Invoice> invoices,
+                      Resource payment, List<CreditSigner> signers, String externalId, String streetLine1,
+                      String streetLine2, String district, String city, String stateCode, String zipCode,
+                      String paymentType, Long nominalAmount, Long amount, Long rebateAmount, String[] tags, String id,
                       Long expiration, String documentId, String status, String[] transactionIds, String workspaceId,
                       Long taxAmount, Number interest, Number nominalInterest, String created, String updated
     ) throws Exception {
@@ -146,7 +146,6 @@ public final class CreditNote extends Resource {
         this.templateId = templateId;
         this.name = name;
         this.taxId = taxId;
-        this.nominalAmount = nominalAmount;
         this.scheduled = scheduled;
         this.invoices = invoices;
         this.payment = payment;
@@ -158,10 +157,11 @@ public final class CreditNote extends Resource {
         this.city = city;
         this.stateCode = stateCode;
         this.zipCode = zipCode;
+        this.nominalAmount = nominalAmount;
+        this.amount = amount;
         this.rebateAmount = rebateAmount;
         this.tags = tags;
         this.expiration = expiration;
-        this.amount = amount;
         this.documentId = documentId;
         this.status = status;
         this.transactionIds = transactionIds;
@@ -192,7 +192,6 @@ public final class CreditNote extends Resource {
      * templateId [string]: ID of the contract template on which the CreditNote will be based. ex: templateId="0123456789101112"
      * name [string]: credit receiver's full name. ex: "Anthony Edward Stark"
      * taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
-     * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: 11234 (= R$ 112.34)
      * scheduled [string]: date of payment execution. ex: "2020-03-11"
      * invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
      * payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
@@ -207,6 +206,8 @@ public final class CreditNote extends Resource {
      * <p>
      * Parameters (conditionally required):
      * paymentType [string]: payment type, inferred from the payment parameter if it is not a map. ex: "transfer"
+     * nominalAmount [Long]: CreditNote value in cents. The nominalAmount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)
+     * amount [Long]: amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominalAmount is not sent. ex: 1234 (= R$ 12.34)
      * <p>
      * Parameters (optional):
      * rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
@@ -215,7 +216,6 @@ public final class CreditNote extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-     * amount [Long]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
      * documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
      * transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
@@ -235,7 +235,6 @@ public final class CreditNote extends Resource {
         this.templateId = (String) dataCopy.remove("templateId");
         this.name = (String) dataCopy.remove("name");
         this.taxId = (String) dataCopy.remove("taxId");
-        this.nominalAmount = ((Number) dataCopy.remove("nominalAmount")).longValue();
         this.scheduled = (String) dataCopy.remove("scheduled");
         this.invoices = parseInvoices((List<Object>) dataCopy.remove("invoices"));
         this.payment = (Resource) dataCopy.remove("payment");
@@ -247,10 +246,11 @@ public final class CreditNote extends Resource {
         this.city = (String) dataCopy.remove("city");
         this.stateCode = (String) dataCopy.remove("stateCode");
         this.zipCode = (String) dataCopy.remove("zipCode");
+        this.nominalAmount = (Long) dataCopy.remove("nominalAmount");
+        this.amount = (Long) dataCopy.remove("amount");
         this.rebateAmount = ((Number) dataCopy.remove("rebateAmount")).longValue();
         this.tags = (String[]) dataCopy.remove("tags");
         this.expiration = (Long) dataCopy.remove("expiration");
-        this.amount = null;
         this.documentId = null;
         this.status = null;
         this.transactionIds = null;
