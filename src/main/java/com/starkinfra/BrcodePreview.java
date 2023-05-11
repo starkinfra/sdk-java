@@ -21,6 +21,8 @@ public final class BrcodePreview extends Resource {
      * <p>
      * Parameters:
      * id [string]: BR Code string for the Pix payment. This is also de information directly encoded in a QR Code. ex: "34191.09008 63571.277308 71444.640008 5 81960000000062", "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+     * payerId [string, default null]: Tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80"
+     * endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * accountNumber [string]: Payment receiver account number. ex: "1234567"
      * accountType [string]: Payment receiver account type. ex: "checking"
      * amount [Long]: Value in cents that this payment is expecting to receive. If 0, any value is accepted. ex: 123 (= R$1,23)
@@ -45,6 +47,8 @@ public final class BrcodePreview extends Resource {
      */
     static ClassData data = new ClassData(BrcodePreview.class, "BrcodePreview");
 
+    public String payerId;
+    public String endToEndId;
     public String accountNumber;
     public String accountType;
     public Long amount;
@@ -77,6 +81,8 @@ public final class BrcodePreview extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: BR Code string for the Pix payment. This is also de information directly encoded in a QR Code. ex: "34191.09008 63571.277308 71444.640008 5 81960000000062", "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+     * @param payerId [string, default null]: Tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80"
+     * @param endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * @param accountNumber [string]: Payment receiver account number. ex: "1234567"
      * @param accountType [string]: Payment receiver account type. ex: "checking"
      * @param amount [Long]: Value in cents that this payment is expecting to receive. If 0, any value is accepted. ex: 123 (= R$1,23)
@@ -98,13 +104,15 @@ public final class BrcodePreview extends Resource {
      * @param status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
      * @param taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      */
-    public BrcodePreview(String status, String name, String taxId, String bankCode, String branchCode, Long cashAmount,
-                         String cashierBankCode, String cashierType, String accountNumber, String accountType,
-                         String scheduled, Long amount, String amountType, Long nominalAmount, String keyId,
-                         Long interestAmount, Long fineAmount, Long reductionAmount, Long discountAmount,
+    public BrcodePreview(String payerId, String endToEndId, String status, String name, String taxId, String bankCode,
+                         String branchCode, Long cashAmount, String cashierBankCode, String cashierType, String accountNumber,
+                         String accountType, String scheduled, Long amount, String amountType, Long nominalAmount,
+                         String keyId, Long interestAmount, Long fineAmount, Long reductionAmount, Long discountAmount,
                          String reconciliationId, String id
     ) {
         super(id);
+        this.payerId = payerId;
+        this.endToEndId = endToEndId;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.amount = amount;
@@ -139,6 +147,10 @@ public final class BrcodePreview extends Resource {
      * Parameters (required):
      * @param data map of properties for the creation of the BrcodePreview
      * id [string]: BR Code string for the Pix payment. This is also de information directly encoded in a QR Code. ex: "34191.09008 63571.277308 71444.640008 5 81960000000062", "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+     * payerId [string]: Tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80"
+     * <p>
+     * Parameters (optional):
+     * endToEndId [string, default null]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
      * <p>
      * Attributes (return-only):
      * accountNumber [string]: Payment receiver account number. ex: "1234567"
@@ -168,6 +180,8 @@ public final class BrcodePreview extends Resource {
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
         this.id = (String) dataCopy.remove("id");
+        this.payerId = (String) dataCopy.remove("payerId");
+        this.endToEndId = (String) dataCopy.remove("endToEndId");
         this.accountNumber = null;
         this.accountType = null;
         this.amount = null;

@@ -94,6 +94,7 @@ public class TestStaticBrcode {
         Assert.assertNotNull(brcodes);
 
         for (StaticBrcode brcode : brcodes) {
+            System.out.println(brcode);
             Assert.assertNotNull(brcode.uuid);
             String uuid = StaticBrcode.get(brcode.uuid).uuid;
             Assert.assertEquals(uuid, brcode.uuid);
@@ -106,6 +107,8 @@ public class TestStaticBrcode {
         data.put("keyId", "+5541999999999");
         data.put("city", "Rio de Janeiro");
         data.put("amount", Long.valueOf(100));
+        data.put("cashierBankCode", "20018183");
+        data.put("description", "A StaticBrcode");
         return new StaticBrcode(data);
     }
 }

@@ -13,6 +13,11 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- payerId and endToEndId parameter to BrcodePreview resource
+- description parameter to StaticBrcode resource
+### Changed
+- nominalAmount and amount parameter to conditionally required to CreditNote resource
 
 ## [0.6.0] - 2023-04-27
 ### Added

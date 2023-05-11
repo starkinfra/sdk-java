@@ -2323,6 +2323,7 @@ import java.util.List;
 List<BrcodePreview> previews = new ArrayList<>();
 HashMap<String, Object> data = new HashMap<>();
 data.put("id", "00020126360014br.gov.bcb.pix0114+5541999999999520400005303986540510.005802BR5910Tony Stark6014Rio de Janeiro62070503***630466B7");
+data.put("payerId", "123.456.789-01");
 previews.add(new BrcodePreview(data));
 
 List<BrcodePreview> previews = (List<BrcodePreview>) BrcodePreview.create(previews);

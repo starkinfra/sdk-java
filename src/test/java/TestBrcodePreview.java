@@ -42,6 +42,7 @@ public class TestBrcodePreview {
     static BrcodePreview exampleBrcodePreview(String id) throws Exception{
         HashMap<String, Object> data = new HashMap<>();
         data.put("id", id);
+        data.put("payerId", "123.456.789-01");
         return new BrcodePreview(data);
     }
 }
