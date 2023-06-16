@@ -41,6 +41,7 @@ public final class IssuingPurchase extends Resource {
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
      * merchantName [string]: merchant name. ex: "Google Cloud Platform"
+     * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: 'OjZAqj' }
      * merchantFee [Long]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
@@ -74,6 +75,7 @@ public final class IssuingPurchase extends Resource {
     public String issuerCurrencyCode;
     public String issuerCurrencySymbol;
     public Long merchantAmount;
+    public HashMap<String, Object> metadata;
     public String merchantCurrencyCode;
     public String merchantCurrencySymbol;
     public String merchantCategoryCode;
@@ -122,6 +124,7 @@ public final class IssuingPurchase extends Resource {
      * @param acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * @param merchantId [string]: merchant ID. ex: "5656565656565656"
      * @param merchantName [string]: merchant name. ex: "Google Cloud Platform"
+     * @param metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: 'OjZAqj' }
      * @param merchantFee [Long]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * @param walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * @param methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
@@ -143,7 +146,7 @@ public final class IssuingPurchase extends Resource {
                            Long tax, Long issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol,
                            Long merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol,
                            String merchantCategoryCode, String merchantCountryCode, String acquirerId, String merchantId,
-                           String merchantName, Long merchantFee, String walletId, String methodCode, Number score,
+                           String merchantName, HashMap<String, Object> metadata, Long merchantFee, String walletId, String methodCode, Number score,
                            String[] issuingTransactionIds, String endToEndId, String status, String[] tags, String zipCode,
                            String updated, String created, Boolean isPartialAllowed, String[] cardTags, String[] holderTags
     ) {
@@ -166,6 +169,7 @@ public final class IssuingPurchase extends Resource {
         this.acquirerId = acquirerId;
         this.merchantId = merchantId;
         this.merchantName = merchantName;
+        this.metadata = metadata;
         this.merchantFee = merchantFee;
         this.walletId = walletId;
         this.methodCode = methodCode;
@@ -247,6 +251,7 @@ public final class IssuingPurchase extends Resource {
         this.acquirerId = null;
         this.merchantId = null;
         this.merchantName = null;
+        this.metadata = null;
         this.merchantFee = null;
         this.walletId = null;
         this.methodCode = null;
