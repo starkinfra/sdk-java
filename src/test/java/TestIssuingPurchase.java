@@ -53,6 +53,7 @@ public class TestIssuingPurchase {
         for (IssuingPurchase purchase : purchases) {
             IssuingPurchase purchaseExpected = IssuingPurchase.get(purchase.id);
             Assert.assertNotNull(purchase.id, purchaseExpected.id);
+            Assert.assertEquals(HashMap.class, purchase.metadata.getClass());
             System.out.println(purchase);
         }
     }
