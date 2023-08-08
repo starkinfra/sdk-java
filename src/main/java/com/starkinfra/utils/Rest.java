@@ -128,7 +128,7 @@ public final class Rest {
     }
 
     public static <T extends SubResource> T getSubResource(Resource.ClassData resource, String id, SubResource.ClassData subResource, User user, Map<String, Object> options) throws Exception {
-        String content = Response.fetch(Api.endpoint(resource, id) + "/" + Api.endpoint(subResource), "GET", null, options, user).content();
+        String content = Response.fetch(Api.endpoint(resource, id) + Api.endpoint(subResource), "GET", null, options, user).content();
         JsonObject contentJson = new Gson().fromJson(content, JsonObject.class);
         JsonObject jsonObject = contentJson.get(Api.getLastName(subResource)).getAsJsonObject();
         Gson gson = GsonEvent.getInstance();
@@ -136,7 +136,7 @@ public final class Rest {
     }
 
     public static <T extends SubResource> List<T> getSubResources(Resource.ClassData resource, String id, SubResource.ClassData subResource, User user, Map<String, Object> options) throws Exception {
-        String content = Response.fetch(Api.endpoint(resource, id) + "/" + Api.endpoint(subResource), "GET", null, options, user).content();
+        String content = Response.fetch(Api.endpoint(resource, id) + Api.endpoint(subResource), "GET", null, options, user).content();
         JsonObject contentJson = new Gson().fromJson(content, JsonObject.class);
         JsonArray jsonArray = contentJson.get(Api.getLastNamePlural(subResource)).getAsJsonArray();
         List<T> entities = new ArrayList<>();
