@@ -906,7 +906,7 @@ If you do not approve or decline the authorization within 2 seconds, the authori
 ```java
 import com.starkinfra.*;
 
-Request request = Listener.listen(); // this is the method you made to get the events posted to your webhook
+Request request = Listener.listen(); // this is the method you made to get the events posted to your tokenActivationUrl endpoint
 
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
