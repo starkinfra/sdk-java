@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Fixed 
+- merchantCategoryType, description and holderId parameters to IssuingPurchase resource
 - IssuingPurchase docstring in readme
 - double slash request on Rest.getSubResource
 

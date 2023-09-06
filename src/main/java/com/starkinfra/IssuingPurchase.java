@@ -22,7 +22,6 @@ public final class IssuingPurchase extends Resource {
      * Displays the IssuingPurchase objects created in your Workspace.
      * <p>
      * Parameters:
-     * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * holderName [string]: card holder name. ex: "Tony Stark"
      * productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
@@ -37,28 +36,32 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencyCode [string]: merchant currency code. ex: "USD"
      * merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
+     * merchantCategoryType [string]: merchant category type. ex "food"
      * merchantCountryCode [string]: merchant country code. ex: "USA"
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
      * merchantName [string]: merchant name. ex: "Google Cloud Platform"
-     * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: 'OjZAqj' }
      * merchantFee [Long]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
      * score [number]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * endToEndId [string]: unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
      * tags [list of strings]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
-     * zipCode [string]: zip code of the merchant location. ex: "02101234"
      * <p>
      * Parameters (IssuingPurchase only):
+     * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * description [string]: IssuingPurchase description. ex: "Office Supplies"
+     * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
+     * zipCode [string]: zip code of the merchant location. ex: "02101234"
      * updated [string]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * <p>
      * Parameters (authorization request only):
      * isPartialAllowed [Boolean]: true if the merchant allows partial purchases. ex: False
      * cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+     * holderId [string]: card holder ID. ex: "5656565656565656"
      * holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      *
      */
@@ -75,10 +78,10 @@ public final class IssuingPurchase extends Resource {
     public String issuerCurrencyCode;
     public String issuerCurrencySymbol;
     public Long merchantAmount;
-    public HashMap<String, Object> metadata;
     public String merchantCurrencyCode;
     public String merchantCurrencySymbol;
     public String merchantCategoryCode;
+    public String merchantCategoryType;
     public String merchantCountryCode;
     public String acquirerId;
     public String merchantId;
@@ -89,13 +92,16 @@ public final class IssuingPurchase extends Resource {
     public Number score;
     public String endToEndId;
     public String[] tags;
-    public String zipCode;
     public String[] issuingTransactionIds;
     public String status;
+    public String description;
+    public HashMap<String, Object> metadata;
+    public String zipCode;
     public String updated;
     public String created;
     public Boolean isPartialAllowed;
     public String[] cardTags;
+    public String holderId;
     public String[] holderTags;
 
 
@@ -105,7 +111,6 @@ public final class IssuingPurchase extends Resource {
      * Displays the IssuingPurchase objects created in your Workspace.
      * <p>
      * Parameters:
-     * @param id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param holderName [string]: card holder name. ex: "Tony Stark"
      * @param productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * @param cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
@@ -120,35 +125,39 @@ public final class IssuingPurchase extends Resource {
      * @param merchantCurrencyCode [string]: merchant currency code. ex: "USD"
      * @param merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * @param merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
+     * @param merchantCategoryType [string]: merchant category type. ex "food"
      * @param merchantCountryCode [string]: merchant country code. ex: "USA"
      * @param acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * @param merchantId [string]: merchant ID. ex: "5656565656565656"
      * @param merchantName [string]: merchant name. ex: "Google Cloud Platform"
-     * @param metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: 'OjZAqj' }
      * @param merchantFee [Long]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
      * @param walletId [string]: virtual wallet ID. ex: "5656565656565656"
      * @param methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
      * @param score [number]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
      * @param endToEndId [string]: unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
      * @param tags [list of strings]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
-     * @param zipCode [string]: zip code of the merchant location. ex: "02101234"
      * Parameters (IssuingPurchase only):
+     * @param id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * @param status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * @param description [string]: IssuingPurchase description. ex: "Office Supplies"
+     * @param metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
+     * @param zipCode [string]: zip code of the merchant location. ex: "02101234"
      * @param updated [string]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * Parameters (authorization request only):
      * @param isPartialAllowed [Boolean]: true if the merchant allows partial purchases. ex: False
      * @param cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+     * @param holderId [string]: card holder ID. ex: "5656565656565656"
      * @param holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      */
     public IssuingPurchase(String id, String holderName, String productId, String cardId, String cardEnding, String purpose, Long amount,
                            Long tax, Long issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol,
                            Long merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol,
-                           String merchantCategoryCode, String merchantCountryCode, String acquirerId, String merchantId,
-                           String merchantName, HashMap<String, Object> metadata, Long merchantFee, String walletId, String methodCode, Number score,
-                           String[] issuingTransactionIds, String endToEndId, String status, String[] tags, String zipCode,
-                           String updated, String created, Boolean isPartialAllowed, String[] cardTags, String[] holderTags
+                           String merchantCategoryCode,String merchantCategoryType, String merchantCountryCode, String acquirerId, String merchantId,
+                           String merchantName, Long merchantFee, String walletId, String methodCode, Number score,
+                           String[] issuingTransactionIds, String endToEndId, String status, String description, HashMap<String, Object> metadata, String[] tags, String zipCode,
+                           String updated, String created, Boolean isPartialAllowed, String[] cardTags, String holderId, String[] holderTags
     ) {
         super(id);
         this.holderName = holderName;
@@ -165,24 +174,27 @@ public final class IssuingPurchase extends Resource {
         this.merchantCurrencyCode = merchantCurrencyCode;
         this.merchantCurrencySymbol = merchantCurrencySymbol;
         this.merchantCategoryCode = merchantCategoryCode;
+        this.merchantCategoryType = merchantCategoryType;
         this.merchantCountryCode = merchantCountryCode;
         this.acquirerId = acquirerId;
         this.merchantId = merchantId;
         this.merchantName = merchantName;
-        this.metadata = metadata;
         this.merchantFee = merchantFee;
         this.walletId = walletId;
         this.methodCode = methodCode;
         this.score = score;
         this.endToEndId = endToEndId;
         this.tags = tags;
-        this.zipCode = zipCode;
         this.issuingTransactionIds = issuingTransactionIds;
         this.status = status;
+        this.description = description;
+        this.metadata = metadata;
+        this.zipCode = zipCode;
         this.updated = updated;
         this.created = created;
         this.isPartialAllowed = isPartialAllowed;
         this.cardTags = cardTags;
+        this.holderId = holderId;
         this.holderTags = holderTags;
     }
 
@@ -192,7 +204,6 @@ public final class IssuingPurchase extends Resource {
      * Displays the IssuingPurchase objects created in your Workspace.
      * <p>
      * Attributes (return-only):
-     * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * holderName [string]: card holder name. ex: "Tony Stark"
      * productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
@@ -207,6 +218,7 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencyCode [string]: merchant currency code. ex: "USD"
      * merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
+     * merchantCategoryType [string]: merchant category type. ex "food"
      * merchantCountryCode [string]: merchant country code. ex: "USA"
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -219,13 +231,18 @@ public final class IssuingPurchase extends Resource {
      * tags [list of strings]: list of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
      * zipCode [string]: zip code of the merchant location. ex: "02101234"
      * Attributes (IssuingPurchase only):
+     * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * description [string]: IssuingPurchase description. ex: "Office Supplies"
+     * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
+     * zipCode [string]: zip code of the merchant location. ex: "02101234"
      * updated [string]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000000+00:00"
      * Attributes (authorization request only):
      * isPartialAllowed [Boolean]: true if the merchant allows partial purchases. ex: False
      * cardTags [list of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+     * holderId [string]: card holder ID. ex: "5656565656565656"
      * holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      * @throws Exception error in the request
      */
@@ -247,11 +264,11 @@ public final class IssuingPurchase extends Resource {
         this.merchantCurrencyCode = null;
         this.merchantCurrencySymbol = null;
         this.merchantCategoryCode = null;
+        this.merchantCategoryType = null;
         this.merchantCountryCode = null;
         this.acquirerId = null;
         this.merchantId = null;
         this.merchantName = null;
-        this.metadata = null;
         this.merchantFee = null;
         this.walletId = null;
         this.methodCode = null;
@@ -259,12 +276,15 @@ public final class IssuingPurchase extends Resource {
         this.issuingTransactionIds = null;
         this.endToEndId = null;
         this.status = null;
-        this.tags = null;
+        this.description = null;
+        this.metadata = null;
         this.zipCode = null;
+        this.tags = null;
         this.updated = null;
         this.created = null;
         this.isPartialAllowed = null;
         this.cardTags = null;
+        this.holderId = null;
         this.holderTags = null;
 
         if (!dataCopy.isEmpty()) {
