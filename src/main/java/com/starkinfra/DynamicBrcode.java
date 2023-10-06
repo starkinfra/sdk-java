@@ -426,6 +426,7 @@ public final class DynamicBrcode extends Resource {
      * reconciliationId [string]: id to be used for conciliation of the resulting Pix transaction. This id must have from to 26 to 35 alphanumeric characters' ex: "cd65c78aeb6543eaaa0170f68bd741ee"
      * nominalAmount [Long]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
      * senderName [string]: sender's full name. ex: "Anthony Edward Stark"
+     * senderTaxId [string]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
      * receiverName [string]: receiver's full name. ex: "Jamie Lannister"
      * receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"
      * receiverCity [string]: receiver's address city name. ex: "Sao Paulo"
@@ -434,7 +435,6 @@ public final class DynamicBrcode extends Resource {
      * expiration [Long]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR Code cannot be paid anymore.
      * <p>
      * Parameters (optional):
-     * senderTaxId [string, default null]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
      * receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
      * fine [Number, default 2.0]: percentage charged if the sender pays after the due datetime.
      * interest [Number, default 1.0]: interest percentage charged if the sender pays after the due datetime.
