@@ -2261,6 +2261,7 @@ data.put("status", invoice.status);
 data.put("reconciliationId", invoice.reconciliationId);
 data.put("amount", invoice.amount);
 data.put("senderName", invoice.senderName);
+data.put("senderTaxId", invoice.senderTaxId);
 data.put("receiverName", invoice.receiverName);
 data.put("receiverStreetLine", invoice.receiverStreetLine);
 data.put("receiverCity", invoice.receiverCity);
