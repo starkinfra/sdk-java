@@ -153,12 +153,12 @@ public class TestDynamicBrcode {
         data.put("senderName", "Jamie Lannister");
         data.put("senderTaxId", "012.345.678-90");
         data.put("receiverName", "Anthony Edward Stark");
+        data.put("receiverTaxId", "20.018.183/0001-8");
         data.put("receiverStreetLine", "Av. Paulista 200");
         data.put("receiverCity", "Sao Paulo");
         data.put("receiverStateCode", "SP");
         data.put("receiverZipCode", "01234-567");
         data.put("expiration", "82000");
-        data.put("receiverTaxId", "20.018.183/0001-8");
         data.put("fine", 2);
         data.put("interest", 1);
         data.put("discounts", Collections.singletonList(discount));
