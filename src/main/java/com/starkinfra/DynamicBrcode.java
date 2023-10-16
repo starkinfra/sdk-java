@@ -428,6 +428,7 @@ public final class DynamicBrcode extends Resource {
      * senderName [string]: sender's full name. ex: "Anthony Edward Stark"
      * senderTaxId [string]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
      * receiverName [string]: receiver's full name. ex: "Jamie Lannister"
+     * receiverTaxId [string]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
      * receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"
      * receiverCity [string]: receiver's address city name. ex: "Sao Paulo"
      * receiverStateCode [string]: receiver's address state code. ex: "SP"
@@ -435,7 +436,6 @@ public final class DynamicBrcode extends Resource {
      * expiration [Long]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR Code cannot be paid anymore.
      * <p>
      * Parameters (optional):
-     * receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
      * fine [Number, default 2.0]: percentage charged if the sender pays after the due datetime.
      * interest [Number, default 1.0]: interest percentage charged if the sender pays after the due datetime.
      * discounts [list of Discount objects, default null]: discount amount applied if the sender pays at a specific datetime before the due datetime.

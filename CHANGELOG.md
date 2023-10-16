@@ -18,7 +18,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingPurchase docstring in readme
 - double slash request on Rest.getSubResource
 ### Changed
-- senderTaxId parameter to DynamicBrcode resource
+- senderTaxId and receiverTaxId parameters to DynamicBrcode resource
 
 ## [0.8.0] - 2023-06-19
 ### Added

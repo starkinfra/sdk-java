@@ -2263,6 +2263,7 @@ data.put("amount", invoice.amount);
 data.put("senderName", invoice.senderName);
 data.put("senderTaxId", invoice.senderTaxId);
 data.put("receiverName", invoice.receiverName);
+data.put("receiverTaxId", invoice.receiverTaxId);
 data.put("receiverStreetLine", invoice.receiverStreetLine);
 data.put("receiverCity", invoice.receiverCity);
 data.put("receiverStateCode", invoice.receiverStateCode);
