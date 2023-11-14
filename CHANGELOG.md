@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.9.0] - 2023-11-14
 ### Fixed 
 - merchantCategoryType, description and holderId parameters to IssuingPurchase resource
 - IssuingPurchase docstring in readme
