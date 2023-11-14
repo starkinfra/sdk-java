@@ -45,6 +45,8 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixClaim](#create-a-pixclaim): Claim a Pix Key
     - [PixDirector](#create-a-pixdirector): Create a Pix Director
     - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
+    - [PixFraud](#create-a-pixfraud): Create a Pix Fraud 
+    - [PixUser](#get-a-pixuser): Get fraud statistics of a user
     - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
     - [PixDomain](#query-pixdomains): View registered SPI participants certificates
     - [StaticBrcode](#create-staticbrcodes): Create static Pix BR Codes
@@ -1842,7 +1844,8 @@ import java.util.List;
 List infractions = new ArrayList<>();
 HashMap<String, Object> data = new HashMap<>();
 data.put("referenceId", "E20018183202201201450u34sDGd19lz");
-data.put("type", "fraud");
+data.put("type", "reversal");
+data.put("method", "scam");
 infractions.add(new PixInfraction(data));
 
 infractions = PixInfraction.create(infractions);
@@ -1896,7 +1899,10 @@ After a Pix Infraction is patched, its status changes to closed.
 import com.starkinfra.*;
 import java.util.HashMap;
 
-PixInfraction infraction = PixInfraction.update("5155165527080960", "agreed");
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("fraudType","scam");
+        
+PixInfraction infraction = PixInfraction.update("5155165527080960", "agreed", patchData);
 
 System.out.println(infraction);
 ```
@@ -1944,6 +1950,89 @@ import com.starkinfra.*;
 PixInfraction.Log log = PixInfraction.Log.get("6532638269505536");
 
 System.out.println(log);
+```
+
+### Create a PixFraud
+
+Pix Frauds can be created by either participant or automatically when a Pix Infraction is accepted.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+List frauds = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("externalId", "my_external_id_1234");
+data.put("type", "mule");
+data.put("taxId", "01234567890");
+
+frauds = PixFraud.create(frauds);
+
+for (PixFraud fraud : frauds){
+    System.out.println(fraud);
+}
+```
+
+### Query Pix Frauds
+
+You can query multiple Pix frauds according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2022-01-20");
+params.put("before", "2022-01-24");
+params.put("status", "delivered");
+params.put("ids", new String[] {"6638842090094592", "4023146587080960"});
+
+Generator<PixFraud> frauds = PixFrauds.query(params);
+
+for (PixFraud fraud : frauds){
+    System.out.println(fraud);
+}
+```
+
+### Get a PixFraud
+
+After its creation, information on a PixFraud may be retrieved by its ID.
+
+```java
+import com.starkinfra.*;
+
+PixFraud fraud = PixFraud.get("6532638269505536");
+
+System.out.println(fraud);
+```
+
+### Cancel a PixFraud
+
+To cancel a single Pix Fraud by its id, run:
+
+```java
+import com.starkinfra.*;
+
+PixFraud fraud = PixFraud.cancel("6532638269505536");
+
+System.out.println(fraud);
+```
+
+### Get a PixUser
+
+You can get a specific fraud statistics of a user with his taxId.
+
+```java
+import com.starkinfra.*;
+
+PixUser user = PixUser.get("01234567890");
+
+System.out.println(user);
 ```
 
 ### Create PixChargebacks
