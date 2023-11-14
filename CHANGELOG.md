@@ -19,6 +19,11 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - double slash request on Rest.getSubResource
 ### Changed
 - senderTaxId and receiverTaxId parameters to DynamicBrcode resource
+- type parameter to PixInfraction resource
+### Added 
+- method, fraudType and fraudId parameters to PixInfraction resource
+- PixFraud resource
+- PixUser resource
 
 ## [0.8.0] - 2023-06-19
 ### Added

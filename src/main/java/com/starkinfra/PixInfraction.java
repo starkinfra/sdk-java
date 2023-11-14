@@ -25,14 +25,17 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
-     * type [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
-     * description [string, default null]: description for any details that can help with the infraction investigation.
+     * type [string]: type of Pix Infraction. Options: "reversal", "reversalChargeback"
+     * method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other"
+     * description [string]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
+     * fraudType [string]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
-     * creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"
      * analysis [string]: analysis that led to the result.
      * debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
      * flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
-     * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
      * reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
      * result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
      * status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
@@ -44,12 +47,15 @@ public final class PixInfraction extends Resource {
 
     public String referenceId;
     public String type;
+    public String method;
     public String description;
+    public String fraudType;
     public String[] tags;
-    public String creditedBankCode;
+    public String fraudId;
     public String analysis;
     public String debitedBankCode;
     public String flow;
+    public String creditedBankCode;
     public String reportedBy;
     public String result;
     public String status;
@@ -65,33 +71,40 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * @param referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
-     * @param type [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
-     * @param description [string, default null]: description for any details that can help with the infraction investigation.
+     * @param type [string]: type of Pix Infraction. Options: "reversal" or "reversalChargeback"
+     * @param method [string]: method of Pix Infraction. Option: "scam", "unauthorized", "coercion", "invasion" or "other"
+     * @param description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
+     * @param fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
      * @param tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
-     * @param creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+     * @param id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * @param fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"
      * @param analysis [string]: analysis that led to the result.
      * @param debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
      * @param flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
-     * @param id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * @param creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
      * @param reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
      * @param result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
      * @param status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
      * @param created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public PixInfraction(String referenceId, String type, String description, String[] tags, String creditedBankCode,
-                         String analysis,String debitedBankCode, String flow, String id, String reportedBy,
-                         String result, String status, String created, String updated
+    public PixInfraction(String referenceId, String type, String method, String description, String fraudType,
+                         String[] tags, String id, String fraudId, String analysis, String debitedBankCode, String flow,
+                         String creditedBankCode, String reportedBy, String result, String status, String created,
+                         String updated
     ) {
         super(id);
         this.referenceId = referenceId;
         this.type = type;
+        this.method = method;
         this.description = description;
+        this.fraudType = fraudType;
         this.tags = tags;
-        this.creditedBankCode = creditedBankCode;
+        this.fraudId = fraudId;
         this.analysis = analysis;
         this.debitedBankCode = debitedBankCode;
         this.flow = flow;
+        this.creditedBankCode = creditedBankCode;
         this.reportedBy = reportedBy;
         this.result = result;
         this.status = status;
@@ -109,14 +122,19 @@ public final class PixInfraction extends Resource {
      * Parameters (required):
      * @param data map of properties for the creation of the PixInfraction
      * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
-     * type [string]: type of Pix Infraction. Options: "fraud", "reversal", "reversalChargeback"
+     * type [string]: type of Pix Infraction. Options: "reversal" or "reversalChargeback"
+     * method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion" or "other"
+     * <p>
+     * Parameters (conditionally required):
+     * description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
+     * fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
      * <p>
      * Parameters (optional):
-     * description [string, default null]: description for any details that can help with the infraction investigation.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+     * fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"
      * analysis [string]: analysis that led to the result.
      * debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
      * flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
@@ -134,12 +152,15 @@ public final class PixInfraction extends Resource {
 
         this.referenceId = (String) dataCopy.remove("referenceId");
         this.type = (String) dataCopy.remove("type");
+        this.method = (String) dataCopy.remove("method");
         this.description = (String) dataCopy.remove("description");
+        this.fraudType = (String) dataCopy.remove("fraudType");
         this.tags = (String[]) dataCopy.remove("tags");
-        this.creditedBankCode = (String) dataCopy.remove("creditedBankCode");
+        this.fraudId = null;
         this.analysis = null;
         this.debitedBankCode = null;
         this.flow = null;
+        this.creditedBankCode = null;
         this.reportedBy = null;
         this.result = null;
         this.status = null;
@@ -197,7 +218,7 @@ public final class PixInfraction extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "reversal", "reversalChargeback".
      * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
@@ -253,7 +274,7 @@ public final class PixInfraction extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "reversal", "reversalChargeback".
      * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
@@ -290,7 +311,7 @@ public final class PixInfraction extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "reversal", "reversalChargeback".
      * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
@@ -353,7 +374,7 @@ public final class PixInfraction extends Resource {
      * before [string, default null]: date filter for objects created before a specified date. ex: "2020-03-30"
      * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "fraud", "reversal", "reversalChargeback".
+     * type [strings, default null]: filter for the type of retrieved PixInfractions. Options: "reversal", "reversalChargeback".
      * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
@@ -458,51 +479,17 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: PixInfraction id. ex: "5656565656565656"
-     * @param result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
-     * <p>
-     * Return:
-     * @return PixInfraction object with updated attributes
-     * @throws Exception error in the request
-     */
-    public static PixInfraction update(String id, String result) throws Exception {
-        return PixInfraction.update(id, result, new HashMap<>(), null);
-    }
-
-    /**
-     * Update PixInfraction entity
-     * <p>
-     * Update the PixInfraction by passing id.
-     * <p>
-     * Parameters:
-     * @param id [string]: PixInfraction id. ex: "5656565656565656"
-     * @param result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
-     * <p>
-     * Return:
-     * @return PixInfraction object with updated attributes
-     * @throws Exception error in the request
-     */
-    public static PixInfraction update(String id, String result, User user) throws Exception {
-        return PixInfraction.update(id, result, new HashMap<>(), user);
-    }
-
-    /**
-     * Update PixInfraction entity
-     * <p>
-     * Update the PixInfraction by passing id.
-     * <p>
-     * Parameters:
-     * @param id [string]: PixInfraction id. ex: "5656565656565656"
-     * @param result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
-     * @param patchData map of patch parameters
+     * @param patchData map of properties to patch
      * analysis [string, default null]: analysis that led to the result.
+     * result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
+     * fraudType [string, default null]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixInfraction update(String id, String result, Map<String, Object> patchData) throws Exception {
-        return PixInfraction.update(id, result, patchData, null);
+    public static PixInfraction update(String id, Map<String, Object> patchData) throws Exception {
+        return PixInfraction.update(id, patchData, null);
     }
 
     /**
@@ -512,17 +499,17 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: PixInfraction id. ex: "5656565656565656"
-     * @param result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
      * @param patchData map of patch parameters:
+     * result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
      * analysis [string, default null]: analysis that led to the result.
+     * fraudType [string]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
      * @throws Exception error in the request
      */
-    public static PixInfraction update(String id, String result, Map<String, Object> patchData, User user) throws Exception {
-        patchData.put("result", result);
+    public static PixInfraction update(String id, Map<String, Object> patchData, User user) throws Exception {
         return Rest.patch(data, id, patchData, user);
     }
 

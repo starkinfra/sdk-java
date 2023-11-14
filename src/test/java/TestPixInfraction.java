@@ -199,9 +199,13 @@ public class TestPixInfraction {
         Settings.user = utils.User.defaultProject();
         List<PixInfraction> infractions = getReportToPatch();
 
+        System.out.println(infractions.toArray().length);
         for (PixInfraction infraction : infractions) {
             System.out.println(infraction);
-            PixInfraction updatedPixInfraction = PixInfraction.update(infraction.id, "agreed");
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("result", "agreed");
+            params.put("fraudType", "scam");
+            PixInfraction updatedPixInfraction = PixInfraction.update(infraction.id, params);
             Assert.assertNotNull(updatedPixInfraction.id);
             System.out.println(updatedPixInfraction);
         }
@@ -232,7 +236,8 @@ public class TestPixInfraction {
         String bankCode = utils.User.bankCode();
         HashMap<String, Object> data = new HashMap<>();
         data.put("referenceId", EndToEndId.create(bankCode));
-        data.put("type","fraud");
+        data.put("type", "reversal");
+        data.put("method", "scam");
         return new PixInfraction(data);
     }
 }
