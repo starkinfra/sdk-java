@@ -15,7 +15,7 @@ import com.starkbank.ellipticcurve.utils.ByteString;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-public final class Parse{
+public final class Parse {
 
     /**
      * Create single notification Event from a content string
@@ -52,7 +52,7 @@ public final class Parse{
      * @return Event object with updated attributes
      * @throws Exception error in the request
      */
-    public static <T extends Resource> T parseAndVerify(Resource.ClassData resource, String content, String signature, User user) throws Exception {
+    public static <T extends SubResource> T parseAndVerify(SubResource.ClassData resource, String content, String signature, User user) throws Exception {
         String verifiedContent = verify(content, signature, user);
 
         Gson gson = GsonEvent.getInstance();
