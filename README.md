@@ -30,6 +30,10 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
     - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
     - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
+    - [TokenRequest](#create-an-issuingtokenrequest): Generate the payload to create the token
+    - [Token](#process-token-authorizations): Authorize and manage your tokens
+    - [TokenActivation](#process-token-activations): Get notified on how to inform the activation code to the holder
+    - [TokenDesign](#get-an-issuingtokendesign): View your current token card arts
     - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
     - [Invoices](#create-issuinginvoices): Add money to your issuing balance
     - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
@@ -45,7 +49,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixClaim](#create-a-pixclaim): Claim a Pix Key
     - [PixDirector](#create-a-pixdirector): Create a Pix Director
     - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
-    - [PixFraud](#create-a-pixfraud): Create a Pix Fraud 
+    - [PixFraud](#create-a-pixfraud): Create a Pix Fraud
     - [PixUser](#get-a-pixuser): Get fraud statistics of a user
     - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
     - [PixDomain](#query-pixdomains): View registered SPI participants certificates
@@ -899,6 +903,219 @@ IssuingEmbossingRequest.Log log = IssuingEmbossingRequest.Log.get("6724771005857
 System.out.println(log);
 ```
 
+### Create an IssuingTokenRequest
+
+You can create a request that provides the required data you must send to the wallet app.
+
+```java
+List<IssuingTokenRequest> requests = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("cardId", "5189831499972623");
+data.put("walletId", "google");
+data.put("methodCode", "app");
+requests.add(new IssuingTokenRequest(data));
+
+requests = IssuingTokenRequest.create(requests);
+
+for (IssuingTokenRequest request : requests) {
+    System.out.println(request);
+};
+```
+
+### Process Token authorizations
+
+It's easy to process token authorizations delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 2 seconds, the authorization will be denied.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is the method you made to get the events posted to your tokenActivationUrl endpoint
+
+String content = request.content.toString();
+String signature = request.headers.get("Digital-Signature");
+
+IssuingToken event = IssuingToken.parse(content, validSignature);
+
+sendResponse(  // you should also implement this method
+    IssuingToken.responseAuthorization(  // this optional method just helps you build the response JSON
+        "accepted",
+        new HashMap<>{"type": "app", "value": "com.subissuer.android"},
+        "4584031664472031",
+        new String[]{"token", "user/1234"}
+    );
+);
+
+// or 
+
+sendResponse(
+    IssuingToken.responseAuthorization(
+        "denied",
+        "other",
+        new String[]{"other-id/456"}
+    );
+);
+```
+
+### Process Token activations
+
+It's easy to process token activation notifications delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's Stark Infra that sent you the event.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is the method you made to get the events posted to your tokenActivationUrl endpoint
+
+String content = request.content.toString();
+String signature = request.headers.get("Digital-Signature");
+
+IssuingToken event = IssuingToken.parse(content, validSignature);
+```
+
+After that, you may generate the activation code and send it to the cardholder.
+The cardholder enters the received code in the wallet app. We'll receive and send it to
+tokenAuthorizationUrl for your validation. Completing the provisioning process.
+
+```java
+sendResponse(  // you should also implement this method
+    IssuingToken.responseActivation(  // this optional method just helps you build the response JSON
+        "approved",
+        new String[]{"token", "user/1234"}
+    );
+);
+
+// or 
+
+sendResponse(
+    IssuingToken.responseActivation(
+        "denied",
+        "other",
+        new String[]{"other-id/456"}
+    );
+);
+```
+
+### Get an IssuingToken
+
+You can get a single token by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingToken token = IssuingToken.get("5155165527080960");
+
+System.out.println(token);
+```
+
+### Query IssuingTokens
+
+You can get a list of created tokens given some filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 5);
+params.put("after", "2022-01-01");
+params.put("before", "2023-03-01");
+params.put("status", "active");
+params.put("cardIds", ["5656565656565656", "4545454545454545"]);
+params.put("externalIds", ["DSHRMC00002626944b0e3b539d4d459281bdba90c2588791", "DSHRMC00002626941c531164a0b14c66ad9602ee716f1e85"]);
+
+Generator<IssuingToken> tokens = IssuingToken.query(params);
+
+for (IssuingToken token : tokens) {
+    System.out.println(token);
+}
+```
+
+### Update an IssuingToken
+
+You can update a specific token by its id.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("status", "blocked");
+
+IssuingToken token = IssuingToken.update("5155165527080960", patchData);
+
+System.out.println(token);
+```
+
+### Cancel an IssuingToken
+
+You can also cancel a token by its id.
+
+```javascript
+import com.starkinfra.*;
+import java.util.HashMap;
+
+IssuingToken token = IssuingToken.cancel("5155165527080960");
+
+System.out.println(token);
+```
+
+### Get an IssuingTokenDesign
+
+You can get a single design by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingTokenDesign design = IssuingTokenDesign.get("5749080709922816");
+
+System.out.println(designs);
+```
+
+### Query IssuingTokenDesigns
+
+You can get a list of available designs given some filters.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 5);
+params.put("after", "2022-01-01");
+params.put("before", "2023-03-01");
+
+Generator<IssuingTokenDesign> designs = IssuingTokenDesign.query(params);
+
+for (IssuingTokenDesign design : designs) {
+    System.out.println(design);
+}
+```
+
+## Get an IssuingTokenDesign PDF
+
+A design PDF can be retrieved by its id.
+
+```java
+import java.io.File;
+import com.starkinfra.*;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+
+InputStream pdf = IssuingTokenDesign.pdf("5155165527080960");
+
+java.nio.file.Files.copy(
+    pdf,
+    new File("token.pdf").toPath(),
+    StandardCopyOption.REPLACE_EXISTING
+);
+```
+
 ### Process Purchase authorizations
 
 It's easy to process purchase authorizations delivered to your endpoint.
@@ -1427,7 +1644,7 @@ for (PixReversal reversal : reversals){
 
 ### Get a PixReversal
 
-After its creation, information on a Pix reversal may be retrieved by its id. 
+After its creation, information on a Pix reversal may be retrieved by its id.
 Its status indicates whether it has been paid.
 
 ```java
@@ -1624,7 +1841,7 @@ for (PixKey key : keys){
 ### Get a PixKey
 
 Information on any Pix key may be retrieved by its id and the tax ID of the consulting agent.
-If the request results in the creation of a Pix Request, the same end to end id should be used. 
+If the request results in the creation of a Pix Request, the same end to end id should be used.
 If this parameter is not passed, one endToEndId will be automatically created.
 
 ```java
@@ -2426,18 +2643,18 @@ System.out.println(previews);
 
 If you want to establish a lending operation, you can use Stark Infra to
 create a CCB contract. This will enable your business to lend money without
-requiring a banking license, as long as you use a Credit Fund 
+requiring a banking license, as long as you use a Credit Fund
 or Securitization company.
 
 The required steps to initiate the operation are:
 
- 1. Have funds in your Credit Fund or Securitization account
- 2. Request the creation of an [Identity Check](#create-individualidentities)
-for the credit receiver (make sure you have their documents and express authorization)
- 3. (Optional) Create a [Credit Simulation](#create-creditpreviews) 
-with the desired installment plan to display information for the credit receiver
- 4. Create a [Credit Note](#create-creditnotes)
-with the desired installment plan
+1. Have funds in your Credit Fund or Securitization account
+2. Request the creation of an [Identity Check](#create-individualidentities)
+   for the credit receiver (make sure you have their documents and express authorization)
+3. (Optional) Create a [Credit Simulation](#create-creditpreviews)
+   with the desired installment plan to display information for the credit receiver
+4. Create a [Credit Note](#create-creditnotes)
+   with the desired installment plan
 
 ### Create CreditNotes
 
@@ -2782,7 +2999,7 @@ Identities are validated according to the following sequence:
 2. Documents are attached to the Identity resource
 3. The Identity resource is updated to indicate that all documents have been attached
 4. The Identity is sent for validation and returns a webhook notification to reflect
-the success or failure of the operation
+   the success or failure of the operation
 
 ### Create IndividualIdentities
 
@@ -2865,7 +3082,7 @@ IndividualIdentity identity = IndividualIdentity.cancel("5155165527080960");
 
 System.out.println(identity);
 ```
-  
+
 ### Query IndividualIdentity logs
 
 You can query IndividualIdentity logs to better understand IndividualIdentity life cycles.
@@ -2987,7 +3204,7 @@ IndividualDocument document = IndividualDocument.get("5155165527080960");
 
 System.out.println(document);
 ```
-  
+
 ### Query IndividualDocument logs
 
 You can query IndividualDocument logs to better understand IndividualDocument life cycles.

@@ -13,6 +13,11 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- IssuingToken resource
+- IssuingTokenDesign resource
+- IssuingTokenRequest resource
+- IssuingTokenActivation resource
 
 ## [0.9.0] - 2023-11-14
 ### Fixed 
