@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.10.0] - 2024-03-05
 ### Added
 - IssuingToken resource
 - IssuingTokenDesign resource
