@@ -1,3 +1,4 @@
+import com.starkinfra.IssuingCard;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -9,6 +10,7 @@ import com.starkinfra.error.InvalidSignatureError;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class TestIssuingPurchase {
@@ -69,6 +71,25 @@ public class TestIssuingPurchase {
         for (IssuingPurchase.Log log : logs) {
             log = IssuingPurchase.Log.get(log.id);
             System.out.println(log);
+        }
+    }
+
+    @Test
+    public void testUpdateStatus() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        Map<String, Object> patchData = new HashMap<>();
+        patchData.put("description", "war supply");
+        patchData.put("tags", new String[]{"Arya", "Stark"});
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+
+        Generator<IssuingPurchase> purchases = IssuingPurchase.query(params);
+
+        for (IssuingPurchase purchase : purchases) {
+            IssuingPurchase updatedIssuingPurchase = IssuingPurchase.update(purchase.id, patchData);
+            Assert.assertEquals("war supply", updatedIssuingPurchase.description);
         }
     }
 

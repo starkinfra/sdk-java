@@ -507,6 +507,45 @@ public final class IssuingPurchase extends Resource {
     }
 
     /**
+     * Update IssuingPurchase entity
+     * <p>
+     * Update an IssuingPurchase by passing id.
+     * <p>
+     * Parameters:
+     * @param id [string]: IssuingPurchase id. ex: "5656565656565656"
+     * @param patchData map of parameters
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * description [string, default null]: additional information to the IssuingPurchase.
+     * <p>
+     * Return:
+     * @return IssuingPurchase object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static IssuingPurchase update(String id, Map<String, Object> patchData) throws Exception {
+        return IssuingPurchase.update(id, patchData, null);
+    }
+
+    /**
+     * Update IssuingPurchase entity
+     * <p>
+     * Update an IssuingPurchase by passing id.
+     * <p>
+     * Parameters:
+     * @param id [string]: IssuingPurchase id. ex: "5656565656565656"
+     * @param patchData map of parameters
+     * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+     * description [string, default null]: additional information to the IssuingPurchase.
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return IssuingPurchase object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static IssuingPurchase update(String id, Map<String, Object> patchData, User user) throws Exception {
+        return Rest.patch(data, id, patchData, user);
+    }
+
+    /**
      * Create a single verified IssuingPurchase authorization request from a content string
      * <p>
      * Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.

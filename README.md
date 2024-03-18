@@ -1183,6 +1183,25 @@ IssuingPurchase purchase = IssuingPurchase.get("5302186862968832");
 System.out.println(purchase);
 ```
 
+### Update an IssuingPurchase
+
+You can update a specific purchase by its id.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+Map<String, Object> patchData = new HashMap<>();
+patchData.put("description", "war supply");
+patchData.put("tags", new String[]{"Arya", "Stark"});
+
+IssuingPurchase purchase = IssuingPurchase.update("5760854205136896", patchData);
+
+System.out.println(purchase);
+``` 
+
 ### Query IssuingPurchase logs
 
 Logs are pretty important to understand the life cycles of a purchase.
