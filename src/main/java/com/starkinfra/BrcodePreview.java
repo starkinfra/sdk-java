@@ -43,7 +43,7 @@ public final class BrcodePreview extends Resource {
      * scheduled [string]: datetime of payment execution. ex: "2020-03-10 10:30:00.000000+00:00"
      * status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
-     *
+     * dueDate [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     static ClassData data = new ClassData(BrcodePreview.class, "BrcodePreview");
 
@@ -69,6 +69,7 @@ public final class BrcodePreview extends Resource {
     public String scheduled;
     public String status;
     public String taxId;
+    public String dueDate;
 
     /**
      * BrcodePreview object
@@ -103,8 +104,9 @@ public final class BrcodePreview extends Resource {
      * @param scheduled [string]: datetime of payment execution. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
      * @param taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
+     * @param dueDate [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public BrcodePreview(String payerId, String endToEndId, String status, String name, String taxId, String bankCode,
+    public BrcodePreview(String payerId, String endToEndId, String status, String name, String taxId, String dueDate, String bankCode,
                          String branchCode, Long cashAmount, String cashierBankCode, String cashierType, String accountNumber,
                          String accountType, String scheduled, Long amount, String amountType, Long nominalAmount,
                          String keyId, Long interestAmount, Long fineAmount, Long reductionAmount, Long discountAmount,
@@ -133,6 +135,7 @@ public final class BrcodePreview extends Resource {
         this.scheduled = scheduled;
         this.status = status;
         this.taxId = taxId;
+        this.dueDate = dueDate;
     }
 
     /**
@@ -173,6 +176,7 @@ public final class BrcodePreview extends Resource {
      * scheduled [string]: datetime of payment execution. ex: "2020-03-10 10:30:00.000000+00:00"
      * status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
+     * dueDate [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public BrcodePreview(Map<String, Object> data) throws Exception {
@@ -202,6 +206,7 @@ public final class BrcodePreview extends Resource {
         this.scheduled = null;
         this.status = null;
         this.taxId = null;
+        this.dueDate = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
