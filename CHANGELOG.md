@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.11.1] - 2024-05-21
 ### Fixed
 - due parameter to BrcodePreview resource
 
