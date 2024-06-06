@@ -520,7 +520,7 @@ public final class PixClaim extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
+        public List<String> errors;
         public String reason;
         public PixClaim claim;
 
@@ -539,7 +539,7 @@ public final class PixClaim extends Resource {
          * @param reason [string]: reason for the modification in the PixClaim. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".
          * @param claim [PixClaim]: PixClaim entity to which the log refers to.
          */
-        public Log(String created, String type, List<ErrorElement> errors, String reason, PixClaim claim, String id) {
+        public Log(String created, String type, List<String> errors, String reason, PixClaim claim, String id) {
             super(id);
             this.created = created;
             this.type = type;
