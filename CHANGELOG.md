@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- PixClaim log error list
 
 ## [0.11.1] - 2024-05-21
 ### Fixed
