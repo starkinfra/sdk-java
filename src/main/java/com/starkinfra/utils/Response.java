@@ -130,6 +130,6 @@ public final class Response {
     }
 
     private static String getUserAgent() {
-        return (userAgentOverride == null) ? "Java-" + System.getProperty("java.version") + "-SDK-Infra-0.11.1" : userAgentOverride;
+        return (userAgentOverride == null) ? "Java-" + System.getProperty("java.version") + "-SDK-Infra-0.11.2" : userAgentOverride;
     }
 }

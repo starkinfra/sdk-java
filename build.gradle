@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.starkinfra'
-version '0.11.1'
+version '0.11.2'
 
 sourceCompatibility = 1.8
 
@@ -44,7 +44,7 @@ publishing {
 
             groupId = 'com.starkinfra'
             artifactId = 'sdk'
-            version = '0.11.1'
+            version = '0.11.2'
             from components.java
 
             pom {
