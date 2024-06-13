@@ -553,7 +553,7 @@ public final class PixChargeback extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
+        public List<String> errors;
         public PixChargeback chargeback;
 
         /**
@@ -570,7 +570,7 @@ public final class PixChargeback extends Resource {
          * @param errors [list of strings]: list of errors linked to this PixChargeback event
          * @param chargeback [PixChargeback]: PixChargeback entity to which the log refers to.
          */
-        public Log(String created, String type, List<ErrorElement> errors, PixChargeback chargeback, String id) {
+        public Log(String created, String type, List<String> errors, PixChargeback chargeback, String id) {
             super(id);
             this.created = created;
             this.type = type;
