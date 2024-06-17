@@ -628,7 +628,7 @@ public final class CreditNote extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
+        public List<String> errors;
         public CreditNote note;
 
         /**
@@ -645,7 +645,7 @@ public final class CreditNote extends Resource {
          * @param created [string]: creation datetime for the log. ex: "2020-03-10"
          */
 
-        public Log(String created, String type, List<ErrorElement> errors, CreditNote note, String id) {
+        public Log(String created, String type, List<String> errors, CreditNote note, String id) {
             super(id);
             this.created = created;
             this.type = type;

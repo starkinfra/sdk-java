@@ -518,7 +518,7 @@ public final class PixInfraction extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
+        public List<String> errors;
         public PixInfraction infraction;
 
         /**
@@ -535,7 +535,7 @@ public final class PixInfraction extends Resource {
          * @param errors [list of strings]: list of errors linked to this PixInfraction event
          * @param infraction [PixInfraction]: PixInfraction entity to which the log refers to.
          */
-        public Log(String created, String type, List<ErrorElement> errors, PixInfraction infraction, String id) {
+        public Log(String created, String type, List<String> errors, PixInfraction infraction, String id) {
             super(id);
             this.created = created;
             this.type = type;

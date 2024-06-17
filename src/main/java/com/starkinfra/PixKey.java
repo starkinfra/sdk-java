@@ -544,7 +544,7 @@ public final class PixKey extends Resource {
 
         public String created;
         public String type;
-        public List<ErrorElement> errors;
+        public List<String> errors;
         public PixKey key;
 
         /**
@@ -561,7 +561,7 @@ public final class PixKey extends Resource {
          * @param type [string]: type of the PixKey event which triggered the log creation. ex: "processing" or "success"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10"
          */
-        public Log(String created, String type, List<ErrorElement> errors, PixKey key, String id) {
+        public Log(String created, String type, List<String> errors, PixKey key, String id) {
             super(id);
             this.created = created;
             this.type = type;

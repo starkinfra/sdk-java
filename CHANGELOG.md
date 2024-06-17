@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- Event parse errors
 
 ## [0.11.2] - 2024-06-07
 ### Fixed
