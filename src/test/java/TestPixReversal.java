@@ -221,6 +221,7 @@ public class TestPixReversal {
         data.put("externalId", "java-" + UUID.randomUUID().toString());
         data.put("reason", "fraud");
         data.put("endToEndId", utils.EndToEndId.get());
+        data.put("description", "reversal details");
         return new PixReversal(data);
     }
 }

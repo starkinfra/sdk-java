@@ -53,6 +53,7 @@ public final class PixReversal extends Resource {
     public String flow;
     public String created;
     public String updated;
+    public String description;
 
     /**
      * PixReversal object
@@ -79,7 +80,7 @@ public final class PixReversal extends Resource {
      * @param updated [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public PixReversal(Long amount, String externalId, String endToEndId, String reason, String[] tags, String id,
-                       String returnId, Number fee, String status, String flow, String created, String updated
+                       String returnId, Number fee, String status, String flow, String created, String updated, String description
     ) {
         super(id);
         this.amount = amount;
@@ -93,6 +94,7 @@ public final class PixReversal extends Resource {
         this.flow = flow;
         this.created = created;
         this.updated = updated;
+        this.description = description;
     }
 
     /**
@@ -134,6 +136,7 @@ public final class PixReversal extends Resource {
         this.endToEndId = (String) dataCopy.remove("endToEndId");
         this.reason = (String) dataCopy.remove("reason");
         this.tags = (String[]) dataCopy.remove("tags");
+        this.description = (String) dataCopy.remove("description");
         this.returnId = null;
         this.fee = null;
         this.status = null;
