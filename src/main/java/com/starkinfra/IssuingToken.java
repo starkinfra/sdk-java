@@ -5,7 +5,7 @@ import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Parse;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
 
 import java.util.Map;
@@ -394,7 +394,7 @@ public class IssuingToken extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingToken.Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IssuingToken> tokens = new ArrayList<>();
         for (SubResource request: page.entities) {
             tokens.add((IssuingToken) request);
@@ -829,7 +829,7 @@ public class IssuingToken extends Resource {
          * @throws Exception error in the IssuingToken
          */
         public static IssuingToken.Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<IssuingToken.Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((IssuingToken.Log) log);

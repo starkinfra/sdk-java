@@ -6,7 +6,7 @@ import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Parse;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkcore.utils.SubResource;
 
 
 import java.util.Map;
@@ -403,7 +403,7 @@ public class Event extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<Event> events = new ArrayList<>();
         for (SubResource event: page.entities) {
             events.add((Event) event);
@@ -751,7 +751,7 @@ public class Event extends Resource {
          * @throws Exception error in the request
          */
         public static Attempt.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<Attempt> attempts = new ArrayList<>();
             for (SubResource attempt: page.entities) {
                 attempts.add((Attempt) attempt);
