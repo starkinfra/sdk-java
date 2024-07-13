@@ -3,7 +3,7 @@ package com.starkinfra;
 import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
 import java.util.Map;
 import java.util.List;
@@ -302,7 +302,7 @@ public final class IndividualIdentity extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IndividualIdentity> identities = new ArrayList<>();
         for (SubResource identity: page.entities) {
             identities.add((IndividualIdentity) identity);
@@ -673,7 +673,7 @@ public final class IndividualIdentity extends Resource {
          * @throws Exception error in the request
          */
         public static Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((Log) log);

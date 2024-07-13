@@ -1,6 +1,5 @@
 package com.starkinfra.utils;
 
-import com.starkinfra.User;
 import com.starkinfra.Settings;
 import com.starkbank.ellipticcurve.PrivateKey;
 
@@ -31,7 +30,7 @@ public final class Check {
         );
     }
 
-    static User user(User user) throws Error {
+    static com.starkcore.user.User user(com.starkcore.user.User user) throws Error {
         if (user == null) {
             user = Settings.user;
         }
