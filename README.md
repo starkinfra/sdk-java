@@ -67,6 +67,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
     - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
+  - [Request](#request):  Send a custom request to Stark Infra. This can be used to access features that haven't been mapped yet.
 - [Handling errors](#handling-errors)
 - [Help and Feedback](#help-and-feedback)
 
@@ -3449,6 +3450,125 @@ import com.starkinfra.*;
 Event.Attempt attempt = Event.Attempt.get("1616161616161616");
 
 System.out.println(attempt);
+```
+
+# Request
+
+This resource allows you to send HTTP requests to StarkInfra routes.
+
+## GET
+
+You can perform a GET request to any StarkInfra route.
+
+It's possible to get a single resource using its id in the path.
+
+```java
+import com.starkinfra.*;
+
+String path = "/pix-request" + "/" + "5699165527090460";
+
+String request = Request.get(path).content();
+
+System.out.println(request);
+```
+
+You can also get the specific resource log,
+
+```java
+import com.starkinfra.*;
+
+String path = "/pix-request" + "/log/" + "5699165527090460";
+
+String request = Request.get(path).content();
+
+System.out.println(request);
+```
+
+This same method will be used to list all created items for the requested resource.
+
+```java
+import com.starkinfra.*;
+
+String path = "/pix-request";
+Map<String, Object> query = new HashMap<>();
+query.put("limit", 10);
+String request = Request.get(path, query).content();
+
+System.out.println(request);
+```
+
+To list logs, you will use the same logic as for getting a single log.
+
+```java
+import com.starkinfra.*;
+
+String path = "/pix-request/log";
+Map<String, Object> query = new HashMap<>();
+query.put("limit", 10);
+String request = Request.get(path, query).content();
+
+System.out.println(request);
+```
+
+## POST
+
+You can perform a POST request to any StarkInfra route.
+
+This will create an object for each item sent in your request
+
+**Note**: It's not possible to create multiple resources simultaneously. You need to send separate requests if you want to create multiple resources, such as invoices and boletos.
+
+```java
+import com.starkinfra.*;
+
+String path = "/issuing-holder";
+Map<String, Object> holder = new HashMap<>();
+holder.put("name", "Jaime Lannister" + UUID.randomUUID().toString());
+holder.put("externalId", UUID.randomUUID().toString());
+holder.put("taxId", "20.018.183/0001-80");
+
+List<Object> holderList = new ArrayList<Object>();
+holderList.add(holder);
+
+Map<String, Object> data = new HashMap<>();
+data.put("holders", holderList);
+
+String request = Request.post(path, data).content();
+
+System.out.println(request);
+```
+
+## PATCH
+
+You can perform a PATCH request to any StarkInfra route.
+
+It's possible to update a single item of a StarkInfra resource.
+```java
+import com.starkinfra.*;
+
+String path = "issuing-holder" + "/" + "5155165527080960";
+
+HashMap<String, Object> data = new HashMap<>();;
+data.put("status", "blocked");
+
+request = Request.patch(path, data).content();
+
+System.out.println(request);
+```
+
+## DELETE
+
+You can perform a DELETE request to any StarkInfra route.
+
+It's possible to delete a single item of a StarkInfra resource.
+```java
+import com.starkinfra.*;
+
+String path = "/issuing-holder" + "/" + "5155165527080960";
+
+request = Request.delete(path).content();
+
+System.out.println(request);
 ```
 
 # Handling errors
