@@ -6,7 +6,7 @@ import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Parse;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkcore.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
 
 import java.util.Map;
@@ -498,7 +498,7 @@ public final class IssuingPurchase extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingPurchase.Page page(Map<String , Object> params, User user) throws Exception {
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IssuingPurchase> issuingPurchases = new ArrayList<>();
         for (SubResource issuingPurchase: page.entities) {
             issuingPurchases.add((IssuingPurchase) issuingPurchase);
@@ -841,7 +841,7 @@ public final class IssuingPurchase extends Resource {
          * @throws Exception error in the purchase
          */
         public static IssuingPurchase.Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<IssuingPurchase.Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((IssuingPurchase.Log) log);

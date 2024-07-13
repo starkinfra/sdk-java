@@ -1,7 +1,7 @@
 package com.starkinfra;
 
 import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.SubResource;
+import com.starkcore.utils.SubResource;
 
 import java.util.Map;
 import java.util.HashMap;
