@@ -138,6 +138,6 @@ public final class Response {
 
     private static String getUserAgent(String prefix) {
         prefix = prefix != null ? prefix += "-" : null;
-        return (userAgentOverride == null) ? prefix + "Java-" + System.getProperty("java.version") + "-SDK-Infra-0.11.3" : userAgentOverride;
+        return (userAgentOverride == null) ? prefix + "Java-" + System.getProperty("java.version") + "-SDK-Infra-0.12.0" : userAgentOverride;
     }
 }
