@@ -35,7 +35,7 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * query [Map<String, Object>]: Query parameters. Example: new HashMap<String, Object>() {{ put("limit", 1); put("status", "paid"); }}
+     * @param query map of parameters for the query ex: {{ put("limit", 1); put("status", "paid"); }}
      */
 
     public static Response get(String path, Map<String, Object> query) throws Exception {
@@ -49,7 +49,7 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * query [Map<String, Object>]: Query parameters. Example: new HashMap<String, Object>() {{ put("limit", 1); put("status", "paid"); }}
+     * @param query map of parameters for the query ex: {{ put("limit", 1); put("status", "paid"); }}
      * user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call.
      */
 
@@ -64,19 +64,18 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * body [Map<String, Object>]: Request parameters. Example:
+     * @param payload map of parameters for the payload ex:
      *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new ArrayList<Map<String, Object>>() {{
-     *           add(new HashMap<String, Object>() {{
-     *               put("amount", 100);
-     *               put("name", "Iron Bank S.A.");
-     *               put("taxId", "20.018.183/0001-80");
-     *           }});
-     *       }});
-     *   }});
+     *       put("requests", {
+     *           add(
+     *               {
+     *                   put("amount", 100);
+     *                   put("name", "Iron Bank S.A.");
+     *                   put("taxId", "20.018.183/0001-80");
+     *               }
+     *           );
+     *       });
      *   </pre>
-     * query [Map<String, Object>]: Query parameters. Example: new HashMap<String, Object>() {{ put("limit", 1); put("status", "paid"); }}
      */
 
     public static Response post(String path, Map<String, Object> payload) throws Exception {
@@ -90,19 +89,18 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * body [Map<String, Object>]: Request parameters. Example:
+     * @param payload map of parameters for the payload ex:
      *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new ArrayList<Map<String, Object>>() {{
-     *           add(new HashMap<String, Object>() {{
-     *               put("amount", 100);
-     *               put("name", "Iron Bank S.A.");
-     *               put("taxId", "20.018.183/0001-80");
-     *           }});
-     *       }});
-     *   }});
+     *       put("requests", {
+     *           add(
+     *               {
+     *                   put("amount", 100);
+     *                   put("name", "Iron Bank S.A.");
+     *                   put("taxId", "20.018.183/0001-80");
+     *               }
+     *           );
+     *       });
      *   </pre>
-     * query [Map<String, Object>]: Query parameters. Example: new HashMap<String, Object>() {{ put("limit", 1); put("status", "paid"); }}
      * user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call.
      */
 
@@ -118,15 +116,17 @@ public class Request {
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
      * <br>
-     * - body [Map<String, Object>]: Request parameters. Example:
+     * @param payload map of parameters for the payload ex:
      *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new HashMap<String, Object>() {{
-     *           put("amount", 100);
-     *           put("name", "Iron Bank S.A.");
-     *           put("taxId", "20.018.183/0001-80");
-     *       }});
-     *   }});
+     *       put("requests", {
+     *           add(
+     *               {
+     *                   put("amount", 100);
+     *                   put("name", "Iron Bank S.A.");
+     *                   put("taxId", "20.018.183/0001-80");
+     *               }
+     *           );
+     *       });
      *   </pre>
      */
 
@@ -142,15 +142,17 @@ public class Request {
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
      * <br>
-     * - body [Map<String, Object>]: Request parameters. Example:
+     * @param payload map of parameters for the payload ex:
      *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new HashMap<String, Object>() {{
-     *           put("amount", 100);
-     *           put("name", "Iron Bank S.A.");
-     *           put("taxId", "20.018.183/0001-80");
-     *       }});
-     *   }});
+     *       put("requests", {
+     *           add(
+     *               {
+     *                   put("amount", 100);
+     *                   put("name", "Iron Bank S.A.");
+     *                   put("taxId", "20.018.183/0001-80");
+     *               }
+     *           );
+     *       });
      *   </pre>
      * user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call.
      */
@@ -167,15 +169,17 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * body [Map<String, Object>]: Request parameters. Example:
+     * @param payload map of parameters for the payload ex:
      *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new HashMap<String, Object>() {{
-     *           put("amount", 100);
-     *           put("name", "Iron Bank S.A.");
-     *           put("taxId", "20.018.183/0001-80");
-     *       }});
-     *   }});
+     *       put("requests", {
+     *           add(
+     *               {
+     *                   put("amount", 100);
+     *                   put("name", "Iron Bank S.A.");
+     *                   put("taxId", "20.018.183/0001-80");
+     *               }
+     *           );
+     *       });
      *   </pre>
      * user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call.
      */
@@ -192,15 +196,17 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * body [Map<String, Object>]: Request parameters. Example:
+     * @param payload map of parameters for the payload ex:
      *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new HashMap<String, Object>() {{
-     *           put("amount", 100);
-     *           put("name", "Iron Bank S.A.");
-     *           put("taxId", "20.018.183/0001-80");
-     *       }});
-     *   }});
+     *       put("requests", {
+     *           add(
+     *               {
+     *                   put("amount", 100);
+     *                   put("name", "Iron Bank S.A.");
+     *                   put("taxId", "20.018.183/0001-80");
+     *               }
+     *           );
+     *       });
      *   </pre>
      */
 
@@ -215,16 +221,6 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * body [Map<String, Object>]: Request parameters. Example:
-     *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new HashMap<String, Object>() {{
-     *           put("amount", 100);
-     *           put("name", "Iron Bank S.A.");
-     *           put("taxId", "20.018.183/0001-80");
-     *       }});
-     *   }});
-     *   </pre>
      * user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call.
      */
 
@@ -239,16 +235,6 @@ public class Request {
      * <p>
      * Parameters:
      * path [String]: StarkInfra resource's route. Example: "/pix-request/"
-     * body [Map<String, Object>]: Request parameters. Example:
-     *   <pre>
-     *   new HashMap<String, Object>() {{
-     *       put("requests", new HashMap<String, Object>() {{
-     *           put("amount", 100);
-     *           put("name", "Iron Bank S.A.");
-     *           put("taxId", "20.018.183/0001-80");
-     *       }});
-     *   }});
-     *   </pre>
      * user [Organization/Project object]: Organization or Project object. Not necessary if StarkInfra.Settings.User was set before function call.
      */
 
