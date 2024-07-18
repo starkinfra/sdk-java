@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import com.starkinfra.User;
 import com.starkinfra.Settings;
 import com.starkbank.ellipticcurve.Ecdsa;
 import com.starkbank.ellipticcurve.PublicKey;
@@ -12,10 +11,19 @@ import com.starkbank.ellipticcurve.Signature;
 import com.starkinfra.error.InvalidSignatureError;
 import com.starkbank.ellipticcurve.utils.ByteString;
 
+import com.starkcore.utils.SubResource;
+import com.starkcore.user.User;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public final class Parse {
+
+    static String host = "infra";
+    static String sdkVersion = "0.11.4";
+    static String apiVersion = "v2";
+    static String language = "pt-BR";
+    static Integer timeout = 5;
 
     /**
      * Create single notification Event from a content string
@@ -53,35 +61,31 @@ public final class Parse {
      * @throws Exception error in the request
      */
     public static <T extends SubResource> T parseAndVerify(SubResource.ClassData resource, String content, String signature, User user) throws Exception {
-        String verifiedContent = verify(content, signature, user);
 
-        Gson gson = GsonEvent.getInstance();
-        JsonObject contentJson = gson.fromJson(verifiedContent, JsonObject.class);
-        JsonObject jsonObject = contentJson.getAsJsonObject();
-
-        if (Api.getLastName(resource).equals("event")){
-            jsonObject = contentJson.get(Api.getLastName(resource)).getAsJsonObject();
-        }
-
-        return gson.fromJson(jsonObject, (Type) resource.cls);
+        return com.starkcore.utils.Parse.parseAndVerify(
+                content,
+                signature,
+                sdkVersion,
+                apiVersion,
+                host,
+                resource,
+                user,
+                language,
+                timeout
+        );
     }
 
     public static <T extends Resource> String verify (String content, String signature, User user) throws Exception {
-        Signature signatureObject;
-        try {
-            signatureObject = Signature.fromBase64(new ByteString(signature.getBytes()));
-        } catch (Error | RuntimeException e) {
-            throw new InvalidSignatureError("The provided signature is not valid");
-        }
-
-        if (verifySignature(user, content, signatureObject, false)) {
-            return content;
-        }
-        if (verifySignature(user, content, signatureObject, true)) {
-            return content;
-        }
-
-        throw new InvalidSignatureError("The provided signature and content do not match the Stark Infra public key");
+        return com.starkcore.utils.Parse.verify(
+                content,
+                signature,
+                sdkVersion,
+                apiVersion,
+                host,
+                user,
+                language,
+                timeout
+        );
     }
 
     private static boolean verifySignature(User user, String content, Signature signature, boolean refresh) throws Exception {
@@ -94,19 +98,13 @@ public final class Parse {
     }
 
     private static PublicKey getStarkPublicKey(User user) throws Exception {
-        HashMap<String, Object> query = new HashMap<>();
-        query.put("limit", "1");
-        String content = Response.fetch(
-                "/public-key",
-                "GET",
-                null,
-                query,
-                user
-        ).content();
-        JsonObject contentJson = new Gson().fromJson(content, JsonObject.class);
-        JsonArray publicKeys = contentJson.get("publicKeys").getAsJsonArray();
-        return PublicKey.fromPem(
-                publicKeys.get(0).getAsJsonObject().get("content").getAsString()
+        return com.starkcore.utils.Parse.getPublicKey(
+                sdkVersion,
+                apiVersion,
+                host,
+                user,
+                language,
+                timeout
         );
     }
 }

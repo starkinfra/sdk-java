@@ -3,7 +3,7 @@ package com.starkinfra;
 import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.SubResource;
+import com.starkcore.utils.SubResource;
 
 import java.util.Map;
 import java.util.List;
@@ -382,7 +382,7 @@ public final class IssuingHolder extends Resource {
      */
     public static IssuingHolder.Page page(Map<String , Object> params, User user) throws Exception {
 
-        com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
         List<IssuingHolder> holders = new ArrayList<>();
         for (SubResource holder: page.entities) {
             holders.add((IssuingHolder) holder);
@@ -770,7 +770,7 @@ public final class IssuingHolder extends Resource {
          * @throws Exception error in the holder
          */
         public static IssuingHolder.Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkinfra.utils.Page page = Rest.getPage(data, params, user);
+            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
             List<IssuingHolder.Log> logs = new ArrayList<>();
             for (SubResource log: page.entities) {
                 logs.add((IssuingHolder.Log) log);
