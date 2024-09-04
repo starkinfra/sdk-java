@@ -2,11 +2,14 @@ package com.starkinfra;
 
 
 import com.google.gson.*;
+import com.starkbank.ellipticcurve.Signature;
+import com.starkbank.ellipticcurve.utils.ByteString;
 import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Parse;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
 import com.starkcore.utils.SubResource;
+import com.starkinfra.utils.GsonEvent;
 
 
 import java.util.Map;
@@ -493,13 +496,23 @@ public class Event extends Resource {
      * Parameters:
      * @param content [String]: response content from request received at user endpoint (not parsed)
      * @param signature [String]: base-64 digital signature received at response header "Digital-Signature"
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event object with updated attributes
      * @throws Exception error in the request
      */
-    public static<T extends Resource> T parse(String content, String signature) throws Exception {
-        return Parse.parseAndVerify(data, content, signature, Settings.user);
+
+    public static Event parse(String content, String signature, User user) throws Exception {
+
+        content = Parse.verify(content, signature, user);
+
+        Gson gson = GsonEvent.getInstance();
+
+        return gson.fromJson(
+                new Gson().fromJson(content, JsonObject.class).get("event").getAsJsonObject(),
+                Event.class
+        );
     }
 
     /**
@@ -512,14 +525,22 @@ public class Event extends Resource {
      * Parameters:
      * @param content [String]: response content from request received at user endpoint (not parsed)
      * @param signature [String]: base-64 digital signature received at response header "Digital-Signature"
-     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return Event object with updated attributes
      * @throws Exception error in the request
      */
-    public static Event parse(String content, String signature, User user) throws Exception {
-        return Parse.parseAndVerify(data ,content, signature, user);
+
+    public static Event parse(String content, String signature) throws Exception {
+
+        content = Parse.verify(content, signature, Settings.user);
+
+        Gson gson = GsonEvent.getInstance();
+
+        return gson.fromJson(
+                new Gson().fromJson(content, JsonObject.class).get("event").getAsJsonObject(),
+                Event.class
+        );
     }
 
     public final static class Attempt extends Resource {

@@ -8,10 +8,10 @@ import com.starkinfra.CreditNote;
 import com.starkinfra.CreditPreview;
 
 
-class GsonEvent {
-    private static Gson instance;
+public class GsonEvent {
+    public static Gson instance;
 
-    private GsonEvent() {}
+    public GsonEvent() {}
 
     public static synchronized Gson getInstance()
     {
