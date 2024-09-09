@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.13.1] - 2024-09-09
 ### Fixed
 - event parse method
 
