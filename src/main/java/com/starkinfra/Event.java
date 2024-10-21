@@ -4,18 +4,12 @@ package com.starkinfra;
 import com.google.gson.*;
 import com.starkbank.ellipticcurve.Signature;
 import com.starkbank.ellipticcurve.utils.ByteString;
-import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Parse;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.*;
 import com.starkcore.utils.SubResource;
-import com.starkinfra.utils.GsonEvent;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
-
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.*;
 import java.lang.reflect.Type;
 
 
@@ -238,7 +232,14 @@ public class Event extends Resource {
      * @throws Exception error in the request
      */
     public static Event get(String id, User user) throws Exception {
-        return Rest.getId(data, id, user);
+
+        String event = Rest.getRaw("/event/" + id, user).content();
+
+        Gson gson = GsonEvent.getInstance();
+        return gson.fromJson(
+                new Gson().fromJson(event, JsonObject.class).get("event").getAsJsonObject(),
+                Event.class
+        );
     }
 
     /**
@@ -312,7 +313,52 @@ public class Event extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<Event> query(Map<String, Object> params, User user) throws Exception {
-        return Rest.getStream(data, params, user);
+
+        return new Generator<Event>() {
+            public void run() throws Exception {
+                Map<String, Object> paramsCopy = new HashMap();
+                Iterator var2 = params.entrySet().iterator();
+
+                while(var2.hasNext()) {
+                    Map.Entry<String, Object> entry = (Map.Entry)var2.next();
+                    paramsCopy.put((String)entry.getKey(), entry.getValue());
+                }
+
+                Integer limit = (Integer)paramsCopy.get("limit");
+                String cursor = null;
+
+                do {
+                    paramsCopy.put("cursor", cursor);
+                    if (limit != null) {
+                        paramsCopy.put("limit", limit > 100 ? "100" : limit.toString());
+                        limit = limit - 100;
+                    }
+
+                    String content = Rest.getRaw("/event", paramsCopy, user).content();
+                    Gson gson = GsonEvent.getInstance();
+                    JsonObject contentJson = gson.fromJson(content, JsonObject.class).getAsJsonObject();
+                    JsonElement cursorJson = contentJson.get("cursor");
+                    cursor = cursorJson != null ? (cursorJson.isJsonNull() ? "" : cursorJson.getAsString()) : null;
+                    JsonArray jsonArray = contentJson.get("events").getAsJsonArray();
+                    Iterator var9 = jsonArray.iterator();
+
+                    while(var9.hasNext()) {
+                        JsonElement resourceElement = (JsonElement)var9.next();
+                        JsonObject jsonObject = resourceElement.getAsJsonObject();
+                        Event element = gson.fromJson(
+                                jsonObject,
+                                Event.class
+                        );
+                        if (element == null) {
+                            break;
+                        }
+
+                        this.yield(element);
+                    }
+                } while(cursor != null && !cursor.isEmpty() && (limit == null || limit > 0));
+
+            }
+        };
     }
 
     public final static class Page {
@@ -406,12 +452,18 @@ public class Event extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
+        String page = Rest.getRaw("/event", params, user).content();
+        Gson gson = GsonEvent.getInstance();
+        JsonArray pages = gson.fromJson(page, JsonObject.class).get("events").getAsJsonArray();
+
         List<Event> events = new ArrayList<>();
-        for (SubResource event: page.entities) {
-            events.add((Event) event);
+        for (JsonElement event: pages) {
+            events.add(gson.fromJson(
+                    event.getAsJsonObject(),
+                    Event.class
+            ));
         }
-        return new Page(events, page.cursor);
+        return new Page(events, gson.fromJson(page, JsonObject.class).get("cursor").getAsString());
     }
 
     /**
@@ -444,7 +496,13 @@ public class Event extends Resource {
      * @throws Exception error in the request
      */
     public static Event delete(String id, User user) throws Exception {
-        return Rest.delete(data, id, user);
+        String event = Rest.deleteRaw("/event/" + id, user).content();
+
+        Gson gson = GsonEvent.getInstance();
+        return gson.fromJson(
+                new Gson().fromJson(event, JsonObject.class).get("event").getAsJsonObject(),
+                Event.class
+        );
     }
 
     /**
@@ -483,7 +541,14 @@ public class Event extends Resource {
      * @throws Exception error in the request
      */
     public static Event update(String id, Map<String, Object> patchData, User user) throws Exception {
-        return Rest.patch(data, id, patchData, user);
+        String event = Rest.patchRaw("/event/" + id, patchData, user).content();
+
+        Gson gson = GsonEvent.getInstance();
+
+        return gson.fromJson(
+                new Gson().fromJson(event, JsonObject.class).get("event").getAsJsonObject(),
+                Event.class
+        );
     }
 
     /**
