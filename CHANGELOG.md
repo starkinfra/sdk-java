@@ -13,7 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
-### Fixed - 2024-10-21
+
+## [0.13.2] - 2024-10-22
+### Fixed
 - Event log attribute 
 
 ## [0.13.1] - 2024-09-09
