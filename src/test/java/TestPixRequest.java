@@ -1,17 +1,18 @@
+import com.starkcore.error.InvalidSignatureError;
 import org.junit.Test;
-import org.junit.Assert;
 
 import com.starkinfra.Settings;
 import com.starkinfra.PixRequest;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.EndToEndId;
-import com.starkinfra.error.InvalidSignatureError;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static org.junit.Assert.*;
 
 
 public class TestPixRequest {
@@ -25,9 +26,9 @@ public class TestPixRequest {
         requests = PixRequest.create(requests);
 
         for (PixRequest request : requests) {
-            Assert.assertNotNull(request.id);
+            assertNotNull(request.id);
             String id = PixRequest.get(request.id).id;
-            Assert.assertEquals(id, request.id);
+            assertEquals(id, request.id);
         }
     }
 
@@ -65,11 +66,11 @@ public class TestPixRequest {
         for (PixRequest.Log log : logs) {
             i += 1;
             log = PixRequest.Log.get(log.id);
-            Assert.assertNotNull(log.id);
-            Assert.assertNotNull(log.request.id);
+            assertNotNull(log.id);
+            assertNotNull(log.request.id);
             System.out.println(log);
         }
-        Assert.assertTrue(i > 0);
+        assertTrue(i > 0);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class TestPixRequest {
 
         ArrayList<String> requestsIdsExpected = new ArrayList<>();
         for (PixRequest request : requests) {
-            Assert.assertNotNull(request.id);
+            assertNotNull(request.id);
             requestsIdsExpected.add(request.id);
         }
 
@@ -91,13 +92,13 @@ public class TestPixRequest {
 
         ArrayList<String> requestsIdsResult = new ArrayList<>();
         for (PixRequest request : requestsResult){
-            Assert.assertNotNull(request.id);
+            assertNotNull(request.id);
             requestsIdsResult.add(request.id);
         }
 
         Collections.sort(requestsIdsExpected);
         Collections.sort(requestsIdsResult);
-        Assert.assertEquals(requestsIdsExpected, requestsIdsResult);
+        assertEquals(requestsIdsExpected, requestsIdsResult);
     }
 
     @Test
@@ -174,7 +175,7 @@ public class TestPixRequest {
         data.put("authorization", datas);
 
         String response = PixRequest.response(data);
-        Assert.assertNotNull(response);
+        assertNotNull(response);
 
         System.out.println(response);
     }
@@ -190,17 +191,28 @@ public class TestPixRequest {
     }
 
     @Test
+    public void testPixRequestParseWithUser() throws Exception{
+        String content = "{\"receiverBranchCode\": \"0001\", \"cashierBankCode\": \"\", \"senderTaxId\": \"20.018.183/0001-80\", \"senderName\": \"Stark Bank S.A. - Instituicao de Pagamento\", \"id\": \"4508348862955520\", \"senderAccountType\": \"payment\", \"fee\": 0, \"receiverName\": \"Cora\", \"cashierType\": \"\", \"externalId\": \"\", \"method\": \"manual\", \"status\": \"processing\", \"updated\": \"2022-02-16T17:23:53.980250+00:00\", \"description\": \"\", \"tags\": [], \"receiverKeyId\": \"\", \"cashAmount\": 0, \"senderBankCode\": \"20018183\", \"senderBranchCode\": \"0001\", \"bankCode\": \"34052649\", \"senderAccountNumber\": \"5647143184367616\", \"receiverAccountNumber\": \"5692908409716736\", \"initiatorTaxId\": \"\", \"receiverTaxId\": \"34.052.649/0001-78\", \"created\": \"2022-02-16T17:23:53.980238+00:00\", \"flow\": \"in\", \"endToEndId\": \"E20018183202202161723Y4cqxlfLFcm\", \"amount\": 1, \"receiverAccountType\": \"checking\", \"reconciliationId\": \"\", \"receiverBankCode\": \"34052649\"}";
+        String validSignature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
+
+        PixRequest request = PixRequest.parse(content, validSignature,utils.User.defaultProject());
+        assertTrue(request instanceof PixRequest);
+
+        System.out.println(request);
+    }
+
+    @Test
     public void testPixRequestParseInvalidSignature() throws Exception{
         String content = "{\"receiverBranchCode\": \"0001\", \"cashierBankCode\": \"\", \"senderTaxId\": \"20.018.183/0001-80\", \"senderName\": \"Stark Bank S.A. - Instituicao de Pagamento\", \"id\": \"4508348862955520\", \"senderAccountType\": \"payment\", \"fee\": 0, \"receiverName\": \"Cora\", \"cashierType\": \"\", \"externalId\": \"\", \"method\": \"manual\", \"status\": \"processing\", \"updated\": \"2022-02-16T17:23:53.980250+00:00\", \"description\": \"\", \"tags\": [], \"receiverKeyId\": \"\", \"cashAmount\": 0, \"senderBankCode\": \"20018183\", \"senderBranchCode\": \"0001\", \"bankCode\": \"34052649\", \"senderAccountNumber\": \"5647143184367616\", \"receiverAccountNumber\": \"5692908409716736\", \"initiatorTaxId\": \"\", \"receiverTaxId\": \"34.052.649/0001-78\", \"created\": \"2022-02-16T17:23:53.980238+00:00\", \"flow\": \"in\", \"endToEndId\": \"E20018183202202161723Y4cqxlfLFcm\", \"amount\": 1, \"receiverAccountType\": \"checking\", \"reconciliationId\": \"\", \"receiverBankCode\": \"34052649\"}";
         String invalidSignature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
         Settings.user = utils.User.defaultProject();
 
-        try{
+        InvalidSignatureError invalidSignatureError = assertThrows(InvalidSignatureError.class, () -> {
             PixRequest.parse(content, invalidSignature);
-            throw new Error("Signature incorrectly validated");
-        } catch (InvalidSignatureError e){
-            System.out.println("Signature correctly rejected");
-        }
+        });
+
+        assertEquals("The provided signature and content do not match the Stark Infra public key", invalidSignatureError.getMessage());
+
     }
 
     @Test
@@ -209,18 +221,17 @@ public class TestPixRequest {
         String content = "{\"receiverBranchCode\": \"0001\", \"cashierBankCode\": \"\", \"senderTaxId\": \"20.018.183/0001-80\", \"senderName\": \"Stark Bank S.A. - Instituicao de Pagamento\", \"id\": \"4508348862955520\", \"senderAccountType\": \"payment\", \"fee\": 0, \"receiverName\": \"Cora\", \"cashierType\": \"\", \"externalId\": \"\", \"method\": \"manual\", \"status\": \"processing\", \"updated\": \"2022-02-16T17:23:53.980250+00:00\", \"description\": \"\", \"tags\": [], \"receiverKeyId\": \"\", \"cashAmount\": 0, \"senderBankCode\": \"20018183\", \"senderBranchCode\": \"0001\", \"bankCode\": \"34052649\", \"senderAccountNumber\": \"5647143184367616\", \"receiverAccountNumber\": \"5692908409716736\", \"initiatorTaxId\": \"\", \"receiverTaxId\": \"34.052.649/0001-78\", \"created\": \"2022-02-16T17:23:53.980238+00:00\", \"flow\": \"in\", \"endToEndId\": \"E20018183202202161723Y4cqxlfLFcm\", \"amount\": 1, \"receiverAccountType\": \"checking\", \"reconciliationId\": \"\", \"receiverBankCode\": \"34052649\"}";
         Settings.user = utils.User.defaultProject();
 
-        try{
+        InvalidSignatureError invalidSignatureError = assertThrows(InvalidSignatureError.class, () -> {
             PixRequest.parse(content, malformedSignature);
-            throw new Error("Signature incorrectly validated");
-        } catch (InvalidSignatureError e){
-            System.out.println("Signature correctly rejected");
-        }
+        });
+
+        assertEquals("The provided signature is not valid", invalidSignatureError.getMessage());
     }
 
     static PixRequest example() throws Exception{
         String bankCode = utils.User.bankCode();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("amount", 1000);
+        data.put("amount", 1000L);
         data.put("externalId", "java-" + UUID.randomUUID().toString());
         data.put("senderAccountNumber", "76543-8");
         data.put("senderBranchCode", "2201");

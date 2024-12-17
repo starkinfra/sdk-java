@@ -225,7 +225,7 @@ public final class PixRequest extends Resource {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.amount = ((Number) dataCopy.remove("amount")).longValue();
+        this.amount = ((Long) dataCopy.remove("amount")).longValue();
         this.externalId = (String) dataCopy.remove("externalId");
         this.senderName = (String) dataCopy.remove("senderName");
         this.senderTaxId = (String) dataCopy.remove("senderTaxId");
@@ -569,7 +569,7 @@ public final class PixRequest extends Resource {
      * @return Parsed PixRequest object
      * @throws Exception error in the request
      */
-    public static Event parse(String content, String signature, User user) throws Exception {
+    public static PixRequest parse(String content, String signature, User user) throws Exception {
         return Parse.parseAndVerify(data ,content, signature, user);
     }
 
