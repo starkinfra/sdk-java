@@ -225,7 +225,7 @@ public final class PixRequest extends Resource {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.amount = ((Long) dataCopy.remove("amount")).longValue();
+        this.amount = ((Number) dataCopy.remove("amount")).longValue();
         this.externalId = (String) dataCopy.remove("externalId");
         this.senderName = (String) dataCopy.remove("senderName");
         this.senderTaxId = (String) dataCopy.remove("senderTaxId");

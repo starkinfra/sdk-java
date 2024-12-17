@@ -238,7 +238,7 @@ public class TestPixRequest {
         data.put("senderAccountType", "checking");
         data.put("senderName", "checking");
         data.put("senderTaxId", "594.739.480-42");
-        data.put("receiverBankCode", "341");
+        data.put("receiverBankCode", "20018183");
         data.put("receiverAccountNumber", "00000-0");
         data.put("receiverBranchCode", "0001");
         data.put("receiverAccountType", "checking");
