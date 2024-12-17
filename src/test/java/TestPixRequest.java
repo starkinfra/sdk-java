@@ -1,10 +1,10 @@
-import com.starkcore.error.InvalidSignatureError;
 import org.junit.Test;
 
 import com.starkinfra.Settings;
 import com.starkinfra.PixRequest;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.EndToEndId;
+import com.starkcore.error.InvalidSignatureError;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +12,10 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestPixRequest {
@@ -195,7 +198,7 @@ public class TestPixRequest {
         String content = "{\"receiverBranchCode\": \"0001\", \"cashierBankCode\": \"\", \"senderTaxId\": \"20.018.183/0001-80\", \"senderName\": \"Stark Bank S.A. - Instituicao de Pagamento\", \"id\": \"4508348862955520\", \"senderAccountType\": \"payment\", \"fee\": 0, \"receiverName\": \"Cora\", \"cashierType\": \"\", \"externalId\": \"\", \"method\": \"manual\", \"status\": \"processing\", \"updated\": \"2022-02-16T17:23:53.980250+00:00\", \"description\": \"\", \"tags\": [], \"receiverKeyId\": \"\", \"cashAmount\": 0, \"senderBankCode\": \"20018183\", \"senderBranchCode\": \"0001\", \"bankCode\": \"34052649\", \"senderAccountNumber\": \"5647143184367616\", \"receiverAccountNumber\": \"5692908409716736\", \"initiatorTaxId\": \"\", \"receiverTaxId\": \"34.052.649/0001-78\", \"created\": \"2022-02-16T17:23:53.980238+00:00\", \"flow\": \"in\", \"endToEndId\": \"E20018183202202161723Y4cqxlfLFcm\", \"amount\": 1, \"receiverAccountType\": \"checking\", \"reconciliationId\": \"\", \"receiverBankCode\": \"34052649\"}";
         String validSignature = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
 
-        PixRequest request = PixRequest.parse(content, validSignature,utils.User.defaultProject());
+        PixRequest request = PixRequest.parse(content, validSignature, utils.User.defaultProject());
         assertTrue(request instanceof PixRequest);
 
         System.out.println(request);
