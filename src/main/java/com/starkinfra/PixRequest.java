@@ -569,7 +569,7 @@ public final class PixRequest extends Resource {
      * @return Parsed PixRequest object
      * @throws Exception error in the request
      */
-    public static Event parse(String content, String signature, User user) throws Exception {
+    public static PixRequest parse(String content, String signature, User user) throws Exception {
         return Parse.parseAndVerify(data ,content, signature, user);
     }
 
