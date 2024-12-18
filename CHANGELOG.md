@@ -13,8 +13,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
-### Fixed - 2024-10-21
-- Event log attribute 
+### Fixed
+- Event log attribute
+- The fix involves the return type of PixRequest.parse, as it should return a PixRequest instead of an Event.
+
 
 ## [0.13.1] - 2024-09-09
 ### Fixed
