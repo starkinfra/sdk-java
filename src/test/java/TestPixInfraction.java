@@ -238,6 +238,8 @@ public class TestPixInfraction {
         data.put("referenceId", EndToEndId.create(bankCode));
         data.put("type", "reversal");
         data.put("method", "scam");
+        data.put("operatorEmail", "ned.stark@company.com");
+        data.put("operatorPhone", "+5511999999999");
         return new PixInfraction(data);
     }
 }

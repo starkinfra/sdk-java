@@ -2083,6 +2083,8 @@ HashMap<String, Object> data = new HashMap<>();
 data.put("referenceId", "E20018183202201201450u34sDGd19lz");
 data.put("type", "reversal");
 data.put("method", "scam");
+data.put("operatorEmail", "fraud@company.com");
+data.put("operatorPhone", "+5511989898989");
 infractions.add(new PixInfraction(data));
 
 infractions = PixInfraction.create(infractions);
@@ -2284,17 +2286,17 @@ import java.util.HashMap;
 import java.util.List;
 
 
-List infractions = new ArrayList<>();
+List chargebacks = new ArrayList<>();
 HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 100);
 data.put("referenceId", "E20018183202201201450u34sDGd19lz");
-data.put("type", "fraud");
-data.put("description", "Client payed for an item and never received it.");
-infractions.add(new PixInfraction(data));
+data.put("reason", "fraud");
+chargebacks.add(new PixChargeback(data));
 
-infractions = PixInfraction.create(infractions);
+chargebacks = PixChargeback.create(infractions);
 
-for (PixInfraction infraction : infractions){
-    System.out.println(infraction);
+for (PixChargeback chargeback : chargebacks){
+    System.out.println(chargeback);
 }
 ```
 
