@@ -29,6 +29,8 @@ public final class PixInfraction extends Resource {
      * method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other"
      * description [string]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
      * fraudType [string]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
+     * operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
      * fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"
@@ -50,6 +52,8 @@ public final class PixInfraction extends Resource {
     public String method;
     public String description;
     public String fraudType;
+    public String operatorEmail;
+    public String operatorPhone;
     public String[] tags;
     public String fraudId;
     public String analysis;
@@ -74,7 +78,9 @@ public final class PixInfraction extends Resource {
      * @param type [string]: type of Pix Infraction. Options: "reversal" or "reversalChargeback"
      * @param method [string]: method of Pix Infraction. Option: "scam", "unauthorized", "coercion", "invasion" or "other"
      * @param description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
-     * @param fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
+     * @param fraudType [string, default null]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * @param operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
+     * @param operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * @param tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
      * @param id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
      * @param fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"
@@ -91,7 +97,7 @@ public final class PixInfraction extends Resource {
     public PixInfraction(String referenceId, String type, String method, String description, String fraudType,
                          String[] tags, String id, String fraudId, String analysis, String debitedBankCode, String flow,
                          String creditedBankCode, String reportedBy, String result, String status, String created,
-                         String updated
+                         String updated, String operatorPhone, String operatorEmail
     ) {
         super(id);
         this.referenceId = referenceId;
@@ -99,6 +105,8 @@ public final class PixInfraction extends Resource {
         this.method = method;
         this.description = description;
         this.fraudType = fraudType;
+        this.operatorEmail = operatorEmail;
+        this.operatorPhone = operatorPhone;
         this.tags = tags;
         this.fraudId = fraudId;
         this.analysis = analysis;
@@ -127,10 +135,12 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters (conditionally required):
      * description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
-     * fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
+     * fraudType [string, default null]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
      * <p>
      * Parameters (optional):
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
+     * operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
+     * operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
@@ -155,6 +165,8 @@ public final class PixInfraction extends Resource {
         this.method = (String) dataCopy.remove("method");
         this.description = (String) dataCopy.remove("description");
         this.fraudType = (String) dataCopy.remove("fraudType");
+        this.operatorEmail = (String) dataCopy.remove("operatorEmail");
+        this.operatorPhone = (String) dataCopy.remove("operatorPhone");
         this.tags = (String[]) dataCopy.remove("tags");
         this.fraudId = null;
         this.analysis = null;
