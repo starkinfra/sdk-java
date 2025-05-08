@@ -1,18 +1,19 @@
 package com.starkinfra;
 
-import com.google.gson.*;
-import com.starkinfra.utils.Rest;
-import com.starkinfra.utils.Resource;
-import com.starkinfra.utils.Generator;
-import com.starkcore.utils.SubResource;
-import com.starkinfra.error.ErrorElement;
-
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.lang.reflect.Type;
+
+import com.google.gson.*;
+import com.starkcore.utils.SubResource;
+import com.starkinfra.utils.Api;
+import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Resource;
+import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.ResponseHandler;
 
 
 public final class CreditNote extends Resource {
@@ -348,18 +349,21 @@ public final class CreditNote extends Resource {
     @SuppressWarnings("unchecked")
     public static List<CreditNote> create(List<?> notes, User user) throws Exception {
         List<CreditNote> noteList = new ArrayList<>();
-        for (Object note : notes){
-            if (note instanceof Map){
+        for (Object note : notes) {
+            if (note instanceof Map) {
                 noteList.add(new CreditNote((Map<String, Object>) note));
-                continue;
-            }
-            if (note instanceof CreditNote){
+            } else if (note instanceof CreditNote) {
                 noteList.add((CreditNote) note);
-                continue;
+            } else {
+                throw new Exception("Unknown type \"" + note.getClass() + "\", use CreditNote or HashMap");
             }
-            throw new Exception("Unknown type \"" + note.getClass() + "\", use CreditNote or HashMap");
         }
-        return Rest.post(data, noteList, user);
+
+        Map<String, Object> payload = new HashMap<>();
+        payload.put(Api.getLastNamePlural(data), new Gson().toJsonTree(noteList).getAsJsonArray());
+
+        String content = Rest.postRaw("/credit-note", payload, user).content();
+        return ResponseHandler.post(content, CreditNote.class, "notes");
     }
 
     /**
@@ -392,7 +396,8 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static CreditNote get(String id, User user) throws Exception {
-        return Rest.getId(data, id, user);
+        String content = Rest.getRaw("/credit-note/" + id, null, user).content();
+        return ResponseHandler.get(content, CreditNote.class, "note");
     }
 
     /**
@@ -408,7 +413,7 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static CreditNote get(String id) throws Exception {
-        return CreditNote.get(id, null);
+        return get(id, null);
     }
 
     /**
@@ -432,7 +437,9 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<CreditNote> query(Map<String, Object> params, User user) throws Exception {
-        return Rest.getStream(data, params, user);
+        Map<String, Object> paramsCopy = new HashMap<>(params);
+        String content = Rest.getRaw("/credit-note", paramsCopy, user).content();
+        return ResponseHandler.query(content, CreditNote.class, "notes", paramsCopy);
     }
 
     /**
@@ -455,7 +462,7 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<CreditNote> query(Map<String, Object> params) throws Exception {
-        return Rest.getStream(data, params, null);
+        return query(params, null);
     }
 
     /**
@@ -472,7 +479,7 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<CreditNote> query(User user) throws Exception {
-        return Rest.getStream(data, new HashMap<>(), user);
+        return query(null, user);
     }
 
     /**
@@ -486,12 +493,13 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<CreditNote> query() throws Exception {
-        return Rest.getStream(data, new HashMap<>(), null);
+        return query(new HashMap<>(), null);
     }
 
     public final static class Page {
         public List<CreditNote> notes;
         public String cursor;
+
         public Page(List<CreditNote> notes, String cursor) {
             this.notes = notes;
             this.cursor = cursor;
@@ -521,12 +529,13 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static Page page(Map<String, Object> params, User user) throws Exception {
-        com.starkcore.utils.Page page = Rest.getPage(data, params, user);
-        List<CreditNote> notes = new ArrayList<>();
-        for (SubResource note: page.entities) {
-            notes.add((CreditNote) note);
-        }
-        return new Page(notes, page.cursor);
+        String data = Rest.getRaw("/credit-note", params, user).content();
+        Map<String, Object> genericPage = ResponseHandler.page(data, CreditNote.class, "notes", params);
+
+        List<CreditNote> items = (List<CreditNote>) genericPage.get("items");
+        String cursor = (String) genericPage.get("cursor");
+        
+        return new CreditNote.Page(items, cursor);
     }
 
     /**
@@ -537,7 +546,7 @@ public final class CreditNote extends Resource {
      * <p>
      * Parameters:
      * @param params map of parameters for the query
-     * cursor [string, default null]: cursor returned on the previous page function call
+     * cursor [string, default null]: cursor returned on` the previous page function call
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
@@ -565,9 +574,9 @@ public final class CreditNote extends Resource {
      * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkinfra.User.defaultUser was set before function call
      * <p>
      * Return:
-     * @return CreditNote.Page object:
-     * CreditNote.Page.notes: list of CreditNote objects with updated attributes
-     * CreditNote.Page.cursor: cursor to retrieve the next page of CreditNote objects
+     * @return CreditNote object:
+     * CreditNote.notes: list of CreditNote objects with updated attributes
+     * CreditNote.cursor: cursor to retrieve the next page of CreditNote objects
      * @throws Exception error in the request
      */
     public static Page page(User user) throws Exception {
@@ -581,9 +590,9 @@ public final class CreditNote extends Resource {
      * Use this function instead of query if you want to manually page your requests.
      * <p>
      * Return:
-     * @return CreditNote.Page object:
-     * CreditNote.Page.notes: list of CreditNote objects with updated attributes
-     * CreditNote.Page.cursor: cursor to retrieve the next page of CreditNote objects
+     * @return CreditNote object:
+     * CreditNote.notes: list of CreditNote objects with updated attributes
+     * CreditNote.cursor: cursor to retrieve the next page of CreditNote objects
      * @throws Exception error in the request
      */
     public static Page page() throws Exception {
@@ -604,7 +613,8 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static CreditNote cancel(String id, User user) throws Exception {
-        return Rest.delete(data, id, user);
+        String data = Rest.deleteRaw("/credit-note/" + id, user).content();
+        return ResponseHandler.delete(data, CreditNote.class, "note");
     }
 
     /**
@@ -620,7 +630,7 @@ public final class CreditNote extends Resource {
      * @throws Exception error in the request
      */
     public static CreditNote cancel(String id) throws Exception {
-        return CreditNote.cancel(id, null);
+        return cancel(id, null);
     }
 
     public final static class Log extends Resource {
@@ -666,7 +676,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Log get(String id) throws Exception {
-            return Log.get(id, null);
+            return get(id, null);
         }
 
         /**
@@ -683,7 +693,8 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Log get(String id, User user) throws Exception {
-            return Rest.getId(data, id, user);
+            String content = Rest.getRaw("/credit-note/log/" + id, null, user).content();
+            return ResponseHandler.get(content, Log.class, "log");
         }
 
         /**
@@ -705,7 +716,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params) throws Exception {
-            return Log.query(params, null);
+            return query(params, null);
         }
 
         /**
@@ -722,7 +733,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Generator<Log> query(User user) throws Exception {
-            return Log.query(new HashMap<>(), user);
+            return query(new HashMap<>(), user);
         }
 
         /**
@@ -736,7 +747,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Generator<Log> query() throws Exception {
-            return Log.query(new HashMap<>(), null);
+            return query(new HashMap<>(), null);
         }
 
         /**
@@ -759,7 +770,10 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Generator<Log> query(Map<String, Object> params, User user) throws Exception {
-            return Rest.getStream(data, params, user);
+            Map<String, Object> paramsCopy = new HashMap<>(params);
+            String data = Rest.getRaw("/credit-note/log", paramsCopy, user).content();
+
+            return ResponseHandler.query(data, Log.class, "logs", paramsCopy);
         }
 
         public final static class Page {
@@ -794,7 +808,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Log.Page page(Map<String, Object> params) throws Exception {
-            return Log.page(params, null);
+            return page(params, null);
         }
 
         /**
@@ -813,7 +827,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Log.Page page(User user) throws Exception {
-            return Log.page(new HashMap<>(), user);
+            return page(new HashMap<>(), user);
         }
 
         /**
@@ -829,7 +843,7 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Log.Page page() throws Exception {
-            return Log.page(new HashMap<>(), null);
+            return page(new HashMap<>(), null);
         }
 
         /**
@@ -855,12 +869,13 @@ public final class CreditNote extends Resource {
          * @throws Exception error in the request
          */
         public static Log.Page page(Map<String, Object> params, User user) throws Exception {
-            com.starkcore.utils.Page page = Rest.getPage(data, params, user);
-            List<Log> logs = new ArrayList<>();
-            for (SubResource log: page.entities) {
-                logs.add((Log) log);
-            }
-            return new Log.Page(logs, page.cursor);
+            String data = Rest.getRaw("/credit-note/log", params, user).content();
+            Map<String, Object> genericPage = ResponseHandler.page(data, Log.class, "logs", params);
+
+            List<Log> items = (List<Log>) genericPage.get("items");
+            String cursor = (String) genericPage.get("cursor");
+
+            return new Log.Page(items, cursor);
         }
     }
 
