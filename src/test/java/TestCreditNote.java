@@ -1,3 +1,9 @@
+import java.util.UUID;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.time.LocalDate;
+
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -6,13 +12,6 @@ import com.starkinfra.CreditNote;
 import com.starkinfra.CreditSigner;
 import com.starkinfra.utils.Generator;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.time.LocalDate;
-
-
 public class TestCreditNote {
 
     @Test
@@ -20,10 +19,8 @@ public class TestCreditNote {
         Settings.user = utils.User.defaultProject();
 
         List<CreditNote> notes = CreditNote.create(exampleWithObject());
-        System.out.println(notes);
         for (CreditNote note : notes) {
             Assert.assertNotNull(note.id);
-            System.out.println(note);
         }
     }
 
@@ -42,7 +39,6 @@ public class TestCreditNote {
             i += 1;
             note = CreditNote.get(note.id);
             Assert.assertNotNull(note.id);
-            System.out.println(note);
         }
         Assert.assertEquals(3, i);
     }
@@ -59,7 +55,6 @@ public class TestCreditNote {
         for (int i = 0; i < 2; i++) {
             CreditNote.Page page = CreditNote.page(params);
             for (CreditNote note : page.notes) {
-                System.out.println(note);
                 if (ids.contains(note.id)) {
                     throw new Exception("repeated id");
                 }
@@ -77,18 +72,12 @@ public class TestCreditNote {
     }
 
     @Test
-    public void testQueryAndCancel() throws Exception {
+    public void testCreateAndCancel() throws Exception {
         Settings.user = utils.User.defaultProject();
-
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("limit", 2);
-        params.put("status", "created");
-        Generator<CreditNote> notes = CreditNote.query(params);
-        for (CreditNote note : notes) {
-            note = CreditNote.cancel(note.id);
-            Assert.assertEquals(note.status, "canceled");
-            System.out.println(note);
-        }
+        
+        List<CreditNote> notes = CreditNote.create(exampleWithObject());
+        CreditNote canceledNote = CreditNote.cancel(notes.get(0).id);
+        Assert.assertEquals(canceledNote.status, "canceled");
     }
 
     @Test
@@ -103,12 +92,10 @@ public class TestCreditNote {
 
         int i = 0;
         for (CreditNote.Log log : logs) {
-            System.out.println(log);
             i += 1;
             log = CreditNote.Log.get(log.id);
             Assert.assertNotNull(log.id);
             Assert.assertNotNull(log.note.id);
-            System.out.println(log);
         }
         Assert.assertEquals(3, i);
     }
@@ -127,7 +114,6 @@ public class TestCreditNote {
         for (int i = 0; i < 2; i++) {
             CreditNote.Log.Page page = CreditNote.Log.page(params);
             for (CreditNote.Log log : page.logs) {
-                System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
                 }
@@ -148,8 +134,8 @@ public class TestCreditNote {
 
         List<CreditNote.Invoice> invoices = new ArrayList<>();
         HashMap<String, Object> invoice = new HashMap<String, Object>() {{
-            put("amount", 50000);
-            put("due", getDateString(60));
+            put("amount", 100000);
+            put("due", "2025-06-16");
         }};
         invoices.add(new CreditNote.Invoice(invoice));
 
@@ -161,8 +147,8 @@ public class TestCreditNote {
         descriptions.add(new CreditNote.Invoice.Description(description));
 
         invoice = new HashMap<String, Object>() {{
-            put("amount", 51000);
-            put("due", getDateString(30));
+            put("amount", 100000);
+            put("due", "2025-06-16");
             put("descriptions", descriptions);
         }};
         invoices.add(new CreditNote.Invoice(invoice));
@@ -184,13 +170,15 @@ public class TestCreditNote {
         }};
         signers.add(new CreditSigner(signer));
 
+        long nominalAmount = 200000;
+
         List<CreditNote> notes = new ArrayList<>();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("templateId", "5707012469948416");
+        data.put("templateId", "5706627130851328");
         data.put("name", "Jamie Lannister");
         data.put("taxId", "20.018.183/0001-80");
-        data.put("nominalAmount", 100000);
-        data.put("scheduled", getDateString(3));
+        data.put("nominalAmount", nominalAmount);
+        data.put("scheduled", "2025-06-07");
         data.put("invoices", invoices);
         data.put("payment", transfer );
         data.put("paymentType", "transfer" );

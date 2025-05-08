@@ -1,7 +1,7 @@
 package com.starkinfra.utils;
 
 
-final class Api {
+public class Api {
     static String endpoint(Resource.ClassData resource){
         return "/" + Case.camelToKebab(resource.name)
                          .replace("-log", "/log")
@@ -12,7 +12,7 @@ final class Api {
         return endpoint(resource) + "/" + id;
     }
 
-    static String getLastNamePlural(Resource.ClassData resource){
+    public static String getLastNamePlural(Resource.ClassData resource){
         String lastName = getLastName(resource);
         if (lastName.endsWith("s"))
             return lastName;
