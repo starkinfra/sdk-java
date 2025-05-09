@@ -6,11 +6,11 @@ import com.starkinfra.utils.Generator;
 import com.starkcore.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
 
-
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
+
 
 
 public final class PixKey extends Resource {
@@ -253,7 +253,7 @@ public final class PixKey extends Resource {
      * @throws Exception error in the request
      */
     public static PixKey cancel(String id) throws Exception {
-        return PixKey.cancel(id, null);
+        return PixKey.cancel(id, null, null);
     }
 
     /**
@@ -263,14 +263,32 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
+     * @param params Parameters to cancel the PixKey
+     * <p>
+     * Return:
+     * @return canceled PixKey object
+     * @throws Exception error in the request
+     */
+    public static PixKey cancel(String id, HashMap<String, Object> params) throws Exception {
+        return PixKey.cancel(id, params, null);
+    }
+
+    /**
+     * Cancel a PixKey entity
+     * <p>
+     * Cancel a PixKey entity previously created in the Stark Infra API
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id.  ex: "+5511989898989"
+     * @param params Parameters to cancel the PixKey
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return canceled PixKey object
      * @throws Exception error in the request
      */
-    public static PixKey cancel(String id, User user) throws Exception {
-        return Rest.delete(data, id, user);
+    public static PixKey cancel(String id, HashMap<String, Object> params, User user) throws Exception {
+        return Rest.delete(data, id, params, user);
     }
 
     /**
