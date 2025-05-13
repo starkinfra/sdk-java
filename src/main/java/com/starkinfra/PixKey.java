@@ -516,7 +516,7 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id  [string]: PixKey id. ex: "5656565656565656"
-     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
+     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation", "userRequested" or "entryInvalid".
      * @param patchData map of patch parameters
      * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
      * accountNumber [string, default null]: number of the account to be linked. ex: "76543".
@@ -539,7 +539,7 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
-     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
+     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation", "userRequested" or "entryInvalid".
      * @param patchData map of patch parameters
      * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
      * accountNumber [string, default null]: number of the account to be linked. ex: "76543".
