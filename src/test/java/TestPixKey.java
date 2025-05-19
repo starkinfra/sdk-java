@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class TestPixKey {
 
     @Test
@@ -19,7 +18,6 @@ public class TestPixKey {
         Settings.user = utils.User.defaultProject();
 
         PixKey key = PixKey.create(example());
-        System.out.println(key);
         Assert.assertNotNull(key.id);
     }
 
@@ -36,9 +34,7 @@ public class TestPixKey {
         int i = 0;
         for (PixKey key : keys) {
             i += 1;
-            System.out.println(key);
             key = PixKey.get(key.id, "012.345.678-90");
-            System.out.println(key);
             Assert.assertNotNull(key.id);
         }
     }
@@ -59,7 +55,6 @@ public class TestPixKey {
             log = PixKey.Log.get(log.id);
             Assert.assertNotNull(log.id);
             Assert.assertNotNull(log.key.id);
-            System.out.println(log);
         }
         Assert.assertTrue(i > 0);
     }
@@ -108,7 +103,6 @@ public class TestPixKey {
         for (int i = 0; i < 2; i++) {
             PixKey.Page page = PixKey.page(params);
             for (PixKey key: page.keys) {
-                System.out.println(key);
                 ids.add(key.id);
             }
             if (page.cursor == null) {
@@ -136,7 +130,6 @@ public class TestPixKey {
         for (int i = 0; i < 2; i++) {
             PixKey.Log.Page page = PixKey.Log.page(params);
             for (PixKey.Log log: page.logs) {
-                System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
                 }
@@ -160,12 +153,24 @@ public class TestPixKey {
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("status", "registered");
+
+        HashMap<String, Object> query = new HashMap<>();
+        query.put("reason", "fraud");
+
         int i = 0;
         for (PixKey key : PixKey.query(params)) {
             i ++;
-            key = PixKey.cancel(key.id);
-            Assert.assertNotNull(key.id);
-            System.out.println(key);
+            key = PixKey.cancel(key.id, query);
+
+            HashMap<String, Object> queryParams = new HashMap<>();
+            queryParams.put("keyIds", key.id);
+            queryParams.put("types", "canceling");
+            Generator<PixKey.Log> logs = PixKey.Log.query(queryParams);
+
+            for (PixKey.Log log : logs) {
+                Assert.assertNotNull(log.key.id);
+                Assert.assertEquals("canceling", log.type);
+            }
         }
     }
 
@@ -178,7 +183,6 @@ public class TestPixKey {
         params.put("type", "phone");
         Generator<PixKey> keys = PixKey.query(params);
         for (PixKey key : keys) {
-            System.out.println(key);
             HashMap<String, Object> patchData = new HashMap<>();
             patchData.put("name", "Arya Stark");
             patchData.put("accountNumber", "0000000000");
@@ -186,7 +190,6 @@ public class TestPixKey {
             PixKey updatedPixKey = PixKey.update(key.id, "userRequested", patchData);
             Assert.assertNotNull(updatedPixKey.id);
             Assert.assertEquals(updatedPixKey.name, "Arya Stark");
-            System.out.println(updatedPixKey);
         }
     }
 
