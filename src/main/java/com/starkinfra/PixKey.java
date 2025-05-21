@@ -6,11 +6,11 @@ import com.starkinfra.utils.Generator;
 import com.starkcore.utils.SubResource;
 import com.starkinfra.error.ErrorElement;
 
-
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
+
 
 
 public final class PixKey extends Resource {
@@ -253,7 +253,7 @@ public final class PixKey extends Resource {
      * @throws Exception error in the request
      */
     public static PixKey cancel(String id) throws Exception {
-        return PixKey.cancel(id, null);
+        return PixKey.cancel(id, null, null);
     }
 
     /**
@@ -263,14 +263,32 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
+     * @param params Parameters to cancel the PixKey
+     * <p>
+     * Return:
+     * @return canceled PixKey object
+     * @throws Exception error in the request
+     */
+    public static PixKey cancel(String id, HashMap<String, Object> params) throws Exception {
+        return PixKey.cancel(id, params, null);
+    }
+
+    /**
+     * Cancel a PixKey entity
+     * <p>
+     * Cancel a PixKey entity previously created in the Stark Infra API
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id.  ex: "+5511989898989"
+     * @param params Parameters to cancel the PixKey
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
      * @return canceled PixKey object
      * @throws Exception error in the request
      */
-    public static PixKey cancel(String id, User user) throws Exception {
-        return Rest.delete(data, id, user);
+    public static PixKey cancel(String id, HashMap<String, Object> params, User user) throws Exception {
+        return Rest.delete(data, id, params, user);
     }
 
     /**
@@ -498,7 +516,7 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id  [string]: PixKey id. ex: "5656565656565656"
-     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
+     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation", "userRequested" or "entryInvalid".
      * @param patchData map of patch parameters
      * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
      * accountNumber [string, default null]: number of the account to be linked. ex: "76543".
@@ -521,7 +539,7 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
-     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
+     * @param reason [string, default null]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation", "userRequested" or "entryInvalid".
      * @param patchData map of patch parameters
      * accountCreated [string, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10".
      * accountNumber [string, default null]: number of the account to be linked. ex: "76543".

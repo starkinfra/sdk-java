@@ -1,20 +1,15 @@
 package com.starkinfra.utils;
 
-import com.starkcore.utils.SubResource;
-import com.starkinfra.utils.Generator;
-import com.starkinfra.utils.GeneratorRelay;
-import com.starkcore.utils.Page;
-import com.starkinfra.utils.Response;
-
-import com.google.gson.*;
-import com.starkinfra.User;
-
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
-import java.util.ArrayList;
 import java.io.InputStream;
-import java.lang.reflect.Type;
+
+import com.starkinfra.User;
+import com.google.gson.Gson;
+import com.starkcore.utils.Page;
+import com.google.gson.JsonObject;
+import com.starkcore.utils.SubResource;
 
 
 public final class Rest {
@@ -159,7 +154,7 @@ public final class Rest {
         );
     }
 
-    public static <T extends Resource> T delete(Resource.ClassData resource, String id, User user) throws Exception {
+    public static <T extends Resource> T delete(Resource.ClassData resource, String id, HashMap<String, Object> query, User user) throws Exception {
         return com.starkcore.utils.Rest.delete(
                 sdkVersion,
                 host,
@@ -168,8 +163,13 @@ public final class Rest {
                 resource,
                 id,
                 language,
-                timeout
+                timeout,
+                query
         );
+    }
+
+    public static <T extends Resource> T delete(Resource.ClassData resource, String id, User user) throws Exception {
+        return delete(resource, id, null, user);
     }
 
     public static <T extends SubResource> T postSingle(SubResource.ClassData resource, SubResource entity, User user) throws Exception {
