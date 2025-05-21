@@ -6,7 +6,7 @@
 
     <groupId>com.starkinfra</groupId>
     <artifactId>sdk</artifactId>
-    <version>0.14.1</version>
+    <version>0.15.0</version>
     <packaging>jar</packaging>
 
     <name>starkinfra</name>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>com.starkinfra.core</groupId>
             <artifactId>starkcore</artifactId>
-            <version>0.3.0</version>
+            <version>0.4.0</version>
         </dependency>
 
     </dependencies>

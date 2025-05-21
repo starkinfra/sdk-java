@@ -14,6 +14,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+## [0.15.0] - 2025-05-21
+### Added
+- query params to PixKey.cancel
+### Changed
+- Starkcore dependency version
+
 ## [0.14.1] - 2025-05-08
 ### Fixed
 - CreditNote resource
