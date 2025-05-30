@@ -16,6 +16,7 @@ public final class Webhook extends Resource {
 
     public String url;
     public String[] subscriptions;
+    public String deliveryMethod;
 
     /**
      * Webhook subscription object
@@ -27,13 +28,15 @@ public final class Webhook extends Resource {
      * Parameters:
      * @param url [string]: Url that will be notified when an event occurs.
      * @param subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
+     * @param deliveryMethod [string]: Determines the delivery mode for the webhook. Use "sequential" (default) for ordered events and "parallel" for unordered delivery.
      * Attributes:
      * @param id [string]: unique id returned when the webhook is created. ex: "5656565656565656"
      */
-    public Webhook(String url, String[] subscriptions, String id) {
+    public Webhook(String url, String[] subscriptions, String id, String deliveryMethod) {
         super(id);
         this.url = url;
         this.subscriptions = subscriptions;
+        this.deliveryMethod = deliveryMethod;
     }
 
     /**
@@ -47,6 +50,7 @@ public final class Webhook extends Resource {
      * @param data map of properties for the creation of the WebHook
      * url [string]: Url that will be notified when an event occurs.
      * subscriptions [list of strings]: list of any non-empty combination of the available services. ex: ["transfer", "boleto-payment"]
+     * deliveryMethod [string]: determines the delivery mode for the webhook. Use the "sequential" (default) for ordered events and "parallel" for faster, unordered delivery.
      * Attributes:
      * id [string]: unique id returned when the webhook is created. ex: "5656565656565656"
      */
@@ -54,6 +58,7 @@ public final class Webhook extends Resource {
         super(null);
         this.url = (String) data.get("url");
         this.subscriptions = (String[]) data.get("subscriptions");
+        this.deliveryMethod = (String) data.get("deliveryMethod");
     }
 
     /**
@@ -286,7 +291,8 @@ public final class Webhook extends Resource {
     public static Webhook create(Map<String, Object> webhookData, User user) throws Exception {
         String url = (String) webhookData.get("url");
         String[] subscriptions = (String[]) webhookData.get("subscriptions");
-        return Rest.postSingle(data, new Webhook(url, subscriptions, null), user);
+        String deliveryMethod = (String) webhookData.get("deliveryMethod");
+        return Rest.postSingle(data, new Webhook(url, subscriptions, null, deliveryMethod), user);
     }
 
     /**
