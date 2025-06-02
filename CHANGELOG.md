@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.16.0] - 2025-06-02
 ### Added
 - deliveryMethod to Webhook resource
 
