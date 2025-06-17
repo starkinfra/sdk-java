@@ -91,7 +91,7 @@ public class TestDynamicBrcode {
     }
 
     @Test
-    public void testDynamicBrcodeCreate() throws Exception {
+    public void testDynamicBrcodeCreateAndGet() throws Exception {
         List<DynamicBrcode> brcodes = new ArrayList<>();
         brcodes.add(example("instant"));
         brcodes = DynamicBrcode.create(brcodes);
@@ -102,6 +102,46 @@ public class TestDynamicBrcode {
             String uuid = DynamicBrcode.get(brcode.uuid).uuid;
             Assert.assertEquals(uuid, brcode.uuid);
         }
+    }
+
+    @Test
+    public void testCreateInstantBrcode() throws Exception {
+        DynamicBrcode brcode = example("instant");
+        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
+        Assert.assertEquals("instant", created.get(0).type);
+        Assert.assertNotNull(created.get(0).uuid);
+    }
+
+    @Test
+    public void testCreateDueBrcode() throws Exception {
+        DynamicBrcode brcode = example("due");
+        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
+        Assert.assertEquals("due", created.get(0).type);
+        Assert.assertNotNull(created.get(0).uuid);
+    }
+
+    @Test
+    public void testCreateSubscriptionBrcode() throws Exception {
+        DynamicBrcode brcode = example("subscription");
+        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
+        Assert.assertEquals("subscription", created.get(0).type);
+        Assert.assertNotNull(created.get(0).uuid);
+    }
+
+    @Test
+    public void testCreateSubscriptionAndInstantBrcode() throws Exception {
+        DynamicBrcode brcode = example("subscriptionAndInstant");
+        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
+        Assert.assertEquals("subscriptionAndInstant", created.get(0).type);
+        Assert.assertNotNull(created.get(0).uuid);
+    }
+
+    @Test
+    public void testCreateDueAndOrSubscriptionBrcode() throws Exception {
+        DynamicBrcode brcode = example("dueAndOrSubscription");
+        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
+        Assert.assertEquals("dueAndOrSubscription", created.get(0).type);
+        Assert.assertNotNull(created.get(0).uuid);
     }
 
     @Test
