@@ -4,7 +4,7 @@ import org.junit.Assert;
 import com.starkinfra.Settings;
 import com.starkinfra.DynamicBrcode;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,13 +12,18 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.junit.Before;
+
 
 public class TestDynamicBrcode {
 
+    @Before
+    public void setup() throws Exception {
+        Settings.user = utils.User.defaultProject();
+    }
+
     @Test
     public void testDynamicBrcodeQuery() throws Exception {
-      Settings.user = utils.User.defaultProject();
-
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2021-04-29");
@@ -38,8 +43,6 @@ public class TestDynamicBrcode {
 
     @Test
     public void testDynamicBrcodePage() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 2);
         params.put("after", "2019-04-01");
@@ -70,8 +73,6 @@ public class TestDynamicBrcode {
 
     @Test
     public void testDynamicBrcodeGet() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
         params.put("after", "2019-04-01");
@@ -90,11 +91,9 @@ public class TestDynamicBrcode {
     }
 
     @Test
-    public void testDynamicBrcodeCreate() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
+    public void testDynamicBrcodeCreateAndGet() throws Exception {
         List<DynamicBrcode> brcodes = new ArrayList<>();
-        brcodes.add(example());
+        brcodes.add(example("instant"));
         brcodes = DynamicBrcode.create(brcodes);
         Assert.assertNotNull(brcodes);
 
@@ -106,10 +105,54 @@ public class TestDynamicBrcode {
     }
 
     @Test
-    public void testValidSignature() throws Exception{
+    public void testCreateInstantBrcode() throws Exception {
+        String type = "instant";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
+    }
+
+    @Test
+    public void testCreateDueBrcode() throws Exception {
+        String type = "due";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
+    }
+
+    @Test
+    public void testCreateSubscriptionBrcode() throws Exception {
+        String type = "subscription";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
+    }
+
+    @Test
+    public void testCreateSubscriptionAndInstantBrcode() throws Exception {
+        String type = "subscriptionAndInstant";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
+    }
+
+    @Test
+    public void testCreateDueAndOrSubscriptionBrcode() throws Exception {
+        String type = "dueAndOrSubscription";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
+    }
+
+    @Test
+    public void testValidSignature() throws Exception {
         String uuid = "21f174ab942843eb90837a5c3135dfd6";
         String validSignature = "MEYCIQC+Ks0M54DPLEbHIi0JrMiWbBFMRETe/U2vy3gTiid3rAIhANMmOaxT03nx2bsdo+vg6EMhWGzdphh90uBH9PY2gJdd";
-        Settings.user = utils.User.defaultProject();
 
         try{
             DynamicBrcode.verify(uuid, validSignature);
@@ -120,11 +163,9 @@ public class TestDynamicBrcode {
     }
 
     @Test
-    public void testInvalidSignature() throws Exception{
+    public void testInvalidSignature() throws Exception {
         String uuid = "21f174ab942843eb90837a5c3135dfd6";
         String invalidSignature = "MEUCIQDOpo1j+V40pNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
-
-        Settings.user = utils.User.defaultProject();
 
         try{
             DynamicBrcode.verify(uuid, invalidSignature);
@@ -134,8 +175,6 @@ public class TestDynamicBrcode {
 
     @Test
     public void testDynamicBrcodeResponseDue() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
         HashMap<String, Object> data = new HashMap<>();
         data.put("percentage", 3);
         data.put("due", "2022-07-13");
@@ -170,8 +209,6 @@ public class TestDynamicBrcode {
 
     @Test
     public void testDynamicBrcodeResponseInstant() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
         HashMap<String, Object> data = new HashMap<>();
         data.put("version", 1);
         data.put("created", "2020-03-10 10:30:00.000000+00:00");
@@ -192,19 +229,8 @@ public class TestDynamicBrcode {
         Assert.assertNotNull(instant);
     }
 
-    static DynamicBrcode example() throws Exception{
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("name", "Tony Stark");
-        data.put("city", "Rio de Janeiro");
-        data.put("externalId", "java-" + UUID.randomUUID().toString());
-        data.put("type", "instant");
-        return new DynamicBrcode(data);
-    }
-
     @Test
     public void testExample() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 1);
         Generator<DynamicBrcode> brcodes = DynamicBrcode.query(params);
@@ -216,5 +242,22 @@ public class TestDynamicBrcode {
         }
         
         System.out.println(brcode);
+    }
+
+    static DynamicBrcode example(String type) throws Exception {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("name", "Tony Stark");
+        data.put("city", "Rio de Janeiro");
+        data.put("externalId", "java-" + UUID.randomUUID().toString());
+        data.put("type", type);
+        return new DynamicBrcode(data);
+    }
+
+
+    static DynamicBrcode createDynamicBrcodeByType(String type) throws Exception {
+        List<DynamicBrcode> brcodes = new ArrayList<>();
+        brcodes.add(example(type));
+        brcodes = DynamicBrcode.create(brcodes);
+        return brcodes.get(0);
     }
 }
