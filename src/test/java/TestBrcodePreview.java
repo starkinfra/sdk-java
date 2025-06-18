@@ -48,50 +48,50 @@ public class TestBrcodePreview {
 
     @Test
     public void testTypeInstant() throws Exception {
-        String brcodeId = createDynamicBrcodeAndGetId("instant");
-        BrcodePreview preview = createBrcodePreview(brcodeId).get(0);
+        DynamicBrcode createdDynamicBrcode = createDynamicBrcodeByType("instant");
+        BrcodePreview preview = createBrcodePreviewById(createdDynamicBrcode.id);
 
-        Assert.assertEquals(brcodeId, preview.id);
+        Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertEquals("", preview.due);
         Assert.assertNull(preview.subscription.amount);
     }
 
     @Test
     public void testTypeDue() throws Exception {
-        String brcodeId = createDynamicBrcodeAndGetId("due");
-        BrcodePreview preview = createBrcodePreview(brcodeId).get(0);
+        DynamicBrcode createdDynamicBrcode = createDynamicBrcodeByType("due");
+        BrcodePreview preview = createBrcodePreviewById(createdDynamicBrcode.id);
 
-        Assert.assertEquals(brcodeId, preview.id);
+        Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertNotEquals("", preview.due);
         Assert.assertNull(preview.subscription.amount);
     }
     
     @Test
     public void testTypeSubscription() throws Exception {
-        String brcodeId = createDynamicBrcodeAndGetId("subscription");
-        BrcodePreview preview = createBrcodePreview(brcodeId).get(0);
+        DynamicBrcode createdDynamicBrcode = createDynamicBrcodeByType("subscription");
+        BrcodePreview preview = createBrcodePreviewById(createdDynamicBrcode.id);
 
-        Assert.assertEquals(brcodeId, preview.id);
+        Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertEquals("", preview.payerId);
         Assert.assertEquals("qrcode", preview.subscription.type);
     }
 
     @Test
     public void testTypeSubscriptionAndInstant() throws Exception {
-        String brcodeId = createDynamicBrcodeAndGetId("subscriptionAndInstant");
-        BrcodePreview preview = createBrcodePreview(brcodeId).get(0);
+        DynamicBrcode createdDynamicBrcode = createDynamicBrcodeByType("subscriptionAndInstant");
+        BrcodePreview preview = createBrcodePreviewById(createdDynamicBrcode.id);
 
-        Assert.assertEquals(brcodeId, preview.id);
+        Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertNotEquals("", preview.payerId);
         Assert.assertEquals("qrcodeAndPayment", preview.subscription.type);
     }
 
     @Test
     public void testTypeDueAndOrSubscription() throws Exception {
-        String brcodeId = createDynamicBrcodeAndGetId("dueAndOrSubscription");
-        BrcodePreview preview = createBrcodePreview(brcodeId).get(0);
+        DynamicBrcode createdDynamicBrcode = createDynamicBrcodeByType("dueAndOrSubscription");
+        BrcodePreview preview = createBrcodePreviewById(createdDynamicBrcode.id);
 
-        Assert.assertEquals(brcodeId, preview.id);
+        Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertNotEquals("", preview.payerId);
         Assert.assertEquals("paymentAndOrQrcode", preview.subscription.type);
     }
@@ -105,11 +105,11 @@ public class TestBrcodePreview {
         return new DynamicBrcode(data);
     }
 
-    static String createDynamicBrcodeAndGetId(String type) throws Exception {
+    static DynamicBrcode createDynamicBrcodeByType(String type) throws Exception {
         List<DynamicBrcode> brcodes = new ArrayList<>();
         brcodes.add(exampleDynamicBrcode(type));
         brcodes = DynamicBrcode.create(brcodes);
-        return brcodes.get(0).id;
+        return brcodes.get(0);
     }
 
     static BrcodePreview exampleBrcodePreview(String id) throws Exception{
@@ -119,9 +119,9 @@ public class TestBrcodePreview {
         return new BrcodePreview(data);
     }
 
-    static List<BrcodePreview> createBrcodePreview(String id) throws Exception {
+    static BrcodePreview createBrcodePreviewById(String id) throws Exception {
         List<BrcodePreview> ids = new ArrayList<>();
         ids.add(exampleBrcodePreview(id));
-        return BrcodePreview.create(ids);
+        return BrcodePreview.create(ids).get(0);
     }
 }

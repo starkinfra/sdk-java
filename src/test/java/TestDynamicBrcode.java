@@ -106,42 +106,47 @@ public class TestDynamicBrcode {
 
     @Test
     public void testCreateInstantBrcode() throws Exception {
-        DynamicBrcode brcode = example("instant");
-        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
-        Assert.assertEquals("instant", created.get(0).type);
-        Assert.assertNotNull(created.get(0).uuid);
+        String type = "instant";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
     }
 
     @Test
     public void testCreateDueBrcode() throws Exception {
-        DynamicBrcode brcode = example("due");
-        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
-        Assert.assertEquals("due", created.get(0).type);
-        Assert.assertNotNull(created.get(0).uuid);
+        String type = "due";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
     }
 
     @Test
     public void testCreateSubscriptionBrcode() throws Exception {
-        DynamicBrcode brcode = example("subscription");
-        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
-        Assert.assertEquals("subscription", created.get(0).type);
-        Assert.assertNotNull(created.get(0).uuid);
+        String type = "subscription";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
     }
 
     @Test
     public void testCreateSubscriptionAndInstantBrcode() throws Exception {
-        DynamicBrcode brcode = example("subscriptionAndInstant");
-        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
-        Assert.assertEquals("subscriptionAndInstant", created.get(0).type);
-        Assert.assertNotNull(created.get(0).uuid);
+        String type = "subscriptionAndInstant";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
     }
 
     @Test
     public void testCreateDueAndOrSubscriptionBrcode() throws Exception {
-        DynamicBrcode brcode = example("dueAndOrSubscription");
-        List<DynamicBrcode> created = DynamicBrcode.create(new ArrayList<DynamicBrcode>() {{ add(brcode); }});
-        Assert.assertEquals("dueAndOrSubscription", created.get(0).type);
-        Assert.assertNotNull(created.get(0).uuid);
+        String type = "dueAndOrSubscription";
+        DynamicBrcode createdBrcode = createDynamicBrcodeByType(type);
+
+        Assert.assertEquals(type, createdBrcode.type);
+        Assert.assertNotNull(createdBrcode.uuid);
     }
 
     @Test
@@ -224,15 +229,6 @@ public class TestDynamicBrcode {
         Assert.assertNotNull(instant);
     }
 
-    static DynamicBrcode example(String type) throws Exception {
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("name", "Tony Stark");
-        data.put("city", "Rio de Janeiro");
-        data.put("externalId", "java-" + UUID.randomUUID().toString());
-        data.put("type", type);
-        return new DynamicBrcode(data);
-    }
-
     @Test
     public void testExample() throws Exception {
         HashMap<String, Object> params = new HashMap<>();
@@ -246,5 +242,22 @@ public class TestDynamicBrcode {
         }
         
         System.out.println(brcode);
+    }
+
+    static DynamicBrcode example(String type) throws Exception {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("name", "Tony Stark");
+        data.put("city", "Rio de Janeiro");
+        data.put("externalId", "java-" + UUID.randomUUID().toString());
+        data.put("type", type);
+        return new DynamicBrcode(data);
+    }
+
+
+    static DynamicBrcode createDynamicBrcodeByType(String type) throws Exception {
+        List<DynamicBrcode> brcodes = new ArrayList<>();
+        brcodes.add(example(type));
+        brcodes = DynamicBrcode.create(brcodes);
+        return brcodes.get(0);
     }
 }
