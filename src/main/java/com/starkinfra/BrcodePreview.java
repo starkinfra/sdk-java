@@ -42,6 +42,7 @@ public final class BrcodePreview extends Resource {
      * reductionAmount [Long]: Reduction value to discount from nominalAmount. ex: 1000
      * scheduled [string]: datetime of payment execution. ex: "2020-03-10 10:30:00.000000+00:00"
      * status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
+     * subscription [Subscription object]: BR code subscription information
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -69,6 +70,7 @@ public final class BrcodePreview extends Resource {
     public String scheduled;
     public String status;
     public String taxId;
+    public Subscription subscription;
     public String due;
 
     /**
@@ -103,6 +105,7 @@ public final class BrcodePreview extends Resource {
      * @param reductionAmount [Long]: Reduction value to discount from nominal_amount. ex: 1000
      * @param scheduled [string]: datetime of payment execution. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
+     * @param subscription [Subscription object]: BR code subscription information
      * @param taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * @param due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -110,7 +113,7 @@ public final class BrcodePreview extends Resource {
                          String branchCode, Long cashAmount, String cashierBankCode, String cashierType, String accountNumber,
                          String accountType, String scheduled, Long amount, String amountType, Long nominalAmount,
                          String keyId, Long interestAmount, Long fineAmount, Long reductionAmount, Long discountAmount,
-                         String reconciliationId, String id
+                         String reconciliationId, String id, Subscription subscription
     ) {
         super(id);
         this.payerId = payerId;
@@ -134,6 +137,7 @@ public final class BrcodePreview extends Resource {
         this.reductionAmount = reductionAmount;
         this.scheduled = scheduled;
         this.status = status;
+        this.subscription = subscription;
         this.taxId = taxId;
         this.due = due;
     }
@@ -175,6 +179,7 @@ public final class BrcodePreview extends Resource {
      * reductionAmount [Long]: Reduction value to discount from nominal_amount. ex: 1000
      * scheduled [string]: datetime of payment execution. ex: "2020-03-10 10:30:00.000000+00:00"
      * status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
+     * subscription [Subscription object]: BR code subscription information
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
@@ -205,6 +210,7 @@ public final class BrcodePreview extends Resource {
         this.reductionAmount = null;
         this.scheduled = null;
         this.status = null;
+        this.subscription = null;
         this.taxId = null;
         this.due = null;
 
