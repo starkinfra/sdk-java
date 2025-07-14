@@ -16,6 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class TestPixRequest {
@@ -50,9 +52,9 @@ public class TestPixRequest {
         for (PixRequest request : requests) {
             i += 1;
             request = PixRequest.get(request.id);
-            System.out.println(request);
+            assertNotNull(request.id);
         }
-        System.out.println(i);
+        assertTrue(i > 0);
     }
 
     @Test
@@ -71,7 +73,6 @@ public class TestPixRequest {
             log = PixRequest.Log.get(log.id);
             assertNotNull(log.id);
             assertNotNull(log.request.id);
-            System.out.println(log);
         }
         assertTrue(i > 0);
     }
@@ -84,8 +85,10 @@ public class TestPixRequest {
         params.put("limit", 10);
         Generator<PixRequest> requests = PixRequest.query(params);
 
+        int i = 0;
         ArrayList<String> requestsIdsExpected = new ArrayList<>();
         for (PixRequest request : requests) {
+            i += 1;
             assertNotNull(request.id);
             requestsIdsExpected.add(request.id);
         }
@@ -93,14 +96,18 @@ public class TestPixRequest {
         params.put("ids", requestsIdsExpected.toArray(new String[0]));
         Generator<PixRequest> requestsResult = PixRequest.query(params);
 
+        int n = 0;
         ArrayList<String> requestsIdsResult = new ArrayList<>();
         for (PixRequest request : requestsResult){
+            n += 1;
             assertNotNull(request.id);
             requestsIdsResult.add(request.id);
         }
 
         Collections.sort(requestsIdsExpected);
         Collections.sort(requestsIdsResult);
+        assertTrue(i > 0);
+        assertTrue(n > 0);
         assertEquals(requestsIdsExpected, requestsIdsResult);
     }
 
@@ -118,7 +125,6 @@ public class TestPixRequest {
         for (int i = 0; i < 2; i++) {
             PixRequest.Page page = PixRequest.page(params);
             for (PixRequest request: page.requests) {
-                System.out.println(request);
                 if (ids.contains(request.id)) {
                     throw new Exception("repeated id");
                 }
@@ -149,7 +155,6 @@ public class TestPixRequest {
         for (int i = 0; i < 2; i++) {
             PixRequest.Log.Page page = PixRequest.Log.page(params);
             for (PixRequest.Log log: page.logs) {
-                System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
                 }
@@ -170,17 +175,24 @@ public class TestPixRequest {
     public void testResponse() throws Exception {
         Settings.user = utils.User.defaultProject();
 
+        String status = "denied";
+        String reason = "invalidAccountNumber";
+
         HashMap<String, Object> datas = new HashMap<>();
-        datas.put("status", "denied");
-        datas.put("reason", "invalidAccountNumber");
+        datas.put("status", status);
+        datas.put("reason", reason);
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("authorization", datas);
 
         String response = PixRequest.response(data);
-        assertNotNull(response);
 
-        System.out.println(response);
+        JsonObject json = JsonParser.parseString(response).getAsJsonObject();
+        String statusValue = json.getAsJsonObject("authorization").get("status").getAsString();
+        String statusReason = json.getAsJsonObject("authorization").get("reason").getAsString();
+        assertNotNull(response);
+        assertEquals(status, statusValue);
+        assertEquals(reason, statusReason);
     }
 
     @Test
@@ -190,7 +202,6 @@ public class TestPixRequest {
         Settings.user = utils.User.defaultProject();
 
         PixRequest request = PixRequest.parse(content, validSignature);
-        System.out.println(request);
     }
 
     @Test
@@ -200,8 +211,6 @@ public class TestPixRequest {
 
         PixRequest request = PixRequest.parse(content, validSignature, utils.User.defaultProject());
         assertTrue(request instanceof PixRequest);
-
-        System.out.println(request);
     }
 
     @Test
@@ -247,6 +256,7 @@ public class TestPixRequest {
         data.put("receiverAccountType", "checking");
         data.put("receiverName", "Daenerys Targaryen Stormborn");
         data.put("receiverTaxId", "012.345.678-90");
+        data.put("priority", "high");
         data.put("endToEndId", EndToEndId.create(bankCode));
         return new PixRequest(data);
     }
