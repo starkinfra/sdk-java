@@ -49,7 +49,8 @@ public final class PixRequest extends Resource {
      * cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
      * cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
      * tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
-     * method [string]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * method [string]: execution method for the creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
      * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * status [string]: current PixRequest status. ex: "registered" or "paid"
@@ -84,6 +85,7 @@ public final class PixRequest extends Resource {
     public String cashierType;
     public String[] tags;
     public String method;
+    public String priority;
     public Integer fee;
     public String status;
     public String flow;
@@ -124,7 +126,8 @@ public final class PixRequest extends Resource {
      * @param cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
      * @param cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
-     * @param method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * @param method [string, default null]: execution method for the creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * @param priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
      * @param id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * @param fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * @param status [string]: current PixRequest status. ex: "registered" or "paid"
@@ -138,7 +141,7 @@ public final class PixRequest extends Resource {
                       String receiverBankCode, String receiverAccountNumber, String receiverBranchCode,
                       String receiverAccountType, String endToEndId, String receiverKeyId, String description,
                       String reconciliationId, String initiatorTaxId, Long cashAmount, String cashierBankCode,
-                      String cashierType, String[] tags, String method, Integer fee, String status, String flow,
+                      String cashierType, String[] tags, String method, String priority, Integer fee, String status, String flow,
                       String senderBankCode, String created, String updated, String id
     ) {
         super(id);
@@ -165,6 +168,7 @@ public final class PixRequest extends Resource {
         this.cashierType = cashierType;
         this.tags = tags;
         this.method = method;
+        this.priority = priority;
         this.fee = fee;
         this.status = status;
         this.flow = flow;
@@ -209,7 +213,8 @@ public final class PixRequest extends Resource {
      * cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
      * cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
      * tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
-     * method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * method [string, default null]: execution method for the creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
+     * priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
@@ -248,6 +253,7 @@ public final class PixRequest extends Resource {
         this.cashierType = (String) dataCopy.remove("cashierType");
         this.tags = (String[]) dataCopy.remove("tags");
         this.method = (String) dataCopy.remove("method");
+        this.priority = (String) dataCopy.remove("priority");
         this.fee = null;
         this.status = null;
         this.flow = null;
