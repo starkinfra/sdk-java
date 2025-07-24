@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- option to change timeout settings
 
 ## [0.18.0] - 2025-07-15
 ### Added
