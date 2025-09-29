@@ -6,7 +6,7 @@
 
     <groupId>com.starkinfra</groupId>
     <artifactId>sdk</artifactId>
-    <version>0.19.0</version>
+    <version>0.19.1</version>
     <packaging>jar</packaging>
 
     <name>starkinfra</name>
