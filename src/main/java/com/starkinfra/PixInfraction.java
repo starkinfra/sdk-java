@@ -43,6 +43,9 @@ public final class PixInfraction extends Resource {
      * status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
      * created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * amount [Long]: amount in cents of the reported transaction. 
+     * bacenId [string]: unique id returned by the Central Bank for the PixInfraction. ex: "3b10c3ef-3117-4ab8-815d-d3867ada7560"
+     * disputeId [string]: id of the PixDispute associated with the PixInfraction. 
      *
      */
     static ClassData data = new ClassData(PixInfraction.class, "PixInfraction");
@@ -65,6 +68,9 @@ public final class PixInfraction extends Resource {
     public String status;
     public String created;
     public String updated;
+    public Long amount;
+    public String bacenId;
+    public String disputeId;
 
     /**
      * PixInfraction object
@@ -93,11 +99,14 @@ public final class PixInfraction extends Resource {
      * @param status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
      * @param created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param amount [Long]: amount in cents of the reported transaction.
+     * @param bacenId [string]: unique id returned by the Central Bank for the PixInfraction. ex: "3b10c3ef-3117-4ab8-815d-d3867ada7560"
+     * @param disputeId [string]: id of the PixDispute associated with the PixInfraction.
      */
     public PixInfraction(String referenceId, String type, String method, String description, String fraudType,
                          String[] tags, String id, String fraudId, String analysis, String debitedBankCode, String flow,
                          String creditedBankCode, String reportedBy, String result, String status, String created,
-                         String updated, String operatorPhone, String operatorEmail
+                         String updated, String operatorPhone, String operatorEmail, Long amount, String bacenId, String disputeId
     ) {
         super(id);
         this.referenceId = referenceId;
@@ -118,6 +127,9 @@ public final class PixInfraction extends Resource {
         this.status = status;
         this.created = created;
         this.updated = updated;
+        this.amount = amount;
+        this.bacenId = bacenId;
+        this.disputeId = disputeId;
     }
 
     /**
@@ -132,6 +144,8 @@ public final class PixInfraction extends Resource {
      * referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
      * type [string]: type of Pix Infraction. Options: "reversal" or "reversalChargeback"
      * method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion" or "other"
+     * operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
+     * operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * <p>
      * Parameters (conditionally required):
      * description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
@@ -139,8 +153,6 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters (optional):
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
-     * operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
-     * operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
@@ -154,6 +166,9 @@ public final class PixInfraction extends Resource {
      * status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
      * created [string]: creation datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000000+00:00"
+     * amount [Long]: amount in cents of the reported transaction.
+     * bacenId [string]: unique id returned by the Central Bank for the PixInfraction. ex: "3b10c3ef-3117-4ab8-815d-d3867ada7560"
+     * disputeId [string]: id of the PixDispute associated with the PixInfraction.
      * @throws Exception error in the request
      */
     public PixInfraction(Map<String, Object> data) throws Exception {
@@ -178,6 +193,9 @@ public final class PixInfraction extends Resource {
         this.status = null;
         this.created = null;
         this.updated = null;
+        this.amount = null;
+        this.bacenId = null;
+        this.disputeId = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");

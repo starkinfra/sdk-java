@@ -1,6 +1,7 @@
 import org.junit.Test;
 import org.junit.Assert;
 
+import com.starkinfra.Event;
 import com.starkinfra.Settings;
 import com.starkinfra.PixRequest;
 import com.starkinfra.PixChargeback;
@@ -29,7 +30,6 @@ public class TestPixChargeback {
             String id = PixChargeback.get(chargeback.id).id;
             Assert.assertEquals(id, chargeback.id);
         }
-        System.out.println(chargebacks);
     }
 
     @Test
@@ -41,10 +41,8 @@ public class TestPixChargeback {
         params.put("status", "delivered");
         Generator<PixChargeback> chargebacks = PixChargeback.query(params);
         for (PixChargeback chargeback : chargebacks) {
-            System.out.println(chargeback.id);
             chargeback = PixChargeback.cancel(chargeback.id);
             Assert.assertEquals(chargeback.status, "canceled");
-            System.out.println(chargeback);
         }
     }
     
@@ -60,7 +58,6 @@ public class TestPixChargeback {
             i ++;
             chargeback = PixChargeback.cancel(chargeback.id);
             Assert.assertEquals(chargeback.status, "canceled");
-            System.out.println(chargeback);
         }
     }
     @Test
@@ -70,7 +67,6 @@ public class TestPixChargeback {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 3);
-        params.put("status", "created");
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
         Generator<PixChargeback> chargebacks = PixChargeback.query(params);
@@ -79,9 +75,8 @@ public class TestPixChargeback {
         for (PixChargeback chargeback : chargebacks) {
             i += 1;
             chargeback = PixChargeback.get(chargeback.id);
-            System.out.println(chargeback);
+            Assert.assertNotNull(chargeback.id);
         }
-        System.out.println(i);
     }
 
     @Test
@@ -99,7 +94,6 @@ public class TestPixChargeback {
             log = PixChargeback.Log.get(log.id);
             Assert.assertNotNull(log.id);
             Assert.assertNotNull(log.chargeback.id);
-            System.out.println(log);
         }
         Assert.assertTrue(i > 0);
     }
@@ -146,7 +140,6 @@ public class TestPixChargeback {
         for (int i = 0; i < 2; i++) {
             PixChargeback.Page page = PixChargeback.page(params);
             for (PixChargeback chargeback: page.chargebacks) {
-                System.out.println(chargeback);
                 if (ids.contains(chargeback.id)) {
                     throw new Exception("repeated id");
                 }
@@ -177,7 +170,6 @@ public class TestPixChargeback {
         for (int i = 0; i < 2; i++) {
             PixChargeback.Log.Page page = PixChargeback.Log.page(params);
             for (PixChargeback.Log log: page.logs) {
-                System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
                 }
@@ -205,12 +197,24 @@ public class TestPixChargeback {
         if (!(chargebackId == null)) {
             PixChargeback updatedPixChargeback = PixChargeback.update(chargebackId, "accepted", patchData);
             Assert.assertNotNull(updatedPixChargeback.id);
-            System.out.println(updatedPixChargeback);
         }
         else {
             System.out.println("There are no PixChargebacks to patch");
             Assert.assertNotNull(null);
         }
+    }
+
+    @Test
+    public void testPixChargebackEventParse() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        String content = "{\"event\": {\"created\": \"2025-12-19T19:30:25.041795+00:00\", \"id\": \"6723786382508032\", \"log\": {\"chargeback\": {\"amount\": 20000, \"analysis\": \"\", \"bacenId\": \"619ee9c1-4883-4fc3-9b34-a14d3a8f8442\", \"created\": \"2025-12-19T19:30:14.873000+00:00\", \"description\": \"\", \"disputeId\": \"4652621482688512\", \"flow\": \"in\", \"id\": \"5348906212786176\", \"isMonitoringRequired\": true, \"reason\": \"fraud\", \"referenceId\": \"E20018183202512191914WcfANNEIYnt\", \"rejectionReason\": \"\", \"result\": \"\", \"reversalAccountNumber\": \"5953984539918336\", \"reversalAccountType\": \"payment\", \"reversalBankCode\": \"20018183\", \"reversalBranchCode\": \"0001\", \"reversalReferenceId\": \"\", \"reversalTaxId\": \"39.908.427/0001-28\", \"senderBankCode\": \"20018183\", \"status\": \"delivered\", \"tags\": [], \"updated\": \"2025-12-19T19:30:21.102077+00:00\"}, \"created\": \"2025-12-19T19:30:21.102062+00:00\", \"errors\": [], \"id\": \"6551487224217600\", \"type\": \"delivered\"}, \"subscription\": \"pix-chargeback\", \"workspaceId\": \"5560467233701888\"}}";
+        String validSignature = "MEUCIBN4qKKlUCHb6ynJQADrcCWO/QcjiJ/UEollHAlE9J83AiEAwR1TwmFXGyTWQr0RkQWwwUMQdGzDRv1rb8CO52s1/Ww=";
+        Event event = Event.parse(content, validSignature);
+
+        Assert.assertNotNull(event.id);
+        Assert.assertNotNull(event.workspaceId);
+        Assert.assertNotNull(((Event.PixChargebackEvent) event).log.id);
     }
 
     public String getRequestIdToPatch() throws Exception {
