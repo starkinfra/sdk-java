@@ -15,7 +15,7 @@ import com.starkcore.utils.SubResource;
 public final class Rest {
 
     static String host = "infra";
-    static String sdkVersion = "0.19.1";
+    static String sdkVersion = "0.20.0";
     static String apiVersion = "v2";
     static String language = "pt-BR";
     static Integer timeout = 5;
