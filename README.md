@@ -56,6 +56,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [StaticBrcode](#create-staticbrcodes): Create static Pix BR Codes
     - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR Codes
     - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
+    - [PixDispute](#create-pixdisputes): Create Pix Disputes
   - [Lending](#lending)
     - [CreditNote](#create-creditnotes): Create credit notes
     - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -2042,7 +2043,7 @@ PixClaim.Log log = PixClaim.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
-## Create a PixDirector
+### Create a PixDirector
 
 To register the Pix director contact information at the Central Bank, run the following:
 
@@ -2640,7 +2641,7 @@ Response Sender.sendResponse(  // you should also implement this method to respo
 
 ```
 
-## Create BrcodePreviews
+### Create BrcodePreviews
 
 You can create BrcodePreviews to preview BR Codes before paying them.
 
@@ -2659,6 +2660,105 @@ previews.add(new BrcodePreview(data));
 List<BrcodePreview> previews = (List<BrcodePreview>) BrcodePreview.create(previews);
 
 System.out.println(previews);
+```
+
+### Create PixDisputes
+
+Pix disputes can be created when a fraud is detected creating a chain of transactions in order to reverse the funds to the origin.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<PixDispute> disputes = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("referenceId", "E39908427202512222248Lo3j8SXPF6z");
+data.put("method", "scam");
+data.put("description", "Client payed for an item and never received it.");
+data.put("operatorEmail", "fraud@company.com");
+data.put("operatorPhone", "+5511989898989");
+disputes.add(new PixDispute(data));
+
+List<PixDispute> disputes = (List<PixDispute>) PixDispute.create(disputes);
+
+System.out.println(disputes);
+```
+
+### Query PixDisputes
+
+You can query multiple PixDisputes according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+
+Generator<PixDispute> disputes = PixDispute.query(params);
+
+for (PixDispute dispute : disputes) {
+    System.out.println(dispute);
+}
+```
+
+### Get a PixDispute
+
+After its creation, information on a PixDispute may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+PixDispute dispute = PixDispute.get("5155165527080960");
+
+System.out.println(dispute);
+```
+
+### Cancel a PixDispute
+
+Cancel a specific PixDispute using its id.
+
+```java
+import com.starkinfra.*;
+
+PixDispute dispute = PixDispute.cancel("5155165527080960");
+
+System.out.println(dispute);
+```
+
+### Query PixDispute logs
+
+You can query Pix dispute logs to better understand Pix dispute's life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+
+Generator<PixDispute.Log> logs = PixDispute.Log.query(params);
+
+for (PixDispute.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a PixDispute log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixDispute.Log log = PixDispute.Log.get("6532638269505536");
+
+System.out.println(log);
 ```
 
 ## Lending

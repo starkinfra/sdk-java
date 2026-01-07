@@ -81,6 +81,9 @@ public class Event extends Resource {
             if (stringType.contains("pix-infraction")) {
                 return context.deserialize(jsonObject, PixInfractionEvent.class);
             }
+            if (stringType.contains("pix-dispute")) {
+                return context.deserialize(jsonObject, PixDisputeEvent.class);
+            }
             if (stringType.contains("pix-key")) {
                 return context.deserialize(jsonObject, PixKeyEvent.class);
             }
@@ -143,6 +146,15 @@ public class Event extends Resource {
         public PixChargeback.Log log;
 
         public PixChargebackEvent(PixChargeback.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixDisputeEvent extends Event {
+        public PixDispute.Log log;
+
+        public PixDisputeEvent(PixDispute.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
             super(created, isDelivered, subscription, id, workspaceId);
             this.log = log;
         }

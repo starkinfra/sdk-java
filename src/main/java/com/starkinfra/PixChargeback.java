@@ -41,6 +41,14 @@ public final class PixChargeback extends Resource {
      * status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
      * created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * bacenId [string]: unique id returned by the Central Bank for the PixChargeback. ex: "817fc523-9e9d-40ab-9e53-dacb71454a05"
+     * disputeId [string]: id of the dispute associated with the PixChargeback.
+     * isMonitoringRequired [boolean]: indicates if monitoring is required for this chargeback.
+     * reversalAccountNumber [string]: account number for the reversal transaction.
+     * reversalAccountType [string]: account type for the reversal transaction.
+     * reversalBankCode [string]: bank code for the reversal transaction.
+     * reversalBranchCode [string]: branch code for the reversal transaction.
+     * reversalTaxId [string]: tax ID for the reversal transaction.
      *
      */
     static ClassData data = new ClassData(PixChargeback.class, "PixChargeback");
@@ -60,6 +68,14 @@ public final class PixChargeback extends Resource {
     public String status;
     public String created;
     public String updated;
+    public String bacenId;
+    public String disputeId;
+    public Boolean isMonitoringRequired;
+    public String reversalAccountNumber;
+    public String reversalAccountType;
+    public String reversalBankCode;
+    public String reversalBranchCode;
+    public String reversalTaxId;
 
     /**
      * PixChargeback object
@@ -89,11 +105,21 @@ public final class PixChargeback extends Resource {
      * @param status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled"
      * @param created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param bacenId [string]: unique id returned by the Central Bank for the PixChargeback. ex: "817fc523-9e9d-40ab-9e53-dacb71454a05"
+     * @param disputeId [string]: id of the dispute associated with the PixChargeback.
+     * @param isMonitoringRequired [boolean]: indicates if monitoring is required for this chargeback.
+     * @param reversalAccountNumber [string]: account number for the reversal transaction.
+     * @param reversalAccountType [string]: account type for the reversal transaction.
+     * @param reversalBankCode [string]: bank code for the reversal transaction.
+     * @param reversalBranchCode [string]: branch code for the reversal transaction.
+     * @param reversalTaxId [string]: tax ID for the reversal transaction.
      */
     public PixChargeback(Number amount, String referenceId, String reason, String description, String[] tags,
                          String analysis, String senderBankCode, String receiverBankCode, String rejectionReason,
                          String reversalReferenceId, String id, String result, String flow, String status, String created,
-                         String updated
+                         String updated, String bacenId, String disputeId, Boolean isMonitoringRequired,
+                         String reversalAccountNumber, String reversalAccountType, String reversalBankCode,
+                         String reversalBranchCode, String reversalTaxId
     ) {
         super(id);
         this.amount = amount;
@@ -111,6 +137,14 @@ public final class PixChargeback extends Resource {
         this.status = status;
         this.created = created;
         this.updated = updated;
+        this.bacenId = bacenId;
+        this.disputeId = disputeId;
+        this.isMonitoringRequired = isMonitoringRequired;
+        this.reversalAccountNumber = reversalAccountNumber;
+        this.reversalAccountType = reversalAccountType;
+        this.reversalBankCode = reversalBankCode;
+        this.reversalBranchCode = reversalBranchCode;
+        this.reversalTaxId = reversalTaxId;
     }
 
     /**
@@ -148,6 +182,14 @@ public final class PixChargeback extends Resource {
      * status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
      * created [string]: creation datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000000+00:00"
+     * bacenId [string]: unique id returned by the Central Bank for the PixChargeback. ex: "817fc523-9e9d-40ab-9e53-dacb71454a05"
+     * disputeId [string]: id of the dispute associated with the PixChargeback.
+     * isMonitoringRequired [boolean]: indicates if monitoring is required for this chargeback.
+     * reversalAccountNumber [string]: account number for the reversal transaction.
+     * reversalAccountType [string]: account type for the reversal transaction.
+     * reversalBankCode [string]: bank code for the reversal transaction.
+     * reversalBranchCode [string]: branch code for the reversal transaction.
+     * reversalTaxId [string]: tax ID for the reversal transaction.
      * @throws Exception error in the request
      */
     public PixChargeback(Map<String, Object> data) throws Exception {
@@ -169,6 +211,14 @@ public final class PixChargeback extends Resource {
         this.status = null;
         this.created = null;
         this.updated = null;
+        this.bacenId = null;
+        this.disputeId = null;
+        this.isMonitoringRequired = null;
+        this.reversalAccountNumber = null;
+        this.reversalAccountType = null;
+        this.reversalBankCode = null;
+        this.reversalBranchCode = null;
+        this.reversalTaxId = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");

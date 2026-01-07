@@ -1,6 +1,7 @@
 import org.junit.Test;
 import org.junit.Assert;
 
+import com.starkinfra.Event;
 import com.starkinfra.Settings;
 import com.starkinfra.PixInfraction;
 import com.starkinfra.utils.Generator;
@@ -27,7 +28,6 @@ public class TestPixInfraction {
             String id = PixInfraction.get(infraction.id).id;
             Assert.assertEquals(id, infraction.id);
         }
-        System.out.println(infractions);
     }
 
     @Test
@@ -42,7 +42,6 @@ public class TestPixInfraction {
             if (Objects.equals(infraction.flow, "out")) {
                 infraction = PixInfraction.cancel(infraction.id);
                 Assert.assertEquals(infraction.status, "canceled");
-                System.out.println(infraction);
             }
         }
     }
@@ -59,7 +58,6 @@ public class TestPixInfraction {
             i ++;
             infraction = PixInfraction.cancel(infraction.id);
             Assert.assertEquals(infraction.status, "canceled");
-            System.out.println(infraction);
         }
     }
 
@@ -68,7 +66,8 @@ public class TestPixInfraction {
         Settings.user = utils.User.defaultProject();
 
         HashMap<String, Object> params = new HashMap<>();
-        params.put("limit", 3);
+        int limit = 3;
+        params.put("limit", limit);
         params.put("status", "delivered");
         params.put("after", "2019-04-01");
         params.put("before", "2030-04-30");
@@ -77,10 +76,10 @@ public class TestPixInfraction {
         int i = 0;
         for (PixInfraction infraction : infractions) {
             i += 1;
-            infraction = PixInfraction.get(infraction.id);
-            System.out.println(infraction);
+            PixInfraction getInfraction = PixInfraction.get(infraction.id);
+            Assert.assertEquals(getInfraction.id, infraction.id);
         }
-        System.out.println(i);
+        Assert.assertTrue(i == limit);
     }
 
     @Test
@@ -99,7 +98,6 @@ public class TestPixInfraction {
             log = PixInfraction.Log.get(log.id);
             Assert.assertNotNull(log.id);
             Assert.assertNotNull(log.infraction.id);
-            System.out.println(log);
         }
         Assert.assertTrue(i > 0);
     }
@@ -146,7 +144,6 @@ public class TestPixInfraction {
         for (int i = 0; i < 2; i++) {
             PixInfraction.Page page = PixInfraction.page(params);
             for (PixInfraction infraction: page.infractions) {
-                System.out.println(infraction);
                 if (ids.contains(infraction.id)) {
                     throw new Exception("repeated id");
                 }
@@ -177,7 +174,6 @@ public class TestPixInfraction {
         for (int i = 0; i < 2; i++) {
             PixInfraction.Log.Page page = PixInfraction.Log.page(params);
             for (PixInfraction.Log log: page.logs) {
-                System.out.println(log);
                 if (ids.contains(log.id)) {
                     throw new Exception("repeated id");
                 }
@@ -199,16 +195,26 @@ public class TestPixInfraction {
         Settings.user = utils.User.defaultProject();
         List<PixInfraction> infractions = getReportToPatch();
 
-        System.out.println(infractions.toArray().length);
         for (PixInfraction infraction : infractions) {
-            System.out.println(infraction);
             HashMap<String, Object> params = new HashMap<>();
             params.put("result", "agreed");
             params.put("fraudType", "scam");
             PixInfraction updatedPixInfraction = PixInfraction.update(infraction.id, params);
             Assert.assertNotNull(updatedPixInfraction.id);
-            System.out.println(updatedPixInfraction);
         }
+    }
+
+    @Test
+    public void testEventParsePixInfraction() throws Exception{
+        Settings.user = utils.User.defaultProject();
+
+        String content = "{\"event\": {\"created\": \"2025-12-18T18:42:45.820608+00:00\", \"id\": \"6029674738089984\", \"log\": {\"created\": \"2025-12-18T18:42:41.340992+00:00\", \"errors\": [], \"id\": \"4591715356770304\", \"infraction\": {\"amount\": 0, \"analysis\": \"\", \"bacenId\": \"62fd3559-9365-428d-a90d-8bc218e8bb73\", \"created\": \"2025-12-18T18:42:40.389427+00:00\", \"creditedBankCode\": \"52076716\", \"debitedBankCode\": \"32160637\", \"description\": \"Eu acho que eu fui scammado\", \"disputeId\": \"\", \"flow\": \"out\", \"fraudId\": \"\", \"fraudType\": \"\", \"id\": \"5154612831059968\", \"method\": \"other\", \"operatorEmail\": \"fraud@company.com\", \"operatorPhone\": \"+5511989898989\", \"referenceId\": \"E32160637202512091420yaANrbU2bkh\", \"reportedBy\": \"debited\", \"result\": \"\", \"status\": \"created\", \"tags\": [], \"type\": \"reversal\", \"updated\": \"2025-12-18T18:42:41.341010+00:00\"}, \"type\": \"delivering\"}, \"subscription\": \"pix-infraction\", \"workspaceId\": \"4828094443552768\"}}";
+        String validSignature = "MEYCIQCQdgvFQzZSs+igH46jV5VqvXTdgtp4lsbGuFH/UUUYGwIhAPw2mglILJLLJRa9XxiEfMqCAA1hsVw/cbqLSom7fGnQ";
+        Event event = Event.parse(content, validSignature);
+
+        PixInfraction.Log log = ((Event.PixInfractionEvent) event).log;
+        Assert.assertNotNull(log.id);
+        Assert.assertNotNull(log.infraction.id);
     }
 
     public List<PixInfraction> getReportToPatch() throws Exception {
