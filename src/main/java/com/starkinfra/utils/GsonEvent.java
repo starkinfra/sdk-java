@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.starkinfra.Event;
 import com.starkinfra.CreditNote;
 import com.starkinfra.CreditPreview;
+import com.starkinfra.error.ErrorElement;
 
 
 public class GsonEvent {
@@ -20,6 +21,7 @@ public class GsonEvent {
                     .registerTypeAdapter(Event.class, new Event.Deserializer())
                     .registerTypeAdapter(CreditNote.class, new CreditNote.Deserializer())
                     .registerTypeAdapter(CreditPreview.class, new CreditPreview.Deserializer())
+                    .registerTypeAdapter(ErrorElement.class, new ErrorElement.Deserializer())
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ")
                     .create();
         return instance;
