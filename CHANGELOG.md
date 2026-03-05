@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.20.1] - 2026-02-05
 ### Fixed
 - ErrorElement parse
 
