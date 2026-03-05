@@ -10,9 +10,15 @@ import com.google.gson.Gson;
 import com.starkcore.utils.Page;
 import com.google.gson.JsonObject;
 import com.starkcore.utils.SubResource;
+import com.starkcore.utils.GsonEvent;
+import com.starkinfra.error.ErrorElement;
 
 
 public final class Rest {
+
+    static {
+        GsonEvent.registerTypeAdapter(ErrorElement.class, new ErrorElement.Deserializer());
+    }
 
     static String host = "infra";
     static String sdkVersion = "0.20.0";
