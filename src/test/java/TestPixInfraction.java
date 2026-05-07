@@ -22,11 +22,11 @@ public class TestPixInfraction {
 
         List<PixInfraction> infractions = new ArrayList<>();
         infractions.add(example());
-        infractions = PixInfraction.create(infractions);
-        for (PixInfraction infraction : infractions) {
-            Assert.assertNotNull(infraction.id);
-            String id = PixInfraction.get(infraction.id).id;
-            Assert.assertEquals(id, infraction.id);
+        try {
+            PixInfraction.create(infractions);
+            Assert.fail("Expected deprecation exception was not thrown");
+        } catch (Exception e) {
+            Assert.assertEquals("Function deprecated since v0.21.0", e.getMessage());
         }
     }
 
