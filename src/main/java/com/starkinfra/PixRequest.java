@@ -613,7 +613,7 @@ public final class PixRequest extends Resource {
          * Attributes:
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param request [PixRequest]: PixRequest entity to which the log refers to.
-         * @param errors [list of strings]: list of errors linked to the PixRequest event.
+         * @param errors [list of ErrorElement]: list of errors linked to the PixRequest event.
          * @param type [string]: type of the PixRequest event which triggered the log creation. ex: "processing" or "success"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */

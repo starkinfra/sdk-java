@@ -43,6 +43,8 @@ This SDK version is compatible with the Stark Infra API v2.
   - [Pix](#Pix)
     - [PixRequests](#create-pixrequests): Create Pix transactions
     - [PixReversals](#create-pixreversals): Reverse Pix transactions
+    - [PixPullSubscription](#create-a-pixpullsubscription): Create a Pix Pull Subscription for recurring debits
+    - [PixPullRequest](#create-a-pixpullrequest): Create a Pix Pull Request to trigger a recurring debit
     - [PixBalance](#get-your-pixbalance): View your account balance
     - [PixStatement](#create-a-pixstatement): Request your account statement
     - [PixKey](#create-a-pixkey): Create a Pix Key
@@ -1724,6 +1726,281 @@ You can also get a specific log by its id.
 import com.starkinfra.*;
 
 PixReversal.Log log = PixReversal.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+### Create a PixPullSubscription
+
+You can create a Pix Pull Subscription, which is a recurrent debit authorization that allows the receiver to trigger automatic Pix debits from the sender's account.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<PixPullSubscription> subscriptions = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("bacenId", "RR0000000120250101speaPpiOWVA");
+data.put("externalId", "my-external-id:1746028260");
+data.put("installmentStart", "2026-06-01");
+data.put("interval", "month");
+data.put("receiverName", "Edward Stark");
+data.put("receiverTaxId", "012.345.678-90");
+data.put("receiverBankCode", "20018183");
+data.put("referenceCode", "contract-12345");
+data.put("senderAccountNumber", "76543-8");
+data.put("senderBankCode", "20018183");
+data.put("senderBranchCode", "2201");
+data.put("senderCityCode", "3550308");
+data.put("senderTaxId", "594.739.480-42");
+data.put("amount", 10000L);
+subscriptions.add(new PixPullSubscription(data));
+
+subscriptions = PixPullSubscription.create(subscriptions);
+
+for (PixPullSubscription subscription : subscriptions){
+    System.out.println(subscription);
+}
+```
+
+### Query PixPullSubscriptions
+
+You can query multiple Pix Pull Subscriptions according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+params.put("status", new String[] {"created", "active"});
+
+Generator<PixPullSubscription> subscriptions = PixPullSubscription.query(params);
+
+for (PixPullSubscription subscription : subscriptions){
+    System.out.println(subscription);
+}
+```
+
+### Get a PixPullSubscription
+
+After its creation, information on a Pix Pull Subscription may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+PixPullSubscription subscription = PixPullSubscription.get("5656565656565656");
+
+System.out.println(subscription);
+```
+
+### Update a PixPullSubscription
+
+A Pix Pull Subscription can be approved or denied by patching its status. When denying, a reason must be provided.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("status", "approved");
+
+PixPullSubscription subscription = PixPullSubscription.update("5656565656565656", patchData);
+
+System.out.println(subscription);
+```
+
+### Cancel a PixPullSubscription
+
+Cancel a Pix Pull Subscription. Allowed reasons: `accountClosed`, `receiverOrganizationClosed`, `subscriptionRequestFailed`, `fraud`, `receiverUserRequested`, `paymentNotFound`.
+
+```java
+import com.starkinfra.*;
+
+PixPullSubscription subscription = PixPullSubscription.cancel("5656565656565656", "receiverUserRequested");
+
+System.out.println(subscription);
+```
+
+### Query PixPullSubscription logs
+
+You can query Pix Pull Subscription logs to better understand subscription life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+
+Generator<PixPullSubscription.Log> logs = PixPullSubscription.Log.query(params);
+
+for (PixPullSubscription.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a PixPullSubscription log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixPullSubscription.Log log = PixPullSubscription.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
+### Create a PixPullRequest
+
+You can create a Pix Pull Request to trigger the automatic debit linked to an active Pix Pull Subscription, collecting the agreed amount within the current billing cycle.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.EndToEndId;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<PixPullRequest> requests = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 10000L);
+data.put("due", "2026-06-10T10:30:00.000000+00:00");
+data.put("endToEndId", EndToEndId.create("20018183"));
+data.put("receiverAccountNumber", "00000-0");
+data.put("receiverAccountType", "payment");
+data.put("receiverBankCode", "20018183");
+data.put("reconciliationId", "conciliation-12345");
+data.put("subscriptionId", "5656565656565656");
+requests.add(new PixPullRequest(data));
+
+requests = PixPullRequest.create(requests);
+
+for (PixPullRequest request : requests){
+    System.out.println(request);
+}
+```
+
+### Query PixPullRequests
+
+You can query multiple Pix Pull Requests according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+params.put("status", new String[] {"created", "scheduled", "success"});
+params.put("subscriptionIds", new String[] {"5656565656565656", "4545454545454545"});
+
+Generator<PixPullRequest> requests = PixPullRequest.query(params);
+
+for (PixPullRequest request : requests){
+    System.out.println(request);
+}
+```
+
+### Get a PixPullRequest
+
+After its creation, information on a Pix Pull Request may be retrieved by its id. Its status indicates whether it has been settled.
+
+```java
+import com.starkinfra.*;
+
+PixPullRequest request = PixPullRequest.get("5155966664310784");
+
+System.out.println(request);
+```
+
+### Process inbound PixPullRequest authorizations
+
+It's easy to process authorization requests that arrived at your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 1 second, the authorization will be denied.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is your handler to listen for authorization requests
+
+String content = request.content.toString();
+String signature = request.headers.get("Digital-Signature");
+
+PixPullRequest pullRequest = PixPullRequest.parse(content, signature);
+
+System.out.println(pullRequest);
+```
+
+### Update a PixPullRequest
+
+A Pix Pull Request can be scheduled or denied by patching its status. When denying, a reason must be provided.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("status", "scheduled");
+
+PixPullRequest request = PixPullRequest.update("5155966664310784", patchData);
+
+System.out.println(request);
+```
+
+### Cancel a PixPullRequest
+
+Cancel a Pix Pull Request. Allowed reasons: `accountClosed`, `accountBlocked`, `pixRequestFailed`, `other`, `senderUserRequested`, `receiverUserRequested`.
+
+```java
+import com.starkinfra.*;
+
+PixPullRequest request = PixPullRequest.cancel("5155966664310784", "senderUserRequested");
+
+System.out.println(request);
+```
+
+### Query PixPullRequest logs
+
+You can query Pix Pull Request logs to better understand Pix Pull Request life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+
+Generator<PixPullRequest.Log> logs = PixPullRequest.Log.query(params);
+
+for (PixPullRequest.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a PixPullRequest log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixPullRequest.Log log = PixPullRequest.Log.get("6532638269505536");
 
 System.out.println(log);
 ```
