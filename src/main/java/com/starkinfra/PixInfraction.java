@@ -425,6 +425,7 @@ public final class PixInfraction extends Resource {
     }
 
     /**
+     * @deprecated Function deprecated since v0.21.0
      * Create a PixInfraction
      * <p>
      * Send a PixInfraction object for creation in the Stark Infra API
@@ -441,6 +442,7 @@ public final class PixInfraction extends Resource {
     }
 
     /**
+     * @deprecated Function deprecated since v0.21.0
      * Create a PixInfraction
      * <p>
      * Send a PixInfraction object for creation in the Stark Infra API
@@ -454,19 +456,7 @@ public final class PixInfraction extends Resource {
      * @throws Exception error in the request
      */
     public static List<PixInfraction> create(List<?> infractions, User user) throws Exception {
-        List<PixInfraction> infractionList = new ArrayList<>();
-        for (Object infraction : infractions){
-            if (infraction instanceof Map){
-                infractionList.add(new PixInfraction((Map<String, Object>) infraction));
-                continue;
-            }
-            if (infraction instanceof PixInfraction){
-                infractionList.add((PixInfraction) infraction);
-                continue;
-            }
-            throw new Exception("Unknown type \"" + infraction.getClass() + "\", use PixInfraction or HashMap");
-        }
-        return Rest.post(data, infractionList, user);
+        throw new Exception("Function deprecated since v0.21.0");
     }
 
     /**
