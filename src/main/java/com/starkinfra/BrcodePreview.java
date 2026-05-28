@@ -45,6 +45,7 @@ public final class BrcodePreview extends Resource {
      * subscription [Subscription object]: BR code subscription information
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
+     * expired [string]: BR Code expiration date. ex: "2020-04-10 10:30:00.000000+00:00"
      */
     static ClassData data = new ClassData(BrcodePreview.class, "BrcodePreview");
 
@@ -72,6 +73,7 @@ public final class BrcodePreview extends Resource {
     public String taxId;
     public Subscription subscription;
     public String due;
+    public String expired;
 
     /**
      * BrcodePreview object
@@ -108,12 +110,13 @@ public final class BrcodePreview extends Resource {
      * @param subscription [Subscription object]: BR code subscription information
      * @param taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * @param due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param expired [string]: BR Code expiration date. ex: "2020-04-10 10:30:00.000000+00:00"
      */
     public BrcodePreview(String payerId, String endToEndId, String status, String name, String taxId, String due, String bankCode,
                          String branchCode, Long cashAmount, String cashierBankCode, String cashierType, String accountNumber,
                          String accountType, String scheduled, Long amount, String amountType, Long nominalAmount,
                          String keyId, Long interestAmount, Long fineAmount, Long reductionAmount, Long discountAmount,
-                         String reconciliationId, String id, Subscription subscription
+                         String reconciliationId, String id, Subscription subscription, String expired
     ) {
         super(id);
         this.payerId = payerId;
@@ -140,6 +143,7 @@ public final class BrcodePreview extends Resource {
         this.subscription = subscription;
         this.taxId = taxId;
         this.due = due;
+        this.expired = expired;
     }
 
     /**
@@ -182,6 +186,7 @@ public final class BrcodePreview extends Resource {
      * subscription [Subscription object]: BR code subscription information
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
+     * expired [string]: BR Code expiration date. ex: "2020-04-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */
     public BrcodePreview(Map<String, Object> data) throws Exception {
@@ -213,6 +218,7 @@ public final class BrcodePreview extends Resource {
         this.subscription = null;
         this.taxId = null;
         this.due = null;
+        this.expired = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");

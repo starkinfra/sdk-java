@@ -53,6 +53,7 @@ public class TestBrcodePreview {
 
         Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertEquals("", preview.due);
+        Assert.assertNotEquals("", preview.expired);
         Assert.assertNull(preview.subscription.amount);
     }
 
@@ -63,6 +64,7 @@ public class TestBrcodePreview {
 
         Assert.assertEquals(createdDynamicBrcode.id, preview.id);
         Assert.assertNotEquals("", preview.due);
+        Assert.assertNotEquals("", preview.expired);
         Assert.assertNull(preview.subscription.amount);
     }
     

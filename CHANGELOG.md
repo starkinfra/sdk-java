@@ -17,6 +17,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixPullRequest resource
 - PixPullSubscription resource
 - Deprecated create pix infraction
+- expired attribute to BrcodePreview resource
 ### Changed
 - updated starkbank-ecdsa to v2.0.0
 - updated starkcore to v0.5.0
