@@ -69,6 +69,12 @@ public class Event extends Resource {
                 return null;
             }
             String stringType = type.getAsString();
+            if (stringType.contains("pix-pull-request")) {
+                return context.deserialize(jsonObject, PixPullRequestEvent.class);
+            }
+            if (stringType.contains("pix-pull-subscription")) {
+                return context.deserialize(jsonObject, PixPullSubscriptionEvent.class);
+            }
             if (stringType.contains("pix-request")) {
                 return context.deserialize(jsonObject, PixRequestEvent.class);
             }
@@ -164,6 +170,24 @@ public class Event extends Resource {
         public PixReversal.Log log;
 
         public PixReversalEvent(PixReversal.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixPullRequestEvent extends Event {
+        public PixPullRequest.Log log;
+
+        public PixPullRequestEvent(PixPullRequest.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class PixPullSubscriptionEvent extends Event {
+        public PixPullSubscription.Log log;
+
+        public PixPullSubscriptionEvent(PixPullSubscription.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
             super(created, isDelivered, subscription, id, workspaceId);
             this.log = log;
         }
