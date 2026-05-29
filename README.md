@@ -66,6 +66,8 @@ This SDK version is compatible with the Stark Infra API v2.
   - [Identity](#identity)
     - [IndividualIdentity](#create-individualidentities): Create individual identities
     - [IndividualDocument](#create-individualdocuments): Create individual documents
+    - [IndividualAccountRequest](#create-individualaccountrequests): Request to open an individual account
+    - [IndividualAccountAttachment](#create-individualaccountattachments): Attach supporting documents to an individual account request
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -3632,6 +3634,238 @@ You can also get a specific log by its id.
 import com.starkinfra.*;
 
 IndividualDocument.Log log = IndividualDocument.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
+### Create IndividualAccountRequests
+
+You can create IndividualAccountRequests to open a Stark Infra account for an individual. The address is a structured nested object.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> address = new HashMap<>();
+address.put("street", "Rua do Estilo Barroco");
+address.put("number", "648");
+address.put("neighborhood", "Santo Amaro");
+address.put("city", "Sao Paulo");
+address.put("state", "SP");
+address.put("zipCode", "05724005");
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("name", "Tony Stark");
+data.put("taxId", "012.345.678-90");
+data.put("address", address);
+data.put("income", 1000000L);
+data.put("tags", new String[]{"employees", "monthly"});
+
+List<IndividualAccountRequest> requests = new ArrayList<>();
+requests.add(new IndividualAccountRequest(data));
+
+requests = IndividualAccountRequest.create(requests);
+
+for (IndividualAccountRequest request : requests) {
+    System.out.println(request);
+}
+```
+
+**Note**: Instead of using IndividualAccountRequest objects, you can also pass each element in dictionary format
+
+### Query IndividualAccountRequests
+
+You can query multiple IndividualAccountRequests according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "created");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualAccountRequest> requests = IndividualAccountRequest.query(params);
+
+for (IndividualAccountRequest request : requests) {
+    System.out.println(request);
+}
+```
+
+### Get an IndividualAccountRequest
+
+After its creation, information on an IndividualAccountRequest may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualAccountRequest request = IndividualAccountRequest.get("5189530608992256");
+
+System.out.println(request);
+```
+
+### Update an IndividualAccountRequest
+
+You can update an IndividualAccountRequest by its id. The address is replaced as a whole object.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("status", "processing");
+
+IndividualAccountRequest request = IndividualAccountRequest.update("5189530608992256", patchData);
+
+System.out.println(request);
+```
+
+### Query IndividualAccountRequest logs
+
+You can query IndividualAccountRequest logs to better understand IndividualAccountRequest life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualAccountRequest.Log> logs = IndividualAccountRequest.Log.query(params);
+
+for (IndividualAccountRequest.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IndividualAccountRequest log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualAccountRequest.Log log = IndividualAccountRequest.Log.get("5189530608992256");
+
+System.out.println(log);
+```
+
+### Create IndividualAccountAttachments
+
+You can attach supporting documents to an IndividualAccountRequest. Pass the raw image bytes and a MIME content type; the SDK encodes them as a data: URL before sending.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+byte[] content = Files.readAllBytes(Paths.get("identity-front.png"));
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("type", "identity-front");
+data.put("content", content);
+data.put("contentType", "image/png");
+data.put("accountRequestId", "5189530608992256");
+data.put("tags", new String[]{"employees"});
+
+List<IndividualAccountAttachment> attachments = new ArrayList<>();
+attachments.add(new IndividualAccountAttachment(data));
+
+attachments = IndividualAccountAttachment.create(attachments);
+
+for (IndividualAccountAttachment attachment : attachments) {
+    System.out.println(attachment);
+}
+```
+
+**Note**: Instead of using IndividualAccountAttachment objects, you can also pass each element in dictionary format
+
+### Query IndividualAccountAttachments
+
+You can query multiple IndividualAccountAttachments according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "created");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualAccountAttachment> attachments = IndividualAccountAttachment.query(params);
+
+for (IndividualAccountAttachment attachment : attachments) {
+    System.out.println(attachment);
+}
+```
+
+### Get an IndividualAccountAttachment
+
+After its creation, information on an IndividualAccountAttachment may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualAccountAttachment attachment = IndividualAccountAttachment.get("5656565656565656");
+
+System.out.println(attachment);
+```
+
+### Cancel an IndividualAccountAttachment
+
+You can cancel an IndividualAccountAttachment by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualAccountAttachment attachment = IndividualAccountAttachment.cancel("5656565656565656");
+
+System.out.println(attachment);
+```
+
+### Query IndividualAccountAttachment logs
+
+You can query IndividualAccountAttachment logs to better understand IndividualAccountAttachment life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<IndividualAccountAttachment.Log> logs = IndividualAccountAttachment.Log.query(params);
+
+for (IndividualAccountAttachment.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get an IndividualAccountAttachment log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+IndividualAccountAttachment.Log log = IndividualAccountAttachment.Log.get("5656565656565656");
 
 System.out.println(log);
 ```
