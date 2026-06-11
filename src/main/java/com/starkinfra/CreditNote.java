@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.ArrayList;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 
 import com.google.gson.*;
@@ -1363,5 +1364,71 @@ public final class CreditNote extends Resource {
                 }
             }
         }
+    }
+
+    /**
+     * Retrieve a specific CreditNote pdf file
+     * <p>
+     * Receive a single CreditNote pdf file generated in the Stark Infra API by passing its id.
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * <p>
+     * Return:
+     * @return CreditNote pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream pdf(String id) throws Exception {
+        return pdf(id, null);
+    }
+
+    /**
+     * Retrieve a specific CreditNote pdf file
+     * <p>
+     * Receive a single CreditNote pdf file generated in the Stark Infra API by passing its id.
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.User.defaultUser was set before function call
+     * <p>
+     * Return:
+     * @return CreditNote pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream pdf(String id, User user) throws Exception {
+        return Rest.getContent(data, id, "pdf", user, new HashMap<>());
+    }
+
+        /**
+     * Retrieve a specific CreditNote Transfer pdf file
+     * <p>
+     * Receive a single CreditNote Transfer pdf file generated in the Stark Infra API by passing its id.
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * <p>
+     * Return:
+     * @return CreditNote Transfer pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream payment(String id) throws Exception {
+        return payment(id, null);
+    }
+
+    /**
+     * Retrieve a specific CreditNote Transfer pdf file
+     * <p>
+     * Receive a single CreditNote Transfer pdf file generated in the Stark Infra API by passing its id.
+     * <p>
+     * Parameters:
+     * @param id [string]: object unique id. ex: "5656565656565656"
+     * @param user [Organization/Project object]: Organization or Project object. Not necessary if starkbank.User.defaultUser was set before function call
+     * <p>
+     * Return:
+     * @return CreditNote Transfer pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream payment(String id, User user) throws Exception {
+        return Rest.getContent(data, id, "payment/pdf", user, new HashMap<>());
     }
 }

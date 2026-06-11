@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -199,5 +203,49 @@ public class TestCreditNote {
 
     public static String getDateString(int delta) {
         return LocalDate.now().plusDays(delta).toString();
+    }
+
+    @Test
+    public void testCreditNotePdfGet() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        params.put("status", "success");
+        
+        Generator<CreditNote> notes = CreditNote.query(params);
+        for (CreditNote note : notes) {
+            String noteId = note.id;
+            InputStream pdf = CreditNote.pdf(noteId);
+            Assert.assertNotNull(pdf);
+            java.nio.file.Files.copy(
+                pdf,
+                new File("note.pdf").toPath(),
+                StandardCopyOption.REPLACE_EXISTING
+            );
+            System.out.println(note);
+        }
+    }
+
+    @Test
+    public void testCreditNotePaymentPdfGet() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        params.put("status", "success");
+        
+        Generator<CreditNote> notes = CreditNote.query(params);
+        for (CreditNote note : notes) {
+            String noteId = note.id;
+            InputStream pdf = CreditNote.payment(noteId);
+            Assert.assertNotNull(pdf);
+            java.nio.file.Files.copy(
+                pdf,
+                new File("payment.pdf").toPath(),
+                StandardCopyOption.REPLACE_EXISTING
+            );
+            System.out.println(note);
+        }
     }
 }
