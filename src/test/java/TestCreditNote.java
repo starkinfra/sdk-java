@@ -1,9 +1,3 @@
-import java.util.UUID;
-import java.util.List;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.time.LocalDate;
-
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -11,6 +5,12 @@ import com.starkinfra.Settings;
 import com.starkinfra.CreditNote;
 import com.starkinfra.CreditSigner;
 import com.starkinfra.utils.Generator;
+
+import java.util.UUID;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class TestCreditNote {
 
@@ -81,6 +81,66 @@ public class TestCreditNote {
     }
 
     @Test
+    public void testCreateWithRulesAsObject() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        List<CreditNote> notes = CreditNote.create(exampleWithObject());
+        for (CreditNote note : notes) {
+            Assert.assertNotNull(note.id);
+            Assert.assertNotNull(note.rules);
+            Assert.assertEquals(1, note.rules.size());
+            CreditNote.Rule rule = note.rules.get(0);
+            Assert.assertTrue(rule instanceof CreditNote.Rule);
+            Assert.assertEquals("invoiceCreationMode", rule.key);
+            Assert.assertEquals("scheduled", rule.value);
+        }
+    }
+
+    @Test
+    public void testCreateWithRulesAsMap() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        List<CreditNote> notes = CreditNote.create(exampleWithRulesAsMap());
+        for (CreditNote note : notes) {
+            Assert.assertNotNull(note.id);
+            Assert.assertNotNull(note.rules);
+            Assert.assertEquals(1, note.rules.size());
+            CreditNote.Rule rule = note.rules.get(0);
+            Assert.assertTrue(rule instanceof CreditNote.Rule);
+            Assert.assertEquals("invoiceCreationMode", rule.key);
+            Assert.assertEquals("scheduled", rule.value);
+        }
+    }
+
+    @Test
+    public void testRuleConstructsFromKeyAndValue() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        CreditNote.Rule rule = new CreditNote.Rule("invoiceCreationMode", "scheduled");
+        Assert.assertEquals("invoiceCreationMode", rule.key);
+        Assert.assertEquals("scheduled", rule.value);
+
+        HashMap<String, Object> ruleData = new HashMap<>();
+        ruleData.put("key", "invoiceCreationMode");
+        ruleData.put("value", "instant");
+        CreditNote.Rule ruleFromMap = new CreditNote.Rule(ruleData);
+        Assert.assertEquals("invoiceCreationMode", ruleFromMap.key);
+        Assert.assertEquals("instant", ruleFromMap.value);
+    }
+
+    @Test
+    public void testDebtorWorkspaceIdReturnAttribute() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        List<CreditNote> notes = CreditNote.create(exampleWithObject());
+        for (CreditNote note : notes) {
+            Assert.assertNotNull(note.id);
+            String debtorWorkspaceId = note.debtorWorkspaceId;
+            Assert.assertNotNull(debtorWorkspaceId);
+        }
+    }
+
+    @Test
     public void testLogQueryAndGet() throws Exception {
         Settings.user = utils.User.defaultProject();
 
@@ -135,7 +195,7 @@ public class TestCreditNote {
         List<CreditNote.Invoice> invoices = new ArrayList<>();
         HashMap<String, Object> invoice = new HashMap<String, Object>() {{
             put("amount", 100000);
-            put("due", "2025-06-16");
+            put("due", "2030-06-16");
         }};
         invoices.add(new CreditNote.Invoice(invoice));
 
@@ -148,7 +208,7 @@ public class TestCreditNote {
 
         invoice = new HashMap<String, Object>() {{
             put("amount", 100000);
-            put("due", "2025-06-16");
+            put("due", "2030-06-16");
             put("descriptions", descriptions);
         }};
         invoices.add(new CreditNote.Invoice(invoice));
@@ -178,7 +238,7 @@ public class TestCreditNote {
         data.put("name", "Jamie Lannister");
         data.put("taxId", "20.018.183/0001-80");
         data.put("nominalAmount", nominalAmount);
-        data.put("scheduled", "2025-06-07");
+        data.put("scheduled", "2030-06-07");
         data.put("invoices", invoices);
         data.put("payment", transfer );
         data.put("paymentType", "transfer" );
@@ -193,8 +253,48 @@ public class TestCreditNote {
         data.put("stateCode", "SP");
         data.put("zipCode", "01234-567");
 
+        List<CreditNote.Rule> rules = new ArrayList<>();
+        rules.add(new CreditNote.Rule("invoiceCreationMode", "scheduled"));
+        data.put("rules", rules);
+
         notes.add(new CreditNote(data));
         return notes;
+    }
+
+    static List<CreditNote> exampleWithRulesAsMap() throws Exception {
+        List<CreditNote> notes = exampleWithObject();
+
+        List<HashMap<String, Object>> rules = new ArrayList<>();
+        HashMap<String, Object> rule = new HashMap<>();
+        rule.put("key", "invoiceCreationMode");
+        rule.put("value", "scheduled");
+        rules.add(rule);
+
+        CreditNote base = notes.get(0);
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("templateId", base.templateId);
+        data.put("name", base.name);
+        data.put("taxId", base.taxId);
+        data.put("nominalAmount", base.nominalAmount);
+        data.put("scheduled", base.scheduled);
+        data.put("invoices", base.invoices);
+        data.put("payment", base.payment);
+        data.put("paymentType", base.paymentType);
+        data.put("signers", base.signers);
+        data.put("externalId", UUID.randomUUID().toString());
+        data.put("tags", base.tags);
+        data.put("rebateAmount", 0);
+        data.put("streetLine1", base.streetLine1);
+        data.put("streetLine2", base.streetLine2);
+        data.put("district", base.district);
+        data.put("city", base.city);
+        data.put("stateCode", base.stateCode);
+        data.put("zipCode", base.zipCode);
+        data.put("rules", rules);
+
+        List<CreditNote> mapNotes = new ArrayList<>();
+        mapNotes.add(new CreditNote(data));
+        return mapNotes;
     }
 
     public static String getDateString(int delta) {
