@@ -2623,6 +2623,39 @@ PixFraud fraud = PixFraud.cancel("6532638269505536");
 System.out.println(fraud);
 ```
 
+### Query PixFraud logs
+
+You can query PixFraud logs to better understand PixFraud life cycles.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 50);
+params.put("after", "2022-01-01");
+params.put("before", "2022-01-20");
+
+Generator<PixFraud.Log> logs = PixFraud.Log.query(params);
+
+for (PixFraud.Log log : logs){
+    System.out.println(log);
+}
+```
+
+### Get a PixFraud log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixFraud.Log log = PixFraud.Log.get("6532638269505536");
+
+System.out.println(log);
+```
+
 ### Get a PixUser
 
 You can get a specific fraud statistics of a user with his taxId.
