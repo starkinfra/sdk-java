@@ -29,6 +29,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [EmbossingKit](#query-issuingembossingkits): Create embossing kits
     - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
     - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
+    - [StockRule](#create-issuingstockrules): Create notification rules for a specific IssuingStock object
     - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
     - [TokenRequest](#create-an-issuingtokenrequest): Generate the payload to create the token
     - [Token](#process-token-authorizations): Authorize and manage your tokens
@@ -820,6 +821,82 @@ import com.starkinfra.*;
 IssuingStock.Log log = IssuingStock.Log.get("6310318875607040");
 
 System.out.println(log);
+```
+
+### Create IssuingStockRules
+
+You can create notification rules for a specific IssuingStock. When the linked stock balance reaches the minimum balance, the listed recipients are notified.
+
+```java
+import com.starkinfra.*;
+
+List<IssuingStockRule> rules = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("minimumBalance", 10000);
+data.put("stockId", "5136459887542272");
+rules.add(new IssuingStockRule(data));
+
+rules = IssuingStockRule.create(rules);
+
+for (IssuingStockRule rule : rules) {
+    System.out.println(rule);
+}
+```
+
+### Query IssuingStockRules
+
+You can get a list of created stock rules given some filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 150);
+
+Generator<IssuingStockRule> rules = IssuingStockRule.query(params);
+
+for (IssuingStockRule rule : rules) {
+    System.out.println(rule);
+}
+```
+
+### Get an IssuingStockRule
+
+After its creation, information on a stock rule may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingStockRule rule = IssuingStockRule.get("5664445921492992");
+
+System.out.println(rule);
+```
+
+### Update an IssuingStockRule
+
+You can update a specific IssuingStockRule by its id.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("minimumBalance", 20000);
+
+IssuingStockRule rule = IssuingStockRule.update("5664445921492992", patchData);
+
+System.out.println(rule);
+```
+
+### Cancel an IssuingStockRule
+
+You can cancel a specific IssuingStockRule by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingStockRule rule = IssuingStockRule.cancel("5664445921492992");
+
+System.out.println(rule);
 ```
 
 ### Create IssuingEmbossingRequests
