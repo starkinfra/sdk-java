@@ -54,6 +54,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
     - [PixFraud](#create-a-pixfraud): Create a Pix Fraud
     - [PixKeyHolmes](#create-pixkeyholmes): Investigate the DICT registration status of a Pix Key
+    - [PixInternalTransactionReport](#create-pixinternaltransactionreports): Report transactions that happen outside of the SPI
     - [PixUser](#get-a-pixuser): Get fraud statistics of a user
     - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
     - [PixDomain](#query-pixdomains): View registered SPI participants certificates
@@ -2703,6 +2704,113 @@ Generator<PixKeyHolmes> holmes = PixKeyHolmes.query(params);
 for (PixKeyHolmes sherlock : holmes) {
     System.out.println(sherlock);
 }
+```
+
+### Create PixInternalTransactionReports
+
+Transactions that happen internally — outside of the SPI — must be reported to
+the Central Bank. Create a PixInternalTransactionReport for each such transaction.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.EndToEndId;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+List<PixInternalTransactionReport> reports = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 1234L);
+data.put("created", "2026-06-15T17:23:53.980238+00:00");
+data.put("endToEndId", EndToEndId.create("00000665"));
+data.put("method", "manual");
+data.put("referenceType", "request");
+data.put("senderAccountNumber", "76543-8");
+data.put("senderBranchCode", "2201");
+data.put("senderAccountType", "checking");
+data.put("senderBankCode", "00000665");
+data.put("senderTaxId", "012.345.678-90");
+data.put("receiverAccountNumber", "00000-0");
+data.put("receiverBranchCode", "0001");
+data.put("receiverAccountType", "checking");
+data.put("receiverBankCode", "18236120");
+data.put("receiverTaxId", "012.345.678-90");
+data.put("receiverKeyId", "+5511989898989");
+reports.add(new PixInternalTransactionReport(data));
+
+reports = PixInternalTransactionReport.create(reports);
+
+for (PixInternalTransactionReport report : reports) {
+    System.out.println(report);
+}
+```
+
+### Query PixInternalTransactionReports
+
+You can query multiple PixInternalTransactionReports according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2026-01-01");
+params.put("before", "2026-12-31");
+params.put("status", "success");
+
+Generator<PixInternalTransactionReport> reports = PixInternalTransactionReport.query(params);
+
+for (PixInternalTransactionReport report : reports) {
+    System.out.println(report);
+}
+```
+
+### Get a PixInternalTransactionReport
+
+After its creation, information on a PixInternalTransactionReport may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+PixInternalTransactionReport report = PixInternalTransactionReport.get("5656565656565656");
+
+System.out.println(report);
+```
+
+### Query PixInternalTransactionReport logs
+
+You can query PixInternalTransactionReport logs to better understand a report's life cycle.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 50);
+params.put("after", "2026-01-01");
+params.put("before", "2026-12-31");
+
+Generator<PixInternalTransactionReport.Log> logs = PixInternalTransactionReport.Log.query(params);
+
+for (PixInternalTransactionReport.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a PixInternalTransactionReport log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixInternalTransactionReport.Log log = PixInternalTransactionReport.Log.get("5656565656565656");
+
+System.out.println(log);
 ```
 
 ### Get a PixUser

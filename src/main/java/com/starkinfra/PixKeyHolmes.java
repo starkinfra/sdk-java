@@ -119,7 +119,7 @@ public final class PixKeyHolmes extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-     * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "solving", "solved", "failed"
+     * status [list of strings, default null]: filter for status of retrieved objects. The live API accepts only "solved" or "solving".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["travel", "food"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * <p>
@@ -173,7 +173,7 @@ public final class PixKeyHolmes extends Resource {
      * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-     * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "solving", "solved", "failed"
+     * status [list of strings, default null]: filter for status of retrieved objects. The live API accepts only "solved" or "solving".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["travel", "food"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
@@ -243,7 +243,7 @@ public final class PixKeyHolmes extends Resource {
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-     * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "solving", "solved", "failed"
+     * status [list of strings, default null]: filter for status of retrieved objects. The live API accepts only "solved" or "solving".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["travel", "food"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * <p>
@@ -269,7 +269,7 @@ public final class PixKeyHolmes extends Resource {
      * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 35
      * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
      * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-     * status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "solving", "solved", "failed"
+     * status [list of strings, default null]: filter for status of retrieved objects. The live API accepts only "solved" or "solving".
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["travel", "food"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call

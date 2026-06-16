@@ -3,6 +3,7 @@ package com.starkinfra;
 import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.error.ErrorElement;
 import com.starkcore.utils.SubResource;
 
 import java.util.Map;
@@ -425,7 +426,7 @@ public final class PixFraud extends Resource {
 
         public String created;
         public String type;
-        public List<String> errors;
+        public List<ErrorElement> errors;
         public PixFraud fraud;
 
         /**
@@ -442,7 +443,7 @@ public final class PixFraud extends Resource {
          * @param type [string]: type of the PixFraud event which triggered the log creation. ex: "created", "failed", "registered" or "canceled"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
-        public Log(String created, String type, List<String> errors, PixFraud fraud, String id) {
+        public Log(String created, String type, List<ErrorElement> errors, PixFraud fraud, String id) {
             super(id);
             this.created = created;
             this.type = type;
