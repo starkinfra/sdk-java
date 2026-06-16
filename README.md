@@ -53,6 +53,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [PixDirector](#create-a-pixdirector): Create a Pix Director
     - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
     - [PixFraud](#create-a-pixfraud): Create a Pix Fraud
+    - [PixKeyHolmes](#create-pixkeyholmes): Investigate the DICT registration status of a Pix Key
     - [PixUser](#get-a-pixuser): Get fraud statistics of a user
     - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
     - [PixDomain](#query-pixdomains): View registered SPI participants certificates
@@ -2654,6 +2655,54 @@ import com.starkinfra.*;
 PixFraud.Log log = PixFraud.Log.get("6532638269505536");
 
 System.out.println(log);
+```
+
+### Create PixKeyHolmes
+
+To investigate the registration status of a Pix Key in the Central Bank's DICT,
+open up a PixKeyHolmes. The API resolves it asynchronously and reports back whether
+the key is registered.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+List<PixKeyHolmes> holmes = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("keyId", "+5511989898989");
+data.put("tags", new String[]{"travel", "food"});
+holmes.add(new PixKeyHolmes(data));
+
+holmes = PixKeyHolmes.create(holmes);
+
+for (PixKeyHolmes sherlock : holmes) {
+    System.out.println(sherlock);
+}
+```
+
+### Query PixKeyHolmes
+
+You can query multiple PixKeyHolmes according to filters.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2022-01-20");
+params.put("before", "2022-01-24");
+params.put("status", "solved");
+
+Generator<PixKeyHolmes> holmes = PixKeyHolmes.query(params);
+
+for (PixKeyHolmes sherlock : holmes) {
+    System.out.println(sherlock);
+}
 ```
 
 ### Get a PixUser
