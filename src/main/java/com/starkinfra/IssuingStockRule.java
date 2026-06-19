@@ -36,7 +36,7 @@ public final class IssuingStockRule extends Resource {
      */
     static ClassData data = new ClassData(IssuingStockRule.class, "IssuingStockRule");
 
-    public Integer minimumBalance;
+    public Long minimumBalance;
     public String stockId;
     public String[] tags;
     public String[] emails;
@@ -68,7 +68,7 @@ public final class IssuingStockRule extends Resource {
      * @param created [string]: creation datetime for the IssuingStockRule. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public IssuingStockRule(
-        String id, Integer minimumBalance, String stockId, String[] tags, String[] emails,
+        String id, Long minimumBalance, String stockId, String[] tags, String[] emails,
         String[] phones, String status, String updated, String created
     ) {
         super(id);
@@ -114,7 +114,7 @@ public final class IssuingStockRule extends Resource {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.minimumBalance = ((Number) dataCopy.remove("minimumBalance")).intValue();
+        this.minimumBalance = ((Number) dataCopy.remove("minimumBalance")).longValue();
         this.stockId = (String) dataCopy.remove("stockId");
         this.tags = (String[]) dataCopy.remove("tags");
         this.emails = (String[]) dataCopy.remove("emails");
