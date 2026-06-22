@@ -245,13 +245,14 @@ public class TestPixRequest {
         HashMap<String, Object> data = new HashMap<>();
         data.put("amount", 1000L);
         data.put("externalId", "java-" + UUID.randomUUID().toString());
-        data.put("senderAccountNumber", "76543-8");
+        data.put("senderAccountNumber", "76543");
+        data.put("reason", "subscriptionFlaw");
         data.put("senderBranchCode", "2201");
         data.put("senderAccountType", "checking");
         data.put("senderName", "checking");
         data.put("senderTaxId", "594.739.480-42");
         data.put("receiverBankCode", "20018183");
-        data.put("receiverAccountNumber", "00000-0");
+        data.put("receiverAccountNumber", "14235");
         data.put("receiverBranchCode", "0001");
         data.put("receiverAccountType", "checking");
         data.put("receiverName", "Daenerys Targaryen Stormborn");

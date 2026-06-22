@@ -1519,6 +1519,7 @@ data.put("receiverAccountType", "checking");
 data.put("receiverName", "Daenerys Targaryen Stormborn");
 data.put("receiverTaxId", "012.345.678-90");
 data.put("endToEndId",EndToEndId.create("20018183"));
+data.put("reason", "customerRequest");
 requests.add(new PixRequest(data));
 
 requests = PixRequest.create(requests);

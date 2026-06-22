@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - rules and debtorWorkspaceId parameters to CreditNote resource
+- reason attribute to PixRequest resource
 
 ## [0.21.0] - 2026-05-28
 ### Added
