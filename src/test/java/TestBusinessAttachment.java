@@ -34,6 +34,22 @@ public class TestBusinessAttachment {
     }
 
     @Test
+    public void testCancel() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        List<BusinessIdentity> identities = BusinessIdentity.create(TestBusinessIdentity.exampleWithObject());
+        Assert.assertNotNull(identities.get(0).id);
+
+        List<BusinessAttachment> attachments = exampleWithObject(identities.get(0).id);
+        BusinessAttachment createdAttachment = BusinessAttachment.create(attachments).get(0);
+        Assert.assertNotNull(createdAttachment.id);
+
+        BusinessAttachment canceledAttachment = BusinessAttachment.cancel(createdAttachment.id);
+        Assert.assertEquals(createdAttachment.id, canceledAttachment.id);
+        Assert.assertEquals("canceled", canceledAttachment.status);
+    }
+
+    @Test
     public void testQuery() throws Exception {
         Settings.user = utils.User.defaultProject();
 
