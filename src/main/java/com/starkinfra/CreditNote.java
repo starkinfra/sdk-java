@@ -47,11 +47,13 @@ public final class CreditNote extends Resource {
      * rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
      * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
+     * rules [list of CreditNote.Rule objects or maps, default []]: list of CreditNote.Rule objects for modifying CreditNote behavior. ex: [CreditNote.Rule("invoiceCreationMode", "scheduled")]
      * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
      * transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
      * workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+     * debtorWorkspaceId [string]: ID of the debtor's Workspace, when it differs from the Workspace that generated this CreditNote. ex: "4545454545454545"
      * taxAmount [Long]: tax amount included in the CreditNote. ex: 100
      * nominalInterest [Number]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5
      * interest [Number]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
@@ -81,10 +83,12 @@ public final class CreditNote extends Resource {
     public Long rebateAmount;
     public String[] tags;
     public Long expiration;
+    public List<CreditNote.Rule> rules;
     public String documentId;
     public String status;
     public String[] transactionIds;
     public String workspaceId;
+    public String debtorWorkspaceId;
     public Long taxAmount;
     public Number interest;
     public Number nominalInterest;
@@ -125,11 +129,13 @@ public final class CreditNote extends Resource {
      * @param rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
      * @param tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * @param expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
+     * @param rules [list of CreditNote.Rule objects or maps, default []]: list of CreditNote.Rule objects for modifying CreditNote behavior. ex: [CreditNote.Rule("invoiceCreationMode", "scheduled")]
      * @param id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * @param documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * @param status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
      * @param transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
      * @param workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+     * @param debtorWorkspaceId [string]: ID of the debtor's Workspace, when it differs from the Workspace that generated this CreditNote. ex: "4545454545454545"
      * @param taxAmount [Long]: tax amount included in the CreditNote. ex: 100
      * @param nominalInterest [Number]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5
      * @param interest [Number]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
@@ -140,7 +146,8 @@ public final class CreditNote extends Resource {
                       Resource payment, List<CreditSigner> signers, String externalId, String streetLine1,
                       String streetLine2, String district, String city, String stateCode, String zipCode,
                       String paymentType, Long nominalAmount, Long amount, Long rebateAmount, String[] tags, String id,
-                      Long expiration, String documentId, String status, String[] transactionIds, String workspaceId,
+                      Long expiration, List<CreditNote.Rule> rules, String documentId, String status,
+                      String[] transactionIds, String workspaceId, String debtorWorkspaceId,
                       Long taxAmount, Number interest, Number nominalInterest, String created, String updated
     ) throws Exception {
         super(id);
@@ -163,10 +170,12 @@ public final class CreditNote extends Resource {
         this.rebateAmount = rebateAmount;
         this.tags = tags;
         this.expiration = expiration;
+        this.rules = rules;
         this.documentId = documentId;
         this.status = status;
         this.transactionIds = transactionIds;
         this.workspaceId = workspaceId;
+        this.debtorWorkspaceId = debtorWorkspaceId;
         this.taxAmount = taxAmount;
         this.nominalInterest = nominalInterest;
         this.interest = interest;
@@ -214,6 +223,7 @@ public final class CreditNote extends Resource {
      * rebateAmount [Long, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
      * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
+     * rules [list of CreditNote.Rule objects or maps, default []]: list of CreditNote.Rule objects for modifying CreditNote behavior. ex: [CreditNote.Rule("invoiceCreationMode", "scheduled")]
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
@@ -221,6 +231,7 @@ public final class CreditNote extends Resource {
      * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
      * transactionIds [list of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
      * workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+     * debtorWorkspaceId [string]: ID of the debtor's Workspace, when it differs from the Workspace that generated this CreditNote. ex: "4545454545454545"
      * taxAmount [Long]: tax amount included in the CreditNote. ex: 100
      * nominalInterest [Number]: yearly nominal interest rate of the CreditNote, in percentage. ex: 11.5
      * interest [Number]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
@@ -252,10 +263,12 @@ public final class CreditNote extends Resource {
         this.rebateAmount = ((Number) dataCopy.remove("rebateAmount")).longValue();
         this.tags = (String[]) dataCopy.remove("tags");
         this.expiration = (Long) dataCopy.remove("expiration");
+        this.rules = parseRules((List<Object>) dataCopy.remove("rules"));
         this.documentId = null;
         this.status = null;
         this.transactionIds = null;
         this.workspaceId = null;
+        this.debtorWorkspaceId = null;
         this.taxAmount = null;
         this.nominalInterest = null;
         this.interest = null;
@@ -289,6 +302,28 @@ public final class CreditNote extends Resource {
         for (Object signer : signers) {
             CreditSigner signerObject = new CreditSigner((Map<String, Object>) signer);
             parsed.add(signerObject);
+        }
+
+        return parsed;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<CreditNote.Rule> parseRules(List<Object> rules) throws Exception {
+        if (rules == null)
+            return null;
+
+        List<CreditNote.Rule> parsed = new ArrayList<>();
+        if (rules.size() == 0 || rules.get(0) instanceof CreditNote.Rule) {
+            for (Object rule : rules) {
+                parsed.add((CreditNote.Rule) rule);
+            }
+
+            return parsed;
+        }
+
+        for (Object rule : rules) {
+            CreditNote.Rule ruleObject = new CreditNote.Rule((Map<String, Object>) rule);
+            parsed.add(ruleObject);
         }
 
         return parsed;
@@ -631,6 +666,56 @@ public final class CreditNote extends Resource {
      */
     public static CreditNote cancel(String id) throws Exception {
         return cancel(id, null);
+    }
+
+    /**
+     * CreditNote.Rule object
+     * <p>
+     * The CreditNote.Rule object modifies the behavior of a CreditNote when passed inline through the rules parameter upon creation.
+     * <p>
+     * Parameters:
+     * key [string]: Rule to be customized, describes what CreditNote behavior will be altered. ex: "invoiceCreationMode"
+     * value [string]: value of the rule. ex: "scheduled", "instant" or "never"
+     *
+     */
+    public final static class Rule extends SubResource {
+        public String key;
+        public String value;
+
+        /**
+         * CreditNote.Rule object
+         * <p>
+         * The CreditNote.Rule object modifies the behavior of a CreditNote when passed inline through the rules parameter upon creation.
+         * <p>
+         * Parameters:
+         * @param key [string]: Rule to be customized, describes what CreditNote behavior will be altered. ex: "invoiceCreationMode"
+         * @param value [string]: value of the rule. ex: "scheduled", "instant" or "never"
+         */
+        public Rule(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        /**
+         * CreditNote.Rule object
+         * <p>
+         * The CreditNote.Rule object modifies the behavior of a CreditNote when passed inline through the rules parameter upon creation.
+         * <p>
+         * Parameters:
+         * @param data map of properties for the creation of the CreditNote.Rule
+         * key [string]: Rule to be customized, describes what CreditNote behavior will be altered. ex: "invoiceCreationMode"
+         * value [string]: value of the rule. ex: "scheduled", "instant" or "never"
+         */
+        public Rule(Map<String, Object> data) throws Exception {
+            HashMap<String, Object> dataCopy = new HashMap<>(data);
+
+            this.key = (String) dataCopy.remove("key");
+            this.value = (String) dataCopy.remove("value");
+
+            if (!dataCopy.isEmpty()) {
+                throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
+            }
+        }
     }
 
     public final static class Log extends Resource {

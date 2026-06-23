@@ -3103,6 +3103,13 @@ HashMap<String, Object> signer = new HashMap<String, Object>() {{
 }};
 signers.add(signer);
 
+List<HashMap<String, Object>> rules = new ArrayList<>();
+HashMap<String, Object> rule = new HashMap<String, Object>() {{
+    put("key", "invoiceCreationMode");
+    put("value", "scheduled");
+}};
+rules.add(rule);
+
 List<CreditNote> creditNotes = new ArrayList<>();
 HashMap<String, Object> data = new HashMap<>();
 data.put("templateId", "5707012469948416");
@@ -3113,6 +3120,7 @@ data.put("scheduled", "2022-05-05");
 data.put("invoices", invoices );
 data.put("transfer", transfer );
 data.put("signers", signers );
+data.put("rules", rules );
 data.put("externalId", "my-internal-id-8435356");
 data.put("tags", new String[]{"War supply", "Invoice #1234"});
 data.put("rebateAmount", 0);
