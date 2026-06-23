@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.22.0] - 2026-06-23
 ### Added
 - BusinessIdentity resource
 - BusinessAttachment resource
