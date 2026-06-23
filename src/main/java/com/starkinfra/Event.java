@@ -108,6 +108,9 @@ public class Event extends Resource {
             if (stringType.contains("credit-note")) {
                 return context.deserialize(jsonObject, CreditNoteEvent.class);
             }
+            if (stringType.contains("business-identity")) {
+                return context.deserialize(jsonObject, BusinessIdentityEvent.class);
+            }
             return context.deserialize(jsonObject, UnknownEvent.class);
         }
     }
@@ -224,6 +227,15 @@ public class Event extends Resource {
         public CreditNote.Log log;
 
         public CreditNoteEvent(CreditNote.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
+            super(created, isDelivered, subscription, id, workspaceId);
+            this.log = log;
+        }
+    }
+
+    public final static class BusinessIdentityEvent extends Event {
+        public BusinessIdentity.Log log;
+
+        public BusinessIdentityEvent(BusinessIdentity.Log log, String created, Boolean isDelivered, String subscription, String id, String workspaceId) {
             super(created, isDelivered, subscription, id, workspaceId);
             this.log = log;
         }
