@@ -68,6 +68,9 @@ This SDK version is compatible with the Stark Infra API v2.
     - [IndividualDocument](#create-individualdocuments): Create individual documents
     - [BusinessIdentity](#create-businessidentities): Create business identities
     - [BusinessAttachment](#create-businessattachments): Create business attachments
+  - [Ledger](#ledger)
+    - [Ledger](#create-ledgers): Track the balance of a given amount
+    - [LedgerTransaction](#create-ledgertransactions): Insert transactions to track a Ledger's balance
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -3874,6 +3877,200 @@ import com.starkinfra.*;
 BusinessAttachment.Log log = BusinessAttachment.Log.get("5155165527080960");
 
 System.out.println(log);
+```
+
+## Ledger
+
+Ledgers are used to track the balance of a given amount by inserting LedgerTransactions to them.
+They can represent a bank account, a digital wallet, an inventory product, etc.
+
+### Create Ledgers
+
+You can create Ledgers to track balances by passing a list of Ledger objects.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("externalId", "my-internal-id-123456");
+data.put("tags", new String[]{"account/123", "savings"});
+
+HashMap<String, Object> metadata = new HashMap<>();
+metadata.put("accountId", "123");
+metadata.put("accountType", "savings");
+data.put("metadata", metadata);
+
+List<Ledger.Rule> rules = new ArrayList<>();
+rules.add(new Ledger.Rule("minimumBalance", 0));
+data.put("rules", rules);
+
+List<Ledger> ledgers = new ArrayList<>();
+ledgers.add(new Ledger(data));
+
+ledgers = Ledger.create(ledgers);
+
+for (Ledger ledger : ledgers){
+    System.out.println(ledger);
+}
+```
+
+**Note**: Instead of using Ledger objects, you can also pass each element in dictionary format
+
+### Query Ledgers
+
+You can query multiple Ledgers according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+params.put("tags", new String[]{"account/123", "savings"});
+
+Generator<Ledger> ledgers = Ledger.query(params);
+
+for (Ledger ledger : ledgers) {
+    System.out.println(ledger);
+}
+```
+
+### Get a Ledger
+
+After its creation, information on a Ledger may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+Ledger ledger = Ledger.get("5656565656565656");
+
+System.out.println(ledger);
+```
+
+### Update a Ledger
+
+You can update a specific Ledger by passing its id.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<Ledger.Rule> rules = new ArrayList<>();
+rules.add(new Ledger.Rule("minimumBalance", 0));
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("rules", rules);
+
+Ledger ledger = Ledger.update("5656565656565656", patchData);
+
+System.out.println(ledger);
+```
+
+### Query Ledger logs
+
+You can query Ledger logs to better understand Ledger life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<Ledger.Log> logs = Ledger.Log.query(params);
+
+for (Ledger.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a Ledger log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+Ledger.Log log = Ledger.Log.get("5656565656565656");
+
+System.out.println(log);
+```
+
+### Create LedgerTransactions
+
+You can insert LedgerTransactions into a Ledger to track its balance.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+HashMap<String, Object> data = new HashMap<>();
+data.put("amount", 11234);
+data.put("ledgerId", "5656565656565656");
+data.put("externalId", "my-internal-id-123456");
+data.put("source", "bank-transfer/123");
+data.put("tags", new String[]{"transfer/123", "savings"});
+
+HashMap<String, Object> metadata = new HashMap<>();
+metadata.put("orderId", "123");
+metadata.put("orderType", "purchase");
+data.put("metadata", metadata);
+
+List<LedgerTransaction> transactions = new ArrayList<>();
+transactions.add(new LedgerTransaction(data));
+
+transactions = LedgerTransaction.create(transactions);
+
+for (LedgerTransaction transaction : transactions){
+    System.out.println(transaction);
+}
+```
+
+**Note**: Instead of using LedgerTransaction objects, you can also pass each element in dictionary format
+
+### Query LedgerTransactions
+
+You can query multiple LedgerTransactions according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("ledgerId", "5656565656565656");
+params.put("limit", 10);
+params.put("flow", "in");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<LedgerTransaction> transactions = LedgerTransaction.query(params);
+
+for (LedgerTransaction transaction : transactions) {
+    System.out.println(transaction);
+}
+```
+
+### Get a LedgerTransaction
+
+After its creation, information on a LedgerTransaction may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+LedgerTransaction transaction = LedgerTransaction.get("5656565656565656");
+
+System.out.println(transaction);
 ```
 
 ## Webhook
