@@ -22,6 +22,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - LedgerLog resource
 - LedgerTransaction resource
 - IssuingStockRule resource
+- PixFraud Log resource
+- PixKeyHolmes resource
+- PixInternalTransactionReport resource
 
 ## [0.21.0] - 2026-05-28
 ### Added
