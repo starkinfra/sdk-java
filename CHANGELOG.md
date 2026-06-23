@@ -18,6 +18,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - BusinessAttachment resource
 - rules and debtorWorkspaceId parameters to CreditNote resource
 - reason attribute to PixRequest resource
+- Ledger resource
+- LedgerLog resource
+- LedgerTransaction resource
 
 ## [0.21.0] - 2026-05-28
 ### Added
