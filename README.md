@@ -66,6 +66,8 @@ This SDK version is compatible with the Stark Infra API v2.
   - [Identity](#identity)
     - [IndividualIdentity](#create-individualidentities): Create individual identities
     - [IndividualDocument](#create-individualdocuments): Create individual documents
+    - [BusinessIdentity](#create-businessidentities): Create business identities
+    - [BusinessAttachment](#create-businessattachments): Create business attachments
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -3645,6 +3647,235 @@ IndividualDocument.Log log = IndividualDocument.Log.get("5155165527080960");
 System.out.println(log);
 ```
 
+### Create BusinessIdentities
+
+You can create a BusinessIdentity to validate a company through its tax ID (CNPJ).
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> identity = new HashMap<>();
+identity.put("taxId", "20.018.183/0001-80");
+identity.put("tags", new String[]{"onboarding-123"});
+
+List<BusinessIdentity> identities = new ArrayList<>();
+identities.add(new BusinessIdentity(identity));
+
+identities = BusinessIdentity.create(identities);
+
+for (BusinessIdentity identity : identities){
+    System.out.println(identity);
+}
+```
+
+**Note**: Instead of using BusinessIdentity objects, you can also pass each element in dictionary format
+
+### Query BusinessIdentities
+
+You can query multiple BusinessIdentities according to filters.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "success");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<BusinessIdentity> identities = BusinessIdentity.query(params);
+
+for (BusinessIdentity identity : identities) {
+    System.out.println(identity);
+}
+```
+
+### Get a BusinessIdentity
+
+After its creation, information on a BusinessIdentity may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+BusinessIdentity identity = BusinessIdentity.get("5155165527080960");
+
+System.out.println(identity);
+```
+
+### Update a BusinessIdentity
+
+You can update a specific BusinessIdentity status to "processing" to send it to validation, and/or update its tags.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("status", "processing");
+
+BusinessIdentity identity = BusinessIdentity.update("5155165527080960", patchData);
+
+System.out.println(identity);
+```
+
+**Note**: Before sending your BusinessIdentity to validation by patching its status, you must send all the required documents using the create method of the BusinessAttachment resource. Note that you must reference the BusinessIdentity in the create method of the BusinessAttachment resource by its id.
+
+### Cancel a BusinessIdentity
+
+You can cancel a BusinessIdentity before updating its status to processing.
+
+```java
+import com.starkinfra.*;
+
+BusinessIdentity identity = BusinessIdentity.cancel("5155165527080960");
+
+System.out.println(identity);
+```
+
+### Query BusinessIdentity logs
+
+You can query BusinessIdentity logs to better understand BusinessIdentity life cycles.
+
+```java
+import com.starkinfra.BusinessIdentity;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<BusinessIdentity.Log> logs = BusinessIdentity.Log.query(params);
+
+for (BusinessIdentity.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a BusinessIdentity log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+BusinessIdentity.Log log = BusinessIdentity.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
+### Create BusinessAttachments
+
+You can create a BusinessAttachment to attach documents to a specific BusinessIdentity.
+You must reference the desired BusinessIdentity by its id. A BusinessIdentity accepts at most 2 attachments.
+
+```java
+import com.starkinfra.*;
+import java.nio.file.Files;
+import java.io.File;
+
+File documentFile = new File(path);
+byte[] documentBytes = Files.readAllBytes(documentFile.toPath());
+
+HashMap<String, Object> attachment = new HashMap<>();
+attachment.put("name", "contrato-social.pdf");
+attachment.put("content", documentBytes);
+attachment.put("contentType", "application/pdf");
+attachment.put("businessIdentityId", "5155165527080960");
+attachment.put("tags", new String[]{"doc-principal"});
+
+List<BusinessAttachment> attachments = new ArrayList<>();
+attachments.add(new BusinessAttachment(attachment));
+
+attachments = BusinessAttachment.create(attachments);
+
+for (BusinessAttachment attachment : attachments){
+    System.out.println(attachment);
+}
+```
+
+**Note**: Instead of using BusinessAttachment objects, you can also pass each element in dictionary format
+
+### Query BusinessAttachments
+
+You can query multiple BusinessAttachments according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("status", "approved");
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<BusinessAttachment> attachments = BusinessAttachment.query(params);
+
+for (BusinessAttachment attachment : attachments) {
+    System.out.println(attachment);
+}
+```
+
+### Get a BusinessAttachment
+
+After its creation, information on a BusinessAttachment may be retrieved by its id.
+Pass `expand` with `["content"]` to also retrieve the document content.
+
+```java
+import com.starkinfra.*;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", new String[]{"content"});
+
+BusinessAttachment attachment = BusinessAttachment.get("5155165527080960", params);
+
+System.out.println(attachment);
+```
+
+### Cancel a BusinessAttachment
+
+You can cancel a BusinessAttachment that has not been sent to processing yet.
+
+```java
+import com.starkinfra.*;
+
+BusinessAttachment attachment = BusinessAttachment.cancel("5155165527080960");
+
+System.out.println(attachment);
+```
+
+### Query BusinessAttachment logs
+
+You can query BusinessAttachment logs to better understand BusinessAttachment life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+
+Generator<BusinessAttachment.Log> logs = BusinessAttachment.Log.query(params);
+
+for (BusinessAttachment.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a BusinessAttachment log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+BusinessAttachment.Log log = BusinessAttachment.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
 ## Webhook
 
 ### Create a webhook subscription
@@ -3658,7 +3889,7 @@ import java.util.HashMap;
 HashMap<String, Object> data = new HashMap<>();
 data.put("url", "https://webhook.site/dd784f26-1d6a-4ca6-81cb-fda0267761ec");
 data.put("subscriptions", new String[]{
-    "contract", "credit-note", "signer",
+    "contract", "credit-note", "signer", "business-identity",
     "issuing-card", "issuing-invoice", "issuing-purchase",
     "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-chargeback", "pix-infraction"
 });
@@ -3744,6 +3975,10 @@ else if (event.subscription.contains("issuing-purchase")) {
 else if (event.subscription.contains("credit-note")) {
     CreditNote.Log log = ((Event.CreditNoteEvent) event).log;
     System.out.println(log.note);
+}
+else if (event.subscription.contains("business-identity")) {
+    BusinessIdentity.Log log = ((Event.BusinessIdentityEvent) event).log;
+    System.out.println(log.identity);
 }
 ```
 

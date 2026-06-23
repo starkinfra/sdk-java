@@ -14,6 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- BusinessIdentity resource
+- BusinessAttachment resource
 - rules and debtorWorkspaceId parameters to CreditNote resource
 - reason attribute to PixRequest resource
 
