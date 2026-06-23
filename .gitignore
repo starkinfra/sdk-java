@@ -20,3 +20,6 @@ bin/
 **/sandbox.json
 **/snippet.java
 gradle.properties
+
+# IDEs
+.vscode/
