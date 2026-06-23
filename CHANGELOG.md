@@ -21,6 +21,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - Ledger resource
 - LedgerLog resource
 - LedgerTransaction resource
+- IssuingStockRule resource
 
 ## [0.21.0] - 2026-05-28
 ### Added
