@@ -24,6 +24,8 @@ public class IssuingToken extends Resource {
      * cardId [string]: card ID which the token is bounded to. ex: "5656565656565656"
      * walletId [string]: wallet provider which the token is bounded to. ex: "google"
      * walletName [string]: wallet name. ex: "GOOGLE"
+     * walletDeviceScore [number]: wallet device score. ex: 7.6
+     * walletAccountScore [number]: wallet account score. ex: 7.6
      * merchantId [string]: merchant unique id. ex: "5656565656565656"
      * id [string]: unique id returned when IssuingToken is created. ex: "5656565656565656"
      * externalId [string]: a unique string among all your IssuingTokens, used to avoid resource duplication. ex: "DSHRMC00002626944b0e3b539d4d459281bdba90c2588791"
@@ -47,6 +49,8 @@ public class IssuingToken extends Resource {
     public String cardId;
     public String walletId;
     public String walletName;
+    public Number walletDeviceScore;
+    public Number walletAccountScore;
     public String merchantId;
     public String externalId;
     public String[] tags;
@@ -74,6 +78,8 @@ public class IssuingToken extends Resource {
      * @param cardId [string]: card ID which the token is bounded to. ex: "5656565656565656"
      * @param walletId [string]: wallet provider which the token is bounded to. ex: "google"
      * @param walletName [string]: wallet name. ex: "GOOGLE"
+     * @param walletDeviceScore [number]: wallet device score. ex: 7.6
+     * @param walletAccountScore [number]: wallet account score. ex: 7.6
      * @param merchantId [string]: merchant unique id. ex: "5656565656565656"
      * @param id [string]: unique id returned when IssuingToken is created. ex: "5656565656565656"
      * @param externalId [string]: a unique string among all your IssuingTokens, used to avoid resource duplication. ex: "DSHRMC00002626944b0e3b539d4d459281bdba90c2588791"
@@ -92,7 +98,7 @@ public class IssuingToken extends Resource {
      * @param walletInstanceId [string]: unique id referred to the wallet app in the current device. ex: "71583be4777eb89aaf0345eebeb82594f096615ed17862d0"
      *
      */
-    public IssuingToken(String cardId, String walletId, String walletName, String merchantId, String id,
+    public IssuingToken(String cardId, String walletId, String walletName, Number walletDeviceScore, Number walletAccountScore, String merchantId, String id,
                         String externalId,  String [] tags, String status, String created, String updated,
                         String activationCode, String methodCode, String deviceType, String deviceName,
                         String deviceSerialNumber, String deviceOsName, String deviceOsVersion, String deviceImei,
@@ -103,6 +109,8 @@ public class IssuingToken extends Resource {
         this.cardId = cardId;
         this.walletId = walletId;
         this.walletName = walletName;
+        this.walletDeviceScore = walletDeviceScore;
+        this.walletAccountScore = walletAccountScore;
         this.merchantId = merchantId;
         this.externalId = externalId;
         this.tags = tags;
@@ -129,6 +137,8 @@ public class IssuingToken extends Resource {
      * cardId [string]: card ID which the token is bounded to. ex: "5656565656565656"
      * walletId [string]: wallet provider which the token is bounded to. ex: "google"
      * walletName [string]: wallet name. ex: "GOOGLE"
+     * walletDeviceScore [number]: wallet device score. ex: 7.6
+     * walletAccountScore [number]: wallet account score. ex: 7.6
      * merchantId [string]: merchant unique id. ex: "5656565656565656"
      * Attributes (IssuingToken only):
      * id [string]: unique id returned when IssuingToken is created. ex: "5656565656565656"
@@ -156,6 +166,8 @@ public class IssuingToken extends Resource {
         this.cardId = null;
         this.walletId = null;
         this.walletName = null;
+        this.walletDeviceScore = null;
+        this.walletAccountScore = null;
         this.merchantId = null;
         this.externalId = null;
         this.tags = null;

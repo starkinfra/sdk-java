@@ -38,6 +38,7 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
      * merchantCategoryType [string]: merchant category type. ex "food"
+     * merchantCategoryNumber [integer]: merchant category number. ex: 5814
      * merchantCountryCode [string]: merchant country code. ex: "USA"
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -53,6 +54,7 @@ public final class IssuingPurchase extends Resource {
      * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * confirmed [Boolean]: whether the IssuingPurchase has been confirmed. ex: true
      * description [string]: IssuingPurchase description. ex: "Office Supplies"
      * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
      * zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -84,6 +86,7 @@ public final class IssuingPurchase extends Resource {
     public String merchantCurrencySymbol;
     public String merchantCategoryCode;
     public String merchantCategoryType;
+    public Integer merchantCategoryNumber;
     public String merchantCountryCode;
     public String acquirerId;
     public String merchantId;
@@ -96,6 +99,7 @@ public final class IssuingPurchase extends Resource {
     public String[] tags;
     public String[] issuingTransactionIds;
     public String status;
+    public Boolean confirmed;
     public String description;
     public HashMap<String, Object> metadata;
     public String zipCode;
@@ -129,6 +133,7 @@ public final class IssuingPurchase extends Resource {
      * @param merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * @param merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
      * @param merchantCategoryType [string]: merchant category type. ex "food"
+     * @param merchantCategoryNumber [integer]: merchant category number. ex: 5814
      * @param merchantCountryCode [string]: merchant country code. ex: "USA"
      * @param acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * @param merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -143,6 +148,7 @@ public final class IssuingPurchase extends Resource {
      * @param id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * @param status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * @param confirmed [Boolean]: whether the IssuingPurchase has been confirmed. ex: true
      * @param description [string]: IssuingPurchase description. ex: "Office Supplies"
      * @param metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
      * @param zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -157,9 +163,9 @@ public final class IssuingPurchase extends Resource {
     public IssuingPurchase(String id, String holderName, String productId, String cardId, String cardEnding, String purpose, Integer installmentCount, Long amount,
                            Long tax, Long issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol,
                            Long merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol,
-                           String merchantCategoryCode,String merchantCategoryType, String merchantCountryCode, String acquirerId, String merchantId,
+                           String merchantCategoryCode,String merchantCategoryType, Integer merchantCategoryNumber, String merchantCountryCode, String acquirerId, String merchantId,
                            String merchantName, Long merchantFee, String walletId, String methodCode, Number score,
-                           String[] issuingTransactionIds, String endToEndId, String status, String description, HashMap<String, Object> metadata, String[] tags, String zipCode,
+                           String[] issuingTransactionIds, String endToEndId, String status, Boolean confirmed, String description, HashMap<String, Object> metadata, String[] tags, String zipCode,
                            String updated, String created, Boolean isPartialAllowed, String[] cardTags, String holderId, String[] holderTags
     ) {
         super(id);
@@ -179,6 +185,7 @@ public final class IssuingPurchase extends Resource {
         this.merchantCurrencySymbol = merchantCurrencySymbol;
         this.merchantCategoryCode = merchantCategoryCode;
         this.merchantCategoryType = merchantCategoryType;
+        this.merchantCategoryNumber = merchantCategoryNumber;
         this.merchantCountryCode = merchantCountryCode;
         this.acquirerId = acquirerId;
         this.merchantId = merchantId;
@@ -191,6 +198,7 @@ public final class IssuingPurchase extends Resource {
         this.tags = tags;
         this.issuingTransactionIds = issuingTransactionIds;
         this.status = status;
+        this.confirmed = confirmed;
         this.description = description;
         this.metadata = metadata;
         this.zipCode = zipCode;
@@ -224,6 +232,7 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
      * merchantCategoryType [string]: merchant category type. ex "food"
+     * merchantCategoryNumber [integer]: merchant category number. ex: 5814
      * merchantCountryCode [string]: merchant country code. ex: "USA"
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -239,6 +248,7 @@ public final class IssuingPurchase extends Resource {
      * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * confirmed [Boolean]: whether the IssuingPurchase has been confirmed. ex: true
      * description [string]: IssuingPurchase description. ex: "Office Supplies"
      * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
      * zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -272,6 +282,7 @@ public final class IssuingPurchase extends Resource {
         this.merchantCurrencySymbol = (String) dataCopy.remove("merchantCurrencySymbol");
         this.merchantCategoryCode = (String) dataCopy.remove("merchantCategoryCode");
         this.merchantCategoryType = (String) dataCopy.remove("merchantCategoryType");
+        this.merchantCategoryNumber = (Integer) dataCopy.remove("merchantCategoryNumber");
         this.merchantCountryCode = (String) dataCopy.remove("merchantCountryCode");
         this.acquirerId = (String) dataCopy.remove("acquirerId");
         this.merchantId = (String) dataCopy.remove("merchantId");
@@ -283,6 +294,7 @@ public final class IssuingPurchase extends Resource {
         this.issuingTransactionIds = (String[]) dataCopy.remove("issuingTransactionIds");
         this.endToEndId = (String) dataCopy.remove("endToEndId");
         this.status = (String) dataCopy.remove("status");
+        this.confirmed = (Boolean) dataCopy.remove("confirmed");
         this.description = (String) dataCopy.remove("description");
         this.metadata = (HashMap<String, Object>) dataCopy.remove("metadata");
         this.zipCode = (String) dataCopy.remove("zipCode");

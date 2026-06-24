@@ -27,6 +27,9 @@ public final class IssuingRule extends Resource {
      * counterAmount [Long]: current rule spent amount. ex: 1000
      * currencySymbol [string]: currency symbol. ex: "R$"
      * currencyName [string]: currency name. ex: "Brazilian Real"
+     * schedule [string]: schedule time for the rule to be applied. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"
+     * purposes [list of strings]: list of purposes for spending restrictions. ex: ["purchase", "withdrawal"]
+     * merchants [list of strings]: list of merchants accepted by the rule. ex: ["5656565656565656", "4545454545454545"]
      *
      */
     static ClassData data = new ClassData(IssuingRule.class, "IssuingRule");
@@ -41,6 +44,9 @@ public final class IssuingRule extends Resource {
     public Number counterAmount;
     public String currencySymbol;
     public String currencyName;
+    public String schedule;
+    public String[] purposes;
+    public String[] merchants;
 
     /**
      * IssuingRule object
@@ -59,10 +65,14 @@ public final class IssuingRule extends Resource {
      * @param counterAmount [Long]: current rule spent amount. ex: 1000
      * @param currencySymbol [string]: currency symbol. ex: "R$"
      * @param currencyName [string]: currency name. ex: "Brazilian Real"
+     * @param schedule [string]: schedule time for the rule to be applied. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"
+     * @param purposes [list of strings]: list of purposes for spending restrictions. ex: ["purchase", "withdrawal"]
+     * @param merchants [list of strings]: list of merchants accepted by the rule. ex: ["5656565656565656", "4545454545454545"]
      */
     public IssuingRule(String id, String name, Long amount, String interval, String currencyCode,
                        List<MerchantCategory> categories, List<MerchantCountry> countries, List<CardMethod> methods,
-                       Long counterAmount, String currencySymbol, String currencyName
+                       Long counterAmount, String currencySymbol, String currencyName,
+                       String schedule, String[] purposes, String[] merchants
     ) {
         super(id);
         this.name = name;
@@ -75,6 +85,9 @@ public final class IssuingRule extends Resource {
         this.counterAmount = counterAmount;
         this.currencySymbol = currencySymbol;
         this.currencyName = currencyName;
+        this.schedule = schedule;
+        this.purposes = purposes;
+        this.merchants = merchants;
     }
 
     /**
@@ -99,6 +112,9 @@ public final class IssuingRule extends Resource {
      * counterAmount [Long]: current rule spent amount. ex: 1000
      * currencySymbol [string]: currency symbol. ex: "R$"
      * currencyName [string]: currency name. ex: "Brazilian Real"
+     * schedule [string]: schedule time for the rule to be applied. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"
+     * purposes [list of strings]: list of purposes for spending restrictions. ex: ["purchase", "withdrawal"]
+     * merchants [list of strings]: list of merchants accepted by the rule. ex: ["5656565656565656", "4545454545454545"]
      * @throws Exception error in the request
      */
     public IssuingRule(Map<String, Object> data) throws Exception {
@@ -115,6 +131,9 @@ public final class IssuingRule extends Resource {
         this.counterAmount = null;
         this.currencySymbol = null;
         this.currencyName = null;
+        this.schedule = null;
+        this.purposes = null;
+        this.merchants = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
