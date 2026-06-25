@@ -30,7 +30,7 @@ public final class IssuingBillingInvoice extends Resource {
      * nominalAmount [Long]: nominal amount in cents. ex: 1234 (= R$ 12.34)
      * status [string]: current IssuingBillingInvoice status. ex: "created" or "paid"
      * brcode [string]: BR Code for the invoice payment. ex: "00020101021226930014br.gov.bcb.pix..."
-     * link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.com/invoice/123"
+     * link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.sandbox.starkbank.com/billinginvoicelink/97de4d51e8984c459639a645ce920abb"
      * due [string]: due datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * start [string]: billing cycle start datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * end [string]: billing cycle end datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -73,7 +73,7 @@ public final class IssuingBillingInvoice extends Resource {
      * @param nominalAmount [Long]: nominal amount in cents. ex: 1234 (= R$ 12.34)
      * @param status [string]: current IssuingBillingInvoice status. ex: "created" or "paid"
      * @param brcode [string]: BR Code for the invoice payment. ex: "00020101021226930014br.gov.bcb.pix..."
-     * @param link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.com/invoice/123"
+     * @param link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.sandbox.starkbank.com/billinginvoicelink/97de4d51e8984c459639a645ce920abb"
      * @param due [string]: due datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param start [string]: billing cycle start datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param end [string]: billing cycle end datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -120,7 +120,7 @@ public final class IssuingBillingInvoice extends Resource {
      * nominalAmount [Long]: nominal amount in cents. ex: 1234 (= R$ 12.34)
      * status [string]: current IssuingBillingInvoice status. ex: "created" or "paid"
      * brcode [string]: BR Code for the invoice payment. ex: "00020101021226930014br.gov.bcb.pix..."
-     * link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.com/invoice/123"
+     * link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.sandbox.starkbank.com/billinginvoicelink/97de4d51e8984c459639a645ce920abb"
      * due [string]: due datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * start [string]: billing cycle start datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
      * end [string]: billing cycle end datetime for the IssuingBillingInvoice. ex: "2020-03-10 10:30:00.000000+00:00"
