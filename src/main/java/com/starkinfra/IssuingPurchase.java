@@ -27,6 +27,7 @@ public final class IssuingPurchase extends Resource {
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
      * purpose [string]: purchase purpose. ex: "purchase"
+     * installmentCount [integer]: quantity of installments. Minimum = 1. ex: 12
      * amount [Long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * tax [Long]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * issuerAmount [Long]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -37,6 +38,7 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
      * merchantCategoryType [string]: merchant category type. ex "food"
+     * merchantCategoryNumber [integer]: merchant category number. ex: 5814
      * merchantCountryCode [string]: merchant country code. ex: "USA"
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -52,6 +54,7 @@ public final class IssuingPurchase extends Resource {
      * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * confirmed [Boolean]: whether the IssuingPurchase has been confirmed. ex: true
      * description [string]: IssuingPurchase description. ex: "Office Supplies"
      * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
      * zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -72,6 +75,7 @@ public final class IssuingPurchase extends Resource {
     public String cardId;
     public String cardEnding;
     public String purpose;
+    public Integer installmentCount;
     public Long amount;
     public Long tax;
     public Long issuerAmount;
@@ -82,6 +86,7 @@ public final class IssuingPurchase extends Resource {
     public String merchantCurrencySymbol;
     public String merchantCategoryCode;
     public String merchantCategoryType;
+    public Integer merchantCategoryNumber;
     public String merchantCountryCode;
     public String acquirerId;
     public String merchantId;
@@ -94,6 +99,7 @@ public final class IssuingPurchase extends Resource {
     public String[] tags;
     public String[] issuingTransactionIds;
     public String status;
+    public Boolean confirmed;
     public String description;
     public HashMap<String, Object> metadata;
     public String zipCode;
@@ -116,6 +122,7 @@ public final class IssuingPurchase extends Resource {
      * @param cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param cardEnding [string]: last 4 digits of the card number. ex: "1234"
      * @param purpose [string]: purchase purpose. ex: "purchase"
+     * @param installmentCount [integer]: quantity of installments. Minimum = 1. ex: 12
      * @param amount [Long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * @param tax [Long]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * @param issuerAmount [Long]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -126,6 +133,7 @@ public final class IssuingPurchase extends Resource {
      * @param merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * @param merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
      * @param merchantCategoryType [string]: merchant category type. ex "food"
+     * @param merchantCategoryNumber [integer]: merchant category number. ex: 5814
      * @param merchantCountryCode [string]: merchant country code. ex: "USA"
      * @param acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * @param merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -140,6 +148,7 @@ public final class IssuingPurchase extends Resource {
      * @param id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * @param status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * @param confirmed [Boolean]: whether the IssuingPurchase has been confirmed. ex: true
      * @param description [string]: IssuingPurchase description. ex: "Office Supplies"
      * @param metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
      * @param zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -151,12 +160,12 @@ public final class IssuingPurchase extends Resource {
      * @param holderId [string]: card holder ID. ex: "5656565656565656"
      * @param holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      */
-    public IssuingPurchase(String id, String holderName, String productId, String cardId, String cardEnding, String purpose, Long amount,
+    public IssuingPurchase(String id, String holderName, String productId, String cardId, String cardEnding, String purpose, Integer installmentCount, Long amount,
                            Long tax, Long issuerAmount, String issuerCurrencyCode, String issuerCurrencySymbol,
                            Long merchantAmount, String merchantCurrencyCode, String merchantCurrencySymbol,
-                           String merchantCategoryCode,String merchantCategoryType, String merchantCountryCode, String acquirerId, String merchantId,
+                           String merchantCategoryCode,String merchantCategoryType, Integer merchantCategoryNumber, String merchantCountryCode, String acquirerId, String merchantId,
                            String merchantName, Long merchantFee, String walletId, String methodCode, Number score,
-                           String[] issuingTransactionIds, String endToEndId, String status, String description, HashMap<String, Object> metadata, String[] tags, String zipCode,
+                           String[] issuingTransactionIds, String endToEndId, String status, Boolean confirmed, String description, HashMap<String, Object> metadata, String[] tags, String zipCode,
                            String updated, String created, Boolean isPartialAllowed, String[] cardTags, String holderId, String[] holderTags
     ) {
         super(id);
@@ -165,6 +174,7 @@ public final class IssuingPurchase extends Resource {
         this.cardId = cardId;
         this.cardEnding = cardEnding;
         this.purpose = purpose;
+        this.installmentCount = installmentCount;
         this.amount = amount;
         this.tax = tax;
         this.issuerAmount = issuerAmount;
@@ -175,6 +185,7 @@ public final class IssuingPurchase extends Resource {
         this.merchantCurrencySymbol = merchantCurrencySymbol;
         this.merchantCategoryCode = merchantCategoryCode;
         this.merchantCategoryType = merchantCategoryType;
+        this.merchantCategoryNumber = merchantCategoryNumber;
         this.merchantCountryCode = merchantCountryCode;
         this.acquirerId = acquirerId;
         this.merchantId = merchantId;
@@ -187,6 +198,7 @@ public final class IssuingPurchase extends Resource {
         this.tags = tags;
         this.issuingTransactionIds = issuingTransactionIds;
         this.status = status;
+        this.confirmed = confirmed;
         this.description = description;
         this.metadata = metadata;
         this.zipCode = zipCode;
@@ -209,6 +221,7 @@ public final class IssuingPurchase extends Resource {
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
      * purpose [string]: purchase purpose. ex: "purchase"
+     * installmentCount [integer]: quantity of installments. Minimum = 1. ex: 12
      * amount [Long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * tax [Long]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * issuerAmount [Long]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -219,6 +232,7 @@ public final class IssuingPurchase extends Resource {
      * merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
      * merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
      * merchantCategoryType [string]: merchant category type. ex "food"
+     * merchantCategoryNumber [integer]: merchant category number. ex: 5814
      * merchantCountryCode [string]: merchant country code. ex: "USA"
      * acquirerId [string]: acquirer ID. ex: "5656565656565656"
      * merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -234,6 +248,7 @@ public final class IssuingPurchase extends Resource {
      * id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * issuingTransactionIds [list of strings]: list of ledger transaction ids linked to this Purchase
      * status [string]: current IssuingPurchase status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+     * confirmed [Boolean]: whether the IssuingPurchase has been confirmed. ex: true
      * description [string]: IssuingPurchase description. ex: "Office Supplies"
      * metadata [Hashmap object]: Hashmap object used to store additional information about the IssuingPurchase object. ex: { authorizationId: "OjZAqj" }
      * zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -246,46 +261,50 @@ public final class IssuingPurchase extends Resource {
      * holderTags [list of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
      * @throws Exception error in the request
      */
+    @SuppressWarnings("unchecked")
     public IssuingPurchase(Map<String, Object> data) throws Exception {
         super(null);
         HashMap<String, Object> dataCopy = new HashMap<>(data);
 
-        this.holderName = null;
-        this.productId = null;
-        this.cardId = null;
-        this.cardEnding = null;
-        this.purpose = null;
-        this.amount = null;
-        this.tax = null;
-        this.issuerAmount = null;
-        this.issuerCurrencyCode = null;
-        this.issuerCurrencySymbol = null;
-        this.merchantAmount = null;
-        this.merchantCurrencyCode = null;
-        this.merchantCurrencySymbol = null;
-        this.merchantCategoryCode = null;
-        this.merchantCategoryType = null;
-        this.merchantCountryCode = null;
-        this.acquirerId = null;
-        this.merchantId = null;
-        this.merchantName = null;
-        this.merchantFee = null;
-        this.walletId = null;
-        this.methodCode = null;
-        this.score = null;
-        this.issuingTransactionIds = null;
-        this.endToEndId = null;
-        this.status = null;
-        this.description = null;
-        this.metadata = null;
-        this.zipCode = null;
-        this.tags = null;
-        this.updated = null;
-        this.created = null;
-        this.isPartialAllowed = null;
-        this.cardTags = null;
-        this.holderId = null;
-        this.holderTags = null;
+        this.holderName = (String) dataCopy.remove("holderName");
+        this.productId = (String) dataCopy.remove("productId");
+        this.cardId = (String) dataCopy.remove("cardId");
+        this.cardEnding = (String) dataCopy.remove("cardEnding");
+        this.purpose = (String) dataCopy.remove("purpose");
+        this.installmentCount = (Integer) dataCopy.remove("installmentCount");
+        this.amount = (Long) dataCopy.remove("amount");
+        this.tax = (Long) dataCopy.remove("tax");
+        this.issuerAmount = (Long) dataCopy.remove("issuerAmount");
+        this.issuerCurrencyCode = (String) dataCopy.remove("issuerCurrencyCode");
+        this.issuerCurrencySymbol = (String) dataCopy.remove("issuerCurrencySymbol");
+        this.merchantAmount = (Long) dataCopy.remove("merchantAmount");
+        this.merchantCurrencyCode = (String) dataCopy.remove("merchantCurrencyCode");
+        this.merchantCurrencySymbol = (String) dataCopy.remove("merchantCurrencySymbol");
+        this.merchantCategoryCode = (String) dataCopy.remove("merchantCategoryCode");
+        this.merchantCategoryType = (String) dataCopy.remove("merchantCategoryType");
+        this.merchantCategoryNumber = (Integer) dataCopy.remove("merchantCategoryNumber");
+        this.merchantCountryCode = (String) dataCopy.remove("merchantCountryCode");
+        this.acquirerId = (String) dataCopy.remove("acquirerId");
+        this.merchantId = (String) dataCopy.remove("merchantId");
+        this.merchantName = (String) dataCopy.remove("merchantName");
+        this.merchantFee = (Long) dataCopy.remove("merchantFee");
+        this.walletId = (String) dataCopy.remove("walletId");
+        this.methodCode = (String) dataCopy.remove("methodCode");
+        this.score = (Number) dataCopy.remove("score");
+        this.issuingTransactionIds = (String[]) dataCopy.remove("issuingTransactionIds");
+        this.endToEndId = (String) dataCopy.remove("endToEndId");
+        this.status = (String) dataCopy.remove("status");
+        this.confirmed = (Boolean) dataCopy.remove("confirmed");
+        this.description = (String) dataCopy.remove("description");
+        this.metadata = (HashMap<String, Object>) dataCopy.remove("metadata");
+        this.zipCode = (String) dataCopy.remove("zipCode");
+        this.tags = (String[]) dataCopy.remove("tags");
+        this.updated = (String) dataCopy.remove("updated");
+        this.created = (String) dataCopy.remove("created");
+        this.isPartialAllowed = (Boolean) dataCopy.remove("isPartialAllowed");
+        this.cardTags = (String[]) dataCopy.remove("cardTags");
+        this.holderId = (String) dataCopy.remove("holderId");
+        this.holderTags = (String[]) dataCopy.remove("holderTags");
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
@@ -322,7 +341,7 @@ public final class IssuingPurchase extends Resource {
      * @throws Exception error in the request
      */
     public static IssuingPurchase get(String id) throws Exception{
-        return Rest.getId(data, id, null);
+        return IssuingPurchase.get(id, null);
     }
 
     /**
@@ -373,7 +392,7 @@ public final class IssuingPurchase extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(Map<String, Object> params) throws Exception{
-        return Rest.getStream(data, params, null);
+        return IssuingPurchase.query(params, null);
     }
 
     /**
@@ -389,7 +408,7 @@ public final class IssuingPurchase extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query(User user) throws Exception{
-        return Rest.getStream(data, new HashMap<>(), user);
+        return IssuingPurchase.query(new HashMap<>(), user);
     }
 
     /**
@@ -402,15 +421,15 @@ public final class IssuingPurchase extends Resource {
      * @throws Exception error in the request
      */
     public static Generator<IssuingPurchase> query() throws Exception{
-        return Rest.getStream(data, new HashMap<>(), null);
+        return IssuingPurchase.query(new HashMap<>(), null);
     }
 
     public final static class Page {
-        public List<IssuingPurchase> issuingPurchases;
+        public List<IssuingPurchase> purchases;
         public String cursor;
 
-        public Page(List<IssuingPurchase> issuingPurchases, String cursor) {
-            this.issuingPurchases = issuingPurchases;
+        public Page(List<IssuingPurchase> purchases, String cursor) {
+            this.purchases = purchases;
             this.cursor = cursor;
         }
     }
@@ -499,11 +518,11 @@ public final class IssuingPurchase extends Resource {
      */
     public static IssuingPurchase.Page page(Map<String , Object> params, User user) throws Exception {
         com.starkcore.utils.Page page = Rest.getPage(data, params, user);
-        List<IssuingPurchase> issuingPurchases = new ArrayList<>();
-        for (SubResource issuingPurchase: page.entities) {
-            issuingPurchases.add((IssuingPurchase) issuingPurchase);
+        List<IssuingPurchase> purchases = new ArrayList<>();
+        for (SubResource purchase: page.entities) {
+            purchases.add((IssuingPurchase) purchase);
         }
-        return new IssuingPurchase.Page(issuingPurchases, page.cursor);
+        return new IssuingPurchase.Page(purchases, page.cursor);
     }
 
     /**

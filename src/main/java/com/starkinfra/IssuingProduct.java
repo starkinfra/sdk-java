@@ -23,6 +23,7 @@ public final class IssuingProduct extends Resource {
      * network [string]: card network flag. ex: "mastercard"
      * fundingType [string]: type of funding used for payment. ex: "credit", "debit"
      * holderType [string]: holder type. ex: "business", "individual"
+     * customerType [string]: customer type. ex: "business", "individual"
      * code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
      * created [string]: creation datetime for the IssuingProduct. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -32,6 +33,7 @@ public final class IssuingProduct extends Resource {
     public String network;
     public String fundingType;
     public String holderType;
+    public String customerType;
     public String code;
     public String created;
 
@@ -45,15 +47,17 @@ public final class IssuingProduct extends Resource {
      * @param network [string]: card network flag. ex: "mastercard"
      * @param fundingType [string]: type of funding used for payment. ex: "credit", "debit"
      * @param holderType [string]: holder type. ex: "business", "individual"
+     * @param customerType [string]: customer type. ex: "business", "individual"
      * @param code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
      * @param created [string]: creation datetime for the IssuingProduct. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IssuingProduct(String id, String network, String fundingType, String code, String holderType, String created) {
+    public IssuingProduct(String id, String network, String fundingType, String code, String holderType, String customerType, String created) {
         super(id);
         this.network = network;
         this.fundingType = fundingType;
         this.code = code;
         this.holderType = holderType;
+        this.customerType = customerType;
         this.created = created;
     }
 
@@ -67,6 +71,7 @@ public final class IssuingProduct extends Resource {
      * network [string]: card network flag. ex: "mastercard"
      * fundingType [string]: type of funding used for payment. ex: "credit", "debit"
      * holderType [string]: holder type. ex: "business", "individual"
+     * customerType [string]: customer type. ex: "business", "individual"
      * code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
      * created [string]: creation datetime for the IssuingProduct. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
@@ -79,6 +84,7 @@ public final class IssuingProduct extends Resource {
         this.fundingType = null;
         this.code = null;
         this.holderType = null;
+        this.customerType = null;
         this.created = null;
 
         if (!dataCopy.isEmpty()) {

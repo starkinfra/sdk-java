@@ -21,6 +21,8 @@ public final class IssuingBalance extends Resource {
      * Parameters:
      * id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
      * amount [Long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)
+     * limit [Long]: current issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)
+     * maxLimit [Long]: maximum issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)
      * currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
      * updated [string]: latest update datetime for the IssuingBalance. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -28,6 +30,8 @@ public final class IssuingBalance extends Resource {
     static ClassData data = new ClassData(IssuingBalance.class, "IssuingBalance");
 
     public Long amount;
+    public Long limit;
+    public Long maxLimit;
     public String currency;
     public String updated;
 
@@ -42,12 +46,16 @@ public final class IssuingBalance extends Resource {
      * Parameters:
      * @param id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
      * @param amount [Long]: current issuing balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+     * @param limit [Long]: current issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
+     * @param maxLimit [Long]: maximum issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
      * @param currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
      * @param updated [string]: latest update datetime for the IssuingBalance. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IssuingBalance(String id, Long amount, String currency, String updated) {
+    public IssuingBalance(String id, Long amount, Long limit, Long maxLimit, String currency, String updated) {
         super(id);
         this.amount = amount;
+        this.limit = limit;
+        this.maxLimit = maxLimit;
         this.currency = currency;
         this.updated = updated;
     }

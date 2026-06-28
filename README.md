@@ -39,6 +39,8 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Invoices](#create-issuinginvoices): Add money to your issuing balance
     - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
     - [Balance](#get-your-issuingbalance): View your issuing balance
+    - [BillingInvoices](#query-issuingbillinginvoices): View the invoices charged to your issuing balance
+    - [BillingTransactions](#query-issuingbillingtransactions): View the transactions charged to your issuing balance
     - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
     - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
   - [Pix](#Pix)
@@ -655,6 +657,56 @@ import com.starkinfra.*;
 IssuingDesign design = IssuingDesign.get("5747368922185728");
 
 System.out.println(design);
+```
+
+### Query IssuingBillingInvoices
+
+You can get a list of issuing billing invoices given some filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+Generator<IssuingBillingInvoice> invoices = IssuingBillingInvoice.query(params);
+
+for (IssuingBillingInvoice invoice : invoices) {
+    System.out.println(invoice);
+}
+```
+
+### Get an IssuingBillingInvoice
+
+Information on a single issuing billing invoice may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+IssuingBillingInvoice invoice = IssuingBillingInvoice.get("5656565656565656");
+
+System.out.println(invoice);
+```
+
+### Query IssuingBillingTransactions
+
+You can get a list of issuing billing transactions given some filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 3);
+params.put("after", "2019-04-01");
+params.put("before", "2030-04-30");
+Generator<IssuingBillingTransaction> transactions = IssuingBillingTransaction.query(params);
+
+for (IssuingBillingTransaction transaction : transactions) {
+    System.out.println(transaction);
+}
 ```
 
 ### Query IssuingEmbossingKits

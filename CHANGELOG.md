@@ -13,6 +13,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
+- installmentCount attribute to IssuingPurchase resource
 
 ## [0.22.0] - 2026-06-23
 ### Added
