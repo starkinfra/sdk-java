@@ -40,7 +40,7 @@ public final class IssuingCard extends Resource {
      * holderId [string]: card holder unique id. ex: "5656565656565656"
      * type [string]: card type. ex: "virtual"
      * status [string]: current IssuingCard status. ex: "canceled" or "active"
-     * isPinDefined [Boolean]: whether the card has a PIN defined. ex: true
+     * isPinDefined [Boolean]: Whether the card has a PIN defined. Returned only when "expand=isPinDefined" is informed in the request
      * number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".
      * securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".
      * expiration [string]: [EXPANDABLE] masked card expiration datetime. Expand to unmask the value. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -100,7 +100,7 @@ public final class IssuingCard extends Resource {
      * @param holderId [string]: card holder unique id. ex: "5656565656565656"
      * @param type [string]: card type. ex: "virtual"
      * @param status [string]: current IssuingCard status. ex: "canceled" or "active"
-     * @param isPinDefined [Boolean]: whether the card has a PIN defined. ex: true
+     * @param isPinDefined [Boolean]: Whether the card has a PIN defined. Returned only when "expand=isPinDefined" is informed in the request
      * @param number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".
      * @param securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".
      * @param expiration [string]: [EXPANDABLE] masked card expiration datetime. Expand to unmask the value. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -170,7 +170,7 @@ public final class IssuingCard extends Resource {
      * holderId [string]: card holder unique id. ex: "5656565656565656"
      * type [string]: card type. ex: "virtual"
      * status [string]: current IssuingCard status. ex: "canceled" or "active"
-     * isPinDefined [Boolean]: whether the card has a PIN defined. ex: true
+     * isPinDefined [Boolean]: Whether the card has a PIN defined. Returned only when "expand=isPinDefined" is informed in the request
      * number [string]: [EXPANDABLE] masked card number. Expand to unmask the value. ex: "123".
      * securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".
      * expiration [string]: [EXPANDABLE] masked card expiration datetime. Expand to unmask the value. ex: "2020-03-10 10:30:00.000000+00:00".

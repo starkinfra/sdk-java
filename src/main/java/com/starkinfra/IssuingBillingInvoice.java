@@ -24,8 +24,8 @@ public final class IssuingBillingInvoice extends Resource {
      * id [string]: unique id returned when the IssuingBillingInvoice is created. ex: "5656565656565656"
      * taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "20.018.183/0001-80"
      * name [string]: payer name. ex: "Iron Bank S.A."
-     * fine [number]: fine amount charged in cents. ex: 200 (= R$ 2.00)
-     * interest [number]: interest amount charged in cents. ex: 100 (= R$ 1.00)
+     * fine [number]: Fine percentage applied when paid after the due date. ex: 2.0
+     * interest [number]: Monthly interest percentage applied when paid after the due date. ex: 1.0
      * amount [Long]: invoice amount in cents. ex: 1234 (= R$ 12.34)
      * nominalAmount [Long]: nominal amount in cents. ex: 1234 (= R$ 12.34)
      * status [string]: current IssuingBillingInvoice status. ex: "created" or "paid"
@@ -67,8 +67,8 @@ public final class IssuingBillingInvoice extends Resource {
      * @param id [string]: unique id returned when the IssuingBillingInvoice is created. ex: "5656565656565656"
      * @param taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "20.018.183/0001-80"
      * @param name [string]: payer name. ex: "Iron Bank S.A."
-     * @param fine [number]: fine amount charged in cents. ex: 200 (= R$ 2.00)
-     * @param interest [number]: interest amount charged in cents. ex: 100 (= R$ 1.00)
+     * @param fine [number]: Fine percentage applied when paid after the due date. ex: 2.0
+     * @param interest [number]: Monthly interest percentage applied when paid after the due date. ex: 1.0
      * @param amount [Long]: invoice amount in cents. ex: 1234 (= R$ 12.34)
      * @param nominalAmount [Long]: nominal amount in cents. ex: 1234 (= R$ 12.34)
      * @param status [string]: current IssuingBillingInvoice status. ex: "created" or "paid"
@@ -114,8 +114,8 @@ public final class IssuingBillingInvoice extends Resource {
      * id [string]: unique id returned when the IssuingBillingInvoice is created. ex: "5656565656565656"
      * taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "20.018.183/0001-80"
      * name [string]: payer name. ex: "Iron Bank S.A."
-     * fine [number]: fine amount charged in cents. ex: 200 (= R$ 2.00)
-     * interest [number]: interest amount charged in cents. ex: 100 (= R$ 1.00)
+     * fine [number]: Fine percentage applied when paid after the due date. ex: 2.0
+     * interest [number]: Monthly interest percentage applied when paid after the due date. ex: 1.0
      * amount [Long]: invoice amount in cents. ex: 1234 (= R$ 12.34)
      * nominalAmount [Long]: nominal amount in cents. ex: 1234 (= R$ 12.34)
      * status [string]: current IssuingBillingInvoice status. ex: "created" or "paid"

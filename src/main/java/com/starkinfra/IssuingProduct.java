@@ -23,7 +23,7 @@ public final class IssuingProduct extends Resource {
      * network [string]: card network flag. ex: "mastercard"
      * fundingType [string]: type of funding used for payment. ex: "credit", "debit"
      * holderType [string]: holder type. ex: "business", "individual"
-     * customerType [string]: customer type. ex: "business", "individual"
+     * customerType [string]: Same as holderType. Kept for backward compatibility
      * code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
      * created [string]: creation datetime for the IssuingProduct. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -47,7 +47,7 @@ public final class IssuingProduct extends Resource {
      * @param network [string]: card network flag. ex: "mastercard"
      * @param fundingType [string]: type of funding used for payment. ex: "credit", "debit"
      * @param holderType [string]: holder type. ex: "business", "individual"
-     * @param customerType [string]: customer type. ex: "business", "individual"
+     * @param customerType [string]: Same as holderType. Kept for backward compatibility
      * @param code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
      * @param created [string]: creation datetime for the IssuingProduct. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -71,7 +71,7 @@ public final class IssuingProduct extends Resource {
      * network [string]: card network flag. ex: "mastercard"
      * fundingType [string]: type of funding used for payment. ex: "credit", "debit"
      * holderType [string]: holder type. ex: "business", "individual"
-     * customerType [string]: customer type. ex: "business", "individual"
+     * customerType [string]: Same as holderType. Kept for backward compatibility
      * code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
      * created [string]: creation datetime for the IssuingProduct. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request

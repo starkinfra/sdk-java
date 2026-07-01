@@ -32,8 +32,8 @@ public final class IssuingBillingTransaction extends Resource {
      * externalId [string]: external transaction id. ex: "my-external-id-123456"
      * description [string]: transaction description. ex: "Coffee shop"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
-     * tax [number]: tax amount charged in cents. ex: 100 (= R$ 1.00)
-     * rate [number]: tax rate as a percentage. ex: 1.5
+     * tax [number]: IOF amount in cents applied to the transaction
+     * rate [number]: Conversion rate applied to international transactions
      * merchantAmount [Long]: merchant amount in cents. ex: 1234 (= R$ 12.34)
      * merchantCurrencyCode [string]: merchant currency code (ISO 4217). ex: "BRL"
      * created [string]: creation datetime for the IssuingBillingTransaction. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -77,8 +77,8 @@ public final class IssuingBillingTransaction extends Resource {
      * @param externalId [string]: external transaction id. ex: "my-external-id-123456"
      * @param description [string]: transaction description. ex: "Coffee shop"
      * @param cardEnding [string]: last 4 digits of the card number. ex: "1234"
-     * @param tax [number]: tax amount charged in cents. ex: 100 (= R$ 1.00)
-     * @param rate [number]: tax rate as a percentage. ex: 1.5
+     * @param tax [number]: IOF amount in cents applied to the transaction
+     * @param rate [number]: Conversion rate applied to international transactions
      * @param merchantAmount [Long]: merchant amount in cents. ex: 1234 (= R$ 12.34)
      * @param merchantCurrencyCode [string]: merchant currency code (ISO 4217). ex: "BRL"
      * @param created [string]: creation datetime for the IssuingBillingTransaction. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -127,8 +127,8 @@ public final class IssuingBillingTransaction extends Resource {
      * externalId [string]: external transaction id. ex: "my-external-id-123456"
      * description [string]: transaction description. ex: "Coffee shop"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
-     * tax [number]: tax amount charged in cents. ex: 100 (= R$ 1.00)
-     * rate [number]: tax rate as a percentage. ex: 1.5
+     * tax [number]: IOF amount in cents applied to the transaction
+     * rate [number]: Conversion rate applied to international transactions
      * merchantAmount [Long]: merchant amount in cents. ex: 1234 (= R$ 12.34)
      * merchantCurrencyCode [string]: merchant currency code (ISO 4217). ex: "BRL"
      * created [string]: creation datetime for the IssuingBillingTransaction. ex: "2020-03-10 10:30:00.000000+00:00"

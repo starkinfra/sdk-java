@@ -21,8 +21,8 @@ public final class IssuingBalance extends Resource {
      * Parameters:
      * id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
      * amount [Long]: current issuing balance amount of the Workspace in cents. ex: 200 (= R$ 2.00)
-     * limit [Long]: current issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)
-     * maxLimit [Long]: maximum issuing balance limit of the Workspace in cents. ex: 200 (= R$ 2.00)
+     * limit [Long]: Spending limit of the balance
+     * maxLimit [Long]: Maximum spending limit. This field is currently always equal to limit
      * currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
      * updated [string]: latest update datetime for the IssuingBalance. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -46,8 +46,8 @@ public final class IssuingBalance extends Resource {
      * Parameters:
      * @param id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
      * @param amount [Long]: current issuing balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-     * @param limit [Long]: current issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
-     * @param maxLimit [Long]: maximum issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
+     * @param limit [Long]: Spending limit of the balance
+     * @param maxLimit [Long]: Maximum spending limit. This field is currently always equal to limit
      * @param currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
      * @param updated [string]: latest update datetime for the IssuingBalance. ex: "2020-03-10 10:30:00.000000+00:00"
      */
