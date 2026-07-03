@@ -27,6 +27,8 @@ public final class IssuingRule extends Resource {
      * counterAmount [Long]: current rule spent amount. ex: 1000
      * currencySymbol [string]: currency symbol. ex: "R$"
      * currencyName [string]: currency name. ex: "Brazilian Real"
+     * schedule [string]: Optional schedule dictating when the rule can be used. Some examples: "everyday from 09:00 to 18:00 in America/Sao_Paulo" - every day, 09:00-18:00 Sao Paulo time; "every monday, wednesday, friday from 08:00 to 12:00 in America/Sao_Paulo" - only those weekdays, mornings; "every saturday, sunday" - weekends, all day, in UTC
+     * purposes [list of strings]: Optional list of transaction purposes the rule applies to. Options: "purchase", "withdrawal", "verification". The rule then limits only purchases of those purposes; omit it to allow any purposes. Example: ["purchase", "verification"] if you want us to automatically deny withdrawal.
      *
      */
     static ClassData data = new ClassData(IssuingRule.class, "IssuingRule");
@@ -41,6 +43,8 @@ public final class IssuingRule extends Resource {
     public Number counterAmount;
     public String currencySymbol;
     public String currencyName;
+    public String schedule;
+    public String[] purposes;
 
     /**
      * IssuingRule object
@@ -59,10 +63,13 @@ public final class IssuingRule extends Resource {
      * @param counterAmount [Long]: current rule spent amount. ex: 1000
      * @param currencySymbol [string]: currency symbol. ex: "R$"
      * @param currencyName [string]: currency name. ex: "Brazilian Real"
+     * @param schedule [string]: Optional schedule dictating when the rule can be used. Some examples: "everyday from 09:00 to 18:00 in America/Sao_Paulo" - every day, 09:00-18:00 Sao Paulo time; "every monday, wednesday, friday from 08:00 to 12:00 in America/Sao_Paulo" - only those weekdays, mornings; "every saturday, sunday" - weekends, all day, in UTC
+     * @param purposes [list of strings]: Optional list of transaction purposes the rule applies to. Options: "purchase", "withdrawal", "verification". The rule then limits only purchases of those purposes; omit it to allow any purposes. Example: ["purchase", "verification"] if you want us to automatically deny withdrawal.
      */
     public IssuingRule(String id, String name, Long amount, String interval, String currencyCode,
                        List<MerchantCategory> categories, List<MerchantCountry> countries, List<CardMethod> methods,
-                       Long counterAmount, String currencySymbol, String currencyName
+                       Long counterAmount, String currencySymbol, String currencyName,
+                       String schedule, String[] purposes
     ) {
         super(id);
         this.name = name;
@@ -75,6 +82,8 @@ public final class IssuingRule extends Resource {
         this.counterAmount = counterAmount;
         this.currencySymbol = currencySymbol;
         this.currencyName = currencyName;
+        this.schedule = schedule;
+        this.purposes = purposes;
     }
 
     /**
@@ -99,6 +108,8 @@ public final class IssuingRule extends Resource {
      * counterAmount [Long]: current rule spent amount. ex: 1000
      * currencySymbol [string]: currency symbol. ex: "R$"
      * currencyName [string]: currency name. ex: "Brazilian Real"
+     * schedule [string]: Optional schedule dictating when the rule can be used. Some examples: "everyday from 09:00 to 18:00 in America/Sao_Paulo" - every day, 09:00-18:00 Sao Paulo time; "every monday, wednesday, friday from 08:00 to 12:00 in America/Sao_Paulo" - only those weekdays, mornings; "every saturday, sunday" - weekends, all day, in UTC
+     * purposes [list of strings]: Optional list of transaction purposes the rule applies to. Options: "purchase", "withdrawal", "verification". The rule then limits only purchases of those purposes; omit it to allow any purposes. Example: ["purchase", "verification"] if you want us to automatically deny withdrawal.
      * @throws Exception error in the request
      */
     public IssuingRule(Map<String, Object> data) throws Exception {
@@ -115,6 +126,8 @@ public final class IssuingRule extends Resource {
         this.counterAmount = null;
         this.currencySymbol = null;
         this.currencyName = null;
+        this.schedule = null;
+        this.purposes = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");

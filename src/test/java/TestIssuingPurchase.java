@@ -1,11 +1,12 @@
-import com.starkinfra.IssuingCard;
 import org.junit.Test;
 import org.junit.Assert;
+
+import static org.junit.Assert.assertThrows;
 
 import com.starkinfra.Settings;
 import com.starkinfra.IssuingPurchase;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 import java.util.List;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class TestIssuingPurchase {
         List<String> ids = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             IssuingPurchase.Page page = IssuingPurchase.page(params);
-            for (IssuingPurchase purchase: page.issuingPurchases) {
+            for (IssuingPurchase purchase: page.purchases) {
                 System.out.println(purchase);
                 if (ids.contains(purchase.id)) {
                     throw new Exception("repeated id");
@@ -53,12 +54,33 @@ public class TestIssuingPurchase {
         Generator<IssuingPurchase> purchases = IssuingPurchase.query(params);
 
         for (IssuingPurchase purchase : purchases) {
-            IssuingPurchase purchaseExpected = IssuingPurchase.get(purchase.id);
-            Assert.assertNotNull(purchase.id, purchaseExpected.id);
+            Assert.assertNotNull(purchase.id);
+            String id = IssuingPurchase.get(purchase.id).id;
+            Assert.assertEquals(id, purchase.id);
             Assert.assertEquals(HashMap.class, purchase.metadata.getClass());
+            System.out.println(purchase.installmentCount);
             System.out.println(purchase);
         }
     }
+
+    @Test
+    public void testQueryInstallmentCount() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 3);
+        Generator<IssuingPurchase> purchases = IssuingPurchase.query(params);
+
+        int i = 0;
+        for (IssuingPurchase purchase : purchases) {
+            i += 1;
+            IssuingPurchase purchaseExpected = IssuingPurchase.get(purchase.id);
+            Assert.assertNotNull(purchaseExpected.id);
+            System.out.println(purchaseExpected.installmentCount);
+        }
+        Assert.assertTrue(i > 0);
+    }
+
 
     @Test
     public void testLogQueryAndGet() throws Exception{
@@ -68,10 +90,15 @@ public class TestIssuingPurchase {
         params.put("limit", 3);
         Generator<IssuingPurchase.Log> logs = IssuingPurchase.Log.query(params);
 
+        int i = 0;
         for (IssuingPurchase.Log log : logs) {
+            i += 1;
             log = IssuingPurchase.Log.get(log.id);
+            Assert.assertNotNull(log.id);
+            Assert.assertNotNull(log.purchase.id);
             System.out.println(log);
         }
+        Assert.assertTrue(i > 0);
     }
 
     @Test
@@ -132,12 +159,11 @@ public class TestIssuingPurchase {
         String malformedSignature = "something is definitely wrong";
         Settings.user = utils.User.defaultProject();
 
-        try{
+        InvalidSignatureError invalidSignatureError = assertThrows(InvalidSignatureError.class, () -> {
             IssuingPurchase.parse(content, malformedSignature);
-            throw new Error("Signature incorrectly validated");
-        } catch (InvalidSignatureError e){
-            System.out.println("Signature correctly rejected");
-        }
+        });
+
+        Assert.assertEquals("The provided signature is not valid", invalidSignatureError.getMessage());
     }
 
     @Test
@@ -146,12 +172,11 @@ public class TestIssuingPurchase {
         String invalidSignature = "MEUCIQDOpo1j+V40pNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
         Settings.user = utils.User.defaultProject();
 
-        try{
+        InvalidSignatureError invalidSignatureError = assertThrows(InvalidSignatureError.class, () -> {
             IssuingPurchase.parse(content, invalidSignature);
-            throw new Error("Signature incorrectly validated");
-        } catch (InvalidSignatureError e){
-            System.out.println("Signature correctly rejected");
-        }
+        });
+
+        Assert.assertEquals("The provided signature and content do not match the Stark Infra public key", invalidSignatureError.getMessage());
     }
 
     static IssuingPurchase example() throws Exception{

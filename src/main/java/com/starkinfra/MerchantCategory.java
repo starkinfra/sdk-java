@@ -22,6 +22,7 @@ public final class MerchantCategory extends SubResource {
      * type [string]: category's type. ex: "pets", "food"
      * name [string]: category's name. ex: "Veterinary services", "Fast food restaurants"
      * number [string]: category's number. ex: "742", "5814"
+     * group [string]: category's group. ex: "services", "food"
      *
      */
     static SubResource.ClassData data = new SubResource.ClassData(MerchantCategory.class, "MerchantCategory");
@@ -30,6 +31,7 @@ public final class MerchantCategory extends SubResource {
     public String type;
     public String name;
     public String number;
+    public String group;
 
     /**
      * MerchantCategory object
@@ -43,11 +45,12 @@ public final class MerchantCategory extends SubResource {
      * @param code [string]: category's code. ex: "veterinaryServices", "fastFoodRestaurants"
      * @param type [string]: category's type. ex: "pets", "food"
      */
-    public MerchantCategory(String code, String type, String name, String number) {
+    public MerchantCategory(String code, String type, String name, String number, String group) {
         this.code = code;
         this.type = type;
         this.name = name;
         this.number = number;
+        this.group = group;
     }
 
     /**
@@ -66,6 +69,7 @@ public final class MerchantCategory extends SubResource {
      * Attributes (return-only):
      * name [string]: category's name. ex: "Veterinary services", "Fast food restaurants"
      * number [string]: category's number. ex: "742", "5814"
+     * group [string]: category's group. ex: "services", "food"
      * @throws Exception error in the request
      */
     public MerchantCategory(Map<String, Object> data) throws Exception {
@@ -75,6 +79,7 @@ public final class MerchantCategory extends SubResource {
         this.type = (String) dataCopy.remove("type");
         this.name = null;
         this.number = null;
+        this.group = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
