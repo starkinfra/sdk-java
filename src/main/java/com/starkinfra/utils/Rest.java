@@ -24,7 +24,7 @@ public final class Rest {
     static String sdkVersion = "0.22.0";
     static String apiVersion = "v2";
     static String language = "pt-BR";
-    static Integer timeout = 5;
+    static Integer timeout = 15;
 
     public static <T extends Resource> T getId(Resource.ClassData resource, String id, User user) throws Exception {
         return getId(resource, id, null, user);
