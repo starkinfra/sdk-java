@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Changed
+- default timeout from 5 seconds to 15 seconds
 
 ## [0.22.0] - 2026-06-23
 ### Added

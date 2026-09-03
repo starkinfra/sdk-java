@@ -23,7 +23,7 @@ public final class Parse {
     static String sdkVersion = "0.22.0";
     static String apiVersion = "v2";
     static String language = "pt-BR";
-    static Integer timeout = 5;
+    static Integer timeout = 15;
 
     /**
      * Create single notification Event from a content string
