@@ -1945,6 +1945,24 @@ PixPullSubscription.Log log = PixPullSubscription.Log.get("6532638269505536");
 System.out.println(log);
 ```
 
+### Parse a PixPullSubscription
+
+Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
+If the provided digital signature does not check out with the Stark Infra public key, a com.starkinfra.error.InvalidSignatureError will be raised.
+
+```java
+import com.starkinfra.*;
+
+Request request = Listener.listen(); // this is your handler to listen for events sent to your subscription url
+
+String content = request.content.toString();
+String signature = request.headers.get("Digital-Signature");
+
+PixPullSubscription subscription = PixPullSubscription.parse(content, signature);
+
+System.out.println(subscription);
+```
+
 ### Create a PixPullRequest
 
 You can create a Pix Pull Request to trigger the automatic debit linked to an active Pix Pull Subscription, collecting the agreed amount within the current billing cycle.
