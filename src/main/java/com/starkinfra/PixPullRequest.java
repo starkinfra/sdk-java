@@ -443,7 +443,11 @@ public final class PixPullRequest extends Resource {
     /**
      * Create PixPullRequests
      * <p>
-     * Send a list of PixPullRequest objects for creation in the Stark Infra API
+     * As the receiver bank, create a PixPullRequest to instruct a debit from the payer's account on a scheduled
+     * date. The request must be sent between 2 and 10 days before the expected settlement date. Stark Infra
+     * verifies that the subscription is approved, the amount is within the authorized limit, the settlement
+     * date matches the subscription's charge cycle, payer/receiver details match the contract, and there is
+     * no other scheduled request for the same cycle.
      * <p>
      * Parameters:
      * @param requests [list of PixPullRequest objects or HashMaps]: list of PixPullRequest objects to be created in the API
@@ -459,7 +463,11 @@ public final class PixPullRequest extends Resource {
     /**
      * Create PixPullRequests
      * <p>
-     * Send a list of PixPullRequest objects for creation in the Stark Infra API
+     * As the receiver bank, create a PixPullRequest to instruct a debit from the payer's account on a scheduled
+     * date. The request must be sent between 2 and 10 days before the expected settlement date. Stark Infra
+     * verifies that the subscription is approved, the amount is within the authorized limit, the settlement
+     * date matches the subscription's charge cycle, payer/receiver details match the contract, and there is
+     * no other scheduled request for the same cycle.
      * <p>
      * Parameters:
      * @param requests [list of PixPullRequest objects or HashMaps]: list of PixPullRequest objects to be created in the API

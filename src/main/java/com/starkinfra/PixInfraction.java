@@ -28,7 +28,7 @@ public final class PixInfraction extends Resource {
      * type [string]: type of Pix Infraction. Options: "reversal", "reversalChargeback"
      * method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other"
      * description [string]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
-     * fraudType [string]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * fraudType [string]: type of Pix Fraud, required only when result is "agreed" (optional/ignored when result is "disagreed"). Options: "identity", "mule", "scam", "other" — "unknown" is not an accepted value.
      * operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
      * operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
@@ -84,7 +84,7 @@ public final class PixInfraction extends Resource {
      * @param type [string]: type of Pix Infraction. Options: "reversal" or "reversalChargeback"
      * @param method [string]: method of Pix Infraction. Option: "scam", "unauthorized", "coercion", "invasion" or "other"
      * @param description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
-     * @param fraudType [string, default null]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * @param fraudType [string, default null]: type of Pix Fraud, required only when result is "agreed" (optional/ignored when result is "disagreed"). Options: "identity", "mule", "scam", "other" — "unknown" is not an accepted value.
      * @param operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
      * @param operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
      * @param tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
@@ -149,7 +149,7 @@ public final class PixInfraction extends Resource {
      * <p>
      * Parameters (conditionally required):
      * description [string, default null]: description for any details that can help with the infraction investigation. The description parameter is required when method is "other".
-     * fraudType [string, default null]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * fraudType [string, default null]: type of Pix Fraud, required only when result is "agreed" (optional/ignored when result is "disagreed"). Options: "identity", "mule", "scam", "other" — "unknown" is not an accepted value.
      * <p>
      * Parameters (optional):
      * tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
@@ -502,7 +502,7 @@ public final class PixInfraction extends Resource {
      * @param patchData map of properties to patch
      * analysis [string, default null]: analysis that led to the result.
      * result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
-     * fraudType [string, default null]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * fraudType [string, default null]: type of Pix Fraud, required only when result is "agreed" (optional/ignored when result is "disagreed"). Options: "identity", "mule", "scam", "other" — "unknown" is not an accepted value.
      * <p>
      * Return:
      * @return PixInfraction object with updated attributes
@@ -522,7 +522,7 @@ public final class PixInfraction extends Resource {
      * @param patchData map of patch parameters:
      * result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
      * analysis [string, default null]: analysis that led to the result.
-     * fraudType [string]: type of Pix Fraud. The fraudType parameter is required when result is "agreed". Options: "identity", "mule", "scam", "other"
+     * fraudType [string]: type of Pix Fraud, required only when result is "agreed" (optional/ignored when result is "disagreed"). Options: "identity", "mule", "scam", "other" — "unknown" is not an accepted value.
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:

@@ -212,7 +212,7 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param cards [list of IssuingCard objects]: list of IssuingCard objects to be created in the API
      * @param params map of parameters
-     * expand [list of strings, default null]: fields to expand information. ex: ["rules", "securityCode", "number", "expiration"]
+     * expand [list of strings, default null]: fields to expand in the response. Options: "rules", "securityCode", "number", "expiration", "isPinDefined"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -260,7 +260,7 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param cards [list of IssuingCard objects]: list of IssuingCard objects to be created in the API
      * @param params map of parameters
-     * expand [list of strings, default null]: fields to expand information. ex: ["rules", "securityCode", "number", "expiration"]
+     * expand [list of strings, default null]: fields to expand in the response. Options: "rules", "securityCode", "number", "expiration", "isPinDefined"
      * <p>
      * Return:
      * @return list of IssuingCard objects with updated attributes
@@ -480,7 +480,7 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
      * @param params map of parameters
-     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * expand [list of strings, default null]: fields to expand in the response. Options: "rules", "securityCode", "number", "expiration", "isPinDefined"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -499,7 +499,7 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param id [string]: object unique id. ex: "5656565656565656"
      * @param params map of parameters
-     * expand [list of strings, default null]: fields to expand information. ex: ["rules"]
+     * expand [list of strings, default null]: fields to expand in the response. Options: "rules", "securityCode", "number", "expiration", "isPinDefined"
      * <p>
      * Return:
      * @return IssuingCard object with updated attributes
@@ -550,8 +550,8 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param id [string]: IssuingCard id. ex: "5656565656565656"
      * @param patchData map of parameters
-     * status [string]: You may block the IssuingCard by passing 'blocked' in the status
-     * pin [string, default ""]: You may unlock your physical card by passing its PIN. This is also the PIN you use to authorize a purchase.
+     * status [string]: update the card's status. Options: "active" (activates a pending physical card -- requires the pin field) or "blocked".
+     * pin [string, default ""]: Card PIN, used to unlock a physical card and authorize purchases. A pending physical card must also receive this PIN to be activated: passing it alone activates the card, and setting status to "active" on a pending physical card without a PIN is rejected.
      * displayName [string, default ""]: card displayed name
      * rules [list of IssuingRule or HashMap, default null]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
      * tags [list of strings, default null]: list of strings for tagging
@@ -573,8 +573,8 @@ public final class IssuingCard extends Resource {
      * Parameters:
      * @param id [string]: IssuingCard id. ex: "5656565656565656"
      * @param patchData map of parameters
-     * status [string]: You may block the IssuingCard by passing 'blocked' in the status
-     * pin [string, default ""]: You may unlock your physical card by passing its PIN. This is also the PIN you use to authorize a purchase.
+     * status [string]: update the card's status. Options: "active" (activates a pending physical card -- requires the pin field) or "blocked".
+     * pin [string, default ""]: Card PIN, used to unlock a physical card and authorize purchases. A pending physical card must also receive this PIN to be activated: passing it alone activates the card, and setting status to "active" on a pending physical card without a PIN is rejected.
      * displayName [string, default null]: card displayed name
      * rules [list of IssuingRule or HashMap, default null]: list of new IssuingRules. If the rule id isn't set, a new rule will be created.
      * tags [list of strings, default null]: list of strings for tagging

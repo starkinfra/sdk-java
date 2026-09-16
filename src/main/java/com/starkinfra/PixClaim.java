@@ -18,6 +18,8 @@ public final class PixClaim extends Resource {
      * <p>
      * A Pix Claim is a request to transfer a Pix Key from an account hosted at another
      * Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.
+     * You must answer an inbound PixClaim within 7 days of its status changing to "delivered"; if you don't,
+     * a portability claim is rejected by default and an ownership claim is accepted by default, both with reason "defaultBehavior".
      * <p>
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
@@ -35,7 +37,7 @@ public final class PixClaim extends Resource {
      * id [string, default null]: unique id returned when the PixClaim is created. ex: "5656565656565656"
      * status [string, default null]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
      * type [string, default null]: type of Pix Claim. Options: "ownership", "portability".
-     * keyType [string, default null]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email"
+     * keyType [string, default null]: keyType of the claimed PixKey. Options: "cpf", "cnpj", "phone", "email" or "evp"
      * flow [string]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
      * claimerBankCode [string], bank code of the Pix participant that created the PixClaim. ex: "20018183".
      * claimedBankCode [string, default null]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
@@ -67,6 +69,8 @@ public final class PixClaim extends Resource {
      * <p>
      * A Pix Claim is a request to transfer a Pix Key from an account hosted at another
      * Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.
+     * You must answer an inbound PixClaim within 7 days of its status changing to "delivered"; if you don't,
+     * a portability claim is rejected by default and an ownership claim is accepted by default, both with reason "defaultBehavior".
      * <p>
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
@@ -119,6 +123,8 @@ public final class PixClaim extends Resource {
      * <p>
      * A Pix Claim is a request to transfer a Pix Key from an account hosted at another
      * Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.
+     * You must answer an inbound PixClaim within 7 days of its status changing to "delivered"; if you don't,
+     * a portability claim is rejected by default and an ownership claim is accepted by default, both with reason "defaultBehavior".
      * <p>
      * When you initialize a PixClaim, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects

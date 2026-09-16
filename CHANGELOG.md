@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- docstrings for Pix, Issuing and Credit resources to match the business rules stated in the API reference
 
 ## [0.22.0] - 2026-06-23
 ### Added

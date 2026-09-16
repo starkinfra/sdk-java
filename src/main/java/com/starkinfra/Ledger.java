@@ -117,7 +117,7 @@ public final class Ledger extends Resource {
     /**
      * Create Ledgers
      * <p>
-     * Send a list of Ledger objects for creation in the Stark Infra API
+     * Send a list of up to 100 Ledger objects for creation in the Stark Infra API
      * <p>
      * Parameters:
      * @param ledgers [list of Ledger objects]: list of Ledger objects to be created in the API
@@ -133,7 +133,7 @@ public final class Ledger extends Resource {
     /**
      * Create Ledgers
      * <p>
-     * Send a list of Ledger objects for creation in the Stark Infra API
+     * Send a list of up to 100 Ledger objects for creation in the Stark Infra API
      * <p>
      * Parameters:
      * @param ledgers [list of Ledger objects]: list of Ledger objects to be created in the API

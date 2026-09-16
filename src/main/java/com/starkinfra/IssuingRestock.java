@@ -27,7 +27,7 @@ public final class IssuingRestock extends Resource {
      * stockId [string]: IssuingStock unique id ex: "5136459887542272"
      * tags [list of strings, default null]: list of strings for tagging. ex: ["card", "corporate"]
      * id [string]: unique id returned when IssuingRestock is created. ex: "5656565656565656"
-     * status [string]: current IssuingRestock status. ex: "created", "processing", "confirmed"
+     * status [string]: current IssuingRestock status. Options: "created", "processing", "confirmed", "canceled"
      * updated [string]: latest update datetime for the IssuingRestock. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingRestock. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -55,7 +55,7 @@ public final class IssuingRestock extends Resource {
      * @param stockId [string]: IssuingStock unique id ex: "5136459887542272"
      * @param tags [list of strings, default null]: list of strings for tagging. ex: ["card", "corporate"]
      * @param id [string]: unique id returned when IssuingRestock is created. ex: "5656565656565656"
-     * @param status [string]: current IssuingRestock status. ex: "created", "processing", "confirmed"
+     * @param status [string]: current IssuingRestock status. Options: "created", "processing", "confirmed", "canceled"
      * @param updated [string]: latest update datetime for the IssuingRestock. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the IssuingRestock. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -92,7 +92,7 @@ public final class IssuingRestock extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when IssuingRestock is created. ex: "5656565656565656"
-     * status [string]: current IssuingRestock status. ex: "created", "processing", "confirmed"
+     * status [string]: current IssuingRestock status. Options: "created", "processing", "confirmed", "canceled"
      * updated [string]: latest update datetime for the IssuingRestock. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the IssuingRestock. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request

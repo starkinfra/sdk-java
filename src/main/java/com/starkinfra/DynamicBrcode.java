@@ -71,7 +71,7 @@ public final class DynamicBrcode extends Resource {
      * @param name [string]: receiver's name. ex: "Tony Stark"
      * @param city [string]: receiver's city name. ex: "Rio de Janeiro"
      * @param externalId [string]: string that must be unique among all your DynamicBrcodes. Duplicated external ids will cause failures. ex: "my-internal-id-123456"
-     * @param type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"
+     * @param type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due", "subscription", "subscriptionAndInstant" or "dueAndOrSubscription"
      * @param tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * @param id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
      * @param uuid [string]: unique uuid of the DynamicBrcode. ex: "4e2eab725ddd495f9c98ffd97440702d"
@@ -115,7 +115,7 @@ public final class DynamicBrcode extends Resource {
      * externalId [string]: string that must be unique among all your DynamicBrcodes. Duplicated external ids will cause failures. ex: "my-internal-id-123456"
      * <p>
      * Parameters (optional):
-     * type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"
+     * type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due", "subscription", "subscriptionAndInstant" or "dueAndOrSubscription"
      * tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
      * <p>
      * Attributes (return-only):

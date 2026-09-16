@@ -41,7 +41,7 @@ public final class PixPullSubscription extends Resource {
      * installmentEnd [string]: End of settlements allowed for this Pix Pull Subscription. ex: "2020-03-10 10:30:00.000000+00:00"
      * receiverBankCode [string]: Receiver's bank institution code in Brazil.
      * referenceCode [string]: Represents the commercial relation. It can be a contract number, order identification or client code.
-     * pullRetryLimit [Long]: Defines how many times the receiver is able to create Pix Pull Requests for retries. Options: 0 or 3. Default is 3.
+     * pullRetryLimit [Long]: Defines how many times the receiver is able to create Pix Pull Requests for retries. Options: 0 or 3. Default is 3. When retries are enabled: a retry may be scheduled starting one day before the expected settlement date (the initial request needs a two-day lead); at most 3 retries are allowed within 7 days of the original payment date; every retry must use the same amount as the original request; and no retry may be scheduled once a new billing cycle has started.
      * senderCityCode [string]: IBGE Code of the payer's city.
      * senderFinalName [string]: Sender's final name.
      * senderFinalTaxId [string]: Sender's final tax ID.
@@ -524,11 +524,11 @@ public final class PixPullSubscription extends Resource {
      * Cancel a PixPullSubscription entity previously created in the Stark Infra API
      * <p>
      * The reason field accepts one of the following values:
-     * "accountClosed", "receiverOrganizationClosed", "subscriptionRequestFailed", "fraud", "receiverUserRequested", "paymentNotFound".
+     * As receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested", "paymentNotFound". As sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested", "paymentNotFound".
      * <p>
      * Parameters:
      * @param id [string]: PixPullSubscription unique id. ex: "5656565656565656"
-     * @param reason [string]: Reason why the Pix Pull Subscription is being canceled. Options: "accountClosed", "receiverOrganizationClosed", "subscriptionRequestFailed", "fraud", "receiverUserRequested", "paymentNotFound"
+     * @param reason [string]: reason why the PixPullSubscription is being cancelled. As receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested", "paymentNotFound". As sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested", "paymentNotFound".
      * <p>
      * Return:
      * @return canceled PixPullSubscription object
@@ -544,11 +544,11 @@ public final class PixPullSubscription extends Resource {
      * Cancel a PixPullSubscription entity previously created in the Stark Infra API
      * <p>
      * The reason field accepts one of the following values:
-     * "accountClosed", "receiverOrganizationClosed", "subscriptionRequestFailed", "fraud", "receiverUserRequested", "paymentNotFound".
+     * As receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested", "paymentNotFound". As sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested", "paymentNotFound".
      * <p>
      * Parameters:
      * @param id [string]: PixPullSubscription unique id. ex: "5656565656565656"
-     * @param reason [string]: Reason why the Pix Pull Subscription is being canceled. Options: "accountClosed", "receiverOrganizationClosed", "subscriptionRequestFailed", "fraud", "receiverUserRequested", "paymentNotFound"
+     * @param reason [string]: reason why the PixPullSubscription is being cancelled. As receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested", "paymentNotFound". As sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested", "paymentNotFound".
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -573,7 +573,7 @@ public final class PixPullSubscription extends Resource {
      * @param patchData map of properties to patch
      * status [string]: New status of the Pix Subscription.
      * senderCityCode [string, conditionally required]: IBGE Code of the payer's city. Required if you are confirming the subscription.
-     * reason [string, conditionally required]: Reason why the Pix Subscription is being patched. Options: "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered"
+     * reason [string, conditionally required]: reason why the Pix Subscription is being patched, required when denying. Options: "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered"
      * <p>
      * Return:
      * @return PixPullSubscription object with updated attributes
@@ -595,7 +595,7 @@ public final class PixPullSubscription extends Resource {
      * @param patchData map of patch parameters:
      * status [string]: New status of the Pix Subscription.
      * senderCityCode [string, conditionally required]: IBGE Code of the payer's city. Required if you are confirming the subscription.
-     * reason [string, conditionally required]: Reason why the Pix Subscription is being patched. Options: "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered"
+     * reason [string, conditionally required]: reason why the Pix Subscription is being patched, required when denying. Options: "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:

@@ -143,7 +143,9 @@ public final class LedgerTransaction extends Resource {
     /**
      * Create LedgerTransactions
      * <p>
-     * Send a list of LedgerTransaction objects for creation in the Stark Infra API
+     * Send a list of up to 500 LedgerTransaction objects for creation in the Stark Infra API. Each transaction
+     * is validated against its Ledger's rules, so a transaction that would push the balance beyond a configured
+     * minimum or maximum balance is rejected.
      * <p>
      * Parameters:
      * @param transactions [list of LedgerTransaction objects]: list of LedgerTransaction objects to be created in the API
@@ -159,7 +161,9 @@ public final class LedgerTransaction extends Resource {
     /**
      * Create LedgerTransactions
      * <p>
-     * Send a list of LedgerTransaction objects for creation in the Stark Infra API
+     * Send a list of up to 500 LedgerTransaction objects for creation in the Stark Infra API. Each transaction
+     * is validated against its Ledger's rules, so a transaction that would push the balance beyond a configured
+     * minimum or maximum balance is rejected.
      * <p>
      * Parameters:
      * @param transactions [list of LedgerTransaction objects]: list of LedgerTransaction objects to be created in the API

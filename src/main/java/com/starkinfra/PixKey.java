@@ -27,7 +27,7 @@ public final class PixKey extends Resource {
      * Parameters:
      * accountCreated [string]: opening Date or Datetime for the linked account. ex: "2022-01-01".
      * accountNumber [string]: number of the linked account. ex: "76543".
-     * accountType [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
+     * accountType [string]: type of the linked account. Options: "checking", "savings", "salary", "payment" or "other".
      * branchCode [string]: branch code of the linked account. ex: 1234".
      * name [string]: holder's name of the linked account. ex: "Jamie Lannister".
      * taxId [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
@@ -72,7 +72,7 @@ public final class PixKey extends Resource {
      * Parameters:
      * @param accountCreated [string]: opening Date or Datetime for the linked account. ex: "2022-01-01".
      * @param accountNumber [string]: number of the linked account. ex: "76543".
-     * @param accountType [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
+     * @param accountType [string]: type of the linked account. Options: "checking", "savings", "salary", "payment" or "other".
      * @param branchCode [string]: branch code of the linked account. ex: 1234".
      * @param name [string]: holder's name of the linked account. ex: "Jamie Lannister".
      * @param taxId [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
@@ -121,7 +121,7 @@ public final class PixKey extends Resource {
      * @param data map of properties for the creation of the PixKey
      * accountCreated [string]: opening Date or Datetime for the linked account. ex: "2022-01-01".
      * accountNumber [string]: number of the linked account. ex: "76543".
-     * accountType [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
+     * accountType [string]: type of the linked account. Options: "checking", "savings", "salary", "payment" or "other".
      * branchCode [string]: branch code of the linked account. ex: 1234".
      * name [string]: holder's name of the linked account. ex: "Jamie Lannister".
      * taxId [string]: holder's taxId (CPF/CNPJ) of the linked account. ex: "012.345.678-90".
@@ -172,7 +172,7 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
-     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
+     * @param payerId [string]: deprecated and ignored by the API — the payer's tax ID is now always derived automatically from the calling Workspace's own registered tax ID for Central Bank rate-limiting purposes; do not rely on this value being sent to or used by the server.
      * <p>
      * Return:
      * @return PixKey object with updated attributes
@@ -189,9 +189,10 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
-     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
+     * @param payerId [string]: deprecated and ignored by the API — the payer's tax ID is now always derived automatically from the calling Workspace's own registered tax ID for Central Bank rate-limiting purposes; do not rely on this value being sent to or used by the server.
      * @param params map of parameters
      * endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
+     * expand [list of strings, default null]: entity fields to expand in the response. Options: "statistics", "ownerStatistics".
      * <p>
      * Return:
      * @return PixKey object with updated attributes
@@ -208,7 +209,7 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
-     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
+     * @param payerId [string]: deprecated and ignored by the API — the payer's tax ID is now always derived automatically from the calling Workspace's own registered tax ID for Central Bank rate-limiting purposes; do not rely on this value being sent to or used by the server.
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -226,9 +227,10 @@ public final class PixKey extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: object unique id.  ex: "+5511989898989"
-     * @param payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
+     * @param payerId [string]: deprecated and ignored by the API — the payer's tax ID is now always derived automatically from the calling Workspace's own registered tax ID for Central Bank rate-limiting purposes; do not rely on this value being sent to or used by the server.
      * @param params map of parameters
      * endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
+     * expand [list of strings, default null]: entity fields to expand in the response. Options: "statistics", "ownerStatistics".
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -306,6 +308,7 @@ public final class PixKey extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
+     * taxId [string, default null]: filter for Pix keys by the holder's CPF or CNPJ. ex: "012.345.678-90"
      * <p>
      * Return:
      * @return generator of PixKey objects with updated attributes
@@ -361,6 +364,7 @@ public final class PixKey extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
+     * taxId [string, default null]: filter for Pix keys by the holder's CPF or CNPJ. ex: "012.345.678-90"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -397,6 +401,7 @@ public final class PixKey extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
+     * taxId [string, default null]: filter for Pix keys by the holder's CPF or CNPJ. ex: "012.345.678-90"
      * <p>
      * Return:
      * @return PixKey.Page object:
@@ -459,6 +464,7 @@ public final class PixKey extends Resource {
      * tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
      * ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["+5511989898989", "+5511923232323"]
      * type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
+     * taxId [string, default null]: filter for Pix keys by the holder's CPF or CNPJ. ex: "012.345.678-90"
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:

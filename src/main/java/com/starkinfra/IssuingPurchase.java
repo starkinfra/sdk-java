@@ -26,7 +26,7 @@ public final class IssuingPurchase extends Resource {
      * productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
-     * purpose [string]: purchase purpose. ex: "purchase"
+     * purpose [string]: purchase purpose. Options: "purchase", "cashbackPurchase", "paymentTransaction", "purchaseRefund", "verification", "withdrawal"
      * amount [Long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * tax [Long]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * issuerAmount [Long]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -115,7 +115,7 @@ public final class IssuingPurchase extends Resource {
      * @param productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * @param cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * @param cardEnding [string]: last 4 digits of the card number. ex: "1234"
-     * @param purpose [string]: purchase purpose. ex: "purchase"
+     * @param purpose [string]: purchase purpose. Options: "purchase", "cashbackPurchase", "paymentTransaction", "purchaseRefund", "verification", "withdrawal"
      * @param amount [Long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * @param tax [Long]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * @param issuerAmount [Long]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -208,7 +208,7 @@ public final class IssuingPurchase extends Resource {
      * productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
      * cardId [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
      * cardEnding [string]: last 4 digits of the card number. ex: "1234"
-     * purpose [string]: purchase purpose. ex: "purchase"
+     * purpose [string]: purchase purpose. Options: "purchase", "cashbackPurchase", "paymentTransaction", "purchaseRefund", "verification", "withdrawal"
      * amount [Long]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
      * tax [Long]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
      * issuerAmount [Long]: issuer amount. ex: 1234 (= R$ 12.34)

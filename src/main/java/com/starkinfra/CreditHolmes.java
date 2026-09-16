@@ -29,7 +29,7 @@ public final class CreditHolmes extends Resource {
      * tags [list of strings, default null]: list of strings for tagging. ex: ["travel", "food"]
      * id [string, default null]: unique id returned when CreditHolmes is created. ex: "5656565656565656"
      * result [HashMap or CreditHolmes.Result, default empty HashMap]: result of the investigation after the case is solved.
-     * status [string]: current CreditHolmes status. ex: "created", "failed", "success"
+     * status [string]: current CreditHolmes status. Options: "created", "solved", "failed"
      * updated [string]: latest update datetime for the CreditHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      * created [string]: creation datetime for the CreditHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -61,7 +61,7 @@ public final class CreditHolmes extends Resource {
      * @param tags [list of strings, default null]: list of strings for tagging. ex: ["travel", "food"]
      * @param id [string, default null]: unique id returned when CreditHolmes is created. ex: "5656565656565656"
      * @param result [HashMap or CreditHolmes.Result, default empty HashMap]: result of the investigation after the case is solved.
-     * @param status [string]: current CreditHolmes status. ex: "created", "failed", "success"
+     * @param status [string]: current CreditHolmes status. Options: "created", "solved", "failed"
      * @param updated [string]: latest update datetime for the CreditHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param created [string]: creation datetime for the CreditHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      *
