@@ -3475,6 +3475,58 @@ CreditNote creditNote = CreditNote.cancel("5155165527080960");
 System.out.println(creditNote);
 ```
 
+### Retrieve CCB disbursement pdf file
+
+To retrieve CCB disbursement pdf file, use the `CreditNote.pdf` method with a valid (signed) Credit Note ID.
+
+```java
+import com.starkinfra.CreditNote;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+
+InputStream pdf = CreditNote.pdf("5155165527080960");
+
+java.nio.file.Files.copy(
+    pdf,
+    new File("credit-note.pdf").toPath(),
+    StandardCopyOption.REPLACE_EXISTING
+);
+```
+
+### Retrieve CCB disbursement payment pdf file
+
+To retrieve CCB disbursement payment pdf file, use the `CreditNote.payment` method with a valid (signed) Credit Note ID.
+
+```java
+import com.starkinfra.CreditNote;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+
+InputStream pdf = CreditNote.payment("5155165527080960");
+
+java.nio.file.Files.copy(
+    pdf,
+    new File("credit-note-payment.pdf").toPath(),
+    StandardCopyOption.REPLACE_EXISTING
+);
+```
+
+### CCB Token Resend
+
+You can resend the CCB token to the signers in case they missed the original email or link.
+
+```java
+import com.starkinfra.CreditNote;
+import com.starkinfra.CreditSigner;
+
+CreditNote creditNote = CreditNote.get("5155165527080960");
+for (CreditSigner signer : creditNote.signers) {
+    CreditSigner.resendToken(signer.id);
+}
+```
+
 ### Query CreditNote logs
 
 You can query credit note logs to better understand credit note life cycles.

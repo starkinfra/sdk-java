@@ -6,6 +6,10 @@ import com.starkinfra.CreditNote;
 import com.starkinfra.CreditSigner;
 import com.starkinfra.utils.Generator;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+
 import java.util.UUID;
 import java.util.List;
 import java.util.HashMap;
@@ -188,6 +192,58 @@ public class TestCreditNote {
         if (ids.size() != 4) {
             throw new Exception("ids.size() != 4");
         }
+    }
+
+    @Test
+    public void testPdf() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        params.put("status", "success");
+
+        Generator<CreditNote> notes = CreditNote.query(params);
+        for (CreditNote note : notes) {
+            InputStream pdf = CreditNote.pdf(note.id);
+            Assert.assertNotNull(pdf);
+            java.nio.file.Files.copy(
+                pdf,
+                new File("credit-note.pdf").toPath(),
+                StandardCopyOption.REPLACE_EXISTING
+            );
+        }
+    }
+
+    @Test
+    public void testPayment() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        params.put("status", "success");
+
+        Generator<CreditNote> notes = CreditNote.query(params);
+        for (CreditNote note : notes) {
+            InputStream pdf = CreditNote.payment(note.id);
+            Assert.assertNotNull(pdf);
+            java.nio.file.Files.copy(
+                pdf,
+                new File("credit-note-payment.pdf").toPath(),
+                StandardCopyOption.REPLACE_EXISTING
+            );
+        }
+    }
+
+    @Test
+    public void testCreditSignerResendToken() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        List<CreditNote> notes = CreditNote.create(exampleWithObject());
+        CreditSigner signer = notes.get(0).signers.get(0);
+
+        CreditSigner resent = CreditSigner.resendToken(signer.id);
+        Assert.assertNotNull(resent.id);
+        Assert.assertEquals(signer.id, resent.id);
     }
 
     static List<CreditNote> exampleWithObject() throws Exception {

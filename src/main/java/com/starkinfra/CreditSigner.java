@@ -1,5 +1,6 @@
 package com.starkinfra;
 
+import com.starkinfra.utils.Rest;
 import com.starkinfra.utils.Resource;
 
 import java.util.Map;
@@ -68,5 +69,40 @@ public final class CreditSigner extends Resource {
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
         }
+    }
+
+    /**
+     * Resend token to signer
+     * <p>
+     * Resend token to a specific signer.
+     * <p>
+     * Parameters:
+     * @param id [string]: CreditSigner unique id. ex: "5656565656565656"
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return CreditSigner object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static CreditSigner resendToken(String id, User user) throws Exception {
+        HashMap<String, Object> patchData = new HashMap<>();
+        patchData.put("isSent", false);
+        return Rest.patch(data, id, patchData, user);
+    }
+
+    /**
+     * Resend token to signer
+     * <p>
+     * Resend token to a specific signer.
+     * <p>
+     * Parameters:
+     * @param id [string]: CreditSigner unique id. ex: "5656565656565656"
+     * <p>
+     * Return:
+     * @return CreditSigner object with updated attributes
+     * @throws Exception error in the request
+     */
+    public static CreditSigner resendToken(String id) throws Exception {
+        return resendToken(id, null);
     }
 }
