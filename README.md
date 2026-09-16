@@ -71,6 +71,7 @@ This SDK version is compatible with the Stark Infra API v2.
     - [IndividualDocument](#create-individualdocuments): Create individual documents
     - [BusinessIdentity](#create-businessidentities): Create business identities
     - [BusinessAttachment](#create-businessattachments): Create business attachments
+    - [BusinessAccountRequest](#create-businessaccountrequests): Open a Stark Infra account for a company
   - [Ledger](#ledger)
     - [Ledger](#create-ledgers): Track the balance of a given amount
     - [LedgerTransaction](#create-ledgertransactions): Insert transactions to track a Ledger's balance
@@ -4212,6 +4213,110 @@ You can also get a specific log by its id.
 import com.starkinfra.*;
 
 BusinessAttachment.Log log = BusinessAttachment.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
+### Create BusinessAccountRequests
+
+You can create a BusinessAccountRequest to open a Stark Infra account for a company. Each of the company's owners completes an identity verification through a webview, delivered as the owner's `validatorLink`. The approval flow runs asynchronously.
+
+```java
+import com.starkinfra.*;
+
+BusinessAccountRequest.Address address = new BusinessAccountRequest.Address(
+    "Av. Faria Lima", "2000", "Itaim Bibi", "Sao Paulo", "SP", "04538-132", "Sala 42"
+);
+
+List<BusinessAccountRequest.Owner> owners = new ArrayList<>();
+owners.add(new BusinessAccountRequest.Owner(
+    "012.345.678-90", "Jamie Lannister", "partner", null, null, null
+));
+owners.add(new BusinessAccountRequest.Owner(
+    "812.531.960-36", "Cersei Lannister", "representative", null, null, null
+));
+
+List<BusinessAccountRequest> requests = new ArrayList<>();
+requests.add(new BusinessAccountRequest(
+    address, 100000000L, "Stark Bank S.A.", "20.018.183/0001-80", owners,
+    new String[]{"employees", "monthly"}, null, null, null, null, null, null
+));
+
+requests = BusinessAccountRequest.create(requests);
+
+for (BusinessAccountRequest request : requests){
+    System.out.println(request);
+}
+```
+
+**Note**: Instead of using BusinessAccountRequest, Address and Owner objects, you can also pass each element in dictionary format
+
+### Query BusinessAccountRequests
+
+You can query multiple business account requests according to filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+params.put("status", "approved");
+params.put("tags", new String[]{"employees", "monthly"});
+
+Generator<BusinessAccountRequest> requests = BusinessAccountRequest.query(params);
+
+for (BusinessAccountRequest request : requests) {
+    System.out.println(request);
+}
+```
+
+### Get a BusinessAccountRequest
+
+After its creation, information on a business account request may be retrieved by its id. Use it to read the per-owner verification status.
+
+```java
+import com.starkinfra.*;
+
+BusinessAccountRequest request = BusinessAccountRequest.get("5155165527080960");
+
+for (BusinessAccountRequest.Owner owner : request.owners) {
+    System.out.println(owner.name + " " + owner.status);
+}
+```
+
+Each owner also carries a `validatorLink`, the webview where that owner completes biometrics and document capture. Treat it as a credential: deliver it to its owner through a secure channel, and never log it or write it to disk.
+
+### Query BusinessAccountRequest logs
+
+You can query business account request logs to better understand business account request life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("after", "2020-04-01");
+params.put("before", "2020-04-30");
+
+Generator<BusinessAccountRequest.Log> logs = BusinessAccountRequest.Log.query(params);
+
+for (BusinessAccountRequest.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a BusinessAccountRequest log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+BusinessAccountRequest.Log log = BusinessAccountRequest.Log.get("5155165527080960");
 
 System.out.println(log);
 ```
