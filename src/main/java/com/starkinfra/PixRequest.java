@@ -54,7 +54,7 @@ public final class PixRequest extends Resource {
      * reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
      * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * status [string]: current PixRequest status. ex: "registered" or "paid"
+     * status [string]: current PixRequest status. Options: "created", "processing", "success", "failed"
      * flow [string]: direction of money flow. ex: "in" or "out"
      * senderBankCode [string]: sender's bank institution code in Brazil. ex: "20018183"
      * created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -133,7 +133,7 @@ public final class PixRequest extends Resource {
      * @param reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
      * @param id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * @param fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * @param status [string]: current PixRequest status. ex: "registered" or "paid"
+     * @param status [string]: current PixRequest status. Options: "created", "processing", "success", "failed"
      * @param flow [string]: direction of money flow. ex: "in" or "out"
      * @param senderBankCode [string]: sender's bank institution code in Brazil. ex: "20018183"
      * @param created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -224,7 +224,7 @@ public final class PixRequest extends Resource {
      * Attributes (return-only):
      * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-     * status [string]: current PixRequest status. ex: "registered" or "paid"
+     * status [string]: current PixRequest status. Options: "created", "processing", "success", "failed"
      * flow [string]: direction of money flow. ex: "in" or "out"
      * senderBankCode [string]: sender's bank institution code in Brazil. ex: "20018183"
      * created [string]: creation datetime for the PixRequest. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -588,10 +588,14 @@ public final class PixRequest extends Resource {
     /**
      * Helps you respond to a PixRequest authorization
      * <p>
+     * You must answer this synchronous authorization webhook within 1 second (HTTP 200). If you do not respond
+     * in time, Stark Infra resolves the request using the default behavior; if no pixRequestUrl is registered
+     * at all, inbound PixRequests are denied by default.
+     * <p>
      * Parameters:
      * @param params to be returned on a PixRequest read.
-     * status [string]: response to the authorization. ex: "approved" or "denied"
-     * reason [string, default null]: denial reason. Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
+     * status [string]: response to the authorization. Options: "approved" or "denied"
+     * reason [string, default null]: denial reason, required when status is "denied". Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
      * <p>
      * Return:
      * @return Dumped JSON string that must be returned to us

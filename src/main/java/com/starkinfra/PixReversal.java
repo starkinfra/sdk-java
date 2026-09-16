@@ -34,7 +34,7 @@ public final class PixReversal extends Resource {
      * id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
      * fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-     * status [string]: current PixReversal status. ex: "registered" or "paid"
+     * status [string]: current PixReversal status. Options: "created", "processing", "success", "failed"
      * flow [string]: direction of money flow. ex: "in" or "out"
      * created [string]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -74,7 +74,7 @@ public final class PixReversal extends Resource {
      * @param id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * @param returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
      * @param fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-     * @param status [string]: current PixReversal status. ex: "registered" or "paid"
+     * @param status [string]: current PixReversal status. Options: "created", "processing", "success", "failed"
      * @param flow [string]: direction of money flow. ex: "in" or "out"
      * @param created [string]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -121,7 +121,7 @@ public final class PixReversal extends Resource {
      * id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
      * returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
      * fee [integer]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-     * status [string]: current PixReversal status. ex: "registered" or "paid"
+     * status [string]: current PixReversal status. Options: "created", "processing", "success", "failed"
      * flow [string]: direction of money flow. ex: "in" or "out"
      * created [string]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -464,10 +464,15 @@ public final class PixReversal extends Resource {
     /**
      * Helps you respond to a PixReversal authorization
      * <p>
+     * You must answer this synchronous authorization webhook within 1 second (HTTP 200). If you do not respond
+     * in time, Stark Infra resolves the request using the default behavior; if no pixReversalUrl is registered
+     * at all, inbound PixReversals are accepted by default (the opposite default from PixRequest, which denies
+     * by default).
+     * <p>
      * Parameters:
      * @param params to be returned on a PixReversal read.
-     * status [string]: response to the authorization. ex: "approved" or "denied"
-     * reason [string, default null]: denial reason. Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
+     * status [string]: response to the authorization. Options: "approved" or "denied"
+     * reason [string, default null]: denial reason, required when status is "denied". Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
      * <p>
      * Return:
      * @return Dumped JSON string that must be returned to us

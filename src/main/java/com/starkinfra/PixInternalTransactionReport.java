@@ -32,12 +32,12 @@ public final class PixInternalTransactionReport extends Resource {
      * referenceType [string]: type of the reported transaction. ex: "request" or "reversal"
      * senderAccountNumber [string]: sender's bank account number. ex: "76543-8"
      * senderBranchCode [string]: sender's branch code. ex: "2201"
-     * senderAccountType [string]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * senderAccountType [string]: sender's bank account type. Options: "checking", "savings", "salary", "payment", "other"
      * senderBankCode [string]: sender's participant code (ISPB). ex: "00000665"
      * senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "012.345.678-90"
      * receiverAccountNumber [string]: receiver's bank account number. ex: "00000-0"
      * receiverBranchCode [string]: receiver's branch code. ex: "0001"
-     * receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * receiverAccountType [string]: receiver's bank account type. Options: "checking", "savings", "salary", "payment", "other"
      * receiverBankCode [string]: receiver's participant code (ISPB). ex: "18236120"
      * receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "012.345.678-90"
      * <p>
@@ -47,7 +47,7 @@ public final class PixInternalTransactionReport extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixInternalTransactionReport is created. ex: "5656565656565656"
-     * status [string]: current PixInternalTransactionReport status. ex: "created", "failed", "sent" or "success"
+     * status [string]: current PixInternalTransactionReport status. Options: "created", "processing", "failed", "success"
      * updated [string]: latest update datetime for the PixInternalTransactionReport. ex: "2026-06-15 10:30:00.000000+00:00"
      *
      */
@@ -92,17 +92,17 @@ public final class PixInternalTransactionReport extends Resource {
      * @param referenceType [string]: type of the reported transaction. ex: "request" or "reversal"
      * @param senderAccountNumber [string]: sender's bank account number. ex: "76543-8"
      * @param senderBranchCode [string]: sender's branch code. ex: "2201"
-     * @param senderAccountType [string]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * @param senderAccountType [string]: sender's bank account type. Options: "checking", "savings", "salary", "payment", "other"
      * @param senderBankCode [string]: sender's participant code (ISPB). ex: "00000665"
      * @param senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "012.345.678-90"
      * @param receiverAccountNumber [string]: receiver's bank account number. ex: "00000-0"
      * @param receiverBranchCode [string]: receiver's branch code. ex: "0001"
-     * @param receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * @param receiverAccountType [string]: receiver's bank account type. Options: "checking", "savings", "salary", "payment", "other"
      * @param receiverBankCode [string]: receiver's participant code (ISPB). ex: "18236120"
      * @param receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "012.345.678-90"
      * @param receiverKeyId [string, default null]: receiver's Pix Key. ex: "+5511989898989"
      * @param returnId [string, default null]: central bank's unique reversal id. Required when referenceType is "reversal". ex: "D20018183202201201213u34sav898j"
-     * @param status [string]: current PixInternalTransactionReport status. ex: "created", "failed", "sent" or "success"
+     * @param status [string]: current PixInternalTransactionReport status. Options: "created", "processing", "failed", "success"
      * @param updated [string]: latest update datetime for the PixInternalTransactionReport. ex: "2026-06-15 10:30:00.000000+00:00"
      * @param id [string]: unique id returned when the PixInternalTransactionReport is created. ex: "5656565656565656"
      */
@@ -155,12 +155,12 @@ public final class PixInternalTransactionReport extends Resource {
      * referenceType [string]: type of the reported transaction. ex: "request" or "reversal"
      * senderAccountNumber [string]: sender's bank account number. ex: "76543-8"
      * senderBranchCode [string]: sender's branch code. ex: "2201"
-     * senderAccountType [string]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * senderAccountType [string]: sender's bank account type. Options: "checking", "savings", "salary", "payment", "other"
      * senderBankCode [string]: sender's participant code (ISPB). ex: "00000665"
      * senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "012.345.678-90"
      * receiverAccountNumber [string]: receiver's bank account number. ex: "00000-0"
      * receiverBranchCode [string]: receiver's branch code. ex: "0001"
-     * receiverAccountType [string]: receiver's bank account type. ex: "checking", "savings", "salary" or "payment"
+     * receiverAccountType [string]: receiver's bank account type. Options: "checking", "savings", "salary", "payment", "other"
      * receiverBankCode [string]: receiver's participant code (ISPB). ex: "18236120"
      * receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "012.345.678-90"
      * <p>
@@ -170,7 +170,7 @@ public final class PixInternalTransactionReport extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixInternalTransactionReport is created. ex: "5656565656565656"
-     * status [string]: current PixInternalTransactionReport status. ex: "created", "failed", "sent" or "success"
+     * status [string]: current PixInternalTransactionReport status. Options: "created", "processing", "failed", "success"
      * updated [string]: latest update datetime for the PixInternalTransactionReport. ex: "2026-06-15 10:30:00.000000+00:00"
      * @throws Exception error in the request
      */

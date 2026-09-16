@@ -88,7 +88,7 @@ public class PixUser extends Resource {
      * Parameters:
      * @param id [string]: user tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
      * @param params parameters for the query
-     * keyId [string]: marked PixKey id. ex: "+5511989898989"
+     * keyId [string, default null]: Pix key to retrieve statistics for. When provided, the response returns the key's statistics instead of the owner's. ex: "+5511989898989"
      * <p>
      * Return:
      * @return PixUser object with updated attributes

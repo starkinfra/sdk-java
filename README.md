@@ -1059,7 +1059,7 @@ Request request = Listener.listen(); // this is the method you made to get the e
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
 
-IssuingToken event = IssuingToken.parse(content, validSignature);
+IssuingTokenActivation event = IssuingTokenActivation.parse(content, validSignature);
 ```
 
 After that, you may generate the activation code and send it to the cardholder.

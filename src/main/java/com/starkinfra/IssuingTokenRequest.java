@@ -18,7 +18,7 @@ public class IssuingTokenRequest extends SubResource {
      * <p>
      * Parameters:
      * cardId [string]: card id to be tokenized. ex: "5734340247945216"
-     * walletId [string]: desired wallet to be integrated. ex: "google"
+     * walletId [string]: desired wallet to be integrated. Options: "apple", "google", "merchant"
      * methodCode [string]: method code. ex: "app" or "manual"
      * content [string]: token request content. ex: "eyJwdWJsaWNLZXlGaW5nZXJwcmludCI6ICJlNTNiZThjZTRhYWQxNWU2OWNmMjExOTA5Mjk4YzJkOTE0O..."
      * signature [string]: token request signature. ex: "eyJwdWJsaWNLZXlGaW5nZXJwcmludCI6ICJlNTNiZThjZTRhYWQxNWU2OWNmMjExOTA5Mjk4YzJkOTE0O..."
@@ -44,7 +44,7 @@ public class IssuingTokenRequest extends SubResource {
      * <p>
      * Parameters:
      * @param cardId [string]: card id to be tokenized. ex: "5734340247945216"
-     * @param walletId [string]: desired wallet to be integrated. ex: "google"
+     * @param walletId [string]: desired wallet to be integrated. Options: "apple", "google", "merchant"
      * @param methodCode [string]: method code. ex: "app" or "manual"
      * @param content [string]: token request content. ex: "eyJwdWJsaWNLZXlGaW5nZXJwcmludCI6ICJlNTNiZThjZTRhYWQxNWU2OWNmMjExOTA5Mjk4YzJkOTE0O..."
      * @param signature [string]: token request signature. ex: "eyJwdWJsaWNLZXlGaW5nZXJwcmludCI6ICJlNTNiZThjZTRhYWQxNWU2OWNmMjExOTA5Mjk4YzJkOTE0O..."
@@ -73,7 +73,7 @@ public class IssuingTokenRequest extends SubResource {
      * Parameters (required):
      * @param data map of properties for the creation of the IssuingTokenRequest
      * cardId [string]: card id to be tokenized. ex: "5734340247945216"
-     * walletId [string]: desired wallet to be integrated. ex: "google"
+     * walletId [string]: desired wallet to be integrated. Options: "apple", "google", "merchant"
      * methodCode [string]: method code. ex: "app" or "manual"
      * <p>
      * Attributes (return-only):

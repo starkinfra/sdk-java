@@ -28,8 +28,8 @@ public final class Subscription extends SubResource {
      * referenceCode [String]: reference code for the subscription.
      * senderFinalName [String]: final sender name.
      * senderFinalTaxId [String]: final sender tax ID.
-     * status [String]: current status of the subscription.
-     * type [String]: type of the subscription.
+     * status [String]: current status of the subscription. Options: "created", "approved", "denied", "expired", "canceled"
+     * type [String]: authorization journey used to create the subscription. Options: "push", "qrcode", "qrcodeAndPayment", "paymentAndOrQrcode"
      * updated [String]: last update datetime for the subscription.
      */
     static SubResource.ClassData data = new SubResource.ClassData(Subscription.class, "Subscription");
@@ -71,8 +71,8 @@ public final class Subscription extends SubResource {
      * @param referenceCode [String]: reference code for the subscription.
      * @param senderFinalName [String]: final sender name.
      * @param senderFinalTaxId [String]: final sender tax ID.
-     * @param status [String]: current status of the subscription.
-     * @param type [String]: type of the subscription.
+     * @param status [String]: current status of the subscription. Options: "created", "approved", "denied", "expired", "canceled"
+     * @param type [String]: authorization journey used to create the subscription. Options: "push", "qrcode", "qrcodeAndPayment", "paymentAndOrQrcode"
      * @param updated [String]: last update datetime for the subscription.
      */
     public Subscription(Long amount, Long amountMinLimit, String bacenId, String created, String description,

@@ -115,7 +115,7 @@ public final class CreditNote extends Resource {
      * @param scheduled [string]: date of payment execution. ex: "2020-03-11"
      * @param invoices [list of CreditNote.Invoice objects or maps]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
      * @param payment [CreditNote.Transfer object or map]: payment entity to be created and sent to the credit receiver. ex: payment=Creditnote.Transfer()
-     * @param signers [list of CreditSigner objects or map]: list of signer entities each containing signer's name, contact and delivery method for the signature request. ex: signers=[CreditSigner(), CreditSigner()]
+     * @param signers [list of up to 10 CreditSigner objects or maps]: every person or entity that must sign the contract, each with required "name", "contact" and "method". Methods: "link" (signing link sent to an email or phone contact), "token" (signing token sent to an email or phone contact), "server" and "organization" (automatic signatures over URL contacts). Signers already registered in your credit profile and the SCD signature are appended automatically -- do not list them here.
      * @param externalId [string]: a string that must be unique among all your CreditNotes, used to avoid resource duplication. ex: "my-internal-id-123456"
      * @param streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
      * @param streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
@@ -371,7 +371,7 @@ public final class CreditNote extends Resource {
     /**
      * Create CreditNote
      * <p>
-     * Send a list of CreditNote objects for creation in the Stark Infra API
+     * Send a list of up to 100 CreditNote objects for creation in the Stark Infra API
      * <p>
      * Parameters:
      * @param notes [list of CreditNote objects or Maps]: list of CreditNote objects to be created in the API
@@ -404,7 +404,7 @@ public final class CreditNote extends Resource {
     /**
      * Create CreditNote
      * <p>
-     * Send a list of CreditNote objects for creation in the Stark Infra API
+     * Send a list of up to 100 CreditNote objects for creation in the Stark Infra API
      * <p>
      * Parameters:
      * @param notes [list of CreditNote objects or Maps]: list of CreditNote objects to be created in the API
@@ -637,7 +637,10 @@ public final class CreditNote extends Resource {
     /**
      * Cancel a CreditNote entity
      * <p>
-     * Cancel a CreditNote entity previously created in the Stark Infra API
+     * Cancel a CreditNote entity previously created in the Stark Infra API that has not reached a final status
+     * yet. Notes with status "created", "signed" or "processing" can be canceled, which also cancels the
+     * signing document. Notes with status "success", "failed", "expired" or already "canceled" are returned
+     * unchanged.
      * <p>
      * Parameters:
      * @param id [string]: CreditNote unique id. ex: "5656565656565656"
@@ -655,7 +658,10 @@ public final class CreditNote extends Resource {
     /**
      * Cancel a CreditNote entity
      * <p>
-     * Cancel a CreditNote entity previously created in the Stark Infra API
+     * Cancel a CreditNote entity previously created in the Stark Infra API that has not reached a final status
+     * yet. Notes with status "created", "signed" or "processing" can be canceled, which also cancels the
+     * signing document. Notes with status "success", "failed", "expired" or already "canceled" are returned
+     * unchanged.
      * <p>
      * Parameters (required):
      * @param id [string]: CreditNote unique id. ex: "5656565656565656"

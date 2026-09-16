@@ -30,7 +30,7 @@ public final class PixStatement extends Resource {
      * after [string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: "2020-03-10"
      * type [string]: types of entities to include in statement. Options: "interchange", "interchangeTotal" and "transaction"
      * id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-     * status [string]: current PixStatement status. ex: "success" or "failed"
+     * status [string]: current PixStatement status. Options: "created", "looking", "success", "failed"
      * transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
      * created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -63,7 +63,7 @@ public final class PixStatement extends Resource {
      * @param before [string]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: "2020-03-10"
      * @param type [string]: types of entities to include in statement. Options: "interchange", "interchangeTotal" and "transaction"
      * @param id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-     * @param status [string]: current PixStatement status. ex: "success" or "failed"
+     * @param status [string]: current PixStatement status. Options: "created", "looking", "success", "failed"
      * @param transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
      * @param created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -99,7 +99,7 @@ public final class PixStatement extends Resource {
      * before [string]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: "2020-03-10"
      * type [string]: types of entities to include in statement. Options: "interchange", "interchangeTotal" and "transaction"
      * id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-     * status [string]: current PixStatement status. ex: "success" or "failed"
+     * status [string]: current PixStatement status. Options: "created", "looking", "success", "failed"
      * transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
      * created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
