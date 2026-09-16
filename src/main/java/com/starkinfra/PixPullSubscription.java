@@ -1,6 +1,7 @@
 package com.starkinfra;
 
 import com.starkinfra.utils.Rest;
+import com.starkinfra.utils.Parse;
 import com.starkinfra.utils.Resource;
 import com.starkinfra.utils.Generator;
 import com.starkcore.utils.SubResource;
@@ -604,6 +605,45 @@ public final class PixPullSubscription extends Resource {
      */
     public static PixPullSubscription update(String id, Map<String, Object> patchData, User user) throws Exception {
         return Rest.patch(data, id, patchData, user);
+    }
+
+    /**
+     * Create a single verified PixPullSubscription object from a content string
+     * <p>
+     * Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
+     * If the provided digital signature does not check out with the Stark Infra public key, a
+     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * <p>
+     * Parameters:
+     * @param content [string]: response content from request received at user endpoint (not parsed)
+     * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return Parsed PixPullSubscription object
+     * @throws Exception error in the request
+     */
+    public static PixPullSubscription parse(String content, String signature, User user) throws Exception {
+        return Parse.parseAndVerify(data, content, signature, user);
+    }
+
+    /**
+     * Create a single verified PixPullSubscription object from a content string
+     * <p>
+     * Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
+     * If the provided digital signature does not check out with the Stark Infra public key, a
+     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * <p>
+     * Parameters:
+     * @param content [string]: response content from request received at user endpoint (not parsed)
+     * @param signature [string]: base-64 digital signature received at response header "Digital-Signature"
+     * <p>
+     * Return:
+     * @return Parsed PixPullSubscription object
+     * @throws Exception error in the request
+     */
+    public static PixPullSubscription parse(String content, String signature) throws Exception {
+        return PixPullSubscription.parse(content, signature, null);
     }
 
     public final static class Log extends Resource {

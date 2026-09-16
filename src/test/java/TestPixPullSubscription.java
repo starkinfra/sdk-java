@@ -5,6 +5,7 @@ import com.starkinfra.Event;
 import com.starkinfra.Settings;
 import com.starkinfra.PixPullSubscription;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.error.InvalidSignatureError;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -185,6 +186,34 @@ public class TestPixPullSubscription {
 
         Event parsed = Event.parse(content, validSignature);
         Assert.assertNotNull(parsed.id);
+    }
+
+    @Test
+    public void testParseInvalidSignature() throws Exception {
+        String content = "{\"amount\": 52064, \"amountMinLimit\": 0, \"bacenId\": \"RR321606372026170317231564231\", \"created\": \"2026-03-17T20:23:57.255567+00:00\", \"description\": \"A Lannister always pays his debts\", \"due\": \"2026-04-17T02:59:59.999000+00:00\", \"externalId\": \"606512134\", \"flow\": \"out\", \"id\": \"5656970050666496\", \"installmentEnd\": \"\", \"installmentStart\": \"2026-03-18T02:59:59.999999+00:00\", \"interval\": \"month\", \"pullRetryLimit\": 3, \"receiverBankCode\": \"32160637\", \"receiverName\": \"Stark Bank\", \"receiverTaxId\": \"39.908.427/0001-28\", \"referenceCode\": \"36135971\", \"senderAccountNumber\": \"55213\", \"senderBankCode\": \"20018183\", \"senderBranchCode\": \"356\", \"senderTaxId\": \"99.999.919/9999-79\", \"status\": \"created\", \"tags\": [], \"type\": \"push\", \"updated\": \"2026-03-17T20:23:58.050421+00:00\"}";
+        String invalidSignature = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
+        Settings.user = utils.User.defaultProject();
+
+        try {
+            PixPullSubscription.parse(content, invalidSignature);
+            throw new Error("Signature incorrectly validated");
+        } catch (InvalidSignatureError e) {
+            System.out.println("Signature correctly rejected");
+        }
+    }
+
+    @Test
+    public void testParseMalformedSignature() throws Exception {
+        String content = "{\"amount\": 52064, \"amountMinLimit\": 0, \"bacenId\": \"RR321606372026170317231564231\", \"created\": \"2026-03-17T20:23:57.255567+00:00\", \"description\": \"A Lannister always pays his debts\", \"due\": \"2026-04-17T02:59:59.999000+00:00\", \"externalId\": \"606512134\", \"flow\": \"out\", \"id\": \"5656970050666496\", \"installmentEnd\": \"\", \"installmentStart\": \"2026-03-18T02:59:59.999999+00:00\", \"interval\": \"month\", \"pullRetryLimit\": 3, \"receiverBankCode\": \"32160637\", \"receiverName\": \"Stark Bank\", \"receiverTaxId\": \"39.908.427/0001-28\", \"referenceCode\": \"36135971\", \"senderAccountNumber\": \"55213\", \"senderBankCode\": \"20018183\", \"senderBranchCode\": \"356\", \"senderTaxId\": \"99.999.919/9999-79\", \"status\": \"created\", \"tags\": [], \"type\": \"push\", \"updated\": \"2026-03-17T20:23:58.050421+00:00\"}";
+        String malformedSignature = "something is definitely wrong";
+        Settings.user = utils.User.defaultProject();
+
+        try {
+            PixPullSubscription.parse(content, malformedSignature);
+            throw new Error("Signature incorrectly validated");
+        } catch (InvalidSignatureError e) {
+            System.out.println("Signature correctly rejected");
+        }
     }
 
     static PixPullSubscription example() throws Exception {
