@@ -29,11 +29,12 @@ public final class IndividualAccountRequest extends Resource {
      * taxId [string]: Brazilian CPF with or without formatting. ex: "012.345.678-90" or "01234567890"
      * address [IndividualAccountRequest.Address]: structured residential address. ex: new IndividualAccountRequest.Address(data)
      * income [Long]: monthly income in cents. Must be greater than 0. ex: 1000000 (= R$ 10,000.00)
+     * birthDate [string, default null]: individual's birth date. ex: "2012-03-06"
      * tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
      * id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-     * status [string]: current IndividualAccountRequest status. ex: "created", "processing", "success", "failed" or "canceled"
+     * status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied" or "failed"
      * accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
-     * flags [list of strings]: server-side review flags. Empty unless the request triggered a manual-review condition. ex: ["manualReview"]
+     * flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message. ex: [{"code": "bureauValidation", "message": "..."}]
      * validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
      * created [string]: creation datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -45,9 +46,10 @@ public final class IndividualAccountRequest extends Resource {
     public String taxId;
     public Address address;
     public Long income;
+    public String birthDate;
     public String[] tags;
     public String accountType;
-    public String[] flags;
+    public List<HashMap<String, Object>> flags;
     public String validatorLink;
     public String status;
     public String created;
@@ -67,23 +69,25 @@ public final class IndividualAccountRequest extends Resource {
      * @param taxId [string]: Brazilian CPF with or without formatting. ex: "012.345.678-90" or "01234567890"
      * @param address [IndividualAccountRequest.Address]: structured residential address.
      * @param income [Long]: monthly income in cents. Must be greater than 0. ex: 1000000 (= R$ 10,000.00)
+     * @param birthDate [string, default null]: individual's birth date. ex: "2012-03-06"
      * @param tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
      * @param id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-     * @param status [string]: current IndividualAccountRequest status. ex: "created", "processing", "success", "failed" or "canceled"
+     * @param status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied" or "failed"
      * @param accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
-     * @param flags [list of strings]: server-side review flags. ex: ["manualReview"]
+     * @param flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message.
      * @param validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
      * @param created [string]: creation datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      */
-    public IndividualAccountRequest(String name, String taxId, Address address, Long income, String[] tags,
-                                    String id, String status, String accountType, String[] flags,
+    public IndividualAccountRequest(String name, String taxId, Address address, Long income, String birthDate, String[] tags,
+                                    String id, String status, String accountType, List<HashMap<String, Object>> flags,
                                     String validatorLink, String created, String updated) {
         super(id);
         this.name = name;
         this.taxId = taxId;
         this.address = address;
         this.income = income;
+        this.birthDate = birthDate;
         this.tags = tags;
         this.status = status;
         this.accountType = accountType;
@@ -110,13 +114,14 @@ public final class IndividualAccountRequest extends Resource {
      * income [Long]: monthly income in cents. Must be greater than 0. ex: 1000000 (= R$ 10,000.00)
      * <p>
      * Parameters (optional):
+     * birthDate [string, default null]: individual's birth date. ex: "2012-03-06"
      * tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-     * status [string]: current IndividualAccountRequest status. ex: "created", "processing", "success", "failed" or "canceled"
+     * status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied" or "failed"
      * accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
-     * flags [list of strings]: server-side review flags. ex: ["manualReview"]
+     * flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message.
      * validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
      * created [string]: creation datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
@@ -131,6 +136,7 @@ public final class IndividualAccountRequest extends Resource {
         this.taxId = (String) dataCopy.remove("taxId");
         this.address = parseAddress(dataCopy.remove("address"));
         this.income = ((Number) dataCopy.remove("income")).longValue();
+        this.birthDate = (String) dataCopy.remove("birthDate");
         this.tags = (String[]) dataCopy.remove("tags");
         this.status = null;
         this.accountType = null;
@@ -427,6 +433,7 @@ public final class IndividualAccountRequest extends Resource {
      * name [string, default null]: replace the legal name. ex: "Tony Stark"
      * taxId [string, default null]: replace the CPF. ex: "012.345.678-90"
      * address [map, default null]: replace the address as a whole object (no partial address PATCH).
+     * birthDate [string, default null]: new birth date. ex: "2012-03-06"
      * income [Long, default null]: replace monthly income in cents. ex: 1000000
      * status [string, default null]: manual state transition. ex: "processing"
      * tags [list of strings, default null]: replace tag list. ex: ["employees", "monthly"]
@@ -450,6 +457,7 @@ public final class IndividualAccountRequest extends Resource {
      * name [string, default null]: replace the legal name. ex: "Tony Stark"
      * taxId [string, default null]: replace the CPF. ex: "012.345.678-90"
      * address [map, default null]: replace the address as a whole object (no partial address PATCH).
+     * birthDate [string, default null]: new birth date. ex: "2012-03-06"
      * income [Long, default null]: replace monthly income in cents. ex: 1000000
      * status [string, default null]: manual state transition. ex: "processing"
      * tags [list of strings, default null]: replace tag list. ex: ["employees", "monthly"]
