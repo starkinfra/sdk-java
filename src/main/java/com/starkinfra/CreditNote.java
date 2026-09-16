@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.ArrayList;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 
 import com.google.gson.*;
@@ -672,6 +673,76 @@ public final class CreditNote extends Resource {
      */
     public static CreditNote cancel(String id) throws Exception {
         return cancel(id, null);
+    }
+
+    /**
+     * Retrieve a specific CreditNote pdf file
+     * <p>
+     * Receive the CCB disbursement pdf file of a CreditNote previously created in the Stark Infra API by its id.
+     * Not available for canceled CreditNotes.
+     * <p>
+     * Parameters:
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return CreditNote pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream pdf(String id, User user) throws Exception {
+        return Rest.getContent(data, id, "pdf", user, new HashMap<>());
+    }
+
+    /**
+     * Retrieve a specific CreditNote pdf file
+     * <p>
+     * Receive the CCB disbursement pdf file of a CreditNote previously created in the Stark Infra API by its id.
+     * Not available for canceled CreditNotes.
+     * <p>
+     * Parameters:
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
+     * <p>
+     * Return:
+     * @return CreditNote pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream pdf(String id) throws Exception {
+        return CreditNote.pdf(id, null);
+    }
+
+    /**
+     * Retrieve a specific CreditNote payment pdf file
+     * <p>
+     * Receive the CCB disbursement payment pdf file of a CreditNote previously created in the Stark Infra API by its id.
+     * Only CreditNotes with status "success" have a payment pdf.
+     * <p>
+     * Parameters:
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
+     * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
+     * <p>
+     * Return:
+     * @return CreditNote payment pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream payment(String id, User user) throws Exception {
+        return Rest.getContent(data, id, "payment/pdf", user, new HashMap<>());
+    }
+
+    /**
+     * Retrieve a specific CreditNote payment pdf file
+     * <p>
+     * Receive the CCB disbursement payment pdf file of a CreditNote previously created in the Stark Infra API by its id.
+     * Only CreditNotes with status "success" have a payment pdf.
+     * <p>
+     * Parameters:
+     * @param id [string]: CreditNote unique id. ex: "5656565656565656"
+     * <p>
+     * Return:
+     * @return CreditNote payment pdf file
+     * @throws Exception error in the request
+     */
+    public static InputStream payment(String id) throws Exception {
+        return CreditNote.payment(id, null);
     }
 
     /**

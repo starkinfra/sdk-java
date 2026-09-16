@@ -15,6 +15,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - parse method to PixPullSubscription
+- pdf and payment methods to CreditNote resource
+- resendToken method to CreditSigner resource
 
 ### Fixed
 - docstrings for Pix, Issuing and Credit resources to match the business rules stated in the API reference

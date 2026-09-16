@@ -1,5 +1,6 @@
 import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Assume;
 
 import com.starkinfra.Settings;
 import com.starkinfra.CreditNote;
@@ -10,6 +11,8 @@ import java.util.UUID;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 
 public class TestCreditNote {
@@ -188,6 +191,65 @@ public class TestCreditNote {
         if (ids.size() != 4) {
             throw new Exception("ids.size() != 4");
         }
+    }
+
+    @Test
+    public void testPdf() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        params.put("status", "created");
+        Generator<CreditNote> notes = CreditNote.query(params);
+
+        CreditNote note = null;
+        for (CreditNote n : notes) {
+            note = n;
+            break;
+        }
+        if (note == null) {
+            throw new Exception("no created CreditNote available in this workspace");
+        }
+
+        InputStream pdf = CreditNote.pdf(note.id);
+        byte[] content = readAll(pdf);
+        Assert.assertTrue(content.length > 4);
+        Assert.assertEquals("%PDF", new String(content, 0, 4));
+    }
+
+    @Test
+    public void testPayment() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        params.put("status", "success");
+        Generator<CreditNote> notes = CreditNote.query(params);
+
+        CreditNote note = null;
+        for (CreditNote n : notes) {
+            note = n;
+            break;
+        }
+        if (note == null) {
+            Assume.assumeTrue("no CreditNote with status success available in this workspace", false);
+            return;
+        }
+
+        InputStream pdf = CreditNote.payment(note.id);
+        byte[] content = readAll(pdf);
+        Assert.assertTrue(content.length > 4);
+        Assert.assertEquals("%PDF", new String(content, 0, 4));
+    }
+
+    static byte[] readAll(InputStream inputStream) throws Exception {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] chunk = new byte[4096];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(chunk)) != -1) {
+            buffer.write(chunk, 0, bytesRead);
+        }
+        return buffer.toByteArray();
     }
 
     static List<CreditNote> exampleWithObject() throws Exception {

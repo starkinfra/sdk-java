@@ -3475,6 +3475,56 @@ CreditNote creditNote = CreditNote.cancel("5155165527080960");
 System.out.println(creditNote);
 ```
 
+### Retrieve CCB disbursement pdf file
+
+Receive the CCB disbursement pdf file of a CreditNote previously created in the Stark Infra API by its id. Not available for canceled CreditNotes.
+
+```java
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+import com.starkinfra.CreditNote;
+
+InputStream pdf = CreditNote.pdf("5155165527080960");
+
+java.nio.file.Files.copy(
+    pdf,
+    new File("credit_note.pdf").toPath(),
+    StandardCopyOption.REPLACE_EXISTING
+);
+```
+
+### Retrieve CCB disbursement payment pdf file
+
+Receive the CCB disbursement payment pdf file of a CreditNote previously created in the Stark Infra API by its id. Only CreditNotes with status "success" have a payment pdf.
+
+```java
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
+import com.starkinfra.CreditNote;
+
+InputStream pdf = CreditNote.payment("5155165527080960");
+
+java.nio.file.Files.copy(
+    pdf,
+    new File("credit_note_payment.pdf").toPath(),
+    StandardCopyOption.REPLACE_EXISTING
+);
+```
+
+### CCB Token Resend
+
+Resend token to a specific signer.
+
+```java
+import com.starkinfra.CreditSigner;
+
+CreditSigner signer = CreditSigner.resendToken("5155165527080960");
+
+System.out.println(signer);
+```
+
 ### Query CreditNote logs
 
 You can query credit note logs to better understand credit note life cycles.
