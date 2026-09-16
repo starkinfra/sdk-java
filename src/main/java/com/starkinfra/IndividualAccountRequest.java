@@ -34,6 +34,7 @@ public final class IndividualAccountRequest extends Resource {
      * status [string]: current IndividualAccountRequest status. ex: "created", "processing", "success", "failed" or "canceled"
      * accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
      * flags [list of strings]: server-side review flags. Empty unless the request triggered a manual-review condition. ex: ["manualReview"]
+     * validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
      * created [string]: creation datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -47,6 +48,7 @@ public final class IndividualAccountRequest extends Resource {
     public String[] tags;
     public String accountType;
     public String[] flags;
+    public String validatorLink;
     public String status;
     public String created;
     public String updated;
@@ -70,12 +72,13 @@ public final class IndividualAccountRequest extends Resource {
      * @param status [string]: current IndividualAccountRequest status. ex: "created", "processing", "success", "failed" or "canceled"
      * @param accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
      * @param flags [list of strings]: server-side review flags. ex: ["manualReview"]
+     * @param validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
      * @param created [string]: creation datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public IndividualAccountRequest(String name, String taxId, Address address, Long income, String[] tags,
                                     String id, String status, String accountType, String[] flags,
-                                    String created, String updated) {
+                                    String validatorLink, String created, String updated) {
         super(id);
         this.name = name;
         this.taxId = taxId;
@@ -85,6 +88,7 @@ public final class IndividualAccountRequest extends Resource {
         this.status = status;
         this.accountType = accountType;
         this.flags = flags;
+        this.validatorLink = validatorLink;
         this.created = created;
         this.updated = updated;
     }
@@ -113,6 +117,7 @@ public final class IndividualAccountRequest extends Resource {
      * status [string]: current IndividualAccountRequest status. ex: "created", "processing", "success", "failed" or "canceled"
      * accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
      * flags [list of strings]: server-side review flags. ex: ["manualReview"]
+     * validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
      * created [string]: creation datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the IndividualAccountRequest. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
@@ -130,6 +135,7 @@ public final class IndividualAccountRequest extends Resource {
         this.status = null;
         this.accountType = null;
         this.flags = null;
+        this.validatorLink = null;
         this.created = null;
         this.updated = null;
 
@@ -471,6 +477,7 @@ public final class IndividualAccountRequest extends Resource {
      * city [string]: city. ex: "Sao Paulo"
      * state [string]: state (BR 2-letter code). ex: "SP"
      * zipCode [string]: ZIP code (BR CEP) with or without formatting. ex: "05724005"
+     * complement [string, default null]: address complement. ex: "Apto. 123"
      *
      */
     public final static class Address extends SubResource {
@@ -480,6 +487,7 @@ public final class IndividualAccountRequest extends Resource {
         public String city;
         public String state;
         public String zipCode;
+        public String complement;
 
         /**
          * IndividualAccountRequest.Address object
@@ -493,14 +501,16 @@ public final class IndividualAccountRequest extends Resource {
          * @param city [string]: city. ex: "Sao Paulo"
          * @param state [string]: state (BR 2-letter code). ex: "SP"
          * @param zipCode [string]: ZIP code (BR CEP) with or without formatting. ex: "05724005"
+         * @param complement [string, default null]: address complement. ex: "Apto. 123"
          */
-        public Address(String street, String number, String neighborhood, String city, String state, String zipCode) {
+        public Address(String street, String number, String neighborhood, String city, String state, String zipCode, String complement) {
             this.street = street;
             this.number = number;
             this.neighborhood = neighborhood;
             this.city = city;
             this.state = state;
             this.zipCode = zipCode;
+            this.complement = complement;
         }
 
         /**
@@ -516,6 +526,7 @@ public final class IndividualAccountRequest extends Resource {
          * city [string]: city. ex: "Sao Paulo"
          * state [string]: state (BR 2-letter code). ex: "SP"
          * zipCode [string]: ZIP code (BR CEP) with or without formatting. ex: "05724005"
+         * complement [string, default null]: address complement. ex: "Apto. 123"
          * @throws Exception error in the request
          */
         public Address(Map<String, Object> data) throws Exception {
@@ -527,6 +538,7 @@ public final class IndividualAccountRequest extends Resource {
             this.city = (String) dataCopy.remove("city");
             this.state = (String) dataCopy.remove("state");
             this.zipCode = (String) dataCopy.remove("zipCode");
+            this.complement = (String) dataCopy.remove("complement");
 
             if (!dataCopy.isEmpty()) {
                 throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
