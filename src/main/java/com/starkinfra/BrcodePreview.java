@@ -46,8 +46,11 @@ public final class BrcodePreview extends Resource {
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      * expired [string]: BR Code expiration date. ex: "2020-04-10 10:30:00.000000+00:00"
+     * data [list of dictionaries]: additional data of the dynamic QR code, in key/value pairs. ex: [{"key": "additional-info", "value": "order #12345"}]
+     * description [string]: description of the payment.
+     * jws [string]: JWS of the dynamic QR code. Returned only when "jws" is passed in the expand query parameter. ex: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
      */
-    static ClassData data = new ClassData(BrcodePreview.class, "BrcodePreview");
+    static ClassData resource = new ClassData(BrcodePreview.class, "BrcodePreview");
 
     public String payerId;
     public String endToEndId;
@@ -74,6 +77,9 @@ public final class BrcodePreview extends Resource {
     public Subscription subscription;
     public String due;
     public String expired;
+    public List<HashMap<String, Object>> data;
+    public String description;
+    public String jws;
 
     /**
      * BrcodePreview object
@@ -111,12 +117,16 @@ public final class BrcodePreview extends Resource {
      * @param taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * @param due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param expired [string]: BR Code expiration date. ex: "2020-04-10 10:30:00.000000+00:00"
+     * @param data [list of dictionaries]: additional data of the dynamic QR code, in key/value pairs. ex: [{"key": "additional-info", "value": "order #12345"}]
+     * @param description [string]: description of the payment.
+     * @param jws [string]: JWS of the dynamic QR code. Returned only when "jws" is passed in the expand query parameter. ex: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
      */
     public BrcodePreview(String payerId, String endToEndId, String status, String name, String taxId, String due, String bankCode,
                          String branchCode, Long cashAmount, String cashierBankCode, String cashierType, String accountNumber,
                          String accountType, String scheduled, Long amount, String amountType, Long nominalAmount,
                          String keyId, Long interestAmount, Long fineAmount, Long reductionAmount, Long discountAmount,
-                         String reconciliationId, String id, Subscription subscription, String expired
+                         String reconciliationId, String id, Subscription subscription, String expired,
+                         List<HashMap<String, Object>> data, String description, String jws
     ) {
         super(id);
         this.payerId = payerId;
@@ -144,6 +154,9 @@ public final class BrcodePreview extends Resource {
         this.taxId = taxId;
         this.due = due;
         this.expired = expired;
+        this.data = data;
+        this.description = description;
+        this.jws = jws;
     }
 
     /**
@@ -187,6 +200,9 @@ public final class BrcodePreview extends Resource {
      * taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      * due [string]: BR Code due date. ex: "2020-03-10 10:30:00.000000+00:00"
      * expired [string]: BR Code expiration date. ex: "2020-04-10 10:30:00.000000+00:00"
+     * data [list of dictionaries]: additional data of the dynamic QR code, in key/value pairs. ex: [{"key": "additional-info", "value": "order #12345"}]
+     * description [string]: description of the payment.
+     * jws [string]: JWS of the dynamic QR code. Returned only when "jws" is passed in the expand query parameter. ex: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
      * @throws Exception error in the request
      */
     public BrcodePreview(Map<String, Object> data) throws Exception {
@@ -219,6 +235,9 @@ public final class BrcodePreview extends Resource {
         this.taxId = null;
         this.due = null;
         this.expired = null;
+        this.data = null;
+        this.description = null;
+        this.jws = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
@@ -268,6 +287,6 @@ public final class BrcodePreview extends Resource {
             }
             throw new Exception("Unknown type \"" + preview.getClass() + "\", use BrcodePreview or HashMap");
         }
-        return Rest.post(data, previewList, user);
+        return Rest.post(resource, previewList, user);
     }
 }

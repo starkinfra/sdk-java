@@ -27,6 +27,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - schedule and purposes attributes to IssuingRule resource
 - group attribute to MerchantCategory resource
 - walletDeviceScore and walletAccountScore attributes to IssuingToken resource
+- data, description and jws attributes to BrcodePreview resource
 
 - IndividualAccountRequest resource
 - IndividualAccountAttachment resource
