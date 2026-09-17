@@ -42,6 +42,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ### Removed
 - url attribute from IssuingToken resource
+- IndividualDocument resource and its Log: no API route serves them
 
 ## [0.22.0] - 2026-06-23
 ### Added
@@ -192,7 +193,6 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [0.5.0] - 2023-02-14
 ### Added
 - IndividualIdentity resource
-- IndividualDocument resource
 
 ## [0.4.0] - 2022-12-28
 ### Added

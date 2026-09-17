@@ -15,7 +15,7 @@ public final class IndividualIdentity extends Resource {
     /**
      * IndividualIdentity object
      * <p>
-     * IndividualIdentities are used to aggregate a list of IndividualDocument
+     * IndividualIdentities are used to aggregate a list of document images
      * objects for natural person documents check.
      * <p>
      * When you initialize an IndividualIdentity, the entity will not be automatically
@@ -43,7 +43,7 @@ public final class IndividualIdentity extends Resource {
     /**
      * IndividualIdentity object
      * <p>
-     * IndividualIdentities are used to aggregate an object list of IndividualDocuments
+     * IndividualIdentities are used to aggregate an object list of document images
      * for natural person documents check.
      * <p>
      * When you initialize an IndividualIdentity, the entity will not be automatically
@@ -74,7 +74,7 @@ public final class IndividualIdentity extends Resource {
     /**
      * IndividualIdentity object
      * <p>
-     * IndividualIdentities are used to aggregate an object list of IndividualDocuments
+     * IndividualIdentities are used to aggregate an object list of document images
      * for natural person documents check.
      * <p>
      * When you initialize an IndividualIdentity, the entity will not be automatically
@@ -378,7 +378,7 @@ public final class IndividualIdentity extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: IndividualIdentity id. ex: "5656565656565656"
-     * @param status [string]: You may send IndividualDocuments to validation by passing 'processing' in the status. Options: "processing".
+     * @param status [string]: You may send it to validation by passing 'processing' in the status. Options: "processing".
      * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
      * <p>
      * Return:
@@ -399,7 +399,7 @@ public final class IndividualIdentity extends Resource {
      * <p>
      * Parameters:
      * @param id [string]: IndividualIdentity id. ex: "5656565656565656"
-     * @param status [string]: You may send IndividualDocuments to validation by passing 'processing' in the status. Options: "rejected", "accepted", "partiallyAccepted".
+     * @param status [string]: You may send it to validation by passing 'processing' in the status. Options: "rejected", "accepted", "partiallyAccepted".
      * <p>
      * Return:
      * @return IndividualIdentity object with updated attributes

@@ -70,7 +70,6 @@ This SDK version is compatible with the Stark Infra API v2.
     - [CreditHolmes](#create-creditholmes): Create credit holmes debt verification
   - [Identity](#identity)
     - [IndividualIdentity](#create-individualidentities): Create individual identities
-    - [IndividualDocument](#create-individualdocuments): Create individual documents
     - [IndividualAccountRequest](#create-individualaccountrequests): Request to open an individual account
     - [IndividualAccountAttachment](#create-individualaccountattachments): Attach supporting documents to an individual account request
     - [BusinessIdentity](#create-businessidentities): Create business identities
@@ -3874,7 +3873,7 @@ IndividualIdentity identity = IndividualIdentity.update("5155165527080960", "pro
 System.out.println(identity);
 ```
 
-**Note**: For apply it to processing status, you should send required IndividualDocuments
+**Note**: For apply it to processing status, the required document images must have already been submitted
 
 ### Cancel an IndividualIdentity
 
@@ -3916,128 +3915,6 @@ You can also get a specific log by its id.
 import com.starkinfra.*;
 
 IndividualIdentity.Log log = IndividualIdentity.Log.get("5155165527080960");
-
-System.out.println(log);
-```
-
-### Create IndividualDocuments
-
-You can create a IndividualDocument for attach images of documents to IndividualIdentity
-
-```java
-import com.starkinfra.*;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.io.File;
-
-File documentFrontFile = new File(path);
-byte[] documentFrontBytes = Files.readAllBytes(documentFrontFile.toPath());
-
-HashMap<String, Object> documentFront = new HashMap<>();
-documentFront.put("type", "identity-front");
-documentFront.put("content", documentFrontBytes);
-documentFront.put("contentType", "image/png");
-documentFront.put("identityId", "5155165527080960");
-documentFront.put("tags", new String[]{"breaking", "bad"});
-
-File documentBackFile = new File(path);
-byte[] documentBackBytes = Files.readAllBytes(documentBackFile.toPath());
-
-HashMap<String, Object> documentBack = new HashMap<>();
-documentBack.put("type", "identity-back");
-documentBack.put("content", documentBackBytes);
-documentBack.put("contentType", "image/png");
-documentBack.put("identityId", "5155165527080960");
-documentBack.put("tags", new String[]{"breaking", "bad"});
-
-File selfieFile = new File(path);
-byte[] selfieBytes = Files.readAllBytes(selfieFile.toPath());
-
-HashMap<String, Object> selfie = new HashMap<>();
-selfie.put("type", "selfie");
-selfie.put("content", selfieBytes);
-selfie.put("contentType", "image/png");
-selfie.put("identityId", "5155165527080960");
-selfie.put("tags", new String[]{"breaking", "bad"});
-
-List<IndividualDocument> documents = new ArrayList<>();
-documents.add(new IndividualDocument(documentFront));
-documents.add(new IndividualDocument(documentBack));
-documents.add(new IndividualDocument(selfie));
-
-documents = IndividualDocument.create(documents);
-
-for (IndividualDocument document : documents){
-    System.out.println(document);
-}
-```
-
-**Note**: Instead of using IndividualDocument objects, you can also pass each element in dictionary format
-
-### Query IndividualDocuments
-
-You can query multiple IndividualDocuments according to filters.
-
-```java
-import com.starkinfra.*;
-import com.starkinfra.utils.Generator;
-
-HashMap<String, Object> params = new HashMap<>();
-params.put("limit", 3);
-params.put("status", "success");
-params.put("after", "2019-04-01");
-params.put("before", "2030-04-30");
-
-Generator<IndividualDocument> documents = IndividualDocument.query(params);
-
-for (IndividualDocument document : documents) {
-    System.out.println(document);
-}
-```
-
-### Get an IndividualDocument
-
-After its creation, information on a IndividualDocument may be retrieved by its id.
-
-```java
-import com.starkinfra.*;
-
-IndividualDocument document = IndividualDocument.get("5155165527080960");
-
-System.out.println(document);
-```
-
-### Query IndividualDocument logs
-
-You can query IndividualDocument logs to better understand IndividualDocument life cycles.
-
-```java
-import com.starkinfra.*;
-import com.starkinfra.utils.Generator;
-
-HashMap<String, Object> params = new HashMap<>();
-params.put("limit", 3);
-params.put("after", "2019-04-01");
-params.put("before", "2030-04-30");
-
-Generator<IndividualDocument.Log> logs = IndividualDocument.Log.query(params);
-
-for (IndividualDocument.Log log : logs) {
-    System.out.println(log);
-}
-```
-
-### Get an IndividualDocument log
-
-You can also get a specific log by its id.
-
-```java
-import com.starkinfra.*;
-
-IndividualDocument.Log log = IndividualDocument.Log.get("5155165527080960");
 
 System.out.println(log);
 ```
