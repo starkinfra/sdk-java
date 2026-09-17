@@ -18,7 +18,7 @@ public final class IndividualAccountRequest extends Resource {
      * <p>
      * IndividualAccountRequests are used to open a Stark Infra account for an individual. The
      * caller submits the individual's identifying data and income, and the API runs the approval
-     * flow asynchronously, moving the request through created, processing, success, failed or canceled.
+     * flow asynchronously, moving the request through created, processing, approved or denied.
      * <p>
      * When you initialize an IndividualAccountRequest, the entity will not be automatically
      * created in the Stark Infra API. The 'create' function sends the objects
@@ -32,7 +32,7 @@ public final class IndividualAccountRequest extends Resource {
      * birthDate [string, default null]: individual's birth date. ex: "2012-03-06"
      * tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
      * id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-     * status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied" or "failed"
+     * status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved" or "denied"
      * accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
      * flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message. ex: [{"code": "bureauValidation", "message": "..."}]
      * validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
@@ -72,7 +72,7 @@ public final class IndividualAccountRequest extends Resource {
      * @param birthDate [string, default null]: individual's birth date. ex: "2012-03-06"
      * @param tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
      * @param id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-     * @param status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied" or "failed"
+     * @param status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved" or "denied"
      * @param accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
      * @param flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message.
      * @param validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
@@ -119,7 +119,7 @@ public final class IndividualAccountRequest extends Resource {
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-     * status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved", "denied" or "failed"
+     * status [string]: current IndividualAccountRequest status. Options: "created", "processing", "approved" or "denied"
      * accountType [string]: account-request kind. Always "individual" for this resource. ex: "individual"
      * flags [list of dictionaries]: flags raised by the KYC pipeline, populated when the request is denied. Each flag has a code and a message.
      * validatorLink [string]: webview link to be delivered to the taker to complete biometrics and document capture.
@@ -572,7 +572,7 @@ public final class IndividualAccountRequest extends Resource {
          * @param id [string]: unique id returned when the log is created. ex: "5656565656565656"
          * @param request [IndividualAccountRequest]: IndividualAccountRequest entity to which the log refers to.
          * @param errors [list of ErrorElement]: list of errors linked to the IndividualAccountRequest event.
-         * @param type [string]: type of the IndividualAccountRequest event which triggered the log creation. ex: "processing" or "success"
+         * @param type [string]: type of the IndividualAccountRequest event which triggered the log creation. ex: "created", "processing", "updated", "denied" or "approved"
          * @param created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000000+00:00"
          */
         public Log(String created, String type, List<ErrorElement> errors, IndividualAccountRequest request, String id) {
@@ -627,7 +627,7 @@ public final class IndividualAccountRequest extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: "created", "processing", "updated", "denied" or "approved"
          * accountRequestIds [list of strings, default null]: list of IndividualAccountRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
@@ -680,7 +680,7 @@ public final class IndividualAccountRequest extends Resource {
          * limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: "created", "processing", "updated", "denied" or "approved"
          * accountRequestIds [list of strings, default null]: list of IndividualAccountRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>
@@ -714,7 +714,7 @@ public final class IndividualAccountRequest extends Resource {
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: "created", "processing", "updated", "denied" or "approved"
          * accountRequestIds [list of strings, default null]: list of IndividualAccountRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * <p>
          * Return:
@@ -774,7 +774,7 @@ public final class IndividualAccountRequest extends Resource {
          * limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
          * after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-09"
          * before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
-         * types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+         * types [list of strings, default null]: filter retrieved objects by types. ex: "created", "processing", "updated", "denied" or "approved"
          * accountRequestIds [list of strings, default null]: list of IndividualAccountRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
          * @param user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.Settings.user was set before function call
          * <p>

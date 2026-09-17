@@ -17,7 +17,7 @@ public final class IndividualAccountAttachment extends Resource {
     /**
      * IndividualAccountAttachment object
      * <p>
-     * IndividualAccountAttachments are supporting documents (identity, driver's license, selfie)
+     * IndividualAccountAttachments are supporting documents (identity, driver's license)
      * attached to an IndividualAccountRequest for the account-approval flow. The caller uploads the
      * raw image bytes and a MIME content type; the SDK encodes them as a data: URL before sending.
      * <p>
@@ -26,7 +26,7 @@ public final class IndividualAccountAttachment extends Resource {
      * to the Stark Infra API and returns the list of created objects.
      * <p>
      * Parameters:
-     * type [string]: kind of supporting document. Options: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back" or "selfie"
+     * type [string]: kind of supporting document. Options: "drivers-license-front", "drivers-license-back", "identity-front" or "identity-back"
      * content [string]: Base64 data url of the picture, built from the raw bytes and the contentType. ex: "data:image/png;base64,/9j/4AAQSkZJRgABAQAASABIAAD..."
      * accountRequestId [string]: ID of the parent IndividualAccountRequest. ex: "5189530608992256"
      * tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountAttachments. ex: ["employees", "monthly"]
@@ -51,7 +51,7 @@ public final class IndividualAccountAttachment extends Resource {
      * This constructor takes the content already encoded as a Base64 data: URL.
      * <p>
      * Parameters:
-     * @param type [string]: kind of supporting document. ex: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back" or "selfie"
+     * @param type [string]: kind of supporting document. ex: "drivers-license-front", "drivers-license-back", "identity-front" or "identity-back"
      * @param content [string]: Base64 data url of the picture. ex: "data:image/png;base64,/9j/4AAQSkZJRgABAQAASABIAAD..."
      * @param accountRequestId [string]: ID of the parent IndividualAccountRequest. ex: "5189530608992256"
      * @param tags [list of strings, default null]: list of strings for reference when searching for IndividualAccountAttachments. ex: ["employees", "monthly"]
@@ -81,7 +81,7 @@ public final class IndividualAccountAttachment extends Resource {
      * <p>
      * Parameters (required):
      * @param data map of properties for the creation of the IndividualAccountAttachment
-     * type [string]: kind of supporting document. ex: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back" or "selfie"
+     * type [string]: kind of supporting document. ex: "drivers-license-front", "drivers-license-back", "identity-front" or "identity-back"
      * content [byte[]]: raw image bytes. ex: Files.readAllBytes(path)
      * contentType [string]: content MIME type. This parameter is required as input only. ex: "image/png" or "image/jpeg"
      * accountRequestId [string]: ID of the parent IndividualAccountRequest. ex: "5189530608992256"
