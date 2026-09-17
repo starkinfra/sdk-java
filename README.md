@@ -3089,7 +3089,7 @@ for (StaticBrcode brcode : brcodes) {
 }
 ```
 
-### Get a StaticBrcodes
+### Get a StaticBrcode
 
 After its creation, information on a StaticBrcode may be retrieved by its UUID.
 

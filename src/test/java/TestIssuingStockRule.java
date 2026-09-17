@@ -78,7 +78,7 @@ public class TestIssuingStockRule {
         HashMap<String, Object> patchData = new HashMap<>();
         patchData.put("minimumBalance", 20000);
         IssuingStockRule updatedRule = IssuingStockRule.update(createdRule.id, patchData);
-        Assert.assertEquals(Integer.valueOf(20000), updatedRule.minimumBalance);
+        Assert.assertEquals(Long.valueOf(20000), updatedRule.minimumBalance);
 
         IssuingStockRule canceledRule = IssuingStockRule.cancel(createdRule.id);
         Assert.assertEquals("canceled", canceledRule.status);
