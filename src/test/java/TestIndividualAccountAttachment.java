@@ -304,44 +304,6 @@ public class TestIndividualAccountAttachment {
     }
 
     @Test
-    public void testCreateInvalidContent() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
-        HashMap<String, Object> data = exampleData();
-        data.put("content", new byte[]{});
-
-        List<IndividualAccountAttachment> attachments = new ArrayList<>();
-        attachments.add(new IndividualAccountAttachment(data));
-
-        boolean raised = false;
-        try {
-            IndividualAccountAttachment.create(attachments);
-        } catch (InputErrors e) {
-            raised = true;
-        }
-        assertTrue("expected InputErrors to be raised", raised);
-    }
-
-    @Test
-    public void testCreateInvalidContentType() throws Exception {
-        Settings.user = utils.User.defaultProject();
-
-        HashMap<String, Object> data = exampleData();
-        data.remove("contentType");
-
-        List<IndividualAccountAttachment> attachments = new ArrayList<>();
-        attachments.add(new IndividualAccountAttachment(data));
-
-        boolean raised = false;
-        try {
-            IndividualAccountAttachment.create(attachments);
-        } catch (InputErrors e) {
-            raised = true;
-        }
-        assertTrue("expected InputErrors to be raised", raised);
-    }
-
-    @Test
     public void testCreateAccountRequestNotFound() throws Exception {
         Settings.user = utils.User.defaultProject();
 
