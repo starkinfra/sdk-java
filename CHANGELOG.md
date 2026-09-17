@@ -28,6 +28,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - group attribute to MerchantCategory resource
 - walletDeviceScore and walletAccountScore attributes to IssuingToken resource
 - data, description and jws attributes to BrcodePreview resource
+- bacenId attribute to PixClaim resource
 
 - IndividualAccountRequest resource
 - IndividualAccountAttachment resource
