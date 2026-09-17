@@ -30,6 +30,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - data, description and jws attributes to BrcodePreview resource
 - bacenId attribute to PixClaim resource
 - chunkCount attribute to PixStatement resource
+- type attribute to StaticBrcode resource
 
 - IndividualAccountRequest resource
 - IndividualAccountAttachment resource
