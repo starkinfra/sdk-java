@@ -17,13 +17,28 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - parse method to PixPullSubscription
 - payment and pdf methods to CreditNote, resendToken method to CreditSigner
 - BusinessAccountRequest resource
+- installmentCount, merchantCategoryNumber and confirmed attributes to IssuingPurchase resource
+- IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
+- limit and maxLimit attributes to IssuingBalance resource
+- isPinDefined attribute to IssuingCard resource
+- customerType attribute to IssuingProduct resource
+- embosserName attribute to IssuingStock resource
+- schedule and purposes attributes to IssuingRule resource
+- group attribute to MerchantCategory resource
+- walletDeviceScore and walletAccountScore attributes to IssuingToken resource
 
 - IndividualAccountRequest resource
 - IndividualAccountAttachment resource
 ### Fixed
 - docstrings for Pix, Issuing and Credit resources to match the business rules stated in the API reference
+
 ### Changed
 - default timeout from 5 seconds to 15 seconds
+- IssuingPurchase.Page.issuingPurchases attribute renamed to purchases
+
+### Removed
+- url attribute from IssuingToken resource
 
 ## [0.22.0] - 2026-06-23
 ### Added
