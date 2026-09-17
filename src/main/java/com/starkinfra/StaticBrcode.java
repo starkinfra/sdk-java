@@ -30,6 +30,7 @@ public final class StaticBrcode extends Resource {
      * description [string, default ""]: Optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
      * reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric characters' ex: "cd65c78aeb6543eaaa017"
      * tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
+     * type [string, default "instant"]: type of the StaticBrcode. Options: "instant", "instantAndOrSubscription"
      * id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
      * uuid [string]: unique uuid returned when a StaticBrcode is created. ex: "97756273400d42ce9086404fe10ea0d6"
      * url [string]: url link to the BR Code image. ex: "https://brcode-h.development.starkinfra.com/static-qrcode/97756273400d42ce9086404fe10ea0d6.png"
@@ -47,6 +48,7 @@ public final class StaticBrcode extends Resource {
     public String description;
     public String reconciliationId;
     public String[] tags;
+    public String type;
     public String uuid;
     public String url;
     public String created;
@@ -75,10 +77,11 @@ public final class StaticBrcode extends Resource {
      * @param url [string]: url link to the BR Code image. ex: "https://brcode-h.development.starkinfra.com/static-qrcode/97756273400d42ce9086404fe10ea0d6.png"
      * @param created [string]: creation datetime for the StaticBrcode. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the StaticBrcode. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param type [string, default "instant"]: type of the StaticBrcode. Options: "instant", "instantAndOrSubscription"
      */
     public StaticBrcode(String name, String city, String keyId, Long amount, String cashierBankCode, String description,
                         String id, String reconciliationId, String[] tags, String uuid, String url, String created,
-                        String updated
+                        String updated, String type
     ) {
         super(id);
         this.name = name;
@@ -93,6 +96,7 @@ public final class StaticBrcode extends Resource {
         this.url = url;
         this.created = created;
         this.updated = updated;
+        this.type = type;
     }
 
     /**
@@ -116,6 +120,7 @@ public final class StaticBrcode extends Resource {
      * description [string, default ""]: Optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
      * reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. This id must have up to 25 alphanumeric characters. ex: "ah27s53agj6493hjds6836v49"
      * tags [list of strings, default []]: list of strings for tagging. ex: ["travel", "food"]
+     * type [string, default "instant"]: type of the StaticBrcode. Options: "instant", "instantAndOrSubscription"
      * <p>
      * Attributes (return-only):
      * id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -137,6 +142,7 @@ public final class StaticBrcode extends Resource {
         this.description = (String) dataCopy.remove("description");
         this.reconciliationId = (String) dataCopy.remove("reconciliationId");
         this.tags = (String[]) dataCopy.remove("tags");
+        this.type = (String) dataCopy.remove("type");
         this.uuid = null;
         this.url = null;
         this.created = null;

@@ -43,6 +43,7 @@ public final class PixClaim extends Resource {
      * claimedBankCode [string, default null]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
      * created [string, default null]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string, default null]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * bacenId [string, default null]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"
      *
      */
     static ClassData data = new ClassData(PixClaim.class, "PixClaim");
@@ -63,6 +64,7 @@ public final class PixClaim extends Resource {
     public String claimedBankCode;
     public String created;
     public String updated;
+    public String bacenId;
 
     /**
      * PixClaim object
@@ -94,10 +96,12 @@ public final class PixClaim extends Resource {
      * @param claimedBankCode [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
      * @param created [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * @param bacenId [string]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"
      */
     public PixClaim(String accountCreated, String accountNumber, String accountType, String branchCode, String name,
                     String taxId, String keyId, String[] tags, String id, String status, String type, String keyType,
-                    String claimerBankCode, String flow, String claimedBankCode, String created, String updated
+                    String claimerBankCode, String flow, String claimedBankCode, String created, String updated,
+                    String bacenId
     ) {
         super(id);
         this.accountCreated = accountCreated;
@@ -116,6 +120,7 @@ public final class PixClaim extends Resource {
         this.claimedBankCode = claimedBankCode;
         this.created = created;
         this.updated = updated;
+        this.bacenId = bacenId;
     }
 
     /**
@@ -153,6 +158,7 @@ public final class PixClaim extends Resource {
      * claimedBankCode [string]: bank code of the account claiming the PixKey being claimed. ex: "20018183".
      * created [string]: creation datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000000+00:00"
+     * bacenId [string]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99"
      * @throws Exception error in the request
      */
     public PixClaim(Map<String, Object> data) throws Exception {
@@ -175,6 +181,7 @@ public final class PixClaim extends Resource {
         this.claimedBankCode = null;
         this.created = null;
         this.updated = null;
+        this.bacenId = null;
 
         if (!dataCopy.isEmpty()) {
             throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");

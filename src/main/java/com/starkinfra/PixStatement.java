@@ -32,6 +32,7 @@ public final class PixStatement extends Resource {
      * id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
      * status [string]: current PixStatement status. Options: "created", "looking", "success", "failed"
      * transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+     * chunkCount [integer]: number of chunks the statement file is split into. ex: 2
      * created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      *
@@ -43,6 +44,7 @@ public final class PixStatement extends Resource {
     public String type;
     public String status;
     public Integer transactionCount;
+    public Integer chunkCount;
     public String created;
     public String updated;
 
@@ -65,11 +67,12 @@ public final class PixStatement extends Resource {
      * @param id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
      * @param status [string]: current PixStatement status. Options: "created", "looking", "success", "failed"
      * @param transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+     * @param chunkCount [integer]: number of chunks the statement file is split into. ex: 2
      * @param created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      */
     public PixStatement(String after, String before, String type, String id, String status, Integer transactionCount,
-                        String created, String updated
+                        String created, String updated, Integer chunkCount
     ) {
         super(id);
         this.after = after;
@@ -79,6 +82,7 @@ public final class PixStatement extends Resource {
         this.transactionCount = transactionCount;
         this.created = created;
         this.updated = updated;
+        this.chunkCount = chunkCount;
     }
 
     /**
@@ -101,6 +105,7 @@ public final class PixStatement extends Resource {
      * id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
      * status [string]: current PixStatement status. Options: "created", "looking", "success", "failed"
      * transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+     * chunkCount [integer]: number of chunks the statement file is split into. ex: 2
      * created [string]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
@@ -114,6 +119,7 @@ public final class PixStatement extends Resource {
         this.type = (String) dataCopy.remove("type");
         this.status = null;
         this.transactionCount = null;
+        this.chunkCount = null;
         this.created = null;
         this.updated = null;
 
