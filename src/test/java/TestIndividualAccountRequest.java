@@ -185,7 +185,7 @@ public class TestIndividualAccountRequest {
     public void testStatusEnum() throws Exception {
         Settings.user = utils.User.defaultProject();
 
-        List<String> allowed = Arrays.asList("approved", "created", "denied", "processing", "updated");
+        List<String> allowed = Arrays.asList("approved", "created", "denied", "processing");
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("limit", 5);
