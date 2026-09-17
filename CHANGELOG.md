@@ -31,7 +31,6 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - bacenId attribute to PixClaim resource
 - chunkCount attribute to PixStatement resource
 - type attribute to StaticBrcode resource
-
 - IndividualAccountRequest resource
 - IndividualAccountAttachment resource
 ### Fixed
