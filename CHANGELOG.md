@@ -29,6 +29,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - walletDeviceScore and walletAccountScore attributes to IssuingToken resource
 - data, description and jws attributes to BrcodePreview resource
 - bacenId attribute to PixClaim resource
+- chunkCount attribute to PixStatement resource
 
 - IndividualAccountRequest resource
 - IndividualAccountAttachment resource
