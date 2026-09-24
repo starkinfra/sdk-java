@@ -5,10 +5,10 @@ import com.starkinfra.Event;
 import com.starkinfra.Settings;
 import com.starkinfra.PixPullSubscription;
 import com.starkinfra.utils.Generator;
+import com.starkinfra.utils.PixSubscriptionBacenId;
 import com.starkinfra.error.InvalidSignatureError;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -218,9 +218,8 @@ public class TestPixPullSubscription {
 
     static PixPullSubscription example() throws Exception {
         long suffix = System.currentTimeMillis();
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         HashMap<String, Object> data = new HashMap<>();
-        data.put("bacenId", "RR32160637" + today + String.format("%011d", suffix % 100_000_000_000L));
+        data.put("bacenId", PixSubscriptionBacenId.create(utils.User.bankCode(), "RR"));
         data.put("externalId", "java-sdk-" + suffix);
         data.put("referenceCode", "java-sdk-ref-" + suffix);
         data.put("installmentStart", "2026-06-01T03:00:00.000000+00:00");
