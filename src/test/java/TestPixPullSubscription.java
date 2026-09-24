@@ -6,7 +6,7 @@ import com.starkinfra.Settings;
 import com.starkinfra.PixPullSubscription;
 import com.starkinfra.utils.Generator;
 import com.starkinfra.utils.PixSubscriptionBacenId;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -222,7 +222,7 @@ public class TestPixPullSubscription {
         data.put("bacenId", PixSubscriptionBacenId.create(utils.User.bankCode(), "RR"));
         data.put("externalId", "java-sdk-" + suffix);
         data.put("referenceCode", "java-sdk-ref-" + suffix);
-        data.put("installmentStart", "2026-06-01T03:00:00.000000+00:00");
+        data.put("installmentStart", LocalDate.now().plusDays(7) + "T03:00:00.000000+00:00");
         data.put("interval", "month");
         data.put("receiverName", "Stark Bank");
         data.put("receiverBankCode", "32160637");
