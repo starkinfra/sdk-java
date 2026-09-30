@@ -78,6 +78,14 @@ This SDK version is compatible with the Stark Infra API v2.
   - [Ledger](#ledger)
     - [Ledger](#create-ledgers): Track the balance of a given amount
     - [LedgerTransaction](#create-ledgertransactions): Insert transactions to track a Ledger's balance
+  - [AI](#ai)
+    - [AiKnowledgeBase](#create-an-aiknowledgebase): Turn a website into knowledge your agents can answer from
+    - [AiVoice](#create-an-aivoice): Clone a voice from a recording
+    - [AiSpeech](#create-an-aispeech): Read a text out loud with one of your voices
+    - [AiTranscript](#create-an-aitranscript): Turn a recording into text
+    - [AiAgent](#create-an-aiagent): Configure an assistant with a model, instructions, knowledge and a voice
+    - [AiChat](#create-an-aichat): Open a conversation with an agent
+    - [AiMessage](#create-an-aimessage): Talk to an agent and read the history of a chat
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -4676,6 +4684,486 @@ import com.starkinfra.*;
 LedgerTransaction transaction = LedgerTransaction.get("5656565656565656");
 
 System.out.println(transaction);
+```
+
+## AI
+
+### Create an AiKnowledgeBase
+
+An AiKnowledgeBase turns a website into material an agent can read. Stark Infra crawls the root URL, follows its
+links, converts every page to Markdown and indexes it. The call returns at once with the base in "processing" status.
+
+```java
+import com.starkinfra.*;
+
+AiKnowledgeBase knowledgeBase = AiKnowledgeBase.create(
+    new AiKnowledgeBase(
+        "Product Documentation",
+        "https://docs.starkinfra.com",
+        false,
+        new String[]{"support", "public"}
+    )
+);
+
+System.out.println(knowledgeBase);
+```
+
+### Get an AiKnowledgeBase
+
+Poll a knowledge base by its id until its status leaves "processing".
+
+```java
+import com.starkinfra.*;
+
+AiKnowledgeBase knowledgeBase = AiKnowledgeBase.get("5155165527080960");
+
+System.out.println(knowledgeBase);
+```
+
+### Query AiKnowledgeBases
+
+You can list your knowledge bases, optionally filtered by ids, by a substring of the name or by status.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("name", "documentation");
+params.put("status", "success");
+
+Generator<AiKnowledgeBase> knowledgeBases = AiKnowledgeBase.query(params);
+
+for (AiKnowledgeBase knowledgeBase : knowledgeBases) {
+    System.out.println(knowledgeBase);
+}
+```
+
+### Update an AiKnowledgeBase
+
+Rename a knowledge base, retag it or change whether its crawl is recursive. The root URL cannot be changed.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("name", "Public Documentation");
+patchData.put("tags", new String[]{"support"});
+
+AiKnowledgeBase knowledgeBase = AiKnowledgeBase.update("5155165527080960", patchData);
+
+System.out.println(knowledgeBase);
+```
+
+### List the pages of an AiKnowledgeBase
+
+Get every page the crawler has seen, grouped by host, with the status of each one.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Map;
+
+Map<String, List<Map<String, Object>>> hosts = AiKnowledgeBase.hosts("5155165527080960");
+
+for (Map.Entry<String, List<Map<String, Object>>> host : hosts.entrySet()) {
+    System.out.println(host.getKey() + " " + host.getValue());
+}
+```
+
+### Delete AiKnowledgeBases
+
+Delete up to 100 knowledge bases at once. Agents that still reference a deleted base simply retrieve nothing from it.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiKnowledgeBase> knowledgeBases = AiKnowledgeBase.delete(Arrays.asList("5155165527080960", "4545454545454545"));
+
+for (AiKnowledgeBase knowledgeBase : knowledgeBases) {
+    System.out.println(knowledgeBase);
+}
+```
+
+### Create an AiVoice
+
+An AiVoice is cloned from a base64-encoded recording. Cloning is asynchronous: the call returns at once with the
+voice in "processing" status, and only a voice in "success" can speak.
+
+```java
+import com.starkinfra.*;
+
+AiVoice voice = AiVoice.create(
+    new AiVoice(
+        "UklGRiQAAABXQVZFZm10IBAAAAABAAEA...",
+        "Helena",
+        "Calm voice",
+        "portuguese",
+        "female"
+    )
+);
+
+System.out.println(voice);
+```
+
+### Query AiVoices
+
+You can list every voice in your workspace. This route takes no filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+Generator<AiVoice> voices = AiVoice.query();
+
+for (AiVoice voice : voices) {
+    System.out.println(voice);
+}
+```
+
+### Delete AiVoices
+
+Delete up to 100 voices at once.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiVoice> voices = AiVoice.delete(Arrays.asList("5155165527080960", "4545454545454545"));
+
+for (AiVoice voice : voices) {
+    System.out.println(voice);
+}
+```
+
+### Create an AiSpeech
+
+An AiSpeech is one text read out loud by a voice in "success" status. The speech is synthesized during the call and
+comes back as a base64 MP3 in the audio attribute.
+
+```java
+import com.starkinfra.*;
+
+AiSpeech speech = AiSpeech.create(
+    new AiSpeech(
+        "5155165527080960",
+        "Hello, how can I help you?"
+    )
+);
+
+System.out.println(speech);
+```
+
+### Get an AiSpeech
+
+Get a speech by its id. The audio comes back unless you ask for fields that leave it out, and the name of the voice
+can be added with expand. When fields is given, an expanded attribute must be listed in it too.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("fields", Arrays.asList("id", "status", "audio", "voiceName"));
+params.put("expand", Arrays.asList("voiceName"));
+
+AiSpeech speech = AiSpeech.get("5155165527080960", params);
+
+System.out.println(speech);
+```
+
+### Query AiSpeeches
+
+You can list your speeches. The audio is left out of the results and this route takes only fields and expand.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("fields", Arrays.asList("id", "status"));
+
+Generator<AiSpeech> speeches = AiSpeech.query(params);
+
+for (AiSpeech speech : speeches) {
+    System.out.println(speech);
+}
+```
+
+### Create an AiTranscript
+
+An AiTranscript is the text of a base64-encoded recording. The audio is transcribed during the call.
+
+```java
+import com.starkinfra.*;
+
+AiTranscript transcript = AiTranscript.create(
+    new AiTranscript("UklGRiQAAABXQVZFZm10IBAAAAABAAEA...")
+);
+
+System.out.println(transcript);
+```
+
+### Query AiTranscripts
+
+You can list your transcripts. This route takes no filters.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+Generator<AiTranscript> transcripts = AiTranscript.query();
+
+for (AiTranscript transcript : transcripts) {
+    System.out.println(transcript);
+}
+```
+
+### Create an AiAgent
+
+An AiAgent is the configuration of an assistant. The keys of the metadataSchema are yours and are sent exactly as
+written.
+
+```java
+import com.starkinfra.*;
+import java.util.Map;
+import java.util.HashMap;
+
+Map<String, Object> orderId = new HashMap<>();
+orderId.put("type", "string");
+orderId.put("description", "Order the customer mentions");
+Map<String, Object> metadataSchema = new HashMap<>();
+metadataSchema.put("order_id", orderId);
+
+AiAgent agent = AiAgent.create(
+    new AiAgent(
+        "Support assistant",
+        "bender-1.0",
+        "Answer in one short sentence.",
+        null,
+        new String[]{"5155165527080960"},
+        metadataSchema
+    )
+);
+
+System.out.println(agent);
+```
+
+### Get an AiAgent
+
+Get an agent by its id. Use expand to receive the AiKnowledgeBase objects instead of only their ids.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("knowledgeBases"));
+
+AiAgent agent = AiAgent.get("5740688905863168", params);
+
+System.out.println(agent);
+```
+
+### Query AiAgents
+
+You can list your agents. This route takes only fields and expand.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("fields", Arrays.asList("id", "name"));
+
+Generator<AiAgent> agents = AiAgent.query(params);
+
+for (AiAgent agent : agents) {
+    System.out.println(agent);
+}
+```
+
+### Update an AiAgent
+
+Only the fields present in the map are changed. The API clears the knowledge bases of an agent whose update does not
+carry them, so when knowledgeBaseIds is missing the SDK reads the current ids first and sends them back. Pass an
+empty list to clear them on purpose.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("name", "Senior support assistant");
+
+AiAgent agent = AiAgent.update("5740688905863168", patchData);
+
+System.out.println(agent);
+```
+
+### Delete AiAgents
+
+Delete up to 100 agents at once.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiAgent> agents = AiAgent.delete(Arrays.asList("5740688905863168", "4545454545454545"));
+
+for (AiAgent agent : agents) {
+    System.out.println(agent);
+}
+```
+
+### Create an AiChat
+
+An AiChat is a conversation with an agent. Each turn of it is an AiMessage.
+
+```java
+import com.starkinfra.*;
+
+AiChat chat = AiChat.create(
+    new AiChat(
+        "5740688905863168",
+        "Order 123"
+    )
+);
+
+System.out.println(chat);
+```
+
+### Get an AiChat
+
+Get a chat by its id. Use expand to receive the name of its agent.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("agentName"));
+
+AiChat chat = AiChat.get("5761660895625216", params);
+
+System.out.println(chat);
+```
+
+### Query AiChats
+
+You can list your chats. This route takes only fields and expand.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+Generator<AiChat> chats = AiChat.query();
+
+for (AiChat chat : chats) {
+    System.out.println(chat);
+}
+```
+
+### Update an AiChat
+
+Rename a chat or hand it over to another agent. Only the fields present in the map are sent.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("title", "Order 123 - resolved");
+
+AiChat chat = AiChat.update("5761660895625216", patchData);
+
+System.out.println(chat);
+```
+
+### Delete AiChats
+
+Delete up to 100 chats at once. Their messages go with them.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiChat> chats = AiChat.delete(Arrays.asList("5761660895625216", "4545454545454545"));
+
+for (AiChat chat : chats) {
+    System.out.println(chat);
+}
+```
+
+### Create an AiMessage
+
+Post what the user said to a chat. The call waits for the agent, which takes a few seconds, and returns the user's
+message and the agent's answer. Use expand to receive the chat title on both of them, which is useful on the first
+turn, when the title is generated.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiMessage> messages = AiMessage.create(
+    new AiMessage(
+        "5761660895625216",
+        "What is the status of order 123?"
+    ),
+    Arrays.asList("chatName")
+);
+
+for (AiMessage message : messages) {
+    System.out.println(message);
+}
+```
+
+### Query AiMessages
+
+You can read the history of a chat. The generator follows the cursor until the history ends or the limit is reached.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+
+Generator<AiMessage> messages = AiMessage.query("5761660895625216", 35);
+
+for (AiMessage message : messages) {
+    System.out.println(message);
+}
+```
+
+To page the history by hand, use page and carry the cursor of each page to the next call.
+
+```java
+import com.starkinfra.*;
+
+String cursor = null;
+while (true) {
+    AiMessage.Page page = AiMessage.page("5761660895625216", cursor, 100);
+    for (AiMessage message : page.messages) {
+        System.out.println(message);
+    }
+    cursor = page.cursor;
+    if (cursor == null) {
+        break;
+    }
+}
 ```
 
 ## Webhook
