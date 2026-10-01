@@ -14,6 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- AiKnowledgeBase resource
+- AiVoice, AiSpeech, AiTranscript, AiAgent, AiChat and AiMessage resources
 - parse method to PixPullSubscription
 - payment and pdf methods to CreditNote, resendToken method to CreditSigner
 - BusinessAccountRequest resource
