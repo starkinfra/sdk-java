@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- PixSubscriptionBacenId utility to generate Pix subscription bacenIds
 - parse method to PixPullSubscription
 - payment and pdf methods to CreditNote, resendToken method to CreditSigner
 - BusinessAccountRequest resource
