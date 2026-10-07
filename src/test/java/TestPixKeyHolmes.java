@@ -119,6 +119,18 @@ public class TestPixKeyHolmes {
     }
 
     @Test
+    public void testGet() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("limit", 1);
+        PixKeyHolmes first = PixKeyHolmes.query(params).iterator().next();
+
+        PixKeyHolmes sherlock = PixKeyHolmes.get(first.id);
+        Assert.assertEquals(first.id, sherlock.id);
+    }
+
+    @Test
     public void testCreateWithoutTags() throws Exception {
         Settings.user = utils.User.defaultProject();
 
