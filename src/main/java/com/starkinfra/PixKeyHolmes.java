@@ -28,7 +28,7 @@ public final class PixKeyHolmes extends Resource {
      * tags [list of strings, default null]: list of strings for reference when searching for PixKeyHolmes. ex: ["travel", "food"]
      * id [string]: unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"
      * result [string]: investigation outcome once solved. Options: "registered", "unregistered"
-     * status [string]: current PixKeyHolmes status. Options: "created", "solving", "solved", "failed"
+     * status [string]: current PixKeyHolmes status. Options: "solving", "solved"
      * created [string]: creation datetime for the PixKeyHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixKeyHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -53,7 +53,7 @@ public final class PixKeyHolmes extends Resource {
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixKeyHolmes. ex: ["travel", "food"]
      * @param id [string]: unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"
      * @param result [string]: investigation outcome once solved. Options: "registered", "unregistered"
-     * @param status [string]: current PixKeyHolmes status. Options: "created", "solving", "solved", "failed"
+     * @param status [string]: current PixKeyHolmes status. Options: "solving", "solved"
      * @param created [string]: creation datetime for the PixKeyHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      * @param updated [string]: latest update datetime for the PixKeyHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      */
@@ -87,7 +87,7 @@ public final class PixKeyHolmes extends Resource {
      * Attributes (return-only):
      * id [string]: unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"
      * result [string]: investigation outcome once solved. Options: "registered", "unregistered"
-     * status [string]: current PixKeyHolmes status. Options: "created", "solving", "solved", "failed"
+     * status [string]: current PixKeyHolmes status. Options: "solving", "solved"
      * created [string]: creation datetime for the PixKeyHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      * updated [string]: latest update datetime for the PixKeyHolmes. ex: "2020-03-10 10:30:00.000000+00:00"
      * @throws Exception error in the request
