@@ -55,6 +55,55 @@ public class TestCreditPreview {
         Assert.assertEquals(expectedTypes, previewedTypes);
     }
 
+    @Test
+    public void testCreditNotePreviewWithNominalAmountOrAmount() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        long value = 100000 + (long) (Math.random() * 900000);
+        String[] types = {"sac", "price", "american", "bullet"};
+        String[] fields = {"amount", "nominalAmount"};
+
+        List<CreditPreview> sent = new ArrayList<>();
+        for (String field : fields) {
+            for (String type : types) {
+                sent.add(new CreditPreview(getAmountPreviewExample(type, field, value), "credit-note"));
+            }
+        }
+
+        List<CreditPreview> received = CreditPreview.create(sent);
+        Assert.assertEquals(sent.size(), received.size());
+
+        for (int i = 0; i < sent.size(); i++) {
+            CreditNotePreview sentNote = sent.get(i).credit;
+            CreditNotePreview receivedNote = received.get(i).credit;
+            System.out.println(received.get(i));
+            Assert.assertEquals(sentNote.type, receivedNote.type);
+            if (sentNote.amount == null) {
+                Assert.assertEquals(Long.valueOf(value), receivedNote.nominalAmount);
+                Assert.assertTrue(receivedNote.amount > 0);
+                continue;
+            }
+            Assert.assertEquals(Long.valueOf(value), receivedNote.amount);
+            Assert.assertTrue(receivedNote.nominalAmount > 0);
+        }
+    }
+
+    static CreditNotePreview getAmountPreviewExample(String type, String field, long value) throws Exception {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("type", type);
+        data.put(field, value);
+        data.put("scheduled", getDateString(11 + (int) (Math.random() * 9)));
+        data.put("taxId", "20.018.183/0001-80");
+        data.put("initialDue", getDateString(30 + (int) (Math.random() * 10)));
+        data.put("nominalInterest", 12.5);
+        // bullet has a single installment, and the API rejects an interval for it
+        if (!type.equals("bullet")) {
+            data.put("count", 12);
+            data.put("interval", "month");
+        }
+        return new CreditNotePreview(data);
+    }
+
     static CreditNotePreview getCreditNotePreviewExample(String type) throws Exception {
         switch (type){
             case "sac":
