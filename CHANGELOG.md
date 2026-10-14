@@ -40,6 +40,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Changed
 - default timeout from 5 seconds to 15 seconds
 - IssuingPurchase.Page.issuingPurchases attribute renamed to purchases
+- nominalAmount and amount parameters to conditionally required to CreditNotePreview sub-resource
 
 ### Removed
 - url attribute from IssuingToken resource
