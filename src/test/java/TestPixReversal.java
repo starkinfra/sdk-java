@@ -4,7 +4,7 @@ import org.junit.Assert;
 import com.starkinfra.Settings;
 import com.starkinfra.PixReversal;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 import java.util.List;
 import java.util.UUID;
