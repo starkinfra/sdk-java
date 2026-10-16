@@ -2,11 +2,25 @@ package com.starkinfra.utils;
 
 import java.util.Locale;
 import java.util.Random;
+import java.time.ZoneOffset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class BacenId {
 
+    /**
+     * Create a random bacenId
+     * <p>
+     * Generates a random bacenId based on your bank code (ISPB). The date part is always
+     * generated in UTC, regardless of the machine timezone.
+     * <p>
+     * Parameters:
+     * @param bankCode [string]: your bank code (ISPB). ex: "20018183"
+     * <p>
+     * Return:
+     * @return bacenId composed of the bank code, the current UTC datetime (yyyyMMddHHmm) and 11 random alphanumeric characters
+     * @throws Exception error while generating the bacenId
+     */
     public static String create(String bankCode) throws Exception{
         return create(bankCode, "yyyyMMddHHmm");
     }
@@ -19,7 +33,7 @@ public class BacenId {
 
         StringBuilder bacenId = new StringBuilder(String.valueOf(bankCode));
 
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = LocalDateTime.now(ZoneOffset.UTC);
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(datePattern, Locale.ENGLISH);
         String todayString = dateFormat.format(today);
         bacenId.append(todayString);
