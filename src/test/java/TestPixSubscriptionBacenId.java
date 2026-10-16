@@ -1,6 +1,10 @@
 import org.junit.Test;
 import org.junit.Assert;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
 import com.starkinfra.utils.PixSubscriptionBacenId;
 
 
@@ -12,6 +16,7 @@ public class TestPixSubscriptionBacenId {
 
         Assert.assertEquals(29, bacenId.length());
         Assert.assertTrue(bacenId.matches("RR32160637\\d{8}[a-zA-Z0-9]{11}"));
+        Assert.assertEquals(LocalDate.now(ZoneOffset.UTC).format(DateTimeFormatter.BASIC_ISO_DATE), bacenId.substring(10, 18));
     }
 
     @Test
