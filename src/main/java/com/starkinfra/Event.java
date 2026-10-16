@@ -604,7 +604,7 @@ public class Event extends Resource {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [String]: response content from request received at user endpoint (not parsed)
@@ -633,7 +633,7 @@ public class Event extends Resource {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [String]: response content from request received at user endpoint (not parsed)

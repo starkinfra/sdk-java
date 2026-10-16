@@ -545,7 +545,7 @@ public final class PixRequest extends Resource {
      * <p>
      * Create a single PixRequest object from a content string received from a handler listening at the request url.
      * If the provided digital signature does not check out with the Stark public key, a
-     * starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
@@ -570,7 +570,7 @@ public final class PixRequest extends Resource {
      * <p>
      * Create a single PixRequest object from a content string received from a handler listening at the request url.
      * If the provided digital signature does not check out with the Stark public key, a
-     * starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
