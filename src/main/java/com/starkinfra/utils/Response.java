@@ -3,10 +3,7 @@ package com.starkinfra.utils;
 import com.google.gson.JsonObject;
 
 import com.starkinfra.User;
-import com.starkinfra.error.InputErrors;
-import com.starkinfra.error.UnknownError;
 import com.starkbank.ellipticcurve.Ecdsa;
-import com.starkinfra.error.InternalServerError;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
