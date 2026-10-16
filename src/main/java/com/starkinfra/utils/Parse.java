@@ -30,7 +30,7 @@ public final class Parse {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
@@ -49,7 +49,7 @@ public final class Parse {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)

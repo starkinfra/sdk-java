@@ -493,7 +493,7 @@ public final class DynamicBrcode extends Resource {
      * retrieve additional information needed to complete the transaction.
      * Use this method to verify the authenticity of a GET request received at your registered endpoint.
      * If the provided digital signature does not check out with the StarkInfra public key,
-     * a com.starkinfra.error.InvalidSignatureError will be raised.
+     * a com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param uuid [string]: unique uuid of the DynamicBrcode, passed as a path variable in the DynamicBrcode Read request. ex: "4e2eab725ddd495f9c98ffd97440702d"
@@ -515,7 +515,7 @@ public final class DynamicBrcode extends Resource {
      * retrieve additional information needed to complete the transaction.
      * Use this method to verify the authenticity of a GET request received at your registered endpoint.
      * If the provided digital signature does not check out with the StarkInfra public key,
-     * a com.starkinfra.error.InvalidSignatureError will be raised.
+     * a com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param uuid [string]: unique uuid of the DynamicBrcode, passed as a path variable in the DynamicBrcode Read request. ex: "4e2eab725ddd495f9c98ffd97440702d"

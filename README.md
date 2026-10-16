@@ -2002,7 +2002,7 @@ System.out.println(log);
 ### Parse a PixPullSubscription
 
 Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
-If the provided digital signature does not check out with the Stark Infra public key, a com.starkinfra.error.InvalidSignatureError will be raised.
+If the provided digital signature does not check out with the Stark Infra public key, a com.starkcore.error.InvalidSignatureError will be raised.
 
 ```java
 import com.starkinfra.*;
@@ -3169,7 +3169,7 @@ System.out.println(brcode);
 When a DynamicBrcode is read by your user, a GET request will be made to the your regitered URL to
 retrieve additional information needed to complete the transaction.
 Use this method to verify the authenticity of a GET request received at your registered endpoint.
-If the provided digital signature does not check out with the StarkInfra public key, a com.starkinfra.error.InvalidSignatureError will be raised.
+If the provided digital signature does not check out with the StarkInfra public key, a com.starkcore.error.InvalidSignatureError will be raised.
 
 ```java
 import com.starkinfra.*;
@@ -5007,8 +5007,8 @@ For example:
 
 ```java
 import com.starkinfra.*;
-import com.starkinfra.error.InputErrors;
-import com.starkinfra.error.ErrorElement;
+import com.starkcore.error.InputErrors;
+import com.starkcore.error.ErrorElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

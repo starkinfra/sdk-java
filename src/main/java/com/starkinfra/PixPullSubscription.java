@@ -612,7 +612,7 @@ public final class PixPullSubscription extends Resource {
      * <p>
      * Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
      * If the provided digital signature does not check out with the Stark Infra public key, a
-     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
@@ -632,7 +632,7 @@ public final class PixPullSubscription extends Resource {
      * <p>
      * Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
      * If the provided digital signature does not check out with the Stark Infra public key, a
-     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
