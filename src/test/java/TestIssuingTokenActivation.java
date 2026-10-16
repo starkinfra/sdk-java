@@ -1,7 +1,7 @@
 import org.junit.Test;
 import com.starkinfra.Settings;
 import com.starkinfra.IssuingTokenActivation;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 public class TestIssuingTokenActivation {
     @Test

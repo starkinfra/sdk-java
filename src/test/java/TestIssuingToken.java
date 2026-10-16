@@ -2,7 +2,7 @@ import com.starkinfra.*;
 import org.junit.Test;
 import org.junit.Assert;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 import java.util.*;
 

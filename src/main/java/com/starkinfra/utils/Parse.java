@@ -8,7 +8,6 @@ import com.starkinfra.Settings;
 import com.starkbank.ellipticcurve.Ecdsa;
 import com.starkbank.ellipticcurve.PublicKey;
 import com.starkbank.ellipticcurve.Signature;
-import com.starkinfra.error.InvalidSignatureError;
 import com.starkbank.ellipticcurve.utils.ByteString;
 
 import com.starkcore.utils.SubResource;
@@ -30,7 +29,7 @@ public final class Parse {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
@@ -49,7 +48,7 @@ public final class Parse {
      * <p>
      * Create a single Event object received from event listening at subscribed user endpoint.
      * If the provided digital signature does not check out with the Stark public key, a
-     * com.starkinfra.error.InvalidSignatureError will be raised.
+     * com.starkcore.error.InvalidSignatureError will be raised.
      * <p>
      * Parameters:
      * @param content [string]: response content from request received at user endpoint (not parsed)
