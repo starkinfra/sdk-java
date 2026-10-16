@@ -8,7 +8,6 @@ import com.starkinfra.Settings;
 import com.starkbank.ellipticcurve.Ecdsa;
 import com.starkbank.ellipticcurve.PublicKey;
 import com.starkbank.ellipticcurve.Signature;
-import com.starkinfra.error.InvalidSignatureError;
 import com.starkbank.ellipticcurve.utils.ByteString;
 
 import com.starkcore.utils.SubResource;
