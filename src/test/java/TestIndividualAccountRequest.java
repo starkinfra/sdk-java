@@ -395,6 +395,25 @@ public class TestIndividualAccountRequest {
     }
 
     @Test
+    public void testCreateMissingIncome() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> data = exampleData();
+        data.remove("income");
+
+        List<IndividualAccountRequest> requests = new ArrayList<>();
+        requests.add(new IndividualAccountRequest(data));
+
+        boolean raised = false;
+        try {
+            IndividualAccountRequest.create(requests);
+        } catch (InputErrors e) {
+            raised = true;
+        }
+        assertTrue("expected InputErrors to be raised", raised);
+    }
+
+    @Test
     public void testUpdateInvalidStatus() throws Exception {
         Settings.user = utils.User.defaultProject();
 

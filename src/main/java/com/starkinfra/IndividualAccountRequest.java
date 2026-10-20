@@ -135,7 +135,8 @@ public final class IndividualAccountRequest extends Resource {
         this.name = (String) dataCopy.remove("name");
         this.taxId = (String) dataCopy.remove("taxId");
         this.address = parseAddress(dataCopy.remove("address"));
-        this.income = ((Number) dataCopy.remove("income")).longValue();
+        Number income = (Number) dataCopy.remove("income");
+        this.income = income == null ? null : income.longValue();
         this.birthDate = (String) dataCopy.remove("birthDate");
         this.tags = (String[]) dataCopy.remove("tags");
         this.status = null;
