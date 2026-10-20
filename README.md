@@ -1078,7 +1078,7 @@ Request request = Listener.listen(); // this is the method you made to get the e
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
 
-IssuingToken event = IssuingToken.parse(content, validSignature);
+IssuingToken event = IssuingToken.parse(content, signature);
 
 sendResponse(  // you should also implement this method
     IssuingToken.responseAuthorization(  // this optional method just helps you build the response JSON
@@ -1113,7 +1113,7 @@ Request request = Listener.listen(); // this is the method you made to get the e
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
 
-IssuingTokenActivation event = IssuingTokenActivation.parse(content, validSignature);
+IssuingTokenActivation event = IssuingTokenActivation.parse(content, signature);
 ```
 
 After that, you may generate the activation code and send it to the cardholder.
@@ -1272,7 +1272,7 @@ Request request = Listener.listen(); // this is the method you made to get the e
 String content = request.content.toString();
 String signature = request.headers.get("Digital-Signature");
 
-IssuingAuthorization event = IssuingAuthorization.parse(content, validSignature);
+IssuingAuthorization event = IssuingAuthorization.parse(content, signature);
 
 sendResponse(  // you should also implement this method
     IssuingAuthorization.response(  // this optional method just helps you build the response JSON
