@@ -7,7 +7,7 @@ import com.starkinfra.Settings;
 import com.starkinfra.PixRequest;
 import com.starkinfra.PixReversal;
 import com.starkinfra.utils.Generator;
-import com.starkinfra.error.InvalidSignatureError;
+import com.starkcore.error.InvalidSignatureError;
 
 
 import java.util.ArrayList;
