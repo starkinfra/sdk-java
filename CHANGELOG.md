@@ -14,6 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- PixKeyHolmes.Log sub-resource
+- PixKeyHolmes get method
 - PixSubscriptionBacenId utility to generate Pix subscription bacenIds
 - parse method to PixPullSubscription
 - payment and pdf methods to CreditNote, resendToken method to CreditSigner
