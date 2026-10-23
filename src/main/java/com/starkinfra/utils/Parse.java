@@ -19,7 +19,7 @@ import java.util.HashMap;
 public final class Parse {
 
     static String host = "infra";
-    static String sdkVersion = "0.22.0";
+    static String sdkVersion = "0.23.0";
     static String apiVersion = "v2";
     static String language = "pt-BR";
     static Integer timeout = 15;
