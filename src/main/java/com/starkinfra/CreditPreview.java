@@ -154,19 +154,26 @@ public final class CreditPreview extends SubResource {
          * <p>
          * When you initialize a CreditNotePreview, the entity will not be automatically sent to the Stark Infra API.
          * <p>
-         * Parameters:
+         * Parameters (required):
          * type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"
-         * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
          * scheduled [string]: date of transfer execution. ex: "2020-03-11"
          * taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
+         * <p>
+         * Parameters (conditionally required):
+         * Each `type` value requires its own subset of these fields: "sac", "price", "american" and "bullet" require nominalInterest and initialDue; "sac" and "price" require exactly one of count or initialAmount (count is also required for "american") plus interval; only "custom" requires invoices, leaving the others unused. For every type, including "custom", exactly one of nominalAmount or amount must also be provided.
          * invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
+         * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule. ex: nominalAmount=11234 (= R$ 112.34)
+         * amount [Long]: net amount in cents to be disbursed to the credit receiver, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule.
          * nominalInterest [Number]: yearly nominal interest rate of the credit note, in percentage. ex: 12.5
          * initialDue [string]: date of the first invoice. ex: "2020-03-11"
          * count [integer]: quantity of invoices for payment. ex: 12
          * initialAmount [Long]: value of the first invoice in cents. ex: 1234 (= R$12.34)
          * interval [string]: interval between invoices. ex: "year", "month"
+         * <p>
+         * Parameters (optional):
          * rebateAmount [Long, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-         * amount [Long]: credit note value in cents. ex: 1234 (= R$ 12.34)
+         * <p>
+         * Attributes (return-only):
          * interest [Number]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
          * taxAmount [Long]: tax amount included in the credit note. ex: 100
          *
@@ -193,19 +200,26 @@ public final class CreditPreview extends SubResource {
          * <p>
          * When you initialize a CreditNotePreview, the entity will not be automatically sent to the Stark Infra API.
          * <p>
-         * Parameters:
+         * Parameters (required):
          * @param type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"
-         * @param nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
          * @param scheduled [string]: date of transfer execution. ex: "2020-03-11"
          * @param taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
+         * <p>
+         * Parameters (conditionally required):
+         * Each `type` value requires its own subset of these fields: "sac", "price", "american" and "bullet" require nominalInterest and initialDue; "sac" and "price" require exactly one of count or initialAmount (count is also required for "american") plus interval; only "custom" requires invoices, leaving the others unused. For every type, including "custom", exactly one of nominalAmount or amount must also be provided.
          * @param invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
+         * @param nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule. ex: nominalAmount=11234 (= R$ 112.34)
+         * @param amount [Long]: net amount in cents to be disbursed to the credit receiver, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule.
          * @param nominalInterest [Number]: yearly nominal interest rate of the credit note, in percentage. ex: 12.5
          * @param initialDue [string]: date of the first invoice. ex: "2020-03-11"
          * @param count [integer]: quantity of invoices for payment. ex: 12
          * @param initialAmount [Long]: value of the first invoice in cents. ex: 1234 (= R$12.34)
          * @param interval [string]: interval between invoices. ex: "year", "month"
+         * <p>
+         * Parameters (optional):
          * @param rebateAmount [Long, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-         * @param amount [Long]: credit note value in cents. ex: 1234 (= R$ 12.34)
+         * <p>
+         * Attributes (return-only):
          * @param interest [Number]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
          * @param taxAmount [Long]: tax amount included in the credit note. ex: 100
          */
@@ -240,12 +254,14 @@ public final class CreditPreview extends SubResource {
          * Parameters (required):
          * @param data map of properties for the creation of the CreditNotePreview
          * type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"
-         * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
          * scheduled [string]: date of transfer execution. ex: "2020-03-11"
          * taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
          * <p>
          * Parameters (conditionally required):
+         * Each `type` value requires its own subset of these fields: "sac", "price", "american" and "bullet" require nominalInterest and initialDue; "sac" and "price" require exactly one of count or initialAmount (count is also required for "american") plus interval; only "custom" requires invoices, leaving the others unused. For every type, including "custom", exactly one of nominalAmount or amount must also be provided.
          * invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
+         * nominalAmount [Long]: amount in cents transferred to the credit receiver, before deductions, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule. ex: nominalAmount=11234 (= R$ 112.34)
+         * amount [Long]: net amount in cents to be disbursed to the credit receiver, for every type including "custom". Provide exactly one of nominalAmount or amount; the other value, along with taxAmount and the interest rates, is computed from the invoice schedule.
          * nominalInterest [Number]: yearly nominal interest rate of the credit note, in percentage. ex: 12.5
          * initialDue [string]: date of the first invoice. ex: "2020-03-11"
          * count [integer]: quantity of invoices for payment. ex: 12
@@ -256,7 +272,6 @@ public final class CreditPreview extends SubResource {
          * rebateAmount [Long, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
          * <p>
          * Attributes (return-only):
-         * amount [Long]: credit note value in cents. ex: 1234 (= R$ 12.34)
          * interest [Number]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
          * taxAmount [Long]: tax amount included in the credit note. ex: 100
          * @throws Exception error in the request
@@ -265,7 +280,7 @@ public final class CreditPreview extends SubResource {
             HashMap<String, Object> dataCopy = new HashMap<>(data);
 
             this.type = (String) dataCopy.remove("type");
-            this.nominalAmount = ((Number) dataCopy.remove("nominalAmount")).longValue();
+            this.nominalAmount = toLong(dataCopy.remove("nominalAmount"));
             this.scheduled = (String) dataCopy.remove("scheduled");
             this.taxId = (String) dataCopy.remove("taxId");
             this.invoices = CreditNote.parseInvoices((List<Object>) dataCopy.remove("invoices"));
@@ -274,14 +289,20 @@ public final class CreditPreview extends SubResource {
             this.count = (Integer) dataCopy.remove("count");
             this.initialAmount = (Number) dataCopy.remove("initialAmount");
             this.interval = (String) dataCopy.remove("interval");
-            this.rebateAmount = ((Number) dataCopy.remove("rebateAmount")).longValue();
-            this.amount = null;
+            this.rebateAmount = toLong(dataCopy.remove("rebateAmount"));
+            this.amount = toLong(dataCopy.remove("amount"));
             this.interest = null;
             this.taxAmount = null;
 
             if (!dataCopy.isEmpty()) {
                 throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
             }
+        }
+
+        private static Long toLong(Object value) {
+            if (value == null)
+                return null;
+            return ((Number) value).longValue();
         }
     }
 }
