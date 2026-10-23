@@ -78,6 +78,14 @@ This SDK version is compatible with the Stark Infra API v2.
   - [Ledger](#ledger)
     - [Ledger](#create-ledgers): Track the balance of a given amount
     - [LedgerTransaction](#create-ledgertransactions): Insert transactions to track a Ledger's balance
+  - [AI](#ai)
+    - [AiKnowledgeBase](#create-an-aiknowledgebase): Turn a website into knowledge your agents can answer from
+    - [AiVoice](#create-an-aivoice): Clone a voice from a recording
+    - [AiSpeech](#create-an-aispeech): Read a text out loud with one of your voices
+    - [AiTranscript](#create-an-aitranscript): Turn a recording into text
+    - [AiAgent](#create-an-aiagent): Configure an assistant with a model, instructions, knowledge and a voice
+    - [AiChat](#create-an-aichat): Open a conversation with an agent
+    - [AiMessage](#create-an-aimessage): Talk to an agent and read the history of a chat
   - [Webhook](#webhook):
     - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -4676,6 +4684,687 @@ import com.starkinfra.*;
 LedgerTransaction transaction = LedgerTransaction.get("5656565656565656");
 
 System.out.println(transaction);
+```
+
+## AI
+
+### Create an AiKnowledgeBase
+
+An AiKnowledgeBase turns a website into material an agent can read. Stark Infra crawls the root URL, follows its
+links, converts every page to Markdown and indexes it. The call returns at once with the base in "processing" status.
+
+```java
+import com.starkinfra.*;
+
+AiKnowledgeBase knowledgeBase = AiKnowledgeBase.create(
+    new AiKnowledgeBase(
+        "Product Documentation",
+        "https://docs.starkinfra.com",
+        false,
+        new String[]{"support", "public"}
+    )
+);
+
+System.out.println(knowledgeBase);
+```
+
+### Get an AiKnowledgeBase
+
+Poll a knowledge base by its id until its status leaves "processing".
+
+```java
+import com.starkinfra.*;
+
+AiKnowledgeBase knowledgeBase = AiKnowledgeBase.get("5155165527080960");
+
+System.out.println(knowledgeBase);
+```
+
+### Query AiKnowledgeBases
+
+You can list your knowledge bases, optionally filtered by ids, by a substring of the name or by status. The cursor is
+followed until the list ends; give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("name", "documentation");
+params.put("status", "success");
+
+Generator<AiKnowledgeBase> knowledgeBases = AiKnowledgeBase.query(params);
+
+for (AiKnowledgeBase knowledgeBase : knowledgeBases) {
+    System.out.println(knowledgeBase);
+}
+```
+
+### Get paged AiKnowledgeBases
+
+You can get lists of up to 100 knowledge bases per request and the cursor to the next page, if you want to page the requests yourself. The filters are applied to each page, so a page may come back short or empty while the cursor is not null.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("name", "documentation");
+params.put("status", "success");
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiKnowledgeBase.Page page = AiKnowledgeBase.page(params);
+    for (AiKnowledgeBase knowledgeBase : page.knowledgeBases) {
+        System.out.println(knowledgeBase);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
+```
+
+### Update an AiKnowledgeBase
+
+Rename a knowledge base, retag it or change whether its crawl is recursive. The root URL cannot be changed. Only the
+fields present in the map are sent.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("name", "Public Documentation");
+patchData.put("tags", new String[]{"support"});
+
+AiKnowledgeBase knowledgeBase = AiKnowledgeBase.update("5155165527080960", patchData);
+
+System.out.println(knowledgeBase);
+```
+
+### List the pages of an AiKnowledgeBase
+
+Get every page the crawler has seen, grouped by host, with the status of each one.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Map;
+
+Map<String, List<Map<String, Object>>> hosts = AiKnowledgeBase.hosts("5155165527080960");
+
+for (Map.Entry<String, List<Map<String, Object>>> host : hosts.entrySet()) {
+    System.out.println(host.getKey() + " " + host.getValue());
+}
+```
+
+### Delete AiKnowledgeBases
+
+Delete up to 100 knowledge bases at once. Agents that still reference a deleted base simply retrieve nothing from it.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiKnowledgeBase> knowledgeBases = AiKnowledgeBase.delete(Arrays.asList("5155165527080960", "4545454545454545"));
+
+for (AiKnowledgeBase knowledgeBase : knowledgeBases) {
+    System.out.println(knowledgeBase);
+}
+```
+
+### Create an AiVoice
+
+An AiVoice is cloned from a base64-encoded recording. Cloning is asynchronous: the call returns at once with the
+voice in "processing" status, and only a voice in "success" can speak.
+
+```java
+import com.starkinfra.*;
+
+AiVoice voice = AiVoice.create(
+    new AiVoice(
+        "UklGRiQAAABXQVZFZm10IBAAAAABAAEA...",
+        "Helena",
+        "Calm voice",
+        "portuguese",
+        "female"
+    )
+);
+
+System.out.println(voice);
+```
+
+### Query AiVoices
+
+You can list every voice in your workspace. Give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+
+Generator<AiVoice> voices = AiVoice.query(params);
+
+for (AiVoice voice : voices) {
+    System.out.println(voice);
+}
+```
+
+### Get paged AiVoices
+
+You can get lists of up to 100 voices per request and the cursor to the next page, if you want to page the requests yourself.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiVoice.Page page = AiVoice.page(params);
+    for (AiVoice voice : page.voices) {
+        System.out.println(voice);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
+```
+
+### Delete AiVoices
+
+Delete up to 100 voices at once.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiVoice> voices = AiVoice.delete(Arrays.asList("5155165527080960", "4545454545454545"));
+
+for (AiVoice voice : voices) {
+    System.out.println(voice);
+}
+```
+
+### Create an AiSpeech
+
+An AiSpeech is one text read out loud by a voice in "success" status. The speech is synthesized during the call and
+comes back as a base64 MP3 in the audio attribute.
+
+```java
+import com.starkinfra.*;
+
+AiSpeech speech = AiSpeech.create(
+    new AiSpeech(
+        "5155165527080960",
+        "Hello, how can I help you?"
+    )
+);
+
+System.out.println(speech);
+```
+
+### Get an AiSpeech
+
+Get a speech by its id, audio included. Expand voiceName to receive the name of the voice.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("voiceName"));
+
+AiSpeech speech = AiSpeech.get("5155165527080960", params);
+
+System.out.println(speech);
+```
+
+### Query AiSpeeches
+
+You can list your speeches. The audio is left out of the results; get a speech by its id to receive it. The cursor is
+followed until the list ends; give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("voiceName"));
+params.put("limit", 10);
+
+Generator<AiSpeech> speeches = AiSpeech.query(params);
+
+for (AiSpeech speech : speeches) {
+    System.out.println(speech);
+}
+```
+
+### Get paged AiSpeeches
+
+You can get lists of up to 100 speeches per request and the cursor to the next page, if you want to page the requests yourself.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("voiceName"));
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiSpeech.Page page = AiSpeech.page(params);
+    for (AiSpeech speech : page.speeches) {
+        System.out.println(speech);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
+```
+
+### Create an AiTranscript
+
+An AiTranscript is the text of a base64-encoded recording. The audio is transcribed during the call.
+
+```java
+import com.starkinfra.*;
+
+AiTranscript transcript = AiTranscript.create(
+    new AiTranscript("UklGRiQAAABXQVZFZm10IBAAAAABAAEA...")
+);
+
+System.out.println(transcript);
+```
+
+### Query AiTranscripts
+
+You can list your transcripts. Give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+
+Generator<AiTranscript> transcripts = AiTranscript.query(params);
+
+for (AiTranscript transcript : transcripts) {
+    System.out.println(transcript);
+}
+```
+
+### Get paged AiTranscripts
+
+You can get lists of up to 100 transcripts per request and the cursor to the next page, if you want to page the requests yourself.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiTranscript.Page page = AiTranscript.page(params);
+    for (AiTranscript transcript : page.transcripts) {
+        System.out.println(transcript);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
+```
+
+### Create an AiAgent
+
+An AiAgent is the configuration of an assistant. The keys of the metadataSchema are yours and are sent exactly as
+written.
+
+```java
+import com.starkinfra.*;
+import java.util.Map;
+import java.util.HashMap;
+
+Map<String, Object> orderId = new HashMap<>();
+orderId.put("type", "string");
+orderId.put("description", "Order the customer mentions");
+Map<String, Object> metadataSchema = new HashMap<>();
+metadataSchema.put("order_id", orderId);
+
+AiAgent agent = AiAgent.create(
+    new AiAgent(
+        "Support assistant",
+        "bender-1.0",
+        "Answer in one short sentence.",
+        null,
+        new String[]{"5155165527080960"},
+        metadataSchema
+    )
+);
+
+System.out.println(agent);
+```
+
+### Get an AiAgent
+
+Get an agent by its id. Expand knowledgeBases to receive the AiKnowledgeBase objects instead of only their ids.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("knowledgeBases"));
+
+AiAgent agent = AiAgent.get("5740688905863168", params);
+
+System.out.println(agent);
+```
+
+### Query AiAgents
+
+You can list your agents. The cursor is followed until the list ends; give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("knowledgeBases"));
+params.put("limit", 10);
+
+Generator<AiAgent> agents = AiAgent.query(params);
+
+for (AiAgent agent : agents) {
+    System.out.println(agent);
+}
+```
+
+### Get paged AiAgents
+
+You can get lists of up to 100 agents per request and the cursor to the next page, if you want to page the requests yourself.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("knowledgeBases"));
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiAgent.Page page = AiAgent.page(params);
+    for (AiAgent agent : page.agents) {
+        System.out.println(agent);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
+```
+
+### Update an AiAgent
+
+The API keeps what you do not send. Leave a parameter out to keep it, or send an empty value to clear it: "" for
+text, an empty list for knowledgeBaseIds, an empty map for metadataSchema. knowledgeBaseIds replaces the current list.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("name", "Senior support assistant");
+patchData.put("knowledgeBaseIds", new String[]{});
+
+AiAgent agent = AiAgent.update("5740688905863168", patchData);
+
+System.out.println(agent);
+```
+
+### Delete AiAgents
+
+Delete up to 100 agents at once.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiAgent> agents = AiAgent.delete(Arrays.asList("5740688905863168", "4545454545454545"));
+
+for (AiAgent agent : agents) {
+    System.out.println(agent);
+}
+```
+
+### Create an AiChat
+
+An AiChat is one conversation with an AiAgent. When the title is omitted, the first message generates one. Give tags,
+such as the id of your end user, to find the chat later, and context with what the agent should know about that
+person before every reply. The keys of the context are yours and are sent exactly as written.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> context = new HashMap<>();
+context.put("name", "Ana");
+context.put("balance", 1520.33);
+
+AiChat chat = AiChat.create(
+    new AiChat(
+        "5740688905863168",
+        "Support chat",
+        new String[]{"customer-123", "whatsapp"},
+        context
+    )
+);
+
+System.out.println(chat);
+```
+
+### Get an AiChat
+
+Get a chat by its id. Expand agentName to receive the name of its agent.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("expand", Arrays.asList("agentName"));
+
+AiChat chat = AiChat.get("5761660895625216", params);
+
+System.out.println(chat);
+```
+
+### Query AiChats
+
+You can list your chats. Give tags to receive only the chats that have them. The cursor is followed until the list
+ends; give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("tags", Arrays.asList("customer-123"));
+params.put("expand", Arrays.asList("agentName"));
+params.put("limit", 10);
+
+Generator<AiChat> chats = AiChat.query(params);
+
+for (AiChat chat : chats) {
+    System.out.println(chat);
+}
+```
+
+### Get paged AiChats
+
+You can get lists of up to 100 chats per request and the cursor to the next page, if you want to page the requests yourself.
+
+```java
+import com.starkinfra.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("tags", Arrays.asList("customer-123"));
+params.put("expand", Arrays.asList("agentName"));
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiChat.Page page = AiChat.page(params);
+    for (AiChat chat : page.chats) {
+        System.out.println(chat);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
+```
+
+### Update an AiChat
+
+The API keeps what you do not send. Leave a parameter out to keep it, or send an empty value to clear it: "" for the
+title, an empty list for tags, an empty map for context. tags and context replace the current values.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> context = new HashMap<>();
+context.put("name", "Ana");
+context.put("balance", 0);
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("title", "Order 123 - resolved");
+patchData.put("tags", new String[]{"customer-123", "resolved"});
+patchData.put("context", context);
+
+AiChat chat = AiChat.update("5761660895625216", patchData);
+
+System.out.println(chat);
+```
+
+### Delete AiChats
+
+Delete up to 100 chats at once. Their messages go with them.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiChat> chats = AiChat.delete(Arrays.asList("5761660895625216", "4545454545454545"));
+
+for (AiChat chat : chats) {
+    System.out.println(chat);
+}
+```
+
+### Create an AiMessage
+
+Post what the user said to a chat. The call waits for the agent, which takes a few seconds, and returns the user's
+message and the agent's answer. Use expand to receive the chat title on both of them, which is useful on the first
+turn, when the title is generated.
+
+```java
+import com.starkinfra.*;
+import java.util.List;
+import java.util.Arrays;
+
+List<AiMessage> messages = AiMessage.create(
+    new AiMessage(
+        "5761660895625216",
+        "What is the status of order 123?"
+    ),
+    Arrays.asList("chatName")
+);
+
+for (AiMessage message : messages) {
+    System.out.println(message);
+}
+```
+
+### Query AiMessages
+
+You can read the history of a chat. The chatId is optional: without it, the messages of every chat in the workspace
+are returned. The cursor is followed until the history ends; give limit to stop earlier.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("chatId", "5761660895625216");
+params.put("limit", 35);
+
+Generator<AiMessage> messages = AiMessage.query(params);
+
+for (AiMessage message : messages) {
+    System.out.println(message);
+}
+```
+
+### Get paged AiMessages
+
+You can get lists of up to 100 messages per request and the cursor to the next page, if you want to page the requests yourself. Leave chatId out to page through the messages of the whole workspace.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("chatId", "5761660895625216");
+params.put("limit", 10);
+params.put("cursor", null);
+
+while (true) {
+    AiMessage.Page page = AiMessage.page(params);
+    for (AiMessage message : page.messages) {
+        System.out.println(message);
+    }
+    if (page.cursor == null) {
+        break;
+    }
+    params.put("cursor", page.cursor);
+}
 ```
 
 ## Webhook
