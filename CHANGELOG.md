@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.23.0] - 2026-10-23
 ### Added
 - PixSubscriptionBacenId utility to generate Pix subscription bacenIds
 - parse method to PixPullSubscription
