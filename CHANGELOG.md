@@ -15,6 +15,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - disputeId attribute to PixRequest resource
+### Changed
+- nominalAmount and amount parameters to conditionally required to CreditNotePreview sub-resource
 
 ## [0.23.0] - 2026-10-23
 ### Added
