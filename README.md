@@ -2778,6 +2778,61 @@ for (PixKeyHolmes sherlock : holmes) {
 }
 ```
 
+### Get a PixKeyHolmes
+
+After its creation, information on a PixKeyHolmes may be retrieved by its id.
+
+```java
+import com.starkinfra.*;
+
+PixKeyHolmes sherlock = PixKeyHolmes.get("5656565656565656");
+
+System.out.println(sherlock);
+```
+
+### Query PixKeyHolmes logs
+
+You can query PixKeyHolmes logs to better understand PixKeyHolmes life cycles.
+
+```java
+import com.starkinfra.*;
+import com.starkinfra.utils.Generator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<String> types = new ArrayList<>();
+types.add("solved");
+
+List<String> holmesIds = new ArrayList<>();
+holmesIds.add("5719405850615809");
+
+HashMap<String, Object> params = new HashMap<>();
+params.put("limit", 50);
+params.put("after", "2022-01-01");
+params.put("before", "2022-01-20");
+params.put("types", types);
+params.put("holmesIds", holmesIds);
+
+Generator<PixKeyHolmes.Log> logs = PixKeyHolmes.Log.query(params);
+
+for (PixKeyHolmes.Log log : logs) {
+    System.out.println(log);
+}
+```
+
+### Get a PixKeyHolmes log
+
+You can also get a specific log by its id.
+
+```java
+import com.starkinfra.*;
+
+PixKeyHolmes.Log log = PixKeyHolmes.Log.get("5155165527080960");
+
+System.out.println(log);
+```
+
 ### Create PixInternalTransactionReports
 
 Transactions that happen internally — outside of the SPI — must be reported to
