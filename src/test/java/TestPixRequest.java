@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -35,6 +36,21 @@ public class TestPixRequest {
             String id = PixRequest.get(request.id).id;
             assertEquals(id, request.id);
         }
+    }
+
+    @Test
+    public void testCreateWithDisputeId() throws Exception {
+        HashMap<String, Object> data = exampleData("E20018183202202161723Y4cqxlfLFcm");
+        data.put("reason", "fraud");
+        data.put("disputeId", "5656565656565656");
+
+        PixRequest request = new PixRequest(data);
+        JsonObject payload = new Gson().toJsonTree(request).getAsJsonObject();
+
+        assertEquals("fraud", request.reason);
+        assertEquals("5656565656565656", request.disputeId);
+        assertEquals("fraud", payload.get("reason").getAsString());
+        assertEquals("5656565656565656", payload.get("disputeId").getAsString());
     }
 
     @Test
@@ -242,6 +258,10 @@ public class TestPixRequest {
 
     static PixRequest example() throws Exception{
         String bankCode = utils.User.bankCode();
+        return new PixRequest(exampleData(EndToEndId.create(bankCode)));
+    }
+
+    static HashMap<String, Object> exampleData(String endToEndId) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("amount", 1000L);
         data.put("externalId", "java-" + UUID.randomUUID().toString());
@@ -258,7 +278,7 @@ public class TestPixRequest {
         data.put("receiverName", "Daenerys Targaryen Stormborn");
         data.put("receiverTaxId", "012.345.678-90");
         data.put("priority", "high");
-        data.put("endToEndId", EndToEndId.create(bankCode));
-        return new PixRequest(data);
+        data.put("endToEndId", endToEndId);
+        return data;
     }
 }

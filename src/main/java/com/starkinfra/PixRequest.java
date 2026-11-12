@@ -51,7 +51,8 @@ public final class PixRequest extends Resource {
      * tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
      * method [string]: execution method for the creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
      * priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
-     * reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
+     * reason [string, default "customerRequest"]: underlying reason for the payment transaction. Options: "customerRequest", "subscriptionFlaw", "fraud". When reason is "fraud" (returning funds from a PixDispute), disputeId is required and senderTaxId must be your institution's organization tax ID (CNPJ).
+     * disputeId [string, default null]: Id of the Pix Dispute being refunded. Required when reason is "fraud" and not allowed with any other reason. The dispute must be one you received and must be awaiting the refund, otherwise the request is refused with invalidDisputeId.
      * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * status [string]: current PixRequest status. Options: "created", "processing", "success", "failed"
@@ -88,6 +89,7 @@ public final class PixRequest extends Resource {
     public String method;
     public String priority;
     public String reason;
+    public String disputeId;
     public Integer fee;
     public String status;
     public String flow;
@@ -130,7 +132,8 @@ public final class PixRequest extends Resource {
      * @param tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
      * @param method [string, default null]: execution method for the creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
      * @param priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
-     * @param reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
+     * @param reason [string, default "customerRequest"]: underlying reason for the payment transaction. Options: "customerRequest", "subscriptionFlaw", "fraud". When reason is "fraud" (returning funds from a PixDispute), disputeId is required and senderTaxId must be your institution's organization tax ID (CNPJ).
+     * @param disputeId [string, default null]: Id of the Pix Dispute being refunded. Required when reason is "fraud" and not allowed with any other reason. The dispute must be one you received and must be awaiting the refund, otherwise the request is refused with invalidDisputeId.
      * @param id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
      * @param fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
      * @param status [string]: current PixRequest status. Options: "created", "processing", "success", "failed"
@@ -144,8 +147,8 @@ public final class PixRequest extends Resource {
                       String receiverBankCode, String receiverAccountNumber, String receiverBranchCode,
                       String receiverAccountType, String endToEndId, String receiverKeyId, String description,
                       String reconciliationId, String initiatorTaxId, Long cashAmount, String cashierBankCode,
-                      String cashierType, String[] tags, String method, String priority, String reason, Integer fee, String status, String flow,
-                      String senderBankCode, String created, String updated, String id
+                      String cashierType, String[] tags, String method, String priority, String reason, String disputeId, Integer fee, String status,
+                      String flow, String senderBankCode, String created, String updated, String id
     ) {
         super(id);
         this.amount = amount;
@@ -173,6 +176,7 @@ public final class PixRequest extends Resource {
         this.method = method;
         this.priority = priority;
         this.reason = reason;
+        this.disputeId = disputeId;
         this.fee = fee;
         this.status = status;
         this.flow = flow;
@@ -219,7 +223,10 @@ public final class PixRequest extends Resource {
      * tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
      * method [string, default null]: execution method for the creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
      * priority [string, default "high"]: Specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
-     * reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
+     * reason [string, default "customerRequest"]: underlying reason for the payment transaction. Options: "customerRequest", "subscriptionFlaw", "fraud". When reason is "fraud" (returning funds from a PixDispute), disputeId is required and senderTaxId must be your institution's organization tax ID (CNPJ).
+     * <p>
+     * Parameters (conditionally-required):
+     * disputeId [string, default null]: Id of the Pix Dispute being refunded. Required when reason is "fraud" and not allowed with any other reason. The dispute must be one you received and must be awaiting the refund, otherwise the request is refused with invalidDisputeId.
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
@@ -260,6 +267,7 @@ public final class PixRequest extends Resource {
         this.method = (String) dataCopy.remove("method");
         this.priority = (String) dataCopy.remove("priority");
         this.reason = (String) dataCopy.remove("reason");
+        this.disputeId = (String) dataCopy.remove("disputeId");
         this.fee = null;
         this.status = null;
         this.flow = null;
