@@ -23,6 +23,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [0.23.0] - 2026-10-23
 ### Added
 - PixSubscriptionBacenId utility to generate Pix subscription bacenIds
+- AiKnowledgeBase, AiVoice, AiSpeech, AiTranscript, AiAgent, AiChat and AiMessage resources
 - parse method to PixPullSubscription
 - payment and pdf methods to CreditNote, resendToken method to CreditSigner
 - BusinessAccountRequest resource
