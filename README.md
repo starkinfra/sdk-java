@@ -539,6 +539,82 @@ for (IssuingCard card : cards){
 }
 ```
 
+### Create IssuingCards without a holder
+
+A physical card can be created without a holder and have one assigned later, while it is still "pending".
+Omit holderName, holderTaxId and holderExternalId (send all three or none of them). The API rejects
+virtual cards without a holder. The holder fields come back as empty strings.
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+List<Object> cards = new ArrayList<>();
+HashMap<String, Object> data = new HashMap<>();
+data.put("productId", "52091969");
+data.put("type", "physical");
+data.put("tags", new String[]{"department: tech"});
+cards.add(data);
+
+List<IssuingCard> created = IssuingCard.create(cards);
+
+for (IssuingCard card : created){
+    System.out.println(card);
+}
+```
+
+To assign a holder to a card created without one, send holderName, holderTaxId and holderExternalId
+(all three or none) while the card is still "pending". The holder can be assigned and the card
+activated in the same call by also sending status "active" and the pin.
+
+```java
+import com.starkinfra.*;
+import java.util.HashMap;
+
+HashMap<String, Object> patchData = new HashMap<>();
+patchData.put("holderName", "Developers");
+patchData.put("holderTaxId", "012.345.678-90");
+patchData.put("holderExternalId", "1234");
+patchData.put("status", "active");
+patchData.put("pin", "1234");
+
+IssuingCard card = IssuingCard.update("5155165527080960", patchData);
+
+System.out.println(card);
+```
+
+### Update several IssuingCards at once
+
+Holders can be assigned to several pending cards in a single request. The API applies the whole list or none
+of it. Each item is a map with the card "id" and the fields the API accepts in this route: status, rules, tags and the
+three holder fields (pin and displayName are accepted only when updating a single card).
+
+```java
+import com.starkinfra.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+List<Map<String, Object>> items = new ArrayList<>();
+for (String id : new String[]{"5155165527080960", "5656565656565656"}) {
+    HashMap<String, Object> item = new HashMap<>();
+    item.put("id", id);
+    item.put("holderName", "Developers");
+    item.put("holderTaxId", "012.345.678-90");
+    item.put("holderExternalId", "1234");
+    items.add(item);
+}
+
+List<IssuingCard> cards = IssuingCard.updateMulti(items);
+
+for (IssuingCard card : cards){
+    System.out.println(card);
+}
+```
+
 ### Query IssuingCards
 
 You can get a list of created cards given some filters.
