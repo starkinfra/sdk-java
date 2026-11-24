@@ -3586,6 +3586,12 @@ HashMap<String, Object> rule = new HashMap<String, Object>() {{
 }};
 rules.add(rule);
 
+HashMap<String, Object> templateReplacements = new HashMap<String, Object>() {{
+    put("guarantorName", "Jon Snow");
+    put("guarantorTaxId", "012.345.678-90");
+    put("guarantorAddress", "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP");
+}};
+
 List<CreditNote> creditNotes = new ArrayList<>();
 HashMap<String, Object> data = new HashMap<>();
 data.put("templateId", "5707012469948416");
@@ -3597,6 +3603,7 @@ data.put("invoices", invoices );
 data.put("transfer", transfer );
 data.put("signers", signers );
 data.put("rules", rules );
+data.put("templateReplacements", templateReplacements );
 data.put("externalId", "my-internal-id-8435356");
 data.put("tags", new String[]{"War supply", "Invoice #1234"});
 data.put("rebateAmount", 0);
@@ -3614,6 +3621,8 @@ for(CreditNote creditNote : creditNotes) {
     System.out.println(creditNote);
 }
 ```
+
+**Note**: templateReplacements is optional and its keys depend on your contract template. They are sent exactly as written, so use the camelCase name of each placeholder. Keys with null values are not sent. You can pass a plain HashMap, as above, or a `CreditNote.TemplateReplacements` (`new CreditNote.TemplateReplacements(map)`); both send the same payload, and the `templateReplacements` attribute of a CreditNote object is always a `CreditNote.TemplateReplacements`, which keeps every key returned by the API. Numbers in the response are read as `Double` (ex: `2` comes back as `2.0`), like any other value of a `Map<String, Object>` parsed from JSON.
 
 ### Query CreditNotes
 

@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- templateReplacements parameter to CreditNote, typed as CreditNote.TemplateReplacements (a HashMap of free keys; a plain HashMap is still accepted and sent identically)
 - IssuingCard.updateMulti method, to update several cards in one request (PATCH /v2/issuing-card)
 - holderName, holderTaxId and holderExternalId to the IssuingCard.update patch data, to assign a holder to a pending card
 ### Changed
