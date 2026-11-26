@@ -62,6 +62,19 @@ public final class Rest {
         );
     }
 
+    public static <T extends SubResource> List<T> patchMulti(SubResource.ClassData resource, List<?> entities, User user) throws Exception {
+        return com.starkcore.utils.Rest.patchMulti(
+                sdkVersion,
+                host,
+                apiVersion,
+                user,
+                resource,
+                entities,
+                language,
+                timeout
+        );
+    }
+
     public static <T extends Resource> T patch(Resource.ClassData resource, String id, Map<String, Object> data, User user) throws Exception {
         return com.starkcore.utils.Rest.patch(
                 sdkVersion,
