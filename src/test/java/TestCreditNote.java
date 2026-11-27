@@ -133,6 +133,39 @@ public class TestCreditNote {
     }
 
     @Test
+    public void testCreateWithTemplateReplacements() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> templateReplacements = new HashMap<>();
+        templateReplacements.put("nomeAvalista", "Jon Snow");
+        templateReplacements.put("taxIdAvalista", "012.345.678-90");
+        templateReplacements.put("enderecoAvalista", "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP");
+
+        List<CreditNote> notes = CreditNote.create(exampleWithTemplateReplacements(templateReplacements));
+        for (CreditNote note : notes) {
+            Assert.assertNotNull(note.id);
+            Assert.assertEquals(templateReplacements, note.templateReplacements);
+        }
+    }
+
+    @Test
+    public void testCreateWithTemplateReplacementsObject() throws Exception {
+        Settings.user = utils.User.defaultProject();
+
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("nomeAvalista", "Jon Snow");
+        values.put("taxIdAvalista", "012.345.678-90");
+        values.put("enderecoAvalista", "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP");
+
+        List<CreditNote> notes = CreditNote.create(exampleWithTemplateReplacements(new CreditNote.TemplateReplacements(values)));
+        for (CreditNote note : notes) {
+            Assert.assertNotNull(note.id);
+            Assert.assertEquals(CreditNote.TemplateReplacements.class, note.templateReplacements.getClass());
+            Assert.assertEquals(values, note.templateReplacements);
+        }
+    }
+
+    @Test
     public void testDebtorWorkspaceIdReturnAttribute() throws Exception {
         Settings.user = utils.User.defaultProject();
 
@@ -351,6 +384,42 @@ public class TestCreditNote {
         List<CreditNote> mapNotes = new ArrayList<>();
         mapNotes.add(new CreditNote(data));
         return mapNotes;
+    }
+
+    static List<CreditNote> exampleWithTemplateReplacements(Object templateReplacements) throws Exception {
+        CreditNote base = exampleWithObject().get(0);
+        // Templates are enabled per workspace: SANDBOX_TEMPLATE_ID must be one of the Project under test
+        String templateId = System.getenv("SANDBOX_TEMPLATE_ID");
+        List<CreditSigner> signers = new ArrayList<>();
+        signers.add(new CreditSigner(new HashMap<String, Object>() {{
+            put("name", "Jamie Lannister");
+            put("contact", "jamie.lannister@invaliddomain.com");
+            put("method", "link");
+        }}));
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("templateId", templateId != null && !templateId.isEmpty() ? templateId : base.templateId);
+        data.put("name", base.name);
+        data.put("taxId", "012.345.678-90");
+        data.put("nominalAmount", base.nominalAmount);
+        data.put("scheduled", base.scheduled);
+        data.put("invoices", base.invoices);
+        data.put("payment", base.payment);
+        data.put("paymentType", base.paymentType);
+        data.put("signers", signers);
+        data.put("externalId", UUID.randomUUID().toString());
+        data.put("tags", new String[]{"sdk-test"});
+        data.put("rebateAmount", 0);
+        data.put("streetLine1", base.streetLine1);
+        data.put("streetLine2", base.streetLine2);
+        data.put("district", base.district);
+        data.put("city", base.city);
+        data.put("stateCode", base.stateCode);
+        data.put("zipCode", base.zipCode);
+        data.put("templateReplacements", templateReplacements);
+
+        List<CreditNote> notes = new ArrayList<>();
+        notes.add(new CreditNote(data));
+        return notes;
     }
 
     public static String getDateString(int delta) {

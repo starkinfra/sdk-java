@@ -49,6 +49,7 @@ public final class CreditNote extends Resource {
      * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
      * rules [list of CreditNote.Rule objects or maps, default []]: list of CreditNote.Rule objects for modifying CreditNote behavior. ex: [CreditNote.Rule("invoiceCreationMode", "scheduled")]
+     * templateReplacements [map of string to object, default null]: values that fill the placeholders of the contract template. Keys depend on the template and are sent exactly as written. Keys with null values are not sent. ex: {"guarantorName": "Jon Snow", "guarantorTaxId": "012.345.678-90"}
      * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
@@ -85,6 +86,7 @@ public final class CreditNote extends Resource {
     public String[] tags;
     public Long expiration;
     public List<CreditNote.Rule> rules;
+    public TemplateReplacements templateReplacements;
     public String documentId;
     public String status;
     public String[] transactionIds;
@@ -131,6 +133,7 @@ public final class CreditNote extends Resource {
      * @param tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * @param expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
      * @param rules [list of CreditNote.Rule objects or maps, default []]: list of CreditNote.Rule objects for modifying CreditNote behavior. ex: [CreditNote.Rule("invoiceCreationMode", "scheduled")]
+     * @param templateReplacements [map of string to object, default null]: values that fill the placeholders of the contract template. Keys depend on the template and are sent exactly as written. Keys with null values are not sent. ex: {"guarantorName": "Jon Snow", "guarantorTaxId": "012.345.678-90"}
      * @param id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
      * @param documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
      * @param status [string]: current status of the CreditNote. Options: "canceled", "created", "expired", "failed", "processing", "signed", "success"
@@ -147,7 +150,8 @@ public final class CreditNote extends Resource {
                       Resource payment, List<CreditSigner> signers, String externalId, String streetLine1,
                       String streetLine2, String district, String city, String stateCode, String zipCode,
                       String paymentType, Long nominalAmount, Long amount, Long rebateAmount, String[] tags, String id,
-                      Long expiration, List<CreditNote.Rule> rules, String documentId, String status,
+                      Long expiration, List<CreditNote.Rule> rules, Map<String, Object> templateReplacements,
+                      String documentId, String status,
                       String[] transactionIds, String workspaceId, String debtorWorkspaceId,
                       Long taxAmount, Number interest, Number nominalInterest, String created, String updated
     ) throws Exception {
@@ -172,6 +176,7 @@ public final class CreditNote extends Resource {
         this.tags = tags;
         this.expiration = expiration;
         this.rules = rules;
+        this.templateReplacements = toTemplateReplacements(templateReplacements);
         this.documentId = documentId;
         this.status = status;
         this.transactionIds = transactionIds;
@@ -186,6 +191,25 @@ public final class CreditNote extends Resource {
         if(paymentType == null) {
             this.paymentType = CreditNote.getType(payment);
         }
+    }
+
+    /**
+     * CreditNote object, without templateReplacements
+     * <p>
+     * Kept for compatibility with callers of the previous signature. Same as the full constructor with templateReplacements=null.
+     */
+    public CreditNote(String templateId, String name, String taxId, String scheduled, List<Invoice> invoices,
+                      Resource payment, List<CreditSigner> signers, String externalId, String streetLine1,
+                      String streetLine2, String district, String city, String stateCode, String zipCode,
+                      String paymentType, Long nominalAmount, Long amount, Long rebateAmount, String[] tags, String id,
+                      Long expiration, List<CreditNote.Rule> rules, String documentId, String status,
+                      String[] transactionIds, String workspaceId, String debtorWorkspaceId,
+                      Long taxAmount, Number interest, Number nominalInterest, String created, String updated
+    ) throws Exception {
+        this(templateId, name, taxId, scheduled, invoices, payment, signers, externalId, streetLine1, streetLine2,
+             district, city, stateCode, zipCode, paymentType, nominalAmount, amount, rebateAmount, tags, id,
+             expiration, rules, null, documentId, status, transactionIds, workspaceId, debtorWorkspaceId,
+             taxAmount, interest, nominalInterest, created, updated);
     }
 
     /**
@@ -225,6 +249,7 @@ public final class CreditNote extends Resource {
      * tags [list of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
      * expiration [Long, default 604800]: time interval in seconds between scheduled date and expiration date. ex 123456789
      * rules [list of CreditNote.Rule objects or maps, default []]: list of CreditNote.Rule objects for modifying CreditNote behavior. ex: [CreditNote.Rule("invoiceCreationMode", "scheduled")]
+     * templateReplacements [map of string to object, default null]: values that fill the placeholders of the contract template. Keys depend on the template and are sent exactly as written. Keys with null values are not sent. ex: {"guarantorName": "Jon Snow", "guarantorTaxId": "012.345.678-90"}
      * <p>
      * Attributes (return-only):
      * id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
@@ -265,6 +290,7 @@ public final class CreditNote extends Resource {
         this.tags = (String[]) dataCopy.remove("tags");
         this.expiration = (Long) dataCopy.remove("expiration");
         this.rules = parseRules((List<Object>) dataCopy.remove("rules"));
+        this.templateReplacements = parseTemplateReplacements(dataCopy.remove("templateReplacements"));
         this.documentId = null;
         this.status = null;
         this.transactionIds = null;
@@ -328,6 +354,21 @@ public final class CreditNote extends Resource {
         }
 
         return parsed;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static TemplateReplacements parseTemplateReplacements(Object templateReplacements) throws Exception {
+        if (templateReplacements == null || templateReplacements instanceof Map)
+            return toTemplateReplacements((Map<String, Object>) templateReplacements);
+
+        throw new Exception("Unknown type \"" + templateReplacements.getClass() + "\" for templateReplacements, use CreditNote.TemplateReplacements or HashMap");
+    }
+
+    private static TemplateReplacements toTemplateReplacements(Map<String, Object> templateReplacements) {
+        if (templateReplacements == null || templateReplacements instanceof TemplateReplacements)
+            return (TemplateReplacements) templateReplacements;
+
+        return new TemplateReplacements(templateReplacements);
     }
 
     @SuppressWarnings("unchecked")
@@ -788,6 +829,31 @@ public final class CreditNote extends Resource {
             if (!dataCopy.isEmpty()) {
                 throw new Exception("Unknown parameters used in constructor: [" + String.join(", ", dataCopy.keySet()) + "]");
             }
+        }
+    }
+
+    /**
+     * CreditNote.TemplateReplacements object
+     * <p>
+     * The CreditNote.TemplateReplacements object carries the values that fill the placeholders of the contract template.
+     * Its keys are free and depend on the template. It is a Map so that the keys are sent exactly as written and every key
+     * of an API response is kept. Entries with null values are not sent. Numbers read from a response are Double
+     * (ex: 2 comes back as 2.0), as with any Map<String, Object> parsed from JSON.
+     * <p>
+     * Parameters:
+     * key [string]: name of the placeholder, in camelCase. ex: "guarantorName"
+     * value [object]: value of the placeholder. ex: "Jon Snow"
+     */
+    public final static class TemplateReplacements extends HashMap<String, Object> {
+        public TemplateReplacements() {
+            super();
+        }
+
+        /**
+         * @param data map of placeholder names to values. ex: {"guarantorName": "Jon Snow"}
+         */
+        public TemplateReplacements(Map<String, Object> data) {
+            super(data);
         }
     }
 
